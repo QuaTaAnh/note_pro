@@ -37,7 +37,7 @@ npm run update:project
 
 ```bash
 # Start all services
-pm2 start ecosystem.config.ts --env development
+pm2 start ecosystem.configjs --env development
 
 # Stop all services
 pm2 stop all
@@ -78,7 +78,7 @@ pm2 show note-pro-server
 pm2 scale note-pro-server 2
 
 # Reload with specific environment
-pm2 reload ecosystem.config.ts --env production
+pm2 reload ecosystem.config.js --env production
 
 # Save current PM2 configuration
 pm2 save
@@ -162,7 +162,7 @@ rm -rf client/node_modules server/node_modules
 npm run install:all
 
 # Restart everything
-./deployment.sh
+./start-projects.sh --full
 ```
 
 ### Check Port Usage
