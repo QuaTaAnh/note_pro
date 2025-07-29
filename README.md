@@ -17,17 +17,20 @@ Full-stack note-taking application built with Next.js, NestJS, PostgreSQL, and H
 
 ```bash
 # First time setup with PM2 startup configuration
-./deployment.sh --setup-startup
+./start-projects.sh --setup-startup
 
-# Regular deployment
-./deployment.sh
+# Full deployment
+./start-projects.sh --full
+
+# Quick start (default - no arguments needed)
+./start-projects.sh
 ```
 
 ### Option 2: Quick Start (Existing Dependencies)
 
 ```bash
-# If dependencies are already installed
-./start.sh
+# Quick start if dependencies exist
+./start-projects.sh --quick
 ```
 
 ### Option 3: Manual Step-by-Step
@@ -50,10 +53,9 @@ note_pro/
 ├── client/          # Next.js frontend
 ├── server/          # NestJS backend
 ├── hasura-metadata/ # Hasura configuration
-├── ecosystem.config.js    # PM2 configuration
+├── ecosystem.config.js    # PM2 configuration (TypeScript)
 ├── docker-compose.yml     # Docker services
-├── deployment.sh          # Full deployment script
-└── start.sh              # Quick start script
+└── start-projects.sh      # Unified start/deployment script
 ```
 
 ## 🛠️ Available Commands
@@ -191,7 +193,7 @@ docker-compose ps       # Docker containers
 
 ## 📚 Development Workflow
 
-1. **Start Development**: `./start.sh` or `npm run pm2:dev`
+1. **Start Development**: `./start-projects.sh` or `npm run pm2:dev`
 2. **View Logs**: `npm run pm2:logs`
 3. **Monitor**: `npm run pm2:monit`
 4. **Update Code**: `npm run update:project`
