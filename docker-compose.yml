@@ -19,6 +19,12 @@ services:
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgres
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
       HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_ADMIN_SECRET: "notepro_super_admin_secret"
+      HASURA_GRAPHQL_JWT_SECRET: >
+        {
+          "type": "HS256",
+          "key": "SYohOxXyhqTUdbswC9GP+jWZ4ppwLTkzRY2AgJZKr5E="
+        }
 
 volumes:
   pg_data:
