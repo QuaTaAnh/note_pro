@@ -37,7 +37,7 @@ npm run update:project
 
 ```bash
 # Start all services
-pm2 start ecosystem.config.js --env development
+pm2 start ecosystem.config.ts --env development
 
 # Stop all services
 pm2 stop all
@@ -78,7 +78,7 @@ pm2 show note-pro-server
 pm2 scale note-pro-server 2
 
 # Reload with specific environment
-pm2 reload ecosystem.config.js --env production
+pm2 reload ecosystem.config.ts --env production
 
 # Save current PM2 configuration
 pm2 save
