@@ -1,1 +1,9 @@
-[]
+- "!include public_block_links.yaml"
+- "!include public_block_tags.yaml"
+- "!include public_blocks.yaml"
+- "!include public_files.yaml"
+- "!include public_folders.yaml"
+- "!include public_tags.yaml"
+- "!include public_tasks.yaml"
+- "!include public_users.yaml"
+- "!include public_workspaces.yaml"

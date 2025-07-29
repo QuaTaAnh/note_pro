@@ -1,0 +1,10 @@
+table:
+  name: tasks
+  schema: public
+object_relationships:
+  - name: block
+    using:
+      foreign_key_constraint_on: block_id
+  - name: user
+    using:
+      foreign_key_constraint_on: user_id

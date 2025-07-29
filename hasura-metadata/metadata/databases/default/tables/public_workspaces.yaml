@@ -1,0 +1,22 @@
+table:
+  name: workspaces
+  schema: public
+object_relationships:
+  - name: user
+    using:
+      foreign_key_constraint_on: created_by
+array_relationships:
+  - name: blocks
+    using:
+      foreign_key_constraint_on:
+        column: workspace_id
+        table:
+          name: blocks
+          schema: public
+  - name: folders
+    using:
+      foreign_key_constraint_on:
+        column: workspace_id
+        table:
+          name: folders
+          schema: public
