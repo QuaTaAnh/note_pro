@@ -1,0 +1,40 @@
+{
+  "name": "note-pro",
+  "version": "1.0.0",
+  "description": "Note Pro - Full stack application with Next.js and NestJS",
+  "private": true,
+  "scripts": {
+    "setup:all": "npm run install:all && npm run docker:up",
+    "install:all": "npm run install:client && npm run install:server",
+    "install:client": "cd client && npm install",
+    "install:server": "cd server && npm install",
+    "build:all": "npm run build:client && npm run build:server",
+    "build:client": "cd client && npm run build",
+    "build:server": "cd server && npm run build",
+    "dev:client": "cd client && npm run dev",
+    "dev:server": "cd server && npm run start:dev",
+    "start:client": "cd client && npm run start",
+    "start:server": "cd server && npm run start:prod",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f",
+    "pm2:dev": "pm2 start ecosystem.config.js --env development",
+    "pm2:prod": "pm2 start ecosystem.config.js --env production",
+    "pm2:stop": "pm2 stop all",
+    "pm2:restart": "pm2 restart all",
+    "pm2:reload": "pm2 reload all",
+    "pm2:delete": "pm2 delete all",
+    "pm2:logs": "pm2 logs",
+    "pm2:monit": "pm2 monit",
+    "deploy:dev": "pm2 deploy development",
+    "deploy:prod": "pm2 deploy production",
+    "update:project": "git pull origin main && npm run setup:all && npm run pm2:reload"
+  },
+  "devDependencies": {
+    "pm2": "^5.3.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  }
+} 
