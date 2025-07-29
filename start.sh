@@ -24,7 +24,7 @@ sleep 5
 
 # Start PM2 services
 echo "Starting PM2 services..."
-pm2 start ecosystem.config.js --env development
+pm2 start ecosystem.config.ts --env development
 
 # Show status
 echo "✅ All services started!"

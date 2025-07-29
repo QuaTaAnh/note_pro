@@ -28,8 +28,8 @@ print_error() {
 }
 
 # Check if we're in the right directory
-if [ ! -f "ecosystem.config.js" ]; then
-    print_error "ecosystem.config.js not found. Please run this script from the project root."
+if [ ! -f "ecosystem.config.ts" ]; then
+    print_error "ecosystem.config.ts not found. Please run this script from the project root."
     exit 1
 fi
 
@@ -71,10 +71,10 @@ sleep 10
 # Step 7: Check if processes are already running
 if pm2 list | grep -q "note-pro"; then
     print_status "Reloading existing PM2 processes..."
-    pm2 reload ecosystem.config.js --env development
+    pm2 reload ecosystem.config.ts --env development
 else
     print_status "Starting PM2 processes..."
-    pm2 start ecosystem.config.js --env development
+    pm2 start ecosystem.config.ts --env development
 fi
 
 # Step 8: Save PM2 configuration
