@@ -1,19 +1,12 @@
 import { Module } from '@nestjs/common';
-import { GoogleStrategy } from './strategies/google.strategy';
 import { AuthController } from './auth.controller';
-
-// Conditionally include GoogleStrategy only if Google OAuth is configured
-const conditionalProviders: any[] = [];
-if (
-  process.env.GOOGLE_CLIENT_ID &&
-  process.env.GOOGLE_CLIENT_SECRET &&
-  process.env.GOOGLE_CALLBACK_URL
-) {
-  conditionalProviders.push(GoogleStrategy);
-}
+import { AuthService } from './auth.service';
+import { HasuraModule } from 'src/hasura/hasura.module';
 
 @Module({
+  imports: [HasuraModule],
   controllers: [AuthController],
-  providers: conditionalProviders,
+  providers: [AuthService],
+  exports: [AuthService],
 })
 export class AuthModule {}
