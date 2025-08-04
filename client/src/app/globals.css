@@ -3,8 +3,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@import "tailwindcss/preflight";
-@import "tailwindcss/utilities";
+@import "tailwindcss";
 
 html,
 body {
