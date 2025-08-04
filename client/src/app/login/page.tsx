@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -19,23 +19,19 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 bg-[linear-gradient(rgb(18,18,18)_0%,rgb(30,42,54)_100%)]">
-      <Card className="w-1/3 max-w-md rounded-lg bg-[#090a0b] border-none">
-        <CardContent
-          className="flex flex-col items-center gap-6"
-          style={{
-            padding: "24px",
-          }}
-        >
-          <h2 className="text-center text-2xl font-medium leading-relaxed break-words select-none text-[#f4f4f4]">
+      <Card className="w-full max-w-md bg-[#090a0b] border-none">
+        <CardHeader className="text-center">
+          <CardTitle className="text-2xl font-medium text-white">
             Welcome to Note Pro
-          </h2>
-
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
           <Button
             variant="outline"
             onClick={() => signIn("google")}
-            className="w-1/2 rounded-sm p-[6px] text-sm flex justify-center cursor-pointer text-[#f4f4f4] bg-[#374151] border-[#4b5563] hover:bg-[#4b5563] hover:border-[#374151] hover:text-[#f4f4f4]"
+            className="w-full gap-2 bg-[#374151] border-[#4b5563] text-[#f4f4f4] hover:bg-[#4b5563] hover:border-[#374151] hover:text-[#f4f4f4]"
           >
-            <FcGoogle size={20} className="mr-[10px]" />
+            <FcGoogle size={20} />
             Continue with Google
           </Button>
         </CardContent>
