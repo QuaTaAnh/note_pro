@@ -6,6 +6,7 @@ import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { FcGoogle } from "react-icons/fc";
+import Image from "next/image";
 
 export default function LoginPage() {
   const { status } = useSession();
@@ -21,8 +22,16 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center px-4 bg-[linear-gradient(rgb(18,18,18)_0%,rgb(30,42,54)_100%)]">
       <Card className="w-full max-w-md bg-[#090a0b] border-none">
         <CardHeader className="text-center">
+          <div className="flex justify-center mb-4">
+            <Image
+              src="/images/logo.png"
+              alt="Bin Craft Logo"
+              width={56}
+              height={56}
+            />
+          </div>
           <CardTitle className="text-2xl font-medium text-white">
-            Welcome to Note Pro
+            Welcome to Bin Craft
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
