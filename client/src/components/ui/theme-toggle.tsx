@@ -1,8 +1,5 @@
 "use client";
 
-import * as React from "react";
-import { Moon, Sun } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -10,10 +7,26 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useTheme } from "@/contexts/ThemeContext";
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 export function ThemeToggle() {
+  const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Prevent hydration mismatch by not rendering theme-dependent content until mounted
+  if (!mounted) {
+    return (
+      <Button variant="ghost" size="icon" className="w-6 h-6">
+        <div className="h-4 w-4" />
+      </Button>
+    );
+  }
 
   const toggleTheme = () => {
     if (theme === "light") {

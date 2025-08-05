@@ -2,7 +2,7 @@
 
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "sonner";
-import { useTheme } from "@/contexts/ThemeContext";
+import { useTheme } from "next-themes";
 
 export function NextAuthProvider({ children }: { children: React.ReactNode }) {
   return <SessionProvider>{children}</SessionProvider>;
@@ -15,7 +15,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     <>
       {children}
       <Toaster
-        theme={theme}
+        theme={theme as "light" | "dark"}
         position="top-right"
         expand={true}
         richColors
