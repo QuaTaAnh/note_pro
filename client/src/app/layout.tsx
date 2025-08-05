@@ -1,7 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { NextAuthProvider, ToastProvider } from "./providers";
-import { ThemeProvider } from "@/contexts/ThemeContext";
+import { ThemeProvider } from "next-themes";
 import LayoutContent from "@/components/Layout/LayoutContent";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -19,7 +19,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider defaultTheme="dark">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem={false}
+          disableTransitionOnChange={false}
+        >
           <NextAuthProvider>
             <ToastProvider>
               <LayoutContent>{children}</LayoutContent>
