@@ -12,7 +12,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { MdOutlineViewSidebar } from "react-icons/md";
 import { SettingButton } from "./Presentational/SettingButton";
-import { AUTHENTICATED } from "./consts";
+import { AUTHENTICATED } from "../../consts";
 import { NotificationButton } from "./Presentational/NotificationButton";
 
 export default function Header() {
