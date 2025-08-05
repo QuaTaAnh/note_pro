@@ -34,7 +34,7 @@ export default function Header() {
             <span className="text-sm text-muted-foreground">
               {session?.user?.name}
             </span>
-            <Button onClick={() => router.push("/dashboard")}>Dashboard</Button>
+            <Button onClick={() => router.push("/demo")}>Demo</Button>
             <Button variant="outline" onClick={handleLogout}>
               Logout
             </Button>
