@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { NextAuthProvider } from "./providers";
+import { NextAuthProvider, ToastProvider } from "./providers";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import LayoutContent from "@/components/LayoutContent";
 
@@ -21,7 +21,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider defaultTheme="dark">
           <NextAuthProvider>
-            <LayoutContent>{children}</LayoutContent>
+            <ToastProvider>
+              <LayoutContent>{children}</LayoutContent>
+            </ToastProvider>
           </NextAuthProvider>
         </ThemeProvider>
       </body>

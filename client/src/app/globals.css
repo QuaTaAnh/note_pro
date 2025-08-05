@@ -87,3 +87,60 @@ a {
     color-scheme: dark;
   }
 }
+
+/* Toast Customizations */
+[data-sonner-toaster] {
+  /* Success Toast */
+  .toast-success [data-icon] {
+    color: hsl(142 76% 36%) !important; /* Green for light mode */
+  }
+  
+  /* Error Toast */
+  .toast-error [data-icon] {
+    color: hsl(346 87% 43%) !important; /* Red for light mode */
+  }
+  
+  /* Warning Toast */
+  .toast-warning [data-icon] {
+    color: hsl(38 92% 50%) !important; /* Yellow/Orange for light mode */
+  }
+  
+  /* Info Toast */
+  .toast-info [data-icon] {
+    color: hsl(217 91% 60%) !important; /* Blue for light mode */
+  }
+}
+
+/* Dark mode toast icons */
+.dark [data-sonner-toaster] {
+  /* Success Toast */
+  .toast-success [data-icon] {
+    color: hsl(142 72% 29%) !important; /* Green for dark mode */
+  }
+  
+  /* Error Toast */
+  .toast-error [data-icon] {
+    color: hsl(346 84% 61%) !important; /* Red for dark mode */
+  }
+  
+  /* Warning Toast */
+  .toast-warning [data-icon] {
+    color: hsl(48 96% 53%) !important; /* Yellow for dark mode */
+  }
+  
+  /* Info Toast */
+  .toast-info [data-icon] {
+    color: hsl(217 91% 60%) !important; /* Blue for dark mode */
+  }
+}
+
+/* Toast container styling */
+[data-sonner-toast] {
+  border-radius: 8px !important;
+  padding: 16px !important;
+}
+
+/* Remove close button padding if it appears */
+[data-sonner-toast] [data-close-button] {
+  display: none !important;
+}

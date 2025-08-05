@@ -6,7 +6,7 @@ export default function HomePage() {
   const { data: session, status } = useSession();
 
   return (
-    <div className="flex flex-col items-center justify-center bg-gray-50 py-16">
+    <div className="container mx-auto py-8 space-y-8">
       <h2 className="text-3xl font-semibold">Welcome to Note Pro</h2>
       <p className="text-gray-600 mt-2">Your personal note-taking assistant.</p>
       {status === "authenticated" && (
