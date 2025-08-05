@@ -3,7 +3,6 @@
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import Header from "./Header";
-import Footer from "./Footer";
 import { ROUTES } from "@/lib/routes";
 import { PAGE_TITLES } from "@/consts";
 
@@ -25,7 +24,6 @@ export default function LayoutContent({
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1">{children}</main>
-      <Footer />
     </div>
   );
 }
