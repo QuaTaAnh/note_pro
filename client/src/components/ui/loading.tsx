@@ -83,7 +83,6 @@ export function LoadingDots({ size = "md", className }: LoadingDotsProps) {
   );
 }
 
-// Page loading component
 export function PageLoading() {
   return (
     <div className="flex items-center justify-center min-h-[200px]">
@@ -92,7 +91,6 @@ export function PageLoading() {
   );
 }
 
-// Button loading state
 export function ButtonLoading({
   children,
   ...props
