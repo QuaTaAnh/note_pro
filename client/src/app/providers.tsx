@@ -15,7 +15,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     <>
       {children}
       <Toaster
-        theme={theme as "light" | "dark" | "system"}
+        theme={theme}
         position="top-right"
         expand={true}
         richColors
