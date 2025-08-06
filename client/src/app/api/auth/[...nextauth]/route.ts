@@ -3,6 +3,8 @@ import GoogleProvider from 'next-auth/providers/google';
 import { NextAuthOptions } from 'next-auth';
 import axios from 'axios';
 
+let hasuraToken: string | null = null;
+
 export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
@@ -13,18 +15,22 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user }) {
       try {
-        await axios.post(`${process.env.BACKEND_URL}/auth/google`, {
+        const res = await axios.post(`${process.env.BACKEND_URL}/auth/google`, {
           name: user.name,
           email: user.email,
           avatar_url: user.image,
         });
+        hasuraToken = res.data.token;
       } catch (err) {
         console.error('Backend user sync failed:', err);
       }
       return true;
     },
     async session({ session }) {
-      return session;
+      return {
+        ...session,
+        hasuraToken,
+      };
     },
   },
 };

@@ -1,15 +1,19 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import { getSession } from 'next-auth/react';
 
 const httpLink = createHttpLink({
   uri: `${process.env.NEXT_PUBLIC_HASURA_SERVER_ENDPOINT}/v1/graphql`,
 });
 
-const authLink = setContext((_, { headers }) => {
+const authLink = setContext(async (_, { headers }) => {
+  const session = await getSession();
+  // @ts-expect-error: hasuraToken is a custom property added to the session object
+  const token = session?.hasuraToken;
   return {
     headers: {
       ...headers,
-      'x-hasura-admin-secret': process.env.HASURA_GRAPHQL_ADMIN_SECRET,
+      Authorization: token ? `Bearer ${token}` : '',
     }
   }
 });

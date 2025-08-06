@@ -1,17 +1,13 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { GoogleAuthPayload } from './google-auth.dto';
+import { UserDTO } from './auth.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('google')
-  async googleAuth(@Body() body: GoogleAuthPayload): Promise<{
-    id: string;
-    email: string;
-    avatar_url: string;
-  }> {
+  async googleAuth(@Body() body: UserDTO): Promise<{ token: string }> {
     try {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
       return await this.authService.handleGoogleAuth(body);

@@ -1,14 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { HasuraService } from '../hasura/hasura.service';
-import { GoogleAuthPayload } from './google-auth.dto';
+import { JwtService } from '@nestjs/jwt';
+import { UserDTO } from './auth.dto';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly hasura: HasuraService) {}
+  constructor(
+    private readonly hasura: HasuraService,
+    private readonly jwtService: JwtService,
+  ) {}
 
-  async handleGoogleAuth(
-    user: GoogleAuthPayload,
-  ): Promise<{ id: string; email: string; avatar_url: string }> {
+  async handleGoogleAuth(user: UserDTO): Promise<{ token: string }> {
     const mutation = `
       mutation InsertUser($email: String!, $name: String!, $avatar_url: String!) {
         insert_users_one(
@@ -43,7 +45,20 @@ export class AuthService {
         throw new Error('Insert user failed');
       }
 
-      return userInserted;
+      const payload = {
+        sub: userInserted.id,
+        email: userInserted.email,
+        avatar_url: userInserted.avatar_url,
+        'https://hasura.io/jwt/claims': {
+          'x-hasura-allowed-roles': ['user', 'admin'],
+          'x-hasura-default-role': 'user',
+          'x-hasura-user-id': userInserted.id,
+        },
+      };
+
+      const token = this.jwtService.sign(payload);
+
+      return { token };
     } catch (error) {
       console.error('[AuthService] Failed to insert user:', error);
       throw error;
