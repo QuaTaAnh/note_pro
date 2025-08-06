@@ -8,13 +8,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ROUTES } from "@/lib/routes";
 import { LogOut } from "lucide-react";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { MdEmojiObjects } from "react-icons/md";
+import { useLogout } from "@/hooks/use-logout";
 
 export const SettingButton = () => {
   const { data: session } = useSession();
   const router = useRouter();
+  const { logout, isLoggingOut } = useLogout();
 
   return (
     <div className="relative">
@@ -47,14 +49,7 @@ export const SettingButton = () => {
             <MdEmojiObjects />
             Demo
           </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() =>
-              signOut({
-                callbackUrl: ROUTES.HOME,
-                redirect: true,
-              })
-            }
-          >
+          <DropdownMenuItem onClick={logout} disabled={isLoggingOut}>
             <LogOut />
             Logout
           </DropdownMenuItem>

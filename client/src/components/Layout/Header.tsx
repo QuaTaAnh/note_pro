@@ -1,24 +1,19 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { InputField } from "@/components/ui/input-field";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { ROUTES } from "@/lib/routes";
 import { noop } from "lodash";
 import { Search } from "lucide-react";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { MdOutlineViewSidebar } from "react-icons/md";
-import { SettingButton } from "./Presentational/SettingButton";
-import { AUTHENTICATED } from "../../consts";
 import { NotificationButton } from "./Presentational/NotificationButton";
+import { SettingButton } from "./Presentational/SettingButton";
 
 export default function Header() {
-  const { status } = useSession();
   const location = usePathname();
-  const router = useRouter();
 
   return (
     <header className="h-12 flex justify-between items-center mx-4">
@@ -52,17 +47,7 @@ export default function Header() {
       <div className="flex items-center gap-2">
         <ThemeToggle />
         <NotificationButton />
-        {status === AUTHENTICATED ? (
-          <SettingButton />
-        ) : (
-          <Button
-            variant="outline"
-            className="w-14 h-7 text-xs"
-            onClick={() => router.push(ROUTES.LOGIN)}
-          >
-            Login
-          </Button>
-        )}
+        <SettingButton />
       </div>
     </header>
   );
