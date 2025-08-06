@@ -11,9 +11,11 @@ import { usePathname } from "next/navigation";
 import { MdOutlineViewSidebar } from "react-icons/md";
 import { NotificationButton } from "./Presentational/NotificationButton";
 import { SettingButton } from "./Presentational/SettingButton";
+import { useSidebar } from "@/context/SidebarContext";
 
 export default function Header() {
   const location = usePathname();
+  const { toggle } = useSidebar();
 
   return (
     <header className="h-12 flex justify-between items-center mx-4">
@@ -31,7 +33,7 @@ export default function Header() {
         <MdOutlineViewSidebar
           size={20}
           className="cursor-pointer"
-          onClick={noop}
+          onClick={toggle}
         />
       </div>
       <div className="min-w-[480px] cursor-pointer">
