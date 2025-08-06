@@ -1,4 +1,5 @@
 import LayoutContent from "@/components/Layout/LayoutContent";
+import AuthWrapper from "@/components/auth/AuthWrapper";
 import { ThemeProvider } from "next-themes";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -13,6 +14,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "Bin Craft",
   description: "Bin Craft",
+  other: {
+    "Cache-Control": "no-cache, no-store, must-revalidate",
+  },
 };
 
 export default function RootLayout({
@@ -32,7 +36,9 @@ export default function RootLayout({
           <ApolloClientProvider>
             <NextAuthProvider>
               <ToastProvider>
-                <LayoutContent>{children}</LayoutContent>
+                <AuthWrapper>
+                  <LayoutContent>{children}</LayoutContent>
+                </AuthWrapper>
               </ToastProvider>
             </NextAuthProvider>
           </ApolloClientProvider>
