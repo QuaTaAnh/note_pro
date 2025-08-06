@@ -1,8 +1,12 @@
+import LayoutContent from "@/components/Layout/LayoutContent";
+import { ThemeProvider } from "next-themes";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { NextAuthProvider, ToastProvider } from "./providers";
-import { ThemeProvider } from "next-themes";
-import LayoutContent from "@/components/Layout/LayoutContent";
+import {
+  ApolloClientProvider,
+  NextAuthProvider,
+  ToastProvider,
+} from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,11 +29,13 @@ export default function RootLayout({
           enableSystem={false}
           disableTransitionOnChange={false}
         >
-          <NextAuthProvider>
-            <ToastProvider>
-              <LayoutContent>{children}</LayoutContent>
-            </ToastProvider>
-          </NextAuthProvider>
+          <ApolloClientProvider>
+            <NextAuthProvider>
+              <ToastProvider>
+                <LayoutContent>{children}</LayoutContent>
+              </ToastProvider>
+            </NextAuthProvider>
+          </ApolloClientProvider>
         </ThemeProvider>
       </body>
     </html>

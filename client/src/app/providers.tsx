@@ -3,6 +3,8 @@
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "sonner";
 import { useTheme } from "next-themes";
+import { ApolloProvider } from "@apollo/client";
+import client from "@/lib/apollo-client";
 
 export function NextAuthProvider({ children }: { children: React.ReactNode }) {
   return <SessionProvider>{children}</SessionProvider>;
@@ -36,4 +38,12 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
       />
     </>
   );
+}
+
+export function ApolloClientProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return <ApolloProvider client={client}>{children}</ApolloProvider>;
 }
