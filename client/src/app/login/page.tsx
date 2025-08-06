@@ -12,15 +12,17 @@ import { useCallback, useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 
 export default function LoginPage() {
-  const { status } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (status === AUTHENTICATED) {
-      router.replace(ROUTES.HOME);
+      const workspaceSlug =
+        (session as unknown as { workspaceSlug: string })?.workspaceSlug ?? "";
+      router.replace(ROUTES.WORKSPACE_ALL_DOCS(workspaceSlug));
     }
-  }, [status, router]);
+  }, [status, session, router]);
 
   const handleGoogleSignIn = useCallback(async () => {
     try {

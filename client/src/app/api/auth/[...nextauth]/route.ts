@@ -1,9 +1,9 @@
-import NextAuth from 'next-auth';
-import GoogleProvider from 'next-auth/providers/google';
-import { NextAuthOptions } from 'next-auth';
 import axios from 'axios';
+import NextAuth, { NextAuthOptions } from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
 
 let hasuraToken: string | null = null;
+let workspaceSlug: string | null = null;
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -21,6 +21,7 @@ export const authOptions: NextAuthOptions = {
           avatar_url: user.image,
         });
         hasuraToken = res.data.token;
+        workspaceSlug = res.data.workspaceSlug;
       } catch (err) {
         console.error('Backend user sync failed:', err);
       }
@@ -30,6 +31,7 @@ export const authOptions: NextAuthOptions = {
       return {
         ...session,
         hasuraToken,
+        workspaceSlug
       };
     },
   },
