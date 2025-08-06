@@ -85,7 +85,7 @@ export function LoadingDots({ size = "md", className }: LoadingDotsProps) {
 
 export function PageLoading() {
   return (
-    <div className="flex items-center justify-center min-h-[200px]">
+    <div className="flex items-center justify-center h-screen">
       <Loading variant="spinner" size="lg" text="Loading..." />
     </div>
   );

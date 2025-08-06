@@ -144,3 +144,19 @@ a {
 [data-sonner-toast] [data-close-button] {
   display: none !important;
 }
+
+/* Prevent flash of unstyled content during authentication checks */
+.auth-loading {
+  opacity: 0;
+  transition: opacity 0.1s ease-in-out;
+}
+
+.auth-ready {
+  opacity: 1;
+  transition: opacity 0.1s ease-in-out;
+}
+
+/* Hide content during initial load to prevent flash */
+html:not([data-auth-ready]) body {
+  visibility: hidden;
+}
