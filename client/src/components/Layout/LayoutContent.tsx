@@ -6,6 +6,8 @@ import Header from "./Header";
 import { ROUTES } from "@/lib/routes";
 import { PAGE_TITLES } from "@/consts";
 import AuthGuard from "@/components/auth/AuthGuard";
+import { SidebarProvider } from "@/context/SidebarContext";
+import Sidebar from "./Sidebar";
 
 export default function LayoutContent({
   children,
@@ -23,10 +25,15 @@ export default function LayoutContent({
     <>{children}</>
   ) : (
     <AuthGuard>
-      <div className="min-h-screen flex flex-col">
-        <Header />
-        <main className="flex-1">{children}</main>
-      </div>
+      <SidebarProvider>
+        <div className="min-h-screen flex flex-col">
+          <Header />
+          <div className="flex flex-1">
+            <Sidebar />
+            <main className="flex-1 p-4">{children}</main>
+          </div>
+        </div>
+      </SidebarProvider>
     </AuthGuard>
   );
 }
