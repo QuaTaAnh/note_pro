@@ -1,19 +1,14 @@
-"use client";
+import { ROUTES } from "@/lib/routes";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { authOptions } from "./api/auth/[...nextauth]/route";
 
-import { useSession } from "next-auth/react";
+export default async function Home() {
+  const session = await getServerSession(authOptions);
 
-export default function HomePage() {
-  const { data: session, status } = useSession();
+  if (session?.workspaceSlug) {
+    redirect(ROUTES.WORKSPACE_ALL_DOCS(session.workspaceSlug));
+  }
 
-  return (
-    <div className="container mx-auto py-8 space-y-8">
-      <h2 className="text-3xl font-semibold">Welcome to Note Pro</h2>
-      <p className="text-gray-600 mt-2">Your personal note-taking assistant.</p>
-      {status === "authenticated" && (
-        <p className="text-lg mt-4">
-          Hello, {session?.user?.name}! Ready to take some notes?
-        </p>
-      )}
-    </div>
-  );
+  redirect(ROUTES.LOGIN);
 }

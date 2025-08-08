@@ -17,10 +17,8 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (status === AUTHENTICATED) {
-      const workspaceSlug =
-        (session as unknown as { workspaceSlug: string })?.workspaceSlug ?? "";
-      router.replace(ROUTES.WORKSPACE_ALL_DOCS(workspaceSlug));
+    if (status === AUTHENTICATED && session?.workspaceSlug) {
+      router.replace(ROUTES.WORKSPACE_ALL_DOCS(session.workspaceSlug));
     }
   }, [status, session, router]);
 
