@@ -8,7 +8,6 @@ const httpLink = createHttpLink({
 
 const authLink = setContext(async (_, { headers }) => {
   const session = await getSession();
-  // @ts-expect-error: hasuraToken is a custom property added to the session object
   const token = session?.hasuraToken;
   return {
     headers: {

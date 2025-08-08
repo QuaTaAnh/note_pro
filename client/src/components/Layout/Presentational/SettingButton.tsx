@@ -12,6 +12,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { MdEmojiObjects } from "react-icons/md";
 import { useLogout } from "@/hooks/use-logout";
+import Image from "next/image";
 
 export const SettingButton = () => {
   const { data: session } = useSession();
@@ -22,19 +23,23 @@ export const SettingButton = () => {
     <div className="relative">
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
-          <img
+          <Image
             src={session?.user?.image ?? "/images/no_image.jpg"}
             alt="avatar"
+            width={24}
+            height={24}
             className="w-6 h-6 rounded-full cursor-pointer"
           />
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56 p-2" align="end">
           <DropdownMenuLabel>
             <div className="flex flex-col items-center gap-2">
-              <img
+              <Image
                 src={session?.user?.image ?? "/images/no_image.jpg"}
                 alt="avatar"
-                className="w-8 h-8 rounded-full"
+                width={32}
+                height={32}
+                className="w-8 h-8 rounded-full cursor-pointer"
               />
               <p className="text-sm font-medium leading-none">
                 {session?.user?.name}

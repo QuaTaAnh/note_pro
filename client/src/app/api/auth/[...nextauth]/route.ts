@@ -1,9 +1,6 @@
-import NextAuth from 'next-auth';
-import GoogleProvider from 'next-auth/providers/google';
-import { NextAuthOptions } from 'next-auth';
 import axios from 'axios';
-
-let hasuraToken: string | null = null;
+import NextAuth, { NextAuthOptions } from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -12,29 +9,35 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
+  session: {
+    strategy: 'jwt',
+  },
+  jwt: {
+    secret: process.env.NEXTAUTH_SECRET,
+  },
   callbacks: {
-    async signIn({ user }) {
-      try {
+    async jwt({ token, user, account }) {
+      if (account && user) {
         const res = await axios.post(`${process.env.BACKEND_URL}/auth/google`, {
           name: user.name,
           email: user.email,
           avatar_url: user.image,
         });
-        hasuraToken = res.data.token;
-      } catch (err) {
-        console.error('Backend user sync failed:', err);
+
+        token.hasuraToken = res.data.token;
+        token.workspaceSlug = res.data.workspaceSlug;
       }
-      return true;
+
+      return token;
     },
-    async session({ session }) {
-      return {
-        ...session,
-        hasuraToken,
-      };
+
+    async session({ session, token }) {
+      session.hasuraToken = token.hasuraToken;
+      session.workspaceSlug = token.workspaceSlug;
+      return session;
     },
   },
 };
 
 const handler = NextAuth(authOptions);
-
 export { handler as GET, handler as POST };
