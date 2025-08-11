@@ -3367,6 +3367,7 @@ export type Users = {
   folders_aggregate: FoldersAggregate;
   id: Scalars['uuid']['output'];
   name?: Maybe<Scalars['String']['output']>;
+  role: Scalars['String']['output'];
   /** An array relationship */
   tasks: Array<Tasks>;
   /** An aggregate relationship */
@@ -3515,6 +3516,7 @@ export type UsersBoolExp = {
   folders_aggregate?: InputMaybe<FoldersAggregateBoolExp>;
   id?: InputMaybe<UuidComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
+  role?: InputMaybe<StringComparisonExp>;
   tasks?: InputMaybe<TasksBoolExp>;
   tasks_aggregate?: InputMaybe<TasksAggregateBoolExp>;
   workspaces?: InputMaybe<WorkspacesBoolExp>;
@@ -3539,6 +3541,7 @@ export type UsersInsertInput = {
   folders?: InputMaybe<FoldersArrRelInsertInput>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  role?: InputMaybe<Scalars['String']['input']>;
   tasks?: InputMaybe<TasksArrRelInsertInput>;
   workspaces?: InputMaybe<WorkspacesArrRelInsertInput>;
 };
@@ -3551,6 +3554,7 @@ export type UsersMaxFields = {
   email?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  role?: Maybe<Scalars['String']['output']>;
 };
 
 /** aggregate min on columns */
@@ -3561,6 +3565,7 @@ export type UsersMinFields = {
   email?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  role?: Maybe<Scalars['String']['output']>;
 };
 
 /** response of any mutation on the table "users" */
@@ -3596,6 +3601,7 @@ export type UsersOrderBy = {
   folders_aggregate?: InputMaybe<FoldersAggregateOrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
+  role?: InputMaybe<OrderBy>;
   tasks_aggregate?: InputMaybe<TasksAggregateOrderBy>;
   workspaces_aggregate?: InputMaybe<WorkspacesAggregateOrderBy>;
 };
@@ -3616,7 +3622,9 @@ export enum UsersSelectColumn {
   /** column name */
   Id = 'id',
   /** column name */
-  Name = 'name'
+  Name = 'name',
+  /** column name */
+  Role = 'role'
 }
 
 /** input type for updating data in table "users" */
@@ -3626,6 +3634,7 @@ export type UsersSetInput = {
   email?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  role?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Streaming cursor of the table "users" */
@@ -3643,6 +3652,7 @@ export type UsersStreamCursorValueInput = {
   email?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  role?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** update columns of table "users" */
@@ -3656,7 +3666,9 @@ export enum UsersUpdateColumn {
   /** column name */
   Id = 'id',
   /** column name */
-  Name = 'name'
+  Name = 'name',
+  /** column name */
+  Role = 'role'
 }
 
 export type UsersUpdates = {
@@ -3803,6 +3815,8 @@ export type WorkspacesBoolExp = {
 
 /** unique or primary key constraints on table "workspaces" */
 export enum WorkspacesConstraint {
+  /** unique or primary key constraint on columns "created_by" */
+  WorkspacesCreatedByKey = 'workspaces_created_by_key',
   /** unique or primary key constraint on columns "id" */
   WorkspacesPkey = 'workspaces_pkey'
 }

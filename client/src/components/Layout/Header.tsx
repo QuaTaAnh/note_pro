@@ -2,39 +2,34 @@
 
 import { InputField } from "@/components/ui/input-field";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { useSidebar } from "@/context/SidebarContext";
 import { ROUTES } from "@/lib/routes";
 import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { MdOutlineViewSidebar } from "react-icons/md";
 import { NotificationButton } from "./Presentational/NotificationButton";
 import { SettingButton } from "./Presentational/SettingButton";
-import { useSidebar } from "@/context/SidebarContext";
-import { useSession } from "next-auth/react";
 
-export default function Header() {
-  const location = usePathname();
-  const { data: session } = useSession();
+interface Props {
+  workspaceSlug: string;
+}
+
+export default function Header({ workspaceSlug }: Props) {
   const { toggle } = useSidebar();
 
   return (
-    session?.workspaceSlug && (
+    workspaceSlug && (
       <header className="h-12 flex justify-between items-center mx-4">
         <div className="flex items-center gap-2">
-          {location !==
-            ROUTES.WORKSPACE_ALL_DOCS(session?.workspaceSlug ?? "") && (
-            <Link
-              href={ROUTES.WORKSPACE_ALL_DOCS(session?.workspaceSlug ?? "")}
-            >
-              <Image
-                src="/images/logo.png"
-                alt="Bin Craft Logo"
-                width={24}
-                height={24}
-              />
-            </Link>
-          )}
+          <Link href={ROUTES.WORKSPACE_ALL_DOCS(workspaceSlug)}>
+            <Image
+              src="/images/logo.png"
+              alt="Bin Craft Logo"
+              width={24}
+              height={24}
+            />
+          </Link>
           <MdOutlineViewSidebar
             size={20}
             className="cursor-pointer"

@@ -1,14 +1,30 @@
+"use client";
+
 import { ROUTES } from "@/lib/routes";
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
-import { authOptions } from "./api/auth/[...nextauth]/route";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { AUTHENTICATED } from "@/consts";
+import { useWorkspace } from "@/hooks/use-workspace";
+import { PageLoading } from "@/components/ui/loading";
 
-export default async function Home() {
-  const session = await getServerSession(authOptions);
+export default function Home() {
+  const { status } = useSession();
+  const { workspaceSlug, loading } = useWorkspace();
+  const router = useRouter();
 
-  if (session?.workspaceSlug) {
-    redirect(ROUTES.WORKSPACE_ALL_DOCS(session.workspaceSlug));
-  }
+  useEffect(() => {
+    if (status === "loading" || loading) return;
 
-  redirect(ROUTES.LOGIN);
+    if (status !== AUTHENTICATED) {
+      router.replace(ROUTES.LOGIN);
+      return;
+    }
+
+    if (workspaceSlug) {
+      router.replace(ROUTES.WORKSPACE_ALL_DOCS(workspaceSlug));
+    }
+  }, [status, workspaceSlug, loading, router]);
+
+  return <PageLoading />;
 }

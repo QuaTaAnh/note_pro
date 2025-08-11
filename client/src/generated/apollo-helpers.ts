@@ -492,7 +492,7 @@ export type tasks_mutation_responseFieldPolicy = {
 	affected_rows?: FieldPolicy<any> | FieldReadFunction<any>,
 	returning?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type usersKeySpecifier = ('avatar_url' | 'blocks' | 'blocks_aggregate' | 'created_at' | 'email' | 'files' | 'files_aggregate' | 'folders' | 'folders_aggregate' | 'id' | 'name' | 'tasks' | 'tasks_aggregate' | 'workspaces' | 'workspaces_aggregate' | usersKeySpecifier)[];
+export type usersKeySpecifier = ('avatar_url' | 'blocks' | 'blocks_aggregate' | 'created_at' | 'email' | 'files' | 'files_aggregate' | 'folders' | 'folders_aggregate' | 'id' | 'name' | 'role' | 'tasks' | 'tasks_aggregate' | 'workspaces' | 'workspaces_aggregate' | usersKeySpecifier)[];
 export type usersFieldPolicy = {
 	avatar_url?: FieldPolicy<any> | FieldReadFunction<any>,
 	blocks?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -505,6 +505,7 @@ export type usersFieldPolicy = {
 	folders_aggregate?: FieldPolicy<any> | FieldReadFunction<any>,
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
 	name?: FieldPolicy<any> | FieldReadFunction<any>,
+	role?: FieldPolicy<any> | FieldReadFunction<any>,
 	tasks?: FieldPolicy<any> | FieldReadFunction<any>,
 	tasks_aggregate?: FieldPolicy<any> | FieldReadFunction<any>,
 	workspaces?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -521,21 +522,23 @@ export type users_aggregate_fieldsFieldPolicy = {
 	max?: FieldPolicy<any> | FieldReadFunction<any>,
 	min?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type users_max_fieldsKeySpecifier = ('avatar_url' | 'created_at' | 'email' | 'id' | 'name' | users_max_fieldsKeySpecifier)[];
+export type users_max_fieldsKeySpecifier = ('avatar_url' | 'created_at' | 'email' | 'id' | 'name' | 'role' | users_max_fieldsKeySpecifier)[];
 export type users_max_fieldsFieldPolicy = {
 	avatar_url?: FieldPolicy<any> | FieldReadFunction<any>,
 	created_at?: FieldPolicy<any> | FieldReadFunction<any>,
 	email?: FieldPolicy<any> | FieldReadFunction<any>,
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
-	name?: FieldPolicy<any> | FieldReadFunction<any>
+	name?: FieldPolicy<any> | FieldReadFunction<any>,
+	role?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type users_min_fieldsKeySpecifier = ('avatar_url' | 'created_at' | 'email' | 'id' | 'name' | users_min_fieldsKeySpecifier)[];
+export type users_min_fieldsKeySpecifier = ('avatar_url' | 'created_at' | 'email' | 'id' | 'name' | 'role' | users_min_fieldsKeySpecifier)[];
 export type users_min_fieldsFieldPolicy = {
 	avatar_url?: FieldPolicy<any> | FieldReadFunction<any>,
 	created_at?: FieldPolicy<any> | FieldReadFunction<any>,
 	email?: FieldPolicy<any> | FieldReadFunction<any>,
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
-	name?: FieldPolicy<any> | FieldReadFunction<any>
+	name?: FieldPolicy<any> | FieldReadFunction<any>,
+	role?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type users_mutation_responseKeySpecifier = ('affected_rows' | 'returning' | users_mutation_responseKeySpecifier)[];
 export type users_mutation_responseFieldPolicy = {

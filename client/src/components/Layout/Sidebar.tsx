@@ -2,8 +2,13 @@
 
 import { useSidebar } from "@/context/SidebarContext";
 import { cn } from "@/lib/utils";
+import { WorkspaceButton } from "./Presentational/WorkspaceButton";
 
-export default function Sidebar() {
+interface Props {
+  workspaceSlug: string;
+}
+
+export default function Sidebar({ workspaceSlug }: Props) {
   const { isOpen } = useSidebar();
 
   return (
@@ -13,8 +18,8 @@ export default function Sidebar() {
         isOpen ? "w-72" : "w-0 overflow-hidden"
       )}
     >
-      <div className="pl-2">
-        <p className="text-lg font-semibold">Sidebar</p>
+      <div className="flex flex-col justify-center p-4 gap-2">
+        <WorkspaceButton workspaceSlug={workspaceSlug} />
       </div>
     </aside>
   );

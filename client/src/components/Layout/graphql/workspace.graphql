@@ -1,0 +1,20 @@
+query GetWorkspaceByUserId($userId: uuid!) {
+  workspaces(where: { created_by: { _eq: $userId } }) {
+    id
+    name
+  }
+}
+
+query GetWorkspaceName($id: uuid!) {
+  workspaces_by_pk(id: $id) {
+    id
+    name
+  }
+}
+
+mutation RenameWorkspace($id: uuid!, $name: String!) {
+  update_workspaces_by_pk(pk_columns: { id: $id }, _set: { name: $name }) {
+    id
+    name
+  }
+}

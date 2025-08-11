@@ -10,17 +10,19 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
+import { useWorkspace } from "@/hooks/use-workspace";
 
 export default function LoginPage() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
+  const { workspaceSlug, loading: workspaceLoading } = useWorkspace();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (status === AUTHENTICATED && session?.workspaceSlug) {
-      router.replace(ROUTES.WORKSPACE_ALL_DOCS(session.workspaceSlug));
+    if (status === AUTHENTICATED && workspaceSlug && !workspaceLoading) {
+      router.replace(ROUTES.WORKSPACE_ALL_DOCS(workspaceSlug));
     }
-  }, [status, session, router]);
+  }, [status, workspaceSlug, workspaceLoading, router]);
 
   const handleGoogleSignIn = useCallback(async () => {
     try {
@@ -34,7 +36,11 @@ export default function LoginPage() {
   }, []);
 
   return status === AUTHENTICATED ? (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-[linear-gradient(rgb(18,18,18)_0%,rgb(30,42,54)_100%)]">
+    <div
+      className="flex items-center justify-center min-h-screen"
+      role="status"
+      aria-label="Loading"
+    >
       <PageLoading />
     </div>
   ) : (
