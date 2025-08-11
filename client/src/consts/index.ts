@@ -5,10 +5,10 @@ import { LuBookOpenText, LuCalendarRange } from "react-icons/lu";
 export const AUTHENTICATED = "authenticated";
 export const UNAUTHENTICATED = "unauthenticated";
 export const PAGE_TITLES: Record<string, string> = {
-    [ROUTES.HOME]: "Home | Bin Craft",
-    [ROUTES.LOGIN]: "Login | Bin Craft",
-    [ROUTES.DEMO]: "UI Demo | Bin Craft",
-  };
+  [ROUTES.HOME]: "Home",
+  [ROUTES.LOGIN]: "Login",
+  [ROUTES.DEMO]: "UI Demo",
+};
 
 export const MENU_ITEMS = (workspaceSlug: string) => [
     {
