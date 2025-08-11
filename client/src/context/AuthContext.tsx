@@ -8,7 +8,7 @@ interface AuthContextType {
   userId: string | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  hasuraToken: string | null;
+  token: string | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -16,16 +16,16 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const { data: session, status } = useSession();
   const [userId, setUserId] = useState<string | null>(null);
-  const [hasuraToken, setHasuraToken] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
-    if (session?.hasuraToken) {
-      const extractedUserId = getUserIdFromToken(session.hasuraToken);
+    if (session?.token) {
+      const extractedUserId = getUserIdFromToken(session.token);
       setUserId(extractedUserId);
-      setHasuraToken(session.hasuraToken);
+      setToken(session.token);
     } else {
       setUserId(null);
-      setHasuraToken(null);
+      setToken(null);
     }
   }, [session]);
 
@@ -33,7 +33,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     userId,
     isLoading: status === "loading",
     isAuthenticated: !!session && !!userId,
-    hasuraToken,
+    token,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

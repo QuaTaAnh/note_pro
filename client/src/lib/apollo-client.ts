@@ -8,7 +8,7 @@ const httpLink = createHttpLink({
 
 const authLink = setContext(async (_, { headers }) => {
   const session = await getSession();
-  const token = session?.hasuraToken;
+  const token = session?.token;
   return {
     headers: {
       ...headers,

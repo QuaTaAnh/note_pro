@@ -9,7 +9,7 @@ export const useAuth = () => {
     ...auth,
     isLoggedIn: auth.isAuthenticated,
     getUserId: () => auth.userId,
-    getToken: () => auth.hasuraToken,
+    getToken: () => auth.token,
   };
 };
 
@@ -23,7 +23,7 @@ export const useIsAuthenticated = () => {
   return isAuthenticated;
 };
 
-export const useHasuraToken = () => {
-  const { hasuraToken } = useAuthContext();
-  return hasuraToken;
+export const useToken = () => {
+  const { token } = useAuthContext();
+  return token;
 }; 
