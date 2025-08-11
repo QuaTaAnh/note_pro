@@ -1,21 +1,22 @@
 "use client";
 
+import AuthGuard from "@/components/auth/AuthGuard";
+import { PageLoading } from "@/components/ui/loading";
+import { SidebarProvider } from "@/context/SidebarContext";
+import { useWorkspace } from "@/hooks/use-workspace";
+import { useBinCraftTitle } from "@/hooks/useBinCraftTitle";
+import { ROUTES } from "@/lib/routes";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Header from "./Header";
-import { ROUTES } from "@/lib/routes";
-import { PAGE_TITLES } from "@/consts";
-import AuthGuard from "@/components/auth/AuthGuard";
-import { SidebarProvider } from "@/context/SidebarContext";
 import Sidebar from "./Sidebar";
-import { useWorkspace } from "@/hooks/use-workspace";
-import { PageLoading } from "@/components/ui/loading";
 
 export default function LayoutContent({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  useBinCraftTitle();
   const { workspaceSlug, loading } = useWorkspace();
   const pathname = usePathname();
   const router = useRouter();
@@ -30,16 +31,9 @@ export default function LayoutContent({
     }
   }, [loading, workspaceSlug, pathname, router]);
 
-  useEffect(() => {
-    const title = PAGE_TITLES[pathname] || "Bin Craft";
-    document.title = title;
-  }, [pathname]);
-
-  if (pathname === ROUTES.LOGIN) {
-    return <>{children}</>;
-  }
-
-  return (
+  return pathname === ROUTES.LOGIN ? (
+    <>{children}</>
+  ) : (
     <AuthGuard>
       <SidebarProvider>
         <div className="min-h-screen flex flex-col">
