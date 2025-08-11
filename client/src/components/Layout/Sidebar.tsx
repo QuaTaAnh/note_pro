@@ -3,6 +3,8 @@
 import { useSidebar } from "@/context/SidebarContext";
 import { cn } from "@/lib/utils";
 import { WorkspaceButton } from "./Presentational/WorkspaceButton";
+import { MENU_ITEMS } from "@/consts";
+import { SidebarMenuItem } from "./Presentational/SidebarMenuItem";
 
 interface Props {
   workspaceSlug: string;
@@ -20,6 +22,15 @@ export default function Sidebar({ workspaceSlug }: Props) {
     >
       <div className="flex flex-col justify-center p-4 gap-2">
         <WorkspaceButton workspaceSlug={workspaceSlug} />
+
+        {MENU_ITEMS(workspaceSlug).map((item) => (
+          <SidebarMenuItem
+            key={item.href}
+            icon={<item.icon />}
+            label={item.label}
+            href={item.href}
+          />
+        ))}
       </div>
     </aside>
   );

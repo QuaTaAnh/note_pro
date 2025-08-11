@@ -21,6 +21,7 @@ import {
   useGetWorkspaceNameQuery,
   useRenameWorkspaceMutation,
 } from "../graphql/__generated__/workspace.generated";
+import { WorkspaceNameWithTooltip } from "./WorkspaceNameWithTooltip";
 
 interface Props {
   workspaceSlug: string;
@@ -112,14 +113,9 @@ export const WorkspaceButton = ({ workspaceSlug }: Props) => {
             variant="ghost"
             className="px-2 py-1 h-auto cursor-pointer justify-start"
           >
-            <SimpleTooltip title={data?.workspaces_by_pk?.name ?? ""}>
-              <div className="flex items-center gap-2 max-w-[200px] overflow-hidden">
-                <CiSettings className="w-5 h-5" />
-                <span className="block truncate text-xs text-ellipsis overflow-hidden whitespace-nowrap">
-                  {data?.workspaces_by_pk?.name}
-                </span>
-              </div>
-            </SimpleTooltip>
+            <WorkspaceNameWithTooltip
+              name={data?.workspaces_by_pk?.name ?? ""}
+            />
           </Button>
         </DialogTrigger>
         <DialogContent>
