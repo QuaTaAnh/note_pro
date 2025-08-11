@@ -18,7 +18,7 @@ export function SidebarMenuItem({ icon, label, href }: Props) {
     <Link
       href={href}
       className={cn(
-        "flex items-center gap-1 rounded-md px-2 py-1.5 text-xs transition-colors",
+        "flex items-center gap-1 rounded-md px-2 py-1.5 text-xs",
         "hover:bg-accent hover:text-accent-foreground",
         isActive && "bg-accent text-accent-foreground"
       )}
