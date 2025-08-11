@@ -1,5 +1,4 @@
 "use client";
-import { SimpleTooltip } from "@/components/custom/SimpleTooltip";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -14,7 +13,6 @@ import { InputField } from "@/components/ui/input-field";
 import { useUserId } from "@/hooks/use-auth";
 import { toast } from "@/hooks/use-toast";
 import { useEffect, useState } from "react";
-import { CiSettings } from "react-icons/ci";
 import {
   GetWorkspaceByUserIdDocument,
   GetWorkspaceByUserIdQuery,
@@ -22,20 +20,17 @@ import {
   useRenameWorkspaceMutation,
 } from "../graphql/__generated__/workspace.generated";
 import { WorkspaceNameWithTooltip } from "./WorkspaceNameWithTooltip";
+import { useWorkspace } from "@/hooks/use-workspace";
 
-interface Props {
-  workspaceSlug: string;
-}
-
-export const WorkspaceButton = ({ workspaceSlug }: Props) => {
+export const WorkspaceButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [tempName, setTempName] = useState("");
-  const workspaceId = workspaceSlug.split("--")[1];
   const [renameWorkspace] = useRenameWorkspaceMutation();
   const userId = useUserId();
+  const { workspace } = useWorkspace();
 
   const { data } = useGetWorkspaceNameQuery({
-    variables: { id: workspaceId },
+    variables: { id: workspace?.id || "" },
   });
 
   useEffect(() => {
@@ -52,7 +47,7 @@ export const WorkspaceButton = ({ workspaceSlug }: Props) => {
 
       await renameWorkspace({
         variables: {
-          id: workspaceId,
+          id: workspace?.id || "",
           name: tempName,
         },
         update(cache, { data: mutationData }) {
@@ -61,7 +56,10 @@ export const WorkspaceButton = ({ workspaceSlug }: Props) => {
             return;
           }
           cache.modify({
-            id: cache.identify({ __typename: "workspaces", id: workspaceId }),
+            id: cache.identify({
+              __typename: "workspaces",
+              id: workspace?.id || "",
+            }),
             fields: {
               name() {
                 return updated.name;
@@ -82,7 +80,7 @@ export const WorkspaceButton = ({ workspaceSlug }: Props) => {
                   data: {
                     ...existingData,
                     workspaces: existingData.workspaces.map((workspace) =>
-                      workspace.id === workspaceId
+                      workspace.id === workspace?.id
                         ? { ...workspace, name: updated.name }
                         : workspace
                     ),

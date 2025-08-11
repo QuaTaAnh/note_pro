@@ -1,0 +1,18 @@
+mutation CreateUntitledPage(
+  $workspaceId: uuid!
+  $userId: uuid!
+  $folderId: uuid
+) {
+  insert_blocks_one(
+    object: {
+      type: "page"
+      workspace_id: $workspaceId
+      folder_id: $folderId
+      user_id: $userId
+      content: { title: "Untitled Page" }
+      position: 0
+    }
+  ) {
+    id
+  }
+}

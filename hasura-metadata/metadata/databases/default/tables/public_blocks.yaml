@@ -60,3 +60,20 @@ array_relationships:
         table:
           name: tasks
           schema: public
+insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      columns:
+        - content
+        - created_at
+        - folder_id
+        - id
+        - page_id
+        - parent_id
+        - position
+        - type
+        - updated_at
+        - user_id
+        - workspace_id
+    comment: ""

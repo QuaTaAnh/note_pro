@@ -1,11 +1,12 @@
 "use client";
 
+import { MENU_ITEMS } from "@/consts";
 import { useSidebar } from "@/context/SidebarContext";
 import { cn } from "@/lib/utils";
-import { WorkspaceButton } from "./Presentational/WorkspaceButton";
-import { MENU_ITEMS } from "@/consts";
+import { Separator } from "../ui/separator";
+import NewDocumentButton from "./Presentational/NewDocumentButton";
 import { SidebarMenuItem } from "./Presentational/SidebarMenuItem";
-
+import { WorkspaceButton } from "./Presentational/WorkspaceButton";
 interface Props {
   workspaceSlug: string;
 }
@@ -21,7 +22,9 @@ export default function Sidebar({ workspaceSlug }: Props) {
       )}
     >
       <div className="flex flex-col justify-center p-4 gap-2">
-        <WorkspaceButton workspaceSlug={workspaceSlug} />
+        <NewDocumentButton />
+        <Separator />
+        <WorkspaceButton />
 
         {MENU_ITEMS(workspaceSlug).map((item) => (
           <SidebarMenuItem
