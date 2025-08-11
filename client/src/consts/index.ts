@@ -1,7 +1,7 @@
 import { ROUTES } from "@/lib/routes";
-import { CiCalendar, CiCircleCheck } from "react-icons/ci";
+import { AiOutlineCheckCircle } from "react-icons/ai";
 import { FiFileText } from "react-icons/fi";
-import { LuBookOpenText } from "react-icons/lu";
+import { LuBookOpenText, LuCalendarRange } from "react-icons/lu";
 export const AUTHENTICATED = "authenticated";
 export const UNAUTHENTICATED = "unauthenticated";
 export const PAGE_TITLES: Record<string, string> = {
@@ -17,19 +17,19 @@ export const MENU_ITEMS = (workspaceSlug: string) => [
       href: ROUTES.WORKSPACE_ALL_DOCS(workspaceSlug),
     },
     {
-      icon: CiCircleCheck,
+      icon: AiOutlineCheckCircle,
       label: "Tasks",
       href: ROUTES.WORKSPACE_TASKS(workspaceSlug),
     },
     {
-      icon: CiCalendar,
+      icon: LuCalendarRange,
       label: "Calendar",
-      href: `/s/${workspaceSlug}/calendar`,
+      href: ROUTES.WORKSPACE_CALENDAR(workspaceSlug),
     },
     {
       icon: LuBookOpenText,
       label: "My Templates",
-      href: `/s/${workspaceSlug}/templates`,
+      href: ROUTES.WORKSPACE_TEMPLATES(workspaceSlug),
     },
   ];
   

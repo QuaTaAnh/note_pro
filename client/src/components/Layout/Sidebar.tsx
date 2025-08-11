@@ -26,7 +26,7 @@ export default function Sidebar({ workspaceSlug }: Props) {
         {MENU_ITEMS(workspaceSlug).map((item) => (
           <SidebarMenuItem
             key={item.href}
-            icon={<item.icon />}
+            icon={<item.icon className="w-4 h-4" />}
             label={item.label}
             href={item.href}
           />
