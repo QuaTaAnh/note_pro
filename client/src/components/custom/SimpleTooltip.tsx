@@ -16,7 +16,7 @@ export function SimpleTooltip({
   title,
   children,
   side = "bottom",
-  sideOffset = 4,
+  sideOffset = 8,
   className,
 }: Props) {
   return (
