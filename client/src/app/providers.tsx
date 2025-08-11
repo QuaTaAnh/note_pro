@@ -5,9 +5,14 @@ import { Toaster } from "sonner";
 import { useTheme } from "next-themes";
 import { ApolloProvider } from "@apollo/client";
 import client from "@/lib/apollo-client";
+import { AuthProvider } from "@/context/AuthContext";
 
 export function NextAuthProvider({ children }: { children: React.ReactNode }) {
-  return <SessionProvider>{children}</SessionProvider>;
+  return (
+    <SessionProvider>
+      <AuthProvider>{children}</AuthProvider>
+    </SessionProvider>
+  );
 }
 
 export function ToastProvider({ children }: { children: React.ReactNode }) {

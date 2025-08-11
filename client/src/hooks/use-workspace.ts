@@ -1,20 +1,11 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { useGetWorkspaceByUserIdQuery } from "@/components/Layout/graphql/__generated__/workspace.generated";
-import { getUserIdFromToken } from "@/lib/utils";
-import { useMemo } from "react";
 import slugify from "slugify";
+import { useAuth } from "@/hooks/use-auth";
 
 export function useWorkspace() {
-  const { data: session } = useSession();
-  
-  const userId = useMemo(() => {
-    if (!session?.hasuraToken) {
-      return null;
-    }
-    return getUserIdFromToken(session.hasuraToken);
-  }, [session?.hasuraToken]);
+  const { userId, isLoading: authLoading } = useAuth();
 
   const { data, loading } = useGetWorkspaceByUserIdQuery({
     variables: { userId: userId! },
@@ -29,7 +20,7 @@ export function useWorkspace() {
   return {
     workspace,
     workspaceSlug,
-    loading,
+    loading: authLoading || loading,
     hasWorkspace: !!workspace,
   };
 } 

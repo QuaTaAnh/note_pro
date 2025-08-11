@@ -11,10 +11,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { InputField } from "@/components/ui/input-field";
+import { useUserId } from "@/hooks/use-auth";
 import { toast } from "@/hooks/use-toast";
 import { useEffect, useState } from "react";
 import { CiSettings } from "react-icons/ci";
 import {
+  GetWorkspaceByUserIdDocument,
+  GetWorkspaceByUserIdQuery,
   useGetWorkspaceNameQuery,
   useRenameWorkspaceMutation,
 } from "../graphql/__generated__/workspace.generated";
@@ -28,6 +31,7 @@ export const WorkspaceButton = ({ workspaceSlug }: Props) => {
   const [tempName, setTempName] = useState("");
   const workspaceId = workspaceSlug.split("--")[1];
   const [renameWorkspace] = useRenameWorkspaceMutation();
+  const userId = useUserId();
 
   const { data } = useGetWorkspaceNameQuery({
     variables: { id: workspaceId },
@@ -52,7 +56,9 @@ export const WorkspaceButton = ({ workspaceSlug }: Props) => {
         },
         update(cache, { data: mutationData }) {
           const updated = mutationData?.update_workspaces_by_pk;
-          if (!updated) return;
+          if (!updated) {
+            return;
+          }
           cache.modify({
             id: cache.identify({ __typename: "workspaces", id: workspaceId }),
             fields: {
@@ -61,6 +67,31 @@ export const WorkspaceButton = ({ workspaceSlug }: Props) => {
               },
             },
           });
+          if (userId) {
+            try {
+              const existingData = cache.readQuery<GetWorkspaceByUserIdQuery>({
+                query: GetWorkspaceByUserIdDocument,
+                variables: { userId },
+              });
+
+              if (existingData?.workspaces) {
+                cache.writeQuery({
+                  query: GetWorkspaceByUserIdDocument,
+                  variables: { userId },
+                  data: {
+                    ...existingData,
+                    workspaces: existingData.workspaces.map((workspace) =>
+                      workspace.id === workspaceId
+                        ? { ...workspace, name: updated.name }
+                        : workspace
+                    ),
+                  },
+                });
+              }
+            } catch (error) {
+              console.log("Cache update failed:", error);
+            }
+          }
         },
       });
 
@@ -77,19 +108,19 @@ export const WorkspaceButton = ({ workspaceSlug }: Props) => {
     <div className="flex items-center">
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
-          <SimpleTooltip title={data?.workspaces_by_pk?.name ?? ""}>
-            <Button
-              variant="ghost"
-              className="px-2 py-1 h-auto cursor-pointer justify-start"
-            >
+          <Button
+            variant="ghost"
+            className="px-2 py-1 h-auto cursor-pointer justify-start"
+          >
+            <SimpleTooltip title={data?.workspaces_by_pk?.name ?? ""}>
               <div className="flex items-center gap-2 max-w-[200px] overflow-hidden">
                 <CiSettings className="w-5 h-5" />
                 <span className="block truncate text-xs text-ellipsis overflow-hidden whitespace-nowrap">
                   {data?.workspaces_by_pk?.name}
                 </span>
               </div>
-            </Button>
-          </SimpleTooltip>
+            </SimpleTooltip>
+          </Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
