@@ -20,3 +20,21 @@ array_relationships:
         table:
           name: folders
           schema: public
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - created_at
+        - created_by
+        - id
+        - name
+      filter: {}
+    comment: ""
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - name
+      filter: {}
+      check: null
+    comment: ""

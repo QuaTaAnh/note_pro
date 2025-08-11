@@ -1,15 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { SimpleTooltip } from "../custom/SimpleTooltip";
 
 export function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
@@ -43,27 +38,18 @@ export function ThemeToggle() {
     return <Sun className="h-4 w-4" />;
   };
 
-  const getTooltip = () => {
-    return theme === "light" ? "Switch to dark mode" : "Switch to light mode";
-  };
-
   return (
-    <TooltipProvider delayDuration={0}>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggleTheme}
-            className="w-6 h-6"
-          >
-            {getIcon()}
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>{getTooltip()}</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <SimpleTooltip
+      title={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
+    >
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={toggleTheme}
+        className="w-6 h-6"
+      >
+        {getIcon()}
+      </Button>
+    </SimpleTooltip>
   );
 }

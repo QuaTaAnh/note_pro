@@ -9,7 +9,6 @@ export class AuthController {
   @Post('google')
   async googleAuth(@Body() body: UserDTO): Promise<{
     token: string;
-    workspaceSlug: string;
   }> {
     try {
       return await this.authService.handleGoogleAuth(body);
