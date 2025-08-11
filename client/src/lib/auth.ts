@@ -19,12 +19,12 @@ export const authOptions: NextAuthOptions = {
           avatar_url: user.image,
         });
 
-        token.hasuraToken = res.data.token;
+        token.token = res.data.token;
       }
       return token;
     },
     async session({ session, token }) {
-      session.hasuraToken = token.hasuraToken;
+      session.token = token.token;
       return session;
     },
   },
