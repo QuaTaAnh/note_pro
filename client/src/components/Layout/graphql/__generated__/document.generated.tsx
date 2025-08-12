@@ -4,9 +4,7 @@ import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 const defaultOptions = {"ignoreResults":true} as const;
 export type CreateUntitledPageMutationVariables = Types.Exact<{
-  workspaceId: Types.Scalars['uuid']['input'];
-  userId: Types.Scalars['uuid']['input'];
-  folderId?: Types.InputMaybe<Types.Scalars['uuid']['input']>;
+  input: Types.BlocksInsertInput;
 }>;
 
 
@@ -14,10 +12,8 @@ export type CreateUntitledPageMutation = { __typename?: 'mutation_root', insert_
 
 
 export const CreateUntitledPageDocument = gql`
-    mutation CreateUntitledPage($workspaceId: uuid!, $userId: uuid!, $folderId: uuid) {
-  insert_blocks_one(
-    object: {type: "page", workspace_id: $workspaceId, folder_id: $folderId, user_id: $userId, content: {title: "Untitled Page"}, position: 0}
-  ) {
+    mutation CreateUntitledPage($input: blocks_insert_input!) {
+  insert_blocks_one(object: $input) {
     id
   }
 }
@@ -37,9 +33,7 @@ export type CreateUntitledPageMutationFn = Apollo.MutationFunction<CreateUntitle
  * @example
  * const [createUntitledPageMutation, { data, loading, error }] = useCreateUntitledPageMutation({
  *   variables: {
- *      workspaceId: // value for 'workspaceId'
- *      userId: // value for 'userId'
- *      folderId: // value for 'folderId'
+ *      input: // value for 'input'
  *   },
  * });
  */

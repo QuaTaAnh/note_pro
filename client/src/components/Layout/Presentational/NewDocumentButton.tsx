@@ -1,10 +1,12 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { useUserId } from "@/hooks/use-auth";
 import { useParams, useRouter } from "next/navigation";
 import { useCreateUntitledPageMutation } from "../graphql/__generated__/document.generated";
 import { useWorkspace } from "@/hooks/use-workspace";
+import { useState } from "react";
+import { SidebarButton } from "./SidebarButton";
+import { FiFilePlus } from "react-icons/fi";
 
 export default function NewDocumentButton() {
   const params = useParams();
@@ -12,36 +14,50 @@ export default function NewDocumentButton() {
   const userId = useUserId();
   const [createDocument] = useCreateUntitledPageMutation();
   const { workspace } = useWorkspace();
+  const [isCreating, setIsCreating] = useState(false);
   const folderId = params.folderId as string | null;
 
   const handleClick = async () => {
+    if (isCreating || !workspace?.id) return;
+
     try {
+      setIsCreating(true);
       const res = await createDocument({
         variables: {
-          workspaceId: workspace?.id || "",
-          userId: userId || "",
-          folderId: folderId,
+          input: {
+            type: "page",
+            workspace_id: workspace.id,
+            user_id: userId || "",
+            folder_id: folderId,
+            content: {
+              title: "Untitled Page",
+            },
+            position: 0,
+          },
         },
       });
+
       const docId = res.data?.insert_blocks_one?.id;
-      if (folderId) {
-        router.push(`/editor/d/${workspace?.id}/${folderId}/${docId}`);
-      } else {
-        router.push(`/editor/d/${workspace?.id}/${docId}`);
+      if (docId) {
+        if (folderId) {
+          router.push(`/editor/d/${workspace.id}/${folderId}/${docId}`);
+        } else {
+          router.push(`/editor/d/${workspace.id}/${docId}`);
+        }
       }
     } catch (err) {
       console.error("Failed to create document:", err);
+    } finally {
+      setIsCreating(false);
     }
   };
 
   return (
-    <Button
-      variant="outline"
-      size="sm"
-      className="w-full"
+    <SidebarButton
+      icon={<FiFilePlus className="w-4 h-4" />}
+      label="New Document"
       onClick={handleClick}
-    >
-      New Document
-    </Button>
+      disabled={!workspace?.id || isCreating}
+    />
   );
 }

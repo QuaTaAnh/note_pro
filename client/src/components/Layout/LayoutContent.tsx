@@ -22,7 +22,7 @@ export default function LayoutContent({
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && workspaceSlug) {
+    if (!loading && workspaceSlug && pathname.startsWith("/s/")) {
       const currentSlug = pathname.split("/")[2];
       if (currentSlug && currentSlug !== workspaceSlug) {
         const newPath = pathname.replace(currentSlug, workspaceSlug);
