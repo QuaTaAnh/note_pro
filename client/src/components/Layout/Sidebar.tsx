@@ -5,7 +5,7 @@ import { useSidebar } from "@/context/SidebarContext";
 import { cn } from "@/lib/utils";
 import { Separator } from "../ui/separator";
 import NewDocumentButton from "./Presentational/NewDocumentButton";
-import { SidebarMenuItem } from "./Presentational/SidebarMenuItem";
+import { SidebarButton } from "./Presentational/SidebarButton";
 import { WorkspaceButton } from "./Presentational/WorkspaceButton";
 interface Props {
   workspaceSlug: string;
@@ -27,7 +27,7 @@ export default function Sidebar({ workspaceSlug }: Props) {
         <WorkspaceButton />
 
         {MENU_ITEMS(workspaceSlug).map((item) => (
-          <SidebarMenuItem
+          <SidebarButton
             key={item.href}
             icon={<item.icon className="w-4 h-4" />}
             label={item.label}
