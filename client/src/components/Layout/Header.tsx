@@ -10,6 +10,7 @@ import Link from "next/link";
 import { MdOutlineViewSidebar } from "react-icons/md";
 import { NotificationButton } from "./Presentational/NotificationButton";
 import { SettingButton } from "./Presentational/SettingButton";
+import { HEADER_HEIGHT } from "@/consts";
 
 interface Props {
   workspaceSlug: string;
@@ -20,7 +21,10 @@ export default function Header({ workspaceSlug }: Props) {
 
   return (
     workspaceSlug && (
-      <header className="h-12 flex justify-between items-center mx-4">
+      <header
+        className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center mx-4 bg-background"
+        style={{ height: HEADER_HEIGHT }}
+      >
         <div className="flex items-center gap-2">
           <Link href={ROUTES.WORKSPACE_ALL_DOCS(workspaceSlug)}>
             <Image

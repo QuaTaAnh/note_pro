@@ -10,6 +10,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
+import { HEADER_HEIGHT, SIDEBAR_WIDTH } from "@/consts";
 
 export default function LayoutContent({
   children,
@@ -44,7 +45,15 @@ export default function LayoutContent({
               <Header workspaceSlug={workspaceSlug ?? ""} />
               <div className="flex flex-1">
                 <Sidebar workspaceSlug={workspaceSlug ?? ""} />
-                <main className="flex-1 p-4">{children}</main>
+                <main
+                  className="flex-1 p-4"
+                  style={{
+                    marginLeft: SIDEBAR_WIDTH,
+                    paddingTop: HEADER_HEIGHT,
+                  }}
+                >
+                  {children}
+                </main>
               </div>
             </>
           )}
