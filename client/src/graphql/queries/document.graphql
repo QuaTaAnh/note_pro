@@ -1,0 +1,17 @@
+query GetAllDocs($workspaceId: uuid!, $limit: Int!, $offset: Int!) {
+  blocks(
+    where: {
+      workspace_id: { _eq: $workspaceId }
+      type: { _eq: "page" }
+      is_deleted: { _eq: false }
+    }
+    order_by: { updated_at: desc }
+    limit: $limit
+    offset: $offset
+  ) {
+    id
+    content
+    created_at
+    updated_at
+  }
+}
