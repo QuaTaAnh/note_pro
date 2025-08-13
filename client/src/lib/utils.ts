@@ -1,3 +1,4 @@
+import { format, formatDistanceToNow } from "date-fns";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -17,3 +18,26 @@ export function getUserIdFromToken(token: string): string | null {
     return null;
   }
 }
+
+
+/**
+ * @param date string | Date
+ * @param options { relative?: boolean }
+ * @returns string
+ */
+export function formatDate(
+  date: string | Date = "Unknown",
+  options: { relative?: boolean } = {}
+) {
+  if (!date || date === "Unknown") return "Unknown";
+
+  const parsed = typeof date === "string" ? new Date(date) : date;
+
+  if (options.relative) {
+    return formatDistanceToNow(parsed, { addSuffix: true }); 
+  }
+
+  return format(parsed, "MMM d, yyyy"); 
+}
+
+

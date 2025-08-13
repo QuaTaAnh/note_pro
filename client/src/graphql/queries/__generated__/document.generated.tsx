@@ -1,0 +1,65 @@
+import * as Types from 'generated/graphql';
+
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
+const defaultOptions = {"ignoreResults":true} as const;
+export type GetAllDocsQueryVariables = Types.Exact<{
+  workspaceId: Types.Scalars['uuid']['input'];
+  limit: Types.Scalars['Int']['input'];
+  offset: Types.Scalars['Int']['input'];
+}>;
+
+
+export type GetAllDocsQuery = { __typename?: 'query_root', blocks: Array<{ __typename?: 'blocks', id: string, content?: any | null, created_at?: string | null, updated_at?: string | null }> };
+
+
+export const GetAllDocsDocument = gql`
+    query GetAllDocs($workspaceId: uuid!, $limit: Int!, $offset: Int!) {
+  blocks(
+    where: {workspace_id: {_eq: $workspaceId}, type: {_eq: "page"}, is_deleted: {_eq: false}}
+    order_by: {updated_at: desc}
+    limit: $limit
+    offset: $offset
+  ) {
+    id
+    content
+    created_at
+    updated_at
+  }
+}
+    `;
+
+/**
+ * __useGetAllDocsQuery__
+ *
+ * To run a query within a React component, call `useGetAllDocsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllDocsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllDocsQuery({
+ *   variables: {
+ *      workspaceId: // value for 'workspaceId'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useGetAllDocsQuery(baseOptions: Apollo.QueryHookOptions<GetAllDocsQuery, GetAllDocsQueryVariables> & ({ variables: GetAllDocsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllDocsQuery, GetAllDocsQueryVariables>(GetAllDocsDocument, options);
+      }
+export function useGetAllDocsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllDocsQuery, GetAllDocsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllDocsQuery, GetAllDocsQueryVariables>(GetAllDocsDocument, options);
+        }
+export function useGetAllDocsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetAllDocsQuery, GetAllDocsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAllDocsQuery, GetAllDocsQueryVariables>(GetAllDocsDocument, options);
+        }
+export type GetAllDocsQueryHookResult = ReturnType<typeof useGetAllDocsQuery>;
+export type GetAllDocsLazyQueryHookResult = ReturnType<typeof useGetAllDocsLazyQuery>;
+export type GetAllDocsSuspenseQueryHookResult = ReturnType<typeof useGetAllDocsSuspenseQuery>;
+export type GetAllDocsQueryResult = Apollo.QueryResult<GetAllDocsQuery, GetAllDocsQueryVariables>;
