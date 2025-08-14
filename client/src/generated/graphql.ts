@@ -14,7 +14,7 @@ export type Scalars = {
   Float: { input: number; output: number; }
   date: { input: string; output: string; }
   jsonb: { input: any; output: any; }
-  timestamp: { input: string; output: string; }
+  timestamptz: { input: string; output: string; }
   uuid: { input: string; output: string; }
 };
 
@@ -461,7 +461,7 @@ export type Blocks = {
   /** An aggregate relationship */
   children_aggregate: BlocksAggregate;
   content?: Maybe<Scalars['jsonb']['output']>;
-  created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   /** An object relationship */
   folder?: Maybe<Folders>;
   folder_id?: Maybe<Scalars['uuid']['output']>;
@@ -483,7 +483,7 @@ export type Blocks = {
   /** An aggregate relationship */
   tasks_aggregate: TasksAggregate;
   type: Scalars['String']['output'];
-  updated_at?: Maybe<Scalars['timestamp']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
   /** An object relationship */
   user?: Maybe<Users>;
   user_id?: Maybe<Scalars['uuid']['output']>;
@@ -727,7 +727,7 @@ export type BlocksBoolExp = {
   children?: InputMaybe<BlocksBoolExp>;
   children_aggregate?: InputMaybe<BlocksAggregateBoolExp>;
   content?: InputMaybe<JsonbComparisonExp>;
-  created_at?: InputMaybe<TimestampComparisonExp>;
+  created_at?: InputMaybe<TimestamptzComparisonExp>;
   folder?: InputMaybe<FoldersBoolExp>;
   folder_id?: InputMaybe<UuidComparisonExp>;
   id?: InputMaybe<UuidComparisonExp>;
@@ -742,7 +742,7 @@ export type BlocksBoolExp = {
   tasks?: InputMaybe<TasksBoolExp>;
   tasks_aggregate?: InputMaybe<TasksAggregateBoolExp>;
   type?: InputMaybe<StringComparisonExp>;
-  updated_at?: InputMaybe<TimestampComparisonExp>;
+  updated_at?: InputMaybe<TimestamptzComparisonExp>;
   user?: InputMaybe<UsersBoolExp>;
   user_id?: InputMaybe<UuidComparisonExp>;
   workspace?: InputMaybe<WorkspacesBoolExp>;
@@ -782,7 +782,7 @@ export type BlocksInsertInput = {
   block_tags?: InputMaybe<BlockTagsArrRelInsertInput>;
   children?: InputMaybe<BlocksArrRelInsertInput>;
   content?: InputMaybe<Scalars['jsonb']['input']>;
-  created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   folder?: InputMaybe<FoldersObjRelInsertInput>;
   folder_id?: InputMaybe<Scalars['uuid']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
@@ -795,7 +795,7 @@ export type BlocksInsertInput = {
   sub_blocks?: InputMaybe<BlocksArrRelInsertInput>;
   tasks?: InputMaybe<TasksArrRelInsertInput>;
   type?: InputMaybe<Scalars['String']['input']>;
-  updated_at?: InputMaybe<Scalars['timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   user?: InputMaybe<UsersObjRelInsertInput>;
   user_id?: InputMaybe<Scalars['uuid']['input']>;
   workspace?: InputMaybe<WorkspacesObjRelInsertInput>;
@@ -805,14 +805,14 @@ export type BlocksInsertInput = {
 /** aggregate max on columns */
 export type BlocksMaxFields = {
   __typename?: 'blocks_max_fields';
-  created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   folder_id?: Maybe<Scalars['uuid']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   page_id?: Maybe<Scalars['uuid']['output']>;
   parent_id?: Maybe<Scalars['uuid']['output']>;
   position?: Maybe<Scalars['Int']['output']>;
   type?: Maybe<Scalars['String']['output']>;
-  updated_at?: Maybe<Scalars['timestamp']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
   user_id?: Maybe<Scalars['uuid']['output']>;
   workspace_id?: Maybe<Scalars['uuid']['output']>;
 };
@@ -834,14 +834,14 @@ export type BlocksMaxOrderBy = {
 /** aggregate min on columns */
 export type BlocksMinFields = {
   __typename?: 'blocks_min_fields';
-  created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   folder_id?: Maybe<Scalars['uuid']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   page_id?: Maybe<Scalars['uuid']['output']>;
   parent_id?: Maybe<Scalars['uuid']['output']>;
   position?: Maybe<Scalars['Int']['output']>;
   type?: Maybe<Scalars['String']['output']>;
-  updated_at?: Maybe<Scalars['timestamp']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
   user_id?: Maybe<Scalars['uuid']['output']>;
   workspace_id?: Maybe<Scalars['uuid']['output']>;
 };
@@ -963,7 +963,7 @@ export enum BlocksSelectColumnBlocksAggregateBoolExpBoolOrArgumentsColumns {
 /** input type for updating data in table "blocks" */
 export type BlocksSetInput = {
   content?: InputMaybe<Scalars['jsonb']['input']>;
-  created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   folder_id?: InputMaybe<Scalars['uuid']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   is_deleted?: InputMaybe<Scalars['Boolean']['input']>;
@@ -971,7 +971,7 @@ export type BlocksSetInput = {
   parent_id?: InputMaybe<Scalars['uuid']['input']>;
   position?: InputMaybe<Scalars['Int']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
-  updated_at?: InputMaybe<Scalars['timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   user_id?: InputMaybe<Scalars['uuid']['input']>;
   workspace_id?: InputMaybe<Scalars['uuid']['input']>;
 };
@@ -1020,7 +1020,7 @@ export type BlocksStreamCursorInput = {
 /** Initial value of the column from where the streaming should start */
 export type BlocksStreamCursorValueInput = {
   content?: InputMaybe<Scalars['jsonb']['input']>;
-  created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   folder_id?: InputMaybe<Scalars['uuid']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   is_deleted?: InputMaybe<Scalars['Boolean']['input']>;
@@ -1028,7 +1028,7 @@ export type BlocksStreamCursorValueInput = {
   parent_id?: InputMaybe<Scalars['uuid']['input']>;
   position?: InputMaybe<Scalars['Int']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
-  updated_at?: InputMaybe<Scalars['timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   user_id?: InputMaybe<Scalars['uuid']['input']>;
   workspace_id?: InputMaybe<Scalars['uuid']['input']>;
 };
@@ -1150,7 +1150,7 @@ export type Files = {
   __typename?: 'files';
   id: Scalars['uuid']['output'];
   mime_type?: Maybe<Scalars['String']['output']>;
-  uploaded_at?: Maybe<Scalars['timestamp']['output']>;
+  uploaded_at?: Maybe<Scalars['timestamptz']['output']>;
   uploaded_by?: Maybe<Scalars['uuid']['output']>;
   url: Scalars['String']['output'];
   /** An object relationship */
@@ -1211,7 +1211,7 @@ export type FilesBoolExp = {
   _or?: InputMaybe<Array<FilesBoolExp>>;
   id?: InputMaybe<UuidComparisonExp>;
   mime_type?: InputMaybe<StringComparisonExp>;
-  uploaded_at?: InputMaybe<TimestampComparisonExp>;
+  uploaded_at?: InputMaybe<TimestamptzComparisonExp>;
   uploaded_by?: InputMaybe<UuidComparisonExp>;
   url?: InputMaybe<StringComparisonExp>;
   user?: InputMaybe<UsersBoolExp>;
@@ -1227,7 +1227,7 @@ export enum FilesConstraint {
 export type FilesInsertInput = {
   id?: InputMaybe<Scalars['uuid']['input']>;
   mime_type?: InputMaybe<Scalars['String']['input']>;
-  uploaded_at?: InputMaybe<Scalars['timestamp']['input']>;
+  uploaded_at?: InputMaybe<Scalars['timestamptz']['input']>;
   uploaded_by?: InputMaybe<Scalars['uuid']['input']>;
   url?: InputMaybe<Scalars['String']['input']>;
   user?: InputMaybe<UsersObjRelInsertInput>;
@@ -1238,7 +1238,7 @@ export type FilesMaxFields = {
   __typename?: 'files_max_fields';
   id?: Maybe<Scalars['uuid']['output']>;
   mime_type?: Maybe<Scalars['String']['output']>;
-  uploaded_at?: Maybe<Scalars['timestamp']['output']>;
+  uploaded_at?: Maybe<Scalars['timestamptz']['output']>;
   uploaded_by?: Maybe<Scalars['uuid']['output']>;
   url?: Maybe<Scalars['String']['output']>;
 };
@@ -1257,7 +1257,7 @@ export type FilesMinFields = {
   __typename?: 'files_min_fields';
   id?: Maybe<Scalars['uuid']['output']>;
   mime_type?: Maybe<Scalars['String']['output']>;
-  uploaded_at?: Maybe<Scalars['timestamp']['output']>;
+  uploaded_at?: Maybe<Scalars['timestamptz']['output']>;
   uploaded_by?: Maybe<Scalars['uuid']['output']>;
   url?: Maybe<Scalars['String']['output']>;
 };
@@ -1320,7 +1320,7 @@ export enum FilesSelectColumn {
 export type FilesSetInput = {
   id?: InputMaybe<Scalars['uuid']['input']>;
   mime_type?: InputMaybe<Scalars['String']['input']>;
-  uploaded_at?: InputMaybe<Scalars['timestamp']['input']>;
+  uploaded_at?: InputMaybe<Scalars['timestamptz']['input']>;
   uploaded_by?: InputMaybe<Scalars['uuid']['input']>;
   url?: InputMaybe<Scalars['String']['input']>;
 };
@@ -1337,7 +1337,7 @@ export type FilesStreamCursorInput = {
 export type FilesStreamCursorValueInput = {
   id?: InputMaybe<Scalars['uuid']['input']>;
   mime_type?: InputMaybe<Scalars['String']['input']>;
-  uploaded_at?: InputMaybe<Scalars['timestamp']['input']>;
+  uploaded_at?: InputMaybe<Scalars['timestamptz']['input']>;
   uploaded_by?: InputMaybe<Scalars['uuid']['input']>;
   url?: InputMaybe<Scalars['String']['input']>;
 };
@@ -1374,7 +1374,7 @@ export type Folders = {
   children: Array<Folders>;
   /** An aggregate relationship */
   children_aggregate: FoldersAggregate;
-  created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   /** An object relationship */
   folder?: Maybe<Folders>;
   id: Scalars['uuid']['output'];
@@ -1484,7 +1484,7 @@ export type FoldersBoolExp = {
   blocks_aggregate?: InputMaybe<BlocksAggregateBoolExp>;
   children?: InputMaybe<FoldersBoolExp>;
   children_aggregate?: InputMaybe<FoldersAggregateBoolExp>;
-  created_at?: InputMaybe<TimestampComparisonExp>;
+  created_at?: InputMaybe<TimestamptzComparisonExp>;
   folder?: InputMaybe<FoldersBoolExp>;
   id?: InputMaybe<UuidComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
@@ -1505,7 +1505,7 @@ export enum FoldersConstraint {
 export type FoldersInsertInput = {
   blocks?: InputMaybe<BlocksArrRelInsertInput>;
   children?: InputMaybe<FoldersArrRelInsertInput>;
-  created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   folder?: InputMaybe<FoldersObjRelInsertInput>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -1519,7 +1519,7 @@ export type FoldersInsertInput = {
 /** aggregate max on columns */
 export type FoldersMaxFields = {
   __typename?: 'folders_max_fields';
-  created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   parent_id?: Maybe<Scalars['uuid']['output']>;
@@ -1540,7 +1540,7 @@ export type FoldersMaxOrderBy = {
 /** aggregate min on columns */
 export type FoldersMinFields = {
   __typename?: 'folders_min_fields';
-  created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   parent_id?: Maybe<Scalars['uuid']['output']>;
@@ -1619,7 +1619,7 @@ export enum FoldersSelectColumn {
 
 /** input type for updating data in table "folders" */
 export type FoldersSetInput = {
-  created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   parent_id?: InputMaybe<Scalars['uuid']['input']>;
@@ -1637,7 +1637,7 @@ export type FoldersStreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type FoldersStreamCursorValueInput = {
-  created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   parent_id?: InputMaybe<Scalars['uuid']['input']>;
@@ -3075,12 +3075,12 @@ export type Tasks = {
   /** An object relationship */
   block?: Maybe<Blocks>;
   block_id?: Maybe<Scalars['uuid']['output']>;
-  created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   due_date?: Maybe<Scalars['date']['output']>;
   id: Scalars['uuid']['output'];
   priority?: Maybe<Scalars['String']['output']>;
   status?: Maybe<Scalars['String']['output']>;
-  updated_at?: Maybe<Scalars['timestamp']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
   /** An object relationship */
   user?: Maybe<Users>;
   user_id?: Maybe<Scalars['uuid']['output']>;
@@ -3140,12 +3140,12 @@ export type TasksBoolExp = {
   _or?: InputMaybe<Array<TasksBoolExp>>;
   block?: InputMaybe<BlocksBoolExp>;
   block_id?: InputMaybe<UuidComparisonExp>;
-  created_at?: InputMaybe<TimestampComparisonExp>;
+  created_at?: InputMaybe<TimestamptzComparisonExp>;
   due_date?: InputMaybe<DateComparisonExp>;
   id?: InputMaybe<UuidComparisonExp>;
   priority?: InputMaybe<StringComparisonExp>;
   status?: InputMaybe<StringComparisonExp>;
-  updated_at?: InputMaybe<TimestampComparisonExp>;
+  updated_at?: InputMaybe<TimestamptzComparisonExp>;
   user?: InputMaybe<UsersBoolExp>;
   user_id?: InputMaybe<UuidComparisonExp>;
 };
@@ -3160,12 +3160,12 @@ export enum TasksConstraint {
 export type TasksInsertInput = {
   block?: InputMaybe<BlocksObjRelInsertInput>;
   block_id?: InputMaybe<Scalars['uuid']['input']>;
-  created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   due_date?: InputMaybe<Scalars['date']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   priority?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
-  updated_at?: InputMaybe<Scalars['timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   user?: InputMaybe<UsersObjRelInsertInput>;
   user_id?: InputMaybe<Scalars['uuid']['input']>;
 };
@@ -3174,12 +3174,12 @@ export type TasksInsertInput = {
 export type TasksMaxFields = {
   __typename?: 'tasks_max_fields';
   block_id?: Maybe<Scalars['uuid']['output']>;
-  created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   due_date?: Maybe<Scalars['date']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   priority?: Maybe<Scalars['String']['output']>;
   status?: Maybe<Scalars['String']['output']>;
-  updated_at?: Maybe<Scalars['timestamp']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
   user_id?: Maybe<Scalars['uuid']['output']>;
 };
 
@@ -3199,12 +3199,12 @@ export type TasksMaxOrderBy = {
 export type TasksMinFields = {
   __typename?: 'tasks_min_fields';
   block_id?: Maybe<Scalars['uuid']['output']>;
-  created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   due_date?: Maybe<Scalars['date']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   priority?: Maybe<Scalars['String']['output']>;
   status?: Maybe<Scalars['String']['output']>;
-  updated_at?: Maybe<Scalars['timestamp']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
   user_id?: Maybe<Scalars['uuid']['output']>;
 };
 
@@ -3278,12 +3278,12 @@ export enum TasksSelectColumn {
 /** input type for updating data in table "tasks" */
 export type TasksSetInput = {
   block_id?: InputMaybe<Scalars['uuid']['input']>;
-  created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   due_date?: InputMaybe<Scalars['date']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   priority?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
-  updated_at?: InputMaybe<Scalars['timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   user_id?: InputMaybe<Scalars['uuid']['input']>;
 };
 
@@ -3298,12 +3298,12 @@ export type TasksStreamCursorInput = {
 /** Initial value of the column from where the streaming should start */
 export type TasksStreamCursorValueInput = {
   block_id?: InputMaybe<Scalars['uuid']['input']>;
-  created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   due_date?: InputMaybe<Scalars['date']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   priority?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
-  updated_at?: InputMaybe<Scalars['timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   user_id?: InputMaybe<Scalars['uuid']['input']>;
 };
 
@@ -3334,17 +3334,17 @@ export type TasksUpdates = {
   where: TasksBoolExp;
 };
 
-/** Boolean expression to compare columns of type "timestamp". All fields are combined with logical 'AND'. */
-export type TimestampComparisonExp = {
-  _eq?: InputMaybe<Scalars['timestamp']['input']>;
-  _gt?: InputMaybe<Scalars['timestamp']['input']>;
-  _gte?: InputMaybe<Scalars['timestamp']['input']>;
-  _in?: InputMaybe<Array<Scalars['timestamp']['input']>>;
+/** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
+export type TimestamptzComparisonExp = {
+  _eq?: InputMaybe<Scalars['timestamptz']['input']>;
+  _gt?: InputMaybe<Scalars['timestamptz']['input']>;
+  _gte?: InputMaybe<Scalars['timestamptz']['input']>;
+  _in?: InputMaybe<Array<Scalars['timestamptz']['input']>>;
   _is_null?: InputMaybe<Scalars['Boolean']['input']>;
-  _lt?: InputMaybe<Scalars['timestamp']['input']>;
-  _lte?: InputMaybe<Scalars['timestamp']['input']>;
-  _neq?: InputMaybe<Scalars['timestamp']['input']>;
-  _nin?: InputMaybe<Array<Scalars['timestamp']['input']>>;
+  _lt?: InputMaybe<Scalars['timestamptz']['input']>;
+  _lte?: InputMaybe<Scalars['timestamptz']['input']>;
+  _neq?: InputMaybe<Scalars['timestamptz']['input']>;
+  _nin?: InputMaybe<Array<Scalars['timestamptz']['input']>>;
 };
 
 /** columns and relationships of "users" */
@@ -3355,7 +3355,7 @@ export type Users = {
   blocks: Array<Blocks>;
   /** An aggregate relationship */
   blocks_aggregate: BlocksAggregate;
-  created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   email: Scalars['String']['output'];
   /** An array relationship */
   files: Array<Files>;
@@ -3508,7 +3508,7 @@ export type UsersBoolExp = {
   avatar_url?: InputMaybe<StringComparisonExp>;
   blocks?: InputMaybe<BlocksBoolExp>;
   blocks_aggregate?: InputMaybe<BlocksAggregateBoolExp>;
-  created_at?: InputMaybe<TimestampComparisonExp>;
+  created_at?: InputMaybe<TimestamptzComparisonExp>;
   email?: InputMaybe<StringComparisonExp>;
   files?: InputMaybe<FilesBoolExp>;
   files_aggregate?: InputMaybe<FilesAggregateBoolExp>;
@@ -3535,7 +3535,7 @@ export enum UsersConstraint {
 export type UsersInsertInput = {
   avatar_url?: InputMaybe<Scalars['String']['input']>;
   blocks?: InputMaybe<BlocksArrRelInsertInput>;
-  created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   files?: InputMaybe<FilesArrRelInsertInput>;
   folders?: InputMaybe<FoldersArrRelInsertInput>;
@@ -3550,7 +3550,7 @@ export type UsersInsertInput = {
 export type UsersMaxFields = {
   __typename?: 'users_max_fields';
   avatar_url?: Maybe<Scalars['String']['output']>;
-  created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   name?: Maybe<Scalars['String']['output']>;
@@ -3561,7 +3561,7 @@ export type UsersMaxFields = {
 export type UsersMinFields = {
   __typename?: 'users_min_fields';
   avatar_url?: Maybe<Scalars['String']['output']>;
-  created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   name?: Maybe<Scalars['String']['output']>;
@@ -3630,7 +3630,7 @@ export enum UsersSelectColumn {
 /** input type for updating data in table "users" */
 export type UsersSetInput = {
   avatar_url?: InputMaybe<Scalars['String']['input']>;
-  created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -3648,7 +3648,7 @@ export type UsersStreamCursorInput = {
 /** Initial value of the column from where the streaming should start */
 export type UsersStreamCursorValueInput = {
   avatar_url?: InputMaybe<Scalars['String']['input']>;
-  created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -3698,7 +3698,7 @@ export type Workspaces = {
   blocks: Array<Blocks>;
   /** An aggregate relationship */
   blocks_aggregate: BlocksAggregate;
-  created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   created_by?: Maybe<Scalars['uuid']['output']>;
   /** An array relationship */
   folders: Array<Folders>;
@@ -3804,7 +3804,7 @@ export type WorkspacesBoolExp = {
   _or?: InputMaybe<Array<WorkspacesBoolExp>>;
   blocks?: InputMaybe<BlocksBoolExp>;
   blocks_aggregate?: InputMaybe<BlocksAggregateBoolExp>;
-  created_at?: InputMaybe<TimestampComparisonExp>;
+  created_at?: InputMaybe<TimestamptzComparisonExp>;
   created_by?: InputMaybe<UuidComparisonExp>;
   folders?: InputMaybe<FoldersBoolExp>;
   folders_aggregate?: InputMaybe<FoldersAggregateBoolExp>;
@@ -3824,7 +3824,7 @@ export enum WorkspacesConstraint {
 /** input type for inserting data into table "workspaces" */
 export type WorkspacesInsertInput = {
   blocks?: InputMaybe<BlocksArrRelInsertInput>;
-  created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   created_by?: InputMaybe<Scalars['uuid']['input']>;
   folders?: InputMaybe<FoldersArrRelInsertInput>;
   id?: InputMaybe<Scalars['uuid']['input']>;
@@ -3835,7 +3835,7 @@ export type WorkspacesInsertInput = {
 /** aggregate max on columns */
 export type WorkspacesMaxFields = {
   __typename?: 'workspaces_max_fields';
-  created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   created_by?: Maybe<Scalars['uuid']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   name?: Maybe<Scalars['String']['output']>;
@@ -3852,7 +3852,7 @@ export type WorkspacesMaxOrderBy = {
 /** aggregate min on columns */
 export type WorkspacesMinFields = {
   __typename?: 'workspaces_min_fields';
-  created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   created_by?: Maybe<Scalars['uuid']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   name?: Maybe<Scalars['String']['output']>;
@@ -3919,7 +3919,7 @@ export enum WorkspacesSelectColumn {
 
 /** input type for updating data in table "workspaces" */
 export type WorkspacesSetInput = {
-  created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   created_by?: InputMaybe<Scalars['uuid']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -3935,7 +3935,7 @@ export type WorkspacesStreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type WorkspacesStreamCursorValueInput = {
-  created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   created_by?: InputMaybe<Scalars['uuid']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
