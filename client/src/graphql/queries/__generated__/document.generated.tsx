@@ -16,7 +16,7 @@ export type GetAllDocsQuery = { __typename?: 'query_root', blocks: Array<{ __typ
 export const GetAllDocsDocument = gql`
     query GetAllDocs($workspaceId: uuid!, $limit: Int!, $offset: Int!) {
   blocks(
-    where: {workspace_id: {_eq: $workspaceId}, type: {_eq: "page"}, is_deleted: {_eq: false}}
+    where: {workspace_id: {_eq: $workspaceId}, type: {_eq: "page"}, deleted_at: {_is_null: true}}
     order_by: {updated_at: desc}
     limit: $limit
     offset: $offset

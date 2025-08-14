@@ -65,7 +65,7 @@ export type block_tags_mutation_responseFieldPolicy = {
 	affected_rows?: FieldPolicy<any> | FieldReadFunction<any>,
 	returning?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type blocksKeySpecifier = ('block_links_from' | 'block_links_from_aggregate' | 'block_links_to' | 'block_links_to_aggregate' | 'block_tags' | 'block_tags_aggregate' | 'children' | 'children_aggregate' | 'content' | 'created_at' | 'folder' | 'folder_id' | 'id' | 'is_deleted' | 'page' | 'page_id' | 'parent_block' | 'parent_id' | 'position' | 'sub_blocks' | 'sub_blocks_aggregate' | 'tasks' | 'tasks_aggregate' | 'type' | 'updated_at' | 'user' | 'user_id' | 'workspace' | 'workspace_id' | blocksKeySpecifier)[];
+export type blocksKeySpecifier = ('block_links_from' | 'block_links_from_aggregate' | 'block_links_to' | 'block_links_to_aggregate' | 'block_tags' | 'block_tags_aggregate' | 'children' | 'children_aggregate' | 'content' | 'created_at' | 'deleted_at' | 'folder' | 'folder_id' | 'id' | 'page' | 'page_id' | 'parent_block' | 'parent_id' | 'position' | 'sub_blocks' | 'sub_blocks_aggregate' | 'tasks' | 'tasks_aggregate' | 'type' | 'updated_at' | 'user' | 'user_id' | 'workspace' | 'workspace_id' | blocksKeySpecifier)[];
 export type blocksFieldPolicy = {
 	block_links_from?: FieldPolicy<any> | FieldReadFunction<any>,
 	block_links_from_aggregate?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -77,10 +77,10 @@ export type blocksFieldPolicy = {
 	children_aggregate?: FieldPolicy<any> | FieldReadFunction<any>,
 	content?: FieldPolicy<any> | FieldReadFunction<any>,
 	created_at?: FieldPolicy<any> | FieldReadFunction<any>,
+	deleted_at?: FieldPolicy<any> | FieldReadFunction<any>,
 	folder?: FieldPolicy<any> | FieldReadFunction<any>,
 	folder_id?: FieldPolicy<any> | FieldReadFunction<any>,
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
-	is_deleted?: FieldPolicy<any> | FieldReadFunction<any>,
 	page?: FieldPolicy<any> | FieldReadFunction<any>,
 	page_id?: FieldPolicy<any> | FieldReadFunction<any>,
 	parent_block?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -120,9 +120,10 @@ export type blocks_avg_fieldsKeySpecifier = ('position' | blocks_avg_fieldsKeySp
 export type blocks_avg_fieldsFieldPolicy = {
 	position?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type blocks_max_fieldsKeySpecifier = ('created_at' | 'folder_id' | 'id' | 'page_id' | 'parent_id' | 'position' | 'type' | 'updated_at' | 'user_id' | 'workspace_id' | blocks_max_fieldsKeySpecifier)[];
+export type blocks_max_fieldsKeySpecifier = ('created_at' | 'deleted_at' | 'folder_id' | 'id' | 'page_id' | 'parent_id' | 'position' | 'type' | 'updated_at' | 'user_id' | 'workspace_id' | blocks_max_fieldsKeySpecifier)[];
 export type blocks_max_fieldsFieldPolicy = {
 	created_at?: FieldPolicy<any> | FieldReadFunction<any>,
+	deleted_at?: FieldPolicy<any> | FieldReadFunction<any>,
 	folder_id?: FieldPolicy<any> | FieldReadFunction<any>,
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
 	page_id?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -133,9 +134,10 @@ export type blocks_max_fieldsFieldPolicy = {
 	user_id?: FieldPolicy<any> | FieldReadFunction<any>,
 	workspace_id?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type blocks_min_fieldsKeySpecifier = ('created_at' | 'folder_id' | 'id' | 'page_id' | 'parent_id' | 'position' | 'type' | 'updated_at' | 'user_id' | 'workspace_id' | blocks_min_fieldsKeySpecifier)[];
+export type blocks_min_fieldsKeySpecifier = ('created_at' | 'deleted_at' | 'folder_id' | 'id' | 'page_id' | 'parent_id' | 'position' | 'type' | 'updated_at' | 'user_id' | 'workspace_id' | blocks_min_fieldsKeySpecifier)[];
 export type blocks_min_fieldsFieldPolicy = {
 	created_at?: FieldPolicy<any> | FieldReadFunction<any>,
+	deleted_at?: FieldPolicy<any> | FieldReadFunction<any>,
 	folder_id?: FieldPolicy<any> | FieldReadFunction<any>,
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
 	page_id?: FieldPolicy<any> | FieldReadFunction<any>,

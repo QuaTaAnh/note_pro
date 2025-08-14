@@ -81,16 +81,16 @@ select_permissions:
   - role: user
     permission:
       columns:
-        - is_deleted
-        - position
         - content
-        - type
         - created_at
-        - updated_at
+        - deleted_at
         - folder_id
         - id
         - page_id
         - parent_id
+        - position
+        - type
+        - updated_at
         - user_id
         - workspace_id
       filter: {}
@@ -101,9 +101,9 @@ update_permissions:
       columns:
         - content
         - created_at
+        - deleted_at
         - folder_id
         - id
-        - is_deleted
         - page_id
         - parent_id
         - position
