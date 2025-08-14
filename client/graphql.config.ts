@@ -78,6 +78,8 @@ function createCodegenPluginConfig(withHooks: boolean) {
             timestamp: 'string',
             timestamptz: 'string',
             uuid: 'string',
+            time: 'string',
+            timetz: 'string',
         },
         defaultBaseOptions: {
             /**

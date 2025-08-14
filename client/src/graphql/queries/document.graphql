@@ -3,7 +3,7 @@ query GetAllDocs($workspaceId: uuid!, $limit: Int!, $offset: Int!) {
     where: {
       workspace_id: { _eq: $workspaceId }
       type: { _eq: "page" }
-      is_deleted: { _eq: false }
+      deleted_at: { _is_null: true }
     }
     order_by: { updated_at: desc }
     limit: $limit

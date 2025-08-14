@@ -13,7 +13,7 @@ export type SoftDeleteDocumentMutation = { __typename?: 'mutation_root', update_
 
 export const SoftDeleteDocumentDocument = gql`
     mutation SoftDeleteDocument($id: uuid!) {
-  update_blocks(where: {id: {_eq: $id}}, _set: {is_deleted: true}) {
+  update_blocks(where: {id: {_eq: $id}}, _set: {deleted_at: "now()"}) {
     affected_rows
     returning {
       id

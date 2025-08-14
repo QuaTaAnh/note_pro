@@ -15,20 +15,8 @@ export type Scalars = {
   date: { input: string; output: string; }
   jsonb: { input: any; output: any; }
   timestamptz: { input: string; output: string; }
+  timetz: { input: string; output: string; }
   uuid: { input: string; output: string; }
-};
-
-/** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
-export type BooleanComparisonExp = {
-  _eq?: InputMaybe<Scalars['Boolean']['input']>;
-  _gt?: InputMaybe<Scalars['Boolean']['input']>;
-  _gte?: InputMaybe<Scalars['Boolean']['input']>;
-  _in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
-  _lt?: InputMaybe<Scalars['Boolean']['input']>;
-  _lte?: InputMaybe<Scalars['Boolean']['input']>;
-  _neq?: InputMaybe<Scalars['Boolean']['input']>;
-  _nin?: InputMaybe<Array<Scalars['Boolean']['input']>>;
 };
 
 /** Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'. */
@@ -462,11 +450,11 @@ export type Blocks = {
   children_aggregate: BlocksAggregate;
   content?: Maybe<Scalars['jsonb']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
+  deleted_at?: Maybe<Scalars['timetz']['output']>;
   /** An object relationship */
   folder?: Maybe<Folders>;
   folder_id?: Maybe<Scalars['uuid']['output']>;
   id: Scalars['uuid']['output'];
-  is_deleted?: Maybe<Scalars['Boolean']['output']>;
   /** An object relationship */
   page?: Maybe<Blocks>;
   page_id?: Maybe<Scalars['uuid']['output']>;
@@ -626,23 +614,7 @@ export type BlocksAggregate = {
 };
 
 export type BlocksAggregateBoolExp = {
-  bool_and?: InputMaybe<BlocksAggregateBoolExpBoolAnd>;
-  bool_or?: InputMaybe<BlocksAggregateBoolExpBoolOr>;
   count?: InputMaybe<BlocksAggregateBoolExpCount>;
-};
-
-export type BlocksAggregateBoolExpBoolAnd = {
-  arguments: BlocksSelectColumnBlocksAggregateBoolExpBoolAndArgumentsColumns;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<BlocksBoolExp>;
-  predicate: BooleanComparisonExp;
-};
-
-export type BlocksAggregateBoolExpBoolOr = {
-  arguments: BlocksSelectColumnBlocksAggregateBoolExpBoolOrArgumentsColumns;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<BlocksBoolExp>;
-  predicate: BooleanComparisonExp;
 };
 
 export type BlocksAggregateBoolExpCount = {
@@ -728,10 +700,10 @@ export type BlocksBoolExp = {
   children_aggregate?: InputMaybe<BlocksAggregateBoolExp>;
   content?: InputMaybe<JsonbComparisonExp>;
   created_at?: InputMaybe<TimestamptzComparisonExp>;
+  deleted_at?: InputMaybe<TimetzComparisonExp>;
   folder?: InputMaybe<FoldersBoolExp>;
   folder_id?: InputMaybe<UuidComparisonExp>;
   id?: InputMaybe<UuidComparisonExp>;
-  is_deleted?: InputMaybe<BooleanComparisonExp>;
   page?: InputMaybe<BlocksBoolExp>;
   page_id?: InputMaybe<UuidComparisonExp>;
   parent_block?: InputMaybe<BlocksBoolExp>;
@@ -783,10 +755,10 @@ export type BlocksInsertInput = {
   children?: InputMaybe<BlocksArrRelInsertInput>;
   content?: InputMaybe<Scalars['jsonb']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  deleted_at?: InputMaybe<Scalars['timetz']['input']>;
   folder?: InputMaybe<FoldersObjRelInsertInput>;
   folder_id?: InputMaybe<Scalars['uuid']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
-  is_deleted?: InputMaybe<Scalars['Boolean']['input']>;
   page?: InputMaybe<BlocksObjRelInsertInput>;
   page_id?: InputMaybe<Scalars['uuid']['input']>;
   parent_block?: InputMaybe<BlocksObjRelInsertInput>;
@@ -806,6 +778,7 @@ export type BlocksInsertInput = {
 export type BlocksMaxFields = {
   __typename?: 'blocks_max_fields';
   created_at?: Maybe<Scalars['timestamptz']['output']>;
+  deleted_at?: Maybe<Scalars['timetz']['output']>;
   folder_id?: Maybe<Scalars['uuid']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   page_id?: Maybe<Scalars['uuid']['output']>;
@@ -820,6 +793,7 @@ export type BlocksMaxFields = {
 /** order by max() on columns of table "blocks" */
 export type BlocksMaxOrderBy = {
   created_at?: InputMaybe<OrderBy>;
+  deleted_at?: InputMaybe<OrderBy>;
   folder_id?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   page_id?: InputMaybe<OrderBy>;
@@ -835,6 +809,7 @@ export type BlocksMaxOrderBy = {
 export type BlocksMinFields = {
   __typename?: 'blocks_min_fields';
   created_at?: Maybe<Scalars['timestamptz']['output']>;
+  deleted_at?: Maybe<Scalars['timetz']['output']>;
   folder_id?: Maybe<Scalars['uuid']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   page_id?: Maybe<Scalars['uuid']['output']>;
@@ -849,6 +824,7 @@ export type BlocksMinFields = {
 /** order by min() on columns of table "blocks" */
 export type BlocksMinOrderBy = {
   created_at?: InputMaybe<OrderBy>;
+  deleted_at?: InputMaybe<OrderBy>;
   folder_id?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   page_id?: InputMaybe<OrderBy>;
@@ -891,10 +867,10 @@ export type BlocksOrderBy = {
   children_aggregate?: InputMaybe<BlocksAggregateOrderBy>;
   content?: InputMaybe<OrderBy>;
   created_at?: InputMaybe<OrderBy>;
+  deleted_at?: InputMaybe<OrderBy>;
   folder?: InputMaybe<FoldersOrderBy>;
   folder_id?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  is_deleted?: InputMaybe<OrderBy>;
   page?: InputMaybe<BlocksOrderBy>;
   page_id?: InputMaybe<OrderBy>;
   parent_block?: InputMaybe<BlocksOrderBy>;
@@ -927,11 +903,11 @@ export enum BlocksSelectColumn {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
+  DeletedAt = 'deleted_at',
+  /** column name */
   FolderId = 'folder_id',
   /** column name */
   Id = 'id',
-  /** column name */
-  IsDeleted = 'is_deleted',
   /** column name */
   PageId = 'page_id',
   /** column name */
@@ -948,25 +924,13 @@ export enum BlocksSelectColumn {
   WorkspaceId = 'workspace_id'
 }
 
-/** select "blocks_aggregate_bool_exp_bool_and_arguments_columns" columns of table "blocks" */
-export enum BlocksSelectColumnBlocksAggregateBoolExpBoolAndArgumentsColumns {
-  /** column name */
-  IsDeleted = 'is_deleted'
-}
-
-/** select "blocks_aggregate_bool_exp_bool_or_arguments_columns" columns of table "blocks" */
-export enum BlocksSelectColumnBlocksAggregateBoolExpBoolOrArgumentsColumns {
-  /** column name */
-  IsDeleted = 'is_deleted'
-}
-
 /** input type for updating data in table "blocks" */
 export type BlocksSetInput = {
   content?: InputMaybe<Scalars['jsonb']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  deleted_at?: InputMaybe<Scalars['timetz']['input']>;
   folder_id?: InputMaybe<Scalars['uuid']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
-  is_deleted?: InputMaybe<Scalars['Boolean']['input']>;
   page_id?: InputMaybe<Scalars['uuid']['input']>;
   parent_id?: InputMaybe<Scalars['uuid']['input']>;
   position?: InputMaybe<Scalars['Int']['input']>;
@@ -1021,9 +985,9 @@ export type BlocksStreamCursorInput = {
 export type BlocksStreamCursorValueInput = {
   content?: InputMaybe<Scalars['jsonb']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  deleted_at?: InputMaybe<Scalars['timetz']['input']>;
   folder_id?: InputMaybe<Scalars['uuid']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
-  is_deleted?: InputMaybe<Scalars['Boolean']['input']>;
   page_id?: InputMaybe<Scalars['uuid']['input']>;
   parent_id?: InputMaybe<Scalars['uuid']['input']>;
   position?: InputMaybe<Scalars['Int']['input']>;
@@ -1051,11 +1015,11 @@ export enum BlocksUpdateColumn {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
+  DeletedAt = 'deleted_at',
+  /** column name */
   FolderId = 'folder_id',
   /** column name */
   Id = 'id',
-  /** column name */
-  IsDeleted = 'is_deleted',
   /** column name */
   PageId = 'page_id',
   /** column name */
@@ -3345,6 +3309,19 @@ export type TimestamptzComparisonExp = {
   _lte?: InputMaybe<Scalars['timestamptz']['input']>;
   _neq?: InputMaybe<Scalars['timestamptz']['input']>;
   _nin?: InputMaybe<Array<Scalars['timestamptz']['input']>>;
+};
+
+/** Boolean expression to compare columns of type "timetz". All fields are combined with logical 'AND'. */
+export type TimetzComparisonExp = {
+  _eq?: InputMaybe<Scalars['timetz']['input']>;
+  _gt?: InputMaybe<Scalars['timetz']['input']>;
+  _gte?: InputMaybe<Scalars['timetz']['input']>;
+  _in?: InputMaybe<Array<Scalars['timetz']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['timetz']['input']>;
+  _lte?: InputMaybe<Scalars['timetz']['input']>;
+  _neq?: InputMaybe<Scalars['timetz']['input']>;
+  _nin?: InputMaybe<Array<Scalars['timetz']['input']>>;
 };
 
 /** columns and relationships of "users" */
