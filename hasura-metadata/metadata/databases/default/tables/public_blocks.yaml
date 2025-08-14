@@ -95,3 +95,22 @@ select_permissions:
         - workspace_id
       filter: {}
     comment: ""
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - content
+        - created_at
+        - folder_id
+        - id
+        - is_deleted
+        - page_id
+        - parent_id
+        - position
+        - type
+        - updated_at
+        - user_id
+        - workspace_id
+      filter: {}
+      check: null
+    comment: ""

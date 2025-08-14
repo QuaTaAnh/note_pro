@@ -2,6 +2,7 @@
 
 import { Document } from "@/app/types";
 import { DocCardSkeleton } from "@/components/custom/DocCardSkeleton";
+import { DocumentMoreMenu } from "@/components/page/DocumentMoreMenu";
 import {
   Card,
   CardContent,
@@ -15,9 +16,8 @@ import { useGetAllDocsQuery } from "@/graphql/queries/__generated__/document.gen
 import { useWorkspace } from "@/hooks/use-workspace";
 import { formatDate } from "@/lib/utils";
 import { useEffect, useState } from "react";
-import { CgMoreO } from "react-icons/cg";
 
-const LIMIT = 8;
+export const LIMIT = 8;
 
 export default function AllDocsPage() {
   const { workspace } = useWorkspace();
@@ -106,15 +106,14 @@ export default function AllDocsPage() {
                         {formatDate(doc?.updated_at || "", { relative: true })}
                       </CardDescription>
                     </div>
-                    <button
-                      className="opacity-0 group-hover:opacity-100 transition-opacity"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        console.log("More clicked");
-                      }}
-                    >
-                      <CgMoreO size={18} />
-                    </button>
+                    <DocumentMoreMenu
+                      documentId={doc.id}
+                      onDeleted={(deletedId) =>
+                        setAllDocs((prev) =>
+                          prev.filter((d) => d.id !== deletedId)
+                        )
+                      }
+                    />
                   </div>
                   <Separator className="mt-2" />
                 </CardHeader>
@@ -122,6 +121,9 @@ export default function AllDocsPage() {
                   {doc.content?.title || ""}
                 </CardContent>
               </Card>
+            ))}
+            {Array.from({ length: LIMIT - allDocs.length }).map((_, i) => (
+              <DocCardSkeleton key={`default-skeleton-${i}`} />
             ))}
 
             {isFetchingMore &&
