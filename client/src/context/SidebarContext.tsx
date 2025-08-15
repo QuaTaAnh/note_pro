@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState } from "react";
+import { usePathname } from "next/navigation";
 
 const SidebarContext = createContext<{
   isOpen: boolean;
@@ -11,8 +12,17 @@ const SidebarContext = createContext<{
 });
 
 export function SidebarProvider({ children }: { children: React.ReactNode }) {
-  const [isOpen, setIsOpen] = useState(true);
-  const toggle = () => setIsOpen((prev) => !prev);
+  const pathname = usePathname();
+  const isEditor = pathname?.startsWith("/editor/") ?? false;
+
+  const [globalIsOpen, setGlobalIsOpen] = useState(true);
+  const [editorIsOpen, setEditorIsOpen] = useState(true);
+
+  const isOpen = isEditor ? editorIsOpen : globalIsOpen;
+  const toggle = () =>
+    isEditor
+      ? setEditorIsOpen((prev) => !prev)
+      : setGlobalIsOpen((prev) => !prev);
 
   return (
     <SidebarContext.Provider value={{ isOpen, toggle }}>
