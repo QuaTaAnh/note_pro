@@ -39,7 +39,7 @@ export function SidebarButton({
   };
 
   const baseClasses = cn(
-    "flex items-center gap-1 rounded-md px-2 py-1.5 text-xs w-full",
+    "flex items-center gap-1 rounded-md px-2 py-1.5 text-xs w-full whitespace-nowrap",
     "hover:bg-accent hover:text-accent-foreground",
     "transition-colors duration-200",
     isActive && "bg-accent text-accent-foreground",
@@ -50,7 +50,9 @@ export function SidebarButton({
 
   const content = (
     <>
-      <div className="w-5 h-5 flex items-center justify-center">{icon}</div>
+      <div className="w-5 h-5 flex items-center justify-center shrink-0">
+        {icon}
+      </div>
       <span>{isLoading && loadingText ? loadingText : label}</span>
     </>
   );

@@ -101,7 +101,7 @@ export default function AllDocsPage() {
                       <CardTitle className="text-sm">
                         {doc.content?.title || "Untitled"}
                       </CardTitle>
-                      <CardDescription>
+                      <CardDescription className="text-xs">
                         Updated{" "}
                         {formatDate(doc?.updated_at || "", { relative: true })}
                       </CardDescription>
