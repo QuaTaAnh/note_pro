@@ -29,11 +29,9 @@ function LayoutMain({ children }: { children: React.ReactNode }) {
   }, [loading, workspaceSlug, pathname, router]);
   const editorPage = Boolean(pathname.startsWith("/editor/"));
 
-  if (pathname === ROUTES.LOGIN) {
-    return <>{children}</>;
-  }
-
-  return (
+  return pathname === ROUTES.LOGIN ? (
+    <>{children}</>
+  ) : (
     <AuthGuard>
       <div className="min-h-screen flex flex-col">
         {loading ? (
