@@ -83,7 +83,7 @@ export default function AllDocsPage() {
   ) : (
     <div className="p-4">
       <div className="flex flex-col items-start justify-start mx-auto w-full gap-10">
-        <h1 className="text-xl font-semibold">All Docs</h1>
+        <h1 className="text-xl font-medium">All Docs</h1>
         {allDocs.length === 0 ? (
           <div className="text-sm text-muted-foreground flex items-center justify-center w-full h-full">
             You have no documents yet
