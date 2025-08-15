@@ -27,6 +27,7 @@ function LayoutMain({ children }: { children: React.ReactNode }) {
       }
     }
   }, [loading, workspaceSlug, pathname, router]);
+  const editorPage = Boolean(pathname.startsWith("/editor/"));
 
   if (pathname === ROUTES.LOGIN) {
     return <>{children}</>;
@@ -41,22 +42,32 @@ function LayoutMain({ children }: { children: React.ReactNode }) {
           <>
             <Header workspaceSlug={workspaceSlug ?? ""} />
             <div className="flex flex-1 pt-[var(--header-height)]">
-              <div
-                className={`transition-all duration-300 overflow-hidden`}
-                style={{
-                  width: isOpen ? SIDEBAR_WIDTH : 0,
-                }}
-              >
-                <Sidebar workspaceSlug={workspaceSlug ?? ""} />
-              </div>
+              {!editorPage && (
+                <div
+                  className={`transition-all duration-300 overflow-hidden`}
+                  style={{
+                    width: isOpen ? SIDEBAR_WIDTH : 0,
+                  }}
+                >
+                  <Sidebar workspaceSlug={workspaceSlug ?? ""} />
+                </div>
+              )}
 
               <main
-                className="flex-1 p-4 transition-all duration-300 flex justify-center"
+                className={`flex-1 transition-all duration-300 flex justify-center ${
+                  editorPage ? "p-0" : "p-4"
+                }`}
                 style={{
                   paddingTop: HEADER_HEIGHT,
                 }}
               >
-                <div className="w-full max-w-7xl">{children}</div>
+                <div
+                  className={`w-full ${
+                    editorPage ? "max-w-full mt-1" : "max-w-7xl"
+                  }`}
+                >
+                  {children}
+                </div>
               </main>
             </div>
           </>
