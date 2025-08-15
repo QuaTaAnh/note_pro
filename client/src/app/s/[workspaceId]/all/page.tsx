@@ -17,7 +17,7 @@ import { useWorkspace } from "@/hooks/use-workspace";
 import { formatDate } from "@/lib/utils";
 import { useEffect, useState } from "react";
 
-export const LIMIT = 8;
+export const LIMIT = 10;
 
 export default function AllDocsPage() {
   const { workspace } = useWorkspace();
@@ -82,18 +82,18 @@ export default function AllDocsPage() {
     <PageLoading />
   ) : (
     <div className="p-4">
-      <div className="flex flex-col items-start justify-start max-w-6xl mx-auto w-full gap-10">
+      <div className="flex flex-col items-start justify-start max-w-7xl mx-auto w-full gap-10">
         <h1 className="text-xl font-semibold">All Docs</h1>
         {allDocs.length === 0 ? (
           <div className="text-sm text-muted-foreground flex items-center justify-center w-full h-full">
             You have no documents yet
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 w-full">
             {allDocs.map((doc) => (
               <Card
                 key={doc.id}
-                className="group relative cursor-pointer transition min-h-[346px] min-w-[240px] shadow-sm hover:shadow-lg hover:shadow-black/30 dark:shadow-sm dark:hover:shadow-white/30"
+                className="group relative cursor-pointer transition min-h-[346px] md:min-w-[240px] shadow-sm hover:shadow-lg hover:shadow-black/30 dark:shadow-sm dark:hover:shadow-white/30"
               >
                 <CardHeader className="flex flex-col p-4">
                   <div className="flex justify-between items-start">
@@ -122,9 +122,10 @@ export default function AllDocsPage() {
                 </CardContent>
               </Card>
             ))}
-            {Array.from({ length: LIMIT - allDocs.length }).map((_, i) => (
-              <DocCardSkeleton key={`default-skeleton-${i}`} />
-            ))}
+            {allDocs.length < LIMIT &&
+              Array.from({ length: LIMIT - allDocs.length }).map((_, i) => (
+                <DocCardSkeleton key={`default-skeleton-${i}`} />
+              ))}
 
             {isFetchingMore &&
               Array.from({ length: LIMIT }).map((_, i) => (
