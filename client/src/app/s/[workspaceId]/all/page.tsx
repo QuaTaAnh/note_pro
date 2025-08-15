@@ -81,7 +81,7 @@ export default function AllDocsPage() {
   return loading && allDocs.length === 0 ? (
     <PageLoading />
   ) : (
-    <div className="p-4">
+    <div className="p-4 min-h-screen">
       <div className="flex flex-col items-start justify-start mx-auto w-full gap-8">
         <h1 className="text-xl font-medium">All Docs</h1>
         {allDocs.length === 0 ? (
