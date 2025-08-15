@@ -2,7 +2,7 @@
 
 import AuthGuard from "@/components/auth/AuthGuard";
 import { PageLoading } from "@/components/ui/loading";
-import { SidebarProvider } from "@/context/SidebarContext";
+import { SidebarProvider, useSidebar } from "@/context/SidebarContext";
 import { useWorkspace } from "@/hooks/use-workspace";
 import { useBinCraftTitle } from "@/hooks/useBinCraftTitle";
 import { ROUTES } from "@/lib/routes";
@@ -12,13 +12,9 @@ import Header from "./Header";
 import Sidebar from "./Sidebar";
 import { HEADER_HEIGHT, SIDEBAR_WIDTH } from "@/consts";
 
-export default function LayoutContent({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  useBinCraftTitle();
+function LayoutMain({ children }: { children: React.ReactNode }) {
   const { workspaceSlug, loading } = useWorkspace();
+  const { isOpen } = useSidebar();
   const pathname = usePathname();
   const router = useRouter();
 
@@ -32,33 +28,53 @@ export default function LayoutContent({
     }
   }, [loading, workspaceSlug, pathname, router]);
 
-  return pathname === ROUTES.LOGIN ? (
-    <>{children}</>
-  ) : (
+  if (pathname === ROUTES.LOGIN) {
+    return <>{children}</>;
+  }
+
+  return (
     <AuthGuard>
-      <SidebarProvider>
-        <div className="min-h-screen flex flex-col">
-          {loading ? (
-            <PageLoading />
-          ) : (
-            <>
-              <Header workspaceSlug={workspaceSlug ?? ""} />
-              <div className="flex flex-1">
+      <div className="min-h-screen flex flex-col">
+        {loading ? (
+          <PageLoading />
+        ) : (
+          <>
+            <Header workspaceSlug={workspaceSlug ?? ""} />
+            <div className="flex flex-1 pt-[var(--header-height)]">
+              <div
+                className={`transition-all duration-300 overflow-hidden`}
+                style={{
+                  width: isOpen ? SIDEBAR_WIDTH : 0,
+                }}
+              >
                 <Sidebar workspaceSlug={workspaceSlug ?? ""} />
-                <main
-                  className="flex-1 p-4"
-                  style={{
-                    marginLeft: SIDEBAR_WIDTH,
-                    paddingTop: HEADER_HEIGHT,
-                  }}
-                >
-                  {children}
-                </main>
               </div>
-            </>
-          )}
-        </div>
-      </SidebarProvider>
+
+              <main
+                className="flex-1 p-4 transition-all duration-300 flex justify-center"
+                style={{
+                  paddingTop: HEADER_HEIGHT,
+                }}
+              >
+                <div className="w-full max-w-5xl">{children}</div>
+              </main>
+            </div>
+          </>
+        )}
+      </div>
     </AuthGuard>
+  );
+}
+
+export default function LayoutContent({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  useBinCraftTitle();
+  return (
+    <SidebarProvider>
+      <LayoutMain>{children}</LayoutMain>
+    </SidebarProvider>
   );
 }
