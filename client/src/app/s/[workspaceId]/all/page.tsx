@@ -2,45 +2,35 @@
 
 import { Document } from "@/app/types";
 import { DocCardSkeleton } from "@/components/custom/DocCardSkeleton";
-import { DocumentMoreMenu } from "@/components/page/DocumentMoreMenu";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { CardDocument } from "@/components/page/CardDocument";
 import { PageLoading } from "@/components/ui/loading";
-import { Separator } from "@/components/ui/separator";
+import { LIMIT } from "@/consts";
 import { useGetAllDocsQuery } from "@/graphql/queries/__generated__/document.generated";
 import { useWorkspace } from "@/hooks/use-workspace";
-import { formatDate } from "@/lib/utils";
-import { useEffect, useState } from "react";
-
-export const LIMIT = 10;
+import { useEffect, useMemo, useState } from "react";
 
 export default function AllDocsPage() {
   const { workspace } = useWorkspace();
-  const [allDocs, setAllDocs] = useState<Document[]>([]);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
-  const { loading, fetchMore } = useGetAllDocsQuery({
+  const { loading, data, fetchMore } = useGetAllDocsQuery({
     variables: {
       workspaceId: workspace?.id || "",
       limit: LIMIT,
       offset: 0,
     },
     skip: !workspace?.id,
-    fetchPolicy: "network-only",
-    onCompleted: (res) => {
-      const firstBatch = res?.blocks || [];
-      setAllDocs(firstBatch);
-      if (firstBatch.length < LIMIT) {
-        setHasMore(false);
-      }
-    },
+    fetchPolicy: "cache-and-network",
   });
+
+  const allDocs: Document[] = useMemo(() => data?.blocks || [], [data]);
+
+  useEffect(() => {
+    if (!loading && allDocs.length < LIMIT) {
+      setHasMore(false);
+    }
+  }, [loading, allDocs.length]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -50,16 +40,17 @@ export default function AllDocsPage() {
 
       if (nearBottom && !loading && !isFetchingMore && hasMore) {
         setIsFetchingMore(true);
+        const prevLen = allDocs.length;
         fetchMore({
           variables: {
             workspaceId: workspace?.id || "",
-            offset: allDocs.length,
+            offset: prevLen,
             limit: LIMIT,
           },
         }).then((res) => {
-          const newBatch = res?.data?.blocks || [];
-          setAllDocs((prev) => [...prev, ...newBatch]);
-          if (newBatch.length < LIMIT) {
+          const afterLen = res?.data?.blocks?.length ?? prevLen;
+          const added = afterLen - prevLen;
+          if (added < LIMIT) {
             setHasMore(false);
           }
           setIsFetchingMore(false);
@@ -90,37 +81,8 @@ export default function AllDocsPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 w-full">
-            {allDocs.map((doc) => (
-              <Card
-                key={doc.id}
-                className="group relative cursor-pointer transition min-h-[346px] md:min-w-[240px] shadow-sm hover:shadow-lg hover:shadow-black/30 dark:shadow-sm dark:hover:shadow-white/30"
-              >
-                <CardHeader className="flex flex-col p-4">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle className="text-sm">
-                        {doc.content?.title || "Untitled"}
-                      </CardTitle>
-                      <CardDescription className="text-xs">
-                        Updated{" "}
-                        {formatDate(doc?.updated_at || "", { relative: true })}
-                      </CardDescription>
-                    </div>
-                    <DocumentMoreMenu
-                      documentId={doc.id}
-                      onDeleted={(deletedId) =>
-                        setAllDocs((prev) =>
-                          prev.filter((d) => d.id !== deletedId)
-                        )
-                      }
-                    />
-                  </div>
-                  <Separator className="mt-2" />
-                </CardHeader>
-                <CardContent className="flex flex-col px-4 truncate text-muted-foreground">
-                  {doc.content?.title || ""}
-                </CardContent>
-              </Card>
+            {allDocs.map((document) => (
+              <CardDocument key={document.id} document={document} />
             ))}
             {allDocs.length < LIMIT &&
               Array.from({ length: LIMIT - allDocs.length }).map((_, i) => (

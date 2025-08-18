@@ -8,16 +8,13 @@ export type SoftDeleteDocumentMutationVariables = Types.Exact<{
 }>;
 
 
-export type SoftDeleteDocumentMutation = { __typename?: 'mutation_root', update_blocks?: { __typename?: 'blocks_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'blocks', id: string }> } | null };
+export type SoftDeleteDocumentMutation = { __typename?: 'mutation_root', update_blocks_by_pk?: { __typename?: 'blocks', id: string } | null };
 
 
 export const SoftDeleteDocumentDocument = gql`
     mutation SoftDeleteDocument($id: uuid!) {
-  update_blocks(where: {id: {_eq: $id}}, _set: {deleted_at: "now()"}) {
-    affected_rows
-    returning {
-      id
-    }
+  update_blocks_by_pk(pk_columns: {id: $id}, _set: {deleted_at: "now()"}) {
+    id
   }
 }
     `;
