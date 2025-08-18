@@ -20,14 +20,18 @@ export const CardDocument = ({ document }: { document: Document }) => {
   const router = useRouter();
   const { workspace } = useWorkspace();
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
     if (!workspace?.id) {
       return;
     }
-    const folderId = document.folder_id;
-    if (folderId) {
+    if (document.folder_id) {
       router.push(
-        ROUTES.WORKSPACE_DOCUMENT_FOLDER(workspace.id, folderId, document.id)
+        ROUTES.WORKSPACE_DOCUMENT_FOLDER(
+          workspace.id,
+          document.folder_id,
+          document.id
+        )
       );
     } else {
       router.push(ROUTES.WORKSPACE_DOCUMENT(workspace.id, document.id));

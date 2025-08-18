@@ -19,7 +19,8 @@ interface Props {
 export const DocumentMoreMenu = ({ documentId }: Props) => {
   const [softDeleteDocument] = useSoftDeleteDocumentMutation();
 
-  const handleDeleteDocument = async () => {
+  const handleDeleteDocument = async (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
     try {
       await softDeleteDocument({
         variables: {
