@@ -1,8 +1,5 @@
 mutation SoftDeleteDocument($id: uuid!) {
-  update_blocks(where: { id: { _eq: $id } }, _set: { deleted_at: "now()" }) {
-    affected_rows
-    returning {
-      id
-    }
+  update_blocks_by_pk(pk_columns: { id: $id }, _set: { deleted_at: "now()" }) {
+    id
   }
 }

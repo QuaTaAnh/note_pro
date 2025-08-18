@@ -37,4 +37,7 @@ export const MENU_ITEMS = (workspaceSlug: string) => [
 		href: ROUTES.WORKSPACE_TEMPLATES(workspaceSlug),
 	},
 ];
+
+export const LIMIT = 10;
+
   

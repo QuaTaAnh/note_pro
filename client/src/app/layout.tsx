@@ -1,13 +1,6 @@
-import LayoutContent from "@/components/Layout/LayoutContent";
-import AuthWrapper from "@/components/auth/AuthWrapper";
-import { ThemeProvider } from "next-themes";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import {
-  ApolloClientProvider,
-  NextAuthProvider,
-  ToastProvider,
-} from "./providers";
+import Providers from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,22 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem={false}
-          disableTransitionOnChange={false}
-        >
-          <ApolloClientProvider>
-            <NextAuthProvider>
-              <ToastProvider>
-                <AuthWrapper>
-                  <LayoutContent>{children}</LayoutContent>
-                </AuthWrapper>
-              </ToastProvider>
-            </NextAuthProvider>
-          </ApolloClientProvider>
-        </ThemeProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

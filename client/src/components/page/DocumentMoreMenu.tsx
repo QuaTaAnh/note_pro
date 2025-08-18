@@ -10,13 +10,13 @@ import { CgMoreO } from "react-icons/cg";
 import { FiTrash } from "react-icons/fi";
 import { useSoftDeleteDocumentMutation } from "@/graphql/mutations/__generated__/document.generated";
 import showToast from "@/lib/toast";
+import { removeBlockFromCache } from "@/cache/removeBlockFromCache";
 
 interface Props {
   documentId: string;
-  onDeleted: (documentId: string) => void;
 }
 
-export const DocumentMoreMenu = ({ documentId, onDeleted }: Props) => {
+export const DocumentMoreMenu = ({ documentId }: Props) => {
   const [softDeleteDocument] = useSoftDeleteDocumentMutation();
 
   const handleDeleteDocument = async () => {
@@ -25,8 +25,16 @@ export const DocumentMoreMenu = ({ documentId, onDeleted }: Props) => {
         variables: {
           id: documentId,
         },
+        optimisticResponse: {
+          update_blocks_by_pk: {
+            __typename: "blocks",
+            id: documentId,
+          },
+        },
+        update: (cache) => {
+          removeBlockFromCache(cache, documentId);
+        },
       });
-      onDeleted(documentId);
       showToast.success("Successfully deleted document");
     } catch (error) {
       console.error("Error deleting document:", error);
