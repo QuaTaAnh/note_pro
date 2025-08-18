@@ -10,7 +10,7 @@ export type GetAllDocsQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetAllDocsQuery = { __typename?: 'query_root', blocks: Array<{ __typename?: 'blocks', id: string, content?: any | null, created_at?: string | null, updated_at?: string | null }> };
+export type GetAllDocsQuery = { __typename?: 'query_root', blocks: Array<{ __typename?: 'blocks', id: string, content?: any | null, created_at?: string | null, updated_at?: string | null, folder_id?: string | null }> };
 
 
 export const GetAllDocsDocument = gql`
@@ -25,6 +25,7 @@ export const GetAllDocsDocument = gql`
     content
     created_at
     updated_at
+    folder_id
   }
 }
     `;

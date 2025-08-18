@@ -1,3 +1,5 @@
+"use client";
+
 import { formatDate } from "@/lib/utils";
 import React from "react";
 import { DocumentMoreMenu } from "@/components/page/DocumentMoreMenu";
@@ -10,12 +12,33 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Document } from "@/app/types";
+import { useRouter } from "next/navigation";
+import { useWorkspace } from "@/hooks/use-workspace";
+import { ROUTES } from "@/lib/routes";
 
 export const CardDocument = ({ document }: { document: Document }) => {
+  const router = useRouter();
+  const { workspace } = useWorkspace();
+
+  const handleClick = () => {
+    if (!workspace?.id) {
+      return;
+    }
+    const folderId = document.folder_id;
+    if (folderId) {
+      router.push(
+        ROUTES.WORKSPACE_DOCUMENT_FOLDER(workspace.id, folderId, document.id)
+      );
+    } else {
+      router.push(ROUTES.WORKSPACE_DOCUMENT(workspace.id, document.id));
+    }
+  };
+
   return (
     <Card
       key={document.id}
       className="group relative cursor-pointer transition min-h-[346px] md:min-w-[240px] shadow-sm hover:shadow-lg hover:shadow-black/30 dark:shadow-sm dark:hover:shadow-white/30"
+      onClick={handleClick}
     >
       <CardHeader className="flex flex-col p-4">
         <div className="flex justify-between items-start">
