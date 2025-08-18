@@ -2,6 +2,7 @@
 
 import { InputField } from "@/components/ui/input-field";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { HEADER_HEIGHT } from "@/consts";
 import { useSidebar } from "@/context/SidebarContext";
 import { ROUTES } from "@/lib/routes";
 import { Search } from "lucide-react";
@@ -10,14 +11,14 @@ import Link from "next/link";
 import { MdOutlineViewSidebar } from "react-icons/md";
 import { NotificationButton } from "./Presentational/NotificationButton";
 import { SettingButton } from "./Presentational/SettingButton";
-import { HEADER_HEIGHT } from "@/consts";
 
 interface Props {
   workspaceSlug: string;
+  isEditorPage: boolean;
 }
 
-export default function Header({ workspaceSlug }: Props) {
-  const { toggle } = useSidebar();
+export default function Header({ workspaceSlug, isEditorPage }: Props) {
+  const { toggle, toggleRight } = useSidebar();
 
   return (
     workspaceSlug && (
@@ -54,6 +55,13 @@ export default function Header({ workspaceSlug }: Props) {
           <ThemeToggle />
           <NotificationButton />
           <SettingButton />
+          {isEditorPage && (
+            <MdOutlineViewSidebar
+              size={20}
+              className="cursor-pointer"
+              onClick={toggleRight}
+            />
+          )}
         </div>
       </header>
     )

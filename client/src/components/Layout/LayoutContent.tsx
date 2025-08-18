@@ -38,7 +38,10 @@ function LayoutMain({ children }: { children: React.ReactNode }) {
           <PageLoading />
         ) : (
           <>
-            <Header workspaceSlug={workspaceSlug ?? ""} />
+            <Header
+              workspaceSlug={workspaceSlug ?? ""}
+              isEditorPage={editorPage}
+            />
             <div className="flex flex-1 pt-[var(--header-height)]">
               {!editorPage && (
                 <div
