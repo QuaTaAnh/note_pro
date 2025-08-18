@@ -7,6 +7,7 @@ import { Separator } from "../ui/separator";
 import NewDocumentButton from "./Presentational/NewDocumentButton";
 import { SidebarButton } from "./Presentational/SidebarButton";
 import { WorkspaceButton } from "./Presentational/WorkspaceButton";
+import { FolderMenu } from "./Presentational/FolderMenu";
 interface Props {
   workspaceSlug: string;
 }
@@ -35,6 +36,8 @@ export default function Sidebar({ workspaceSlug }: Props) {
             href={item.href}
           />
         ))}
+        <Separator />
+        <FolderMenu />
       </div>
     </aside>
   );

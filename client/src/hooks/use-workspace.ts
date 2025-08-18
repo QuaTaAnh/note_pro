@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetWorkspaceByUserIdQuery } from "@/components/Layout/graphql/__generated__/workspace.generated";
+import { useGetWorkspaceByUserIdQuery } from "@/graphql/queries/__generated__/workspace.generated";
 import slugify from "slugify";
 import { useAuth } from "@/hooks/use-auth";
 

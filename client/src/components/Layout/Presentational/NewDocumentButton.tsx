@@ -1,13 +1,12 @@
 "use client";
 
+import { useCreateUntitledPageMutation } from "@/graphql/mutations/__generated__/document.generated";
 import { useUserId } from "@/hooks/use-auth";
-import { useParams, useRouter } from "next/navigation";
-import { useCreateUntitledPageMutation } from "../graphql/__generated__/document.generated";
 import { useWorkspace } from "@/hooks/use-workspace";
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
-import { SidebarButton } from "./SidebarButton";
 import { FiFilePlus } from "react-icons/fi";
-import { ROUTES } from "@/lib/routes";
+import { SidebarButton } from "./SidebarButton";
 
 export default function NewDocumentButton() {
   const params = useParams();
@@ -41,11 +40,9 @@ export default function NewDocumentButton() {
       const docId = res.data?.insert_blocks_one?.id;
       if (docId) {
         if (folderId) {
-          router.push(
-            ROUTES.WORKSPACE_DOCUMENT_FOLDER(workspace.id, folderId, docId)
-          );
+          router.push(`/editor/d/${workspace.id}/${folderId}/${docId}`);
         } else {
-          router.push(ROUTES.WORKSPACE_DOCUMENT(workspace.id, docId));
+          router.push(`/editor/d/${workspace.id}/${docId}`);
         }
       }
     } catch (err) {

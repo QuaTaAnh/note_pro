@@ -10,17 +10,17 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { InputField } from "@/components/ui/input-field";
-import { useUserId } from "@/hooks/use-auth";
-import { toast } from "@/hooks/use-toast";
-import { useEffect, useState } from "react";
+import { useRenameWorkspaceMutation } from "@/graphql/mutations/__generated__/workspace.generated";
 import {
   GetWorkspaceByUserIdDocument,
   GetWorkspaceByUserIdQuery,
   useGetWorkspaceNameQuery,
-  useRenameWorkspaceMutation,
-} from "../graphql/__generated__/workspace.generated";
-import { WorkspaceNameWithTooltip } from "./WorkspaceNameWithTooltip";
+} from "@/graphql/queries/__generated__/workspace.generated";
+import { useUserId } from "@/hooks/use-auth";
+import { toast } from "@/hooks/use-toast";
 import { useWorkspace } from "@/hooks/use-workspace";
+import { useEffect, useState } from "react";
+import { WorkspaceNameWithTooltip } from "./WorkspaceNameWithTooltip";
 
 export const WorkspaceButton = () => {
   const [isOpen, setIsOpen] = useState(false);

@@ -25,6 +25,21 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
     --radius: 0.5rem;
+
+    /* Modal specific colors */
+    --modal-background: 224 23% 13%;
+    --modal-foreground: 210 40% 98%;
+    --modal-border: 225 26% 18%;
+    --modal-input: 225 26% 18%;
+    --modal-muted: 215 20.2% 65.1%;
+
+    /* Color picker defaults */
+    --color-picker-1: 0 0% 100%;
+    --color-picker-2: 217.2 91.2% 59.8%;
+    --color-picker-3: 142.1 76.2% 36.3%;
+    --color-picker-4: 38.4 97.8% 56.1%;
+    --color-picker-5: 0 84.2% 60.2%;
+    --color-picker-6: 271.5 81.3% 55.9%;
   }
 
   .dark {
