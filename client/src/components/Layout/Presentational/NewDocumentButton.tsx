@@ -7,6 +7,7 @@ import { useWorkspace } from "@/hooks/use-workspace";
 import { useState } from "react";
 import { SidebarButton } from "./SidebarButton";
 import { FiFilePlus } from "react-icons/fi";
+import { ROUTES } from "@/lib/routes";
 
 export default function NewDocumentButton() {
   const params = useParams();
@@ -40,9 +41,11 @@ export default function NewDocumentButton() {
       const docId = res.data?.insert_blocks_one?.id;
       if (docId) {
         if (folderId) {
-          router.push(`/editor/d/${workspace.id}/${folderId}/${docId}`);
+          router.push(
+            ROUTES.WORKSPACE_DOCUMENT_FOLDER(workspace.id, folderId, docId)
+          );
         } else {
-          router.push(`/editor/d/${workspace.id}/${docId}`);
+          router.push(ROUTES.WORKSPACE_DOCUMENT(workspace.id, docId));
         }
       }
     } catch (err) {
