@@ -12,6 +12,13 @@ export type GetAllDocsQueryVariables = Types.Exact<{
 
 export type GetAllDocsQuery = { __typename?: 'query_root', blocks: Array<{ __typename?: 'blocks', id: string, content?: any | null, created_at?: string | null, updated_at?: string | null, folder_id?: string | null }> };
 
+export type GetDocumentByIdQueryVariables = Types.Exact<{
+  id: Types.Scalars['uuid']['input'];
+}>;
+
+
+export type GetDocumentByIdQuery = { __typename?: 'query_root', blocks: Array<{ __typename?: 'blocks', id: string, type: string, content?: any | null, parent_id?: string | null, page_id?: string | null, workspace_id?: string | null, folder_id?: string | null, created_at?: string | null, updated_at?: string | null }> };
+
 
 export const GetAllDocsDocument = gql`
     query GetAllDocs($workspaceId: uuid!, $limit: Int!, $offset: Int!) {
@@ -64,3 +71,51 @@ export type GetAllDocsQueryHookResult = ReturnType<typeof useGetAllDocsQuery>;
 export type GetAllDocsLazyQueryHookResult = ReturnType<typeof useGetAllDocsLazyQuery>;
 export type GetAllDocsSuspenseQueryHookResult = ReturnType<typeof useGetAllDocsSuspenseQuery>;
 export type GetAllDocsQueryResult = Apollo.QueryResult<GetAllDocsQuery, GetAllDocsQueryVariables>;
+export const GetDocumentByIdDocument = gql`
+    query GetDocumentById($id: uuid!) {
+  blocks(where: {id: {_eq: $id}, deleted_at: {_is_null: true}}) {
+    id
+    type
+    content
+    parent_id
+    page_id
+    workspace_id
+    folder_id
+    created_at
+    updated_at
+  }
+}
+    `;
+
+/**
+ * __useGetDocumentByIdQuery__
+ *
+ * To run a query within a React component, call `useGetDocumentByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetDocumentByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetDocumentByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetDocumentByIdQuery(baseOptions: Apollo.QueryHookOptions<GetDocumentByIdQuery, GetDocumentByIdQueryVariables> & ({ variables: GetDocumentByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetDocumentByIdQuery, GetDocumentByIdQueryVariables>(GetDocumentByIdDocument, options);
+      }
+export function useGetDocumentByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetDocumentByIdQuery, GetDocumentByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetDocumentByIdQuery, GetDocumentByIdQueryVariables>(GetDocumentByIdDocument, options);
+        }
+export function useGetDocumentByIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetDocumentByIdQuery, GetDocumentByIdQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetDocumentByIdQuery, GetDocumentByIdQueryVariables>(GetDocumentByIdDocument, options);
+        }
+export type GetDocumentByIdQueryHookResult = ReturnType<typeof useGetDocumentByIdQuery>;
+export type GetDocumentByIdLazyQueryHookResult = ReturnType<typeof useGetDocumentByIdLazyQuery>;
+export type GetDocumentByIdSuspenseQueryHookResult = ReturnType<typeof useGetDocumentByIdSuspenseQuery>;
+export type GetDocumentByIdQueryResult = Apollo.QueryResult<GetDocumentByIdQuery, GetDocumentByIdQueryVariables>;

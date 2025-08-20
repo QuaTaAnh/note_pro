@@ -16,3 +16,17 @@ query GetAllDocs($workspaceId: uuid!, $limit: Int!, $offset: Int!) {
     folder_id
   }
 }
+
+query GetDocumentById($id: uuid!) {
+  blocks(where: { id: { _eq: $id }, deleted_at: { _is_null: true } }) {
+    id
+    type
+    content
+    parent_id
+    page_id
+    workspace_id
+    folder_id
+    created_at
+    updated_at
+  }
+}
