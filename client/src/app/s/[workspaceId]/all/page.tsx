@@ -1,8 +1,8 @@
 "use client";
 
 import { Document } from "@/app/types";
-import { DocCardSkeleton } from "@/components/custom/DocCardSkeleton";
 import { CardDocument } from "@/components/page/CardDocument";
+import { DocCardSkeleton } from "@/components/page/DocCardSkeleton";
 import { PageLoading } from "@/components/ui/loading";
 import { LIMIT } from "@/consts";
 import { useGetAllDocsQuery } from "@/graphql/queries/__generated__/document.generated";

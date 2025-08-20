@@ -1,36 +1,37 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
+import { FolderColor } from "@/types/types";
 
 const colors = [
   {
     name: "White",
-    value: "hsl(var(--color-picker-1))",
+    value: FolderColor.WHITE,
     className: "bg-colorPicker-1",
   },
   {
     name: "Blue",
-    value: "hsl(var(--color-picker-2))",
+    value: FolderColor.BLUE,
     className: "bg-colorPicker-2",
   },
   {
     name: "Green",
-    value: "hsl(var(--color-picker-3))",
+    value: FolderColor.GREEN,
     className: "bg-colorPicker-3",
   },
   {
     name: "Yellow",
-    value: "hsl(var(--color-picker-4))",
+    value: FolderColor.YELLOW,
     className: "bg-colorPicker-4",
   },
   {
     name: "Red",
-    value: "hsl(var(--color-picker-5))",
+    value: FolderColor.RED,
     className: "bg-colorPicker-5",
   },
   {
     name: "Purple",
-    value: "hsl(var(--color-picker-6))",
+    value: FolderColor.PURPLE,
     className: "bg-colorPicker-6",
   },
 ];
@@ -44,6 +45,12 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
   selectedColor,
   onColorChange,
 }) => {
+  useEffect(() => {
+    if (!selectedColor) {
+      onColorChange(colors[0].value);
+    }
+  }, [selectedColor, onColorChange]);
+
   return (
     <div className="flex gap-2">
       {colors.map((color) => {

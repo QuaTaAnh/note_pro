@@ -1,9 +1,16 @@
 import { FolderNode } from "@/lib/folder";
-import { useState } from "react";
-import { FiChevronRight, FiChevronDown } from "react-icons/fi";
 import { iconMap } from "@/lib/icons";
+import { ROUTES } from "@/lib/routes";
+import { FolderColor } from "@/types/types";
+import { useState } from "react";
+import { FiChevronDown, FiChevronRight } from "react-icons/fi";
+import { SidebarButton } from "../Layout/Presentational/SidebarButton";
+import { Button } from "../ui/button";
 
-export const FolderItem: React.FC<{ folder: FolderNode }> = ({ folder }) => {
+export const FolderItem: React.FC<{
+  folder: FolderNode;
+  workspaceSlug: string | null;
+}> = ({ folder, workspaceSlug }) => {
   const [expanded, setExpanded] = useState(false);
   const hasChildren = folder.children && folder.children.length > 0;
 
@@ -11,32 +18,62 @@ export const FolderItem: React.FC<{ folder: FolderNode }> = ({ folder }) => {
     folder.icon && iconMap[folder.icon]
       ? iconMap[folder.icon]
       : iconMap["folder"];
-  const iconColor = folder.color || "hsl(var(--color-picker-1))";
+
+  const handleMoreClick = () => {
+    if (hasChildren) {
+      setExpanded(!expanded);
+    }
+  };
 
   return (
     <div>
-      <div
-        className="flex items-center gap-2 cursor-pointer hover:bg-muted/30 rounded-md p-1"
-        onClick={() => hasChildren && setExpanded(!expanded)}
-      >
+      <div className="flex items-center">
         {hasChildren ? (
-          expanded ? (
-            <FiChevronDown className="w-4 h-4" />
-          ) : (
-            <FiChevronRight className="w-4 h-4" />
-          )
+          <Button
+            variant="ghost"
+            size="icon"
+            className="w-5 h-5"
+            onClick={handleMoreClick}
+          >
+            {expanded ? (
+              <FiChevronDown className="w-4 h-4" />
+            ) : (
+              <FiChevronRight className="w-4 h-4" />
+            )}
+          </Button>
         ) : (
           <span className="w-4 h-4" />
         )}
 
-        <Icon className="w-4 h-4" style={{ color: iconColor }} />
-        <span className="text-sm">{folder.name}</span>
+        <SidebarButton
+          label={folder.name}
+          icon={
+            <Icon
+              className="w-4 h-4"
+              style={{
+                color: folder.color,
+                filter:
+                  folder.color === FolderColor.WHITE
+                    ? "drop-shadow(0 0 1px rgba(0,0,0,0.9))"
+                    : "none",
+              }}
+            />
+          }
+          href={
+            workspaceSlug
+              ? ROUTES.WORKSPACE_FOLDER(workspaceSlug, folder.id)
+              : undefined
+          }
+        />
       </div>
-
       {expanded && hasChildren && (
         <div className="ml-5">
           {folder.children!.map((child) => (
-            <FolderItem key={child.id} folder={child} />
+            <FolderItem
+              key={child.id}
+              folder={child}
+              workspaceSlug={workspaceSlug}
+            />
           ))}
         </div>
       )}

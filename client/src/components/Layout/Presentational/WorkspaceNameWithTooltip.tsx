@@ -1,8 +1,8 @@
 "use client";
 
-import { SimpleTooltip } from "@/components/custom/SimpleTooltip";
 import { useRef, useState, useEffect } from "react";
 import { CiSettings } from "react-icons/ci";
+import { SimpleTooltip } from "@/components/page/SimpleTooltip";
 
 export function WorkspaceNameWithTooltip({ name }: { name: string }) {
   const textRef = useRef<HTMLSpanElement>(null);

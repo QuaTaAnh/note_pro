@@ -3,21 +3,21 @@ import { NewFolderButton } from "./NewFolderButton";
 import { useWorkspace } from "@/hooks/use-workspace";
 import { buildTree, FolderNode } from "@/lib/folder";
 import { FolderItem } from "@/components/page/FolderItem";
+import { PageLoading } from "@/components/ui/loading";
 
 export const FolderMenu = () => {
-  const { workspace } = useWorkspace();
-  const { data, loading, error } = useGetFoldersQuery({
+  const { workspace, workspaceSlug } = useWorkspace();
+  const { data, loading } = useGetFoldersQuery({
     variables: { workspaceId: workspace?.id ?? "" },
     skip: !workspace?.id,
   });
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error loading folders</div>;
-
   const folders = data?.folders ?? [];
   const tree = buildTree(folders as FolderNode[]);
 
-  return (
+  return loading ? (
+    <PageLoading />
+  ) : (
     <div>
       <div className="flex justify-between items-center mb-2">
         <span className="text-xs font-medium">Folders</span>
@@ -26,7 +26,11 @@ export const FolderMenu = () => {
 
       <div className="space-y-1">
         {tree.map((folder) => (
-          <FolderItem key={folder.id} folder={folder} />
+          <FolderItem
+            key={folder.id}
+            folder={folder}
+            workspaceSlug={workspaceSlug}
+          />
         ))}
       </div>
     </div>

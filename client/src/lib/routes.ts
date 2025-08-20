@@ -10,4 +10,6 @@ export const ROUTES = {
     `/editor/d/${workspaceSlug}/${documentId}`,
   WORKSPACE_DOCUMENT_FOLDER: (workspaceSlug: string, folderId: string, documentId: string) =>
     `/editor/d/${workspaceSlug}/${folderId}/${documentId}`,
+  WORKSPACE_FOLDER: (workspaceSlug: string, folderId: string) =>
+    `/s/${workspaceSlug}/f/${folderId}`,
 } as const;

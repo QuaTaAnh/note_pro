@@ -17,6 +17,7 @@ import { useInsertFolderMutation } from "@/graphql/mutations/__generated__/folde
 import { useUserId } from "@/hooks/use-auth";
 import { useWorkspace } from "@/hooks/use-workspace";
 import showToast from "@/lib/toast";
+import { FolderColor } from "@/types/types";
 import React, { useState } from "react";
 import { FiPlus } from "react-icons/fi";
 
@@ -60,22 +61,33 @@ export const NewFolderButton = () => {
           input: {
             name: folderData.name,
             description: folderData.description,
-            color: folderData.color || "hsl(var(--color-picker-1))",
+            color: folderData.color,
             icon: folderData.icon,
             user_id: userId,
             workspace_id: workspace?.id,
             parent_id: null,
           },
         },
+        update(cache, { data }) {
+          if (!data?.insert_folders_one) return;
+          const newFolder = data.insert_folders_one;
+          cache.modify({
+            fields: {
+              folders(existingFolders = []) {
+                return [...existingFolders, newFolder];
+              },
+            },
+          });
+        },
       });
       showToast.success("Folder created successfully");
+      setIsOpen(false);
       setFolderData({
         name: "",
         description: "",
-        color: "hsl(var(--color-picker-1))",
+        color: FolderColor.WHITE,
         icon: "folder",
       });
-      setIsOpen(false);
     } catch (error) {
       showToast.error("Failed to create folder");
     }

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { SimpleTooltip } from "../custom/SimpleTooltip";
+import { SimpleTooltip } from "../page/SimpleTooltip";
 
 export function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
