@@ -116,7 +116,7 @@ export const WorkspaceButton = () => {
             />
           </Button>
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className="sm:max-w-[400px]">
           <DialogHeader>
             <DialogTitle>Rename Workspace</DialogTitle>
             <DialogDescription>
@@ -131,6 +131,7 @@ export const WorkspaceButton = () => {
           <DialogFooter>
             <Button
               onClick={handleSave}
+              className="w-full bg-primary hover:bg-primary-hover font-medium"
               disabled={
                 !tempName.trim() || tempName === data?.workspaces_by_pk?.name
               }

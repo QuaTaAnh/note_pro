@@ -13,7 +13,10 @@ export type GetFoldersQuery = { __typename?: 'query_root', folders: Array<{ __ty
 
 export const GetFoldersDocument = gql`
     query GetFolders($workspaceId: uuid!) {
-  folders(where: {workspace_id: {_eq: $workspaceId}}) {
+  folders(
+    order_by: {created_at: desc}
+    where: {workspace_id: {_eq: $workspaceId}}
+  ) {
     id
     name
     description

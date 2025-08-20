@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { IconPicker } from "@/components/ui/icon-picker";
-import { Input } from "@/components/ui/input";
+import { InputField } from "@/components/ui/input-field";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
@@ -100,35 +100,27 @@ export const NewFolderButton = () => {
           <FiPlus className="w-4 h-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="border-modal-border sm:max-w-[400px]">
+      <DialogContent className="sm:max-w-[400px]">
         <DialogHeader>
-          <DialogTitle className="text-modal-foreground">
-            Create New Folder
-          </DialogTitle>
+          <DialogTitle>Create New Folder</DialogTitle>
         </DialogHeader>
         <Separator />
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label
-              htmlFor="title"
-              className="text-sm font-medium text-modal-foreground"
-            >
+            <Label htmlFor="title" className="text-sm font-medium">
               Name <span className="text-destructive">*</span>
             </Label>
-            <Input
+            <InputField
               id="title"
               placeholder="Folder Name"
               value={folderData.name}
               onChange={(e) => handleInputChange("name", e.target.value)}
-              className="bg-modal-input border-modal-border text-modal-foreground placeholder:text-modal-muted focus:ring-primary"
+              className="placeholder:text-modal-muted focus:ring-primary"
             />
           </div>
 
           <div className="space-y-2">
-            <Label
-              htmlFor="description"
-              className="text-sm font-medium text-modal-foreground"
-            >
+            <Label htmlFor="description" className="text-sm font-medium">
               Description
             </Label>
             <Textarea
@@ -136,14 +128,12 @@ export const NewFolderButton = () => {
               placeholder="Enter folder description..."
               value={folderData.description}
               onChange={(e) => handleInputChange("description", e.target.value)}
-              className="bg-modal-input border-modal-border text-modal-foreground placeholder:text-modal-muted focus:ring-primary resize-none h-20"
+              className="placeholder:text-modal-muted focus:ring-primary resize-none h-20"
             />
           </div>
 
           <div className="space-y-2">
-            <Label className="text-sm font-medium text-modal-foreground">
-              Icon
-            </Label>
+            <Label className="text-sm font-medium">Icon</Label>
             <IconPicker
               selectedIcon={folderData.icon}
               onIconChange={(icon) => handleInputChange("icon", icon)}
@@ -151,9 +141,7 @@ export const NewFolderButton = () => {
           </div>
 
           <div className="space-y-2">
-            <Label className="text-sm font-medium text-modal-foreground">
-              Color
-            </Label>
+            <Label className="text-sm font-medium ">Color</Label>
             <ColorPicker
               selectedColor={folderData.color}
               onColorChange={(color) => handleInputChange("color", color)}
@@ -164,7 +152,7 @@ export const NewFolderButton = () => {
         <DialogFooter>
           <Button
             onClick={handleCreate}
-            className="w-full bg-primary hover:bg-primary-hover text-primary-foreground font-medium"
+            className="w-full bg-primary hover:bg-primary-hover font-medium"
           >
             Create
           </Button>
