@@ -1,0 +1,14 @@
+query GetFolders($workspaceId: uuid!) {
+  folders(
+    order_by: { created_at: desc }
+    where: { workspace_id: { _eq: $workspaceId } }
+  ) {
+    id
+    name
+    description
+    color
+    icon
+    parent_id
+    created_at
+  }
+}

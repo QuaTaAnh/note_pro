@@ -1,0 +1,10 @@
+mutation InsertFolder($input: folders_insert_input!) {
+  insert_folders_one(object: $input) {
+    id
+    name
+    description
+    color
+    icon
+    created_at
+  }
+}

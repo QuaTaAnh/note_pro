@@ -222,14 +222,17 @@ export type files_mutation_responseFieldPolicy = {
 	affected_rows?: FieldPolicy<any> | FieldReadFunction<any>,
 	returning?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type foldersKeySpecifier = ('blocks' | 'blocks_aggregate' | 'children' | 'children_aggregate' | 'created_at' | 'folder' | 'id' | 'name' | 'parent_id' | 'user' | 'user_id' | 'workspace' | 'workspace_id' | foldersKeySpecifier)[];
+export type foldersKeySpecifier = ('blocks' | 'blocks_aggregate' | 'children' | 'children_aggregate' | 'color' | 'created_at' | 'description' | 'folder' | 'icon' | 'id' | 'name' | 'parent_id' | 'user' | 'user_id' | 'workspace' | 'workspace_id' | foldersKeySpecifier)[];
 export type foldersFieldPolicy = {
 	blocks?: FieldPolicy<any> | FieldReadFunction<any>,
 	blocks_aggregate?: FieldPolicy<any> | FieldReadFunction<any>,
 	children?: FieldPolicy<any> | FieldReadFunction<any>,
 	children_aggregate?: FieldPolicy<any> | FieldReadFunction<any>,
+	color?: FieldPolicy<any> | FieldReadFunction<any>,
 	created_at?: FieldPolicy<any> | FieldReadFunction<any>,
+	description?: FieldPolicy<any> | FieldReadFunction<any>,
 	folder?: FieldPolicy<any> | FieldReadFunction<any>,
+	icon?: FieldPolicy<any> | FieldReadFunction<any>,
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
 	name?: FieldPolicy<any> | FieldReadFunction<any>,
 	parent_id?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -249,18 +252,24 @@ export type folders_aggregate_fieldsFieldPolicy = {
 	max?: FieldPolicy<any> | FieldReadFunction<any>,
 	min?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type folders_max_fieldsKeySpecifier = ('created_at' | 'id' | 'name' | 'parent_id' | 'user_id' | 'workspace_id' | folders_max_fieldsKeySpecifier)[];
+export type folders_max_fieldsKeySpecifier = ('color' | 'created_at' | 'description' | 'icon' | 'id' | 'name' | 'parent_id' | 'user_id' | 'workspace_id' | folders_max_fieldsKeySpecifier)[];
 export type folders_max_fieldsFieldPolicy = {
+	color?: FieldPolicy<any> | FieldReadFunction<any>,
 	created_at?: FieldPolicy<any> | FieldReadFunction<any>,
+	description?: FieldPolicy<any> | FieldReadFunction<any>,
+	icon?: FieldPolicy<any> | FieldReadFunction<any>,
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
 	name?: FieldPolicy<any> | FieldReadFunction<any>,
 	parent_id?: FieldPolicy<any> | FieldReadFunction<any>,
 	user_id?: FieldPolicy<any> | FieldReadFunction<any>,
 	workspace_id?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type folders_min_fieldsKeySpecifier = ('created_at' | 'id' | 'name' | 'parent_id' | 'user_id' | 'workspace_id' | folders_min_fieldsKeySpecifier)[];
+export type folders_min_fieldsKeySpecifier = ('color' | 'created_at' | 'description' | 'icon' | 'id' | 'name' | 'parent_id' | 'user_id' | 'workspace_id' | folders_min_fieldsKeySpecifier)[];
 export type folders_min_fieldsFieldPolicy = {
+	color?: FieldPolicy<any> | FieldReadFunction<any>,
 	created_at?: FieldPolicy<any> | FieldReadFunction<any>,
+	description?: FieldPolicy<any> | FieldReadFunction<any>,
+	icon?: FieldPolicy<any> | FieldReadFunction<any>,
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
 	name?: FieldPolicy<any> | FieldReadFunction<any>,
 	parent_id?: FieldPolicy<any> | FieldReadFunction<any>,

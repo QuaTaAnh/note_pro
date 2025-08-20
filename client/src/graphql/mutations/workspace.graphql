@@ -1,0 +1,6 @@
+mutation RenameWorkspace($id: uuid!, $name: String!) {
+  update_workspaces_by_pk(pk_columns: { id: $id }, _set: { name: $name }) {
+    id
+    name
+  }
+}

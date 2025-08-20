@@ -26,3 +26,33 @@ array_relationships:
         table:
           name: folders
           schema: public
+insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      columns:
+        - color
+        - description
+        - icon
+        - name
+        - created_at
+        - id
+        - parent_id
+        - user_id
+        - workspace_id
+    comment: ""
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - color
+        - description
+        - icon
+        - name
+        - created_at
+        - id
+        - parent_id
+        - user_id
+        - workspace_id
+      filter: {}
+    comment: ""

@@ -7,6 +7,7 @@ import { Separator } from "../ui/separator";
 import NewDocumentButton from "./Presentational/NewDocumentButton";
 import { SidebarButton } from "./Presentational/SidebarButton";
 import { WorkspaceButton } from "./Presentational/WorkspaceButton";
+import { FolderMenu } from "./Presentational/FolderMenu";
 interface Props {
   workspaceSlug: string;
 }
@@ -22,19 +23,23 @@ export default function Sidebar({ workspaceSlug }: Props) {
       )}
       style={{ width: isOpen ? SIDEBAR_WIDTH : 0 }}
     >
-      <div className="flex flex-col justify-center p-4 gap-2">
+      <div className="flex h-full flex-col p-4 gap-2">
         <NewDocumentButton />
         <Separator />
         <WorkspaceButton />
-
-        {MENU_ITEMS(workspaceSlug).map((item) => (
-          <SidebarButton
-            key={item.href}
-            icon={<item.icon className="w-4 h-4" />}
-            label={item.label}
-            href={item.href}
-          />
-        ))}
+        {/* Scrollable area starting from MENU_ITEMS */}
+        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain flex flex-col gap-2">
+          {MENU_ITEMS(workspaceSlug).map((item) => (
+            <SidebarButton
+              key={item.href}
+              icon={<item.icon className="w-4 h-4" />}
+              label={item.label}
+              href={item.href}
+            />
+          ))}
+          <Separator />
+          <FolderMenu />
+        </div>
       </div>
     </aside>
   );

@@ -1338,9 +1338,12 @@ export type Folders = {
   children: Array<Folders>;
   /** An aggregate relationship */
   children_aggregate: FoldersAggregate;
+  color?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
   /** An object relationship */
   folder?: Maybe<Folders>;
+  icon?: Maybe<Scalars['String']['output']>;
   id: Scalars['uuid']['output'];
   name: Scalars['String']['output'];
   parent_id?: Maybe<Scalars['uuid']['output']>;
@@ -1448,8 +1451,11 @@ export type FoldersBoolExp = {
   blocks_aggregate?: InputMaybe<BlocksAggregateBoolExp>;
   children?: InputMaybe<FoldersBoolExp>;
   children_aggregate?: InputMaybe<FoldersAggregateBoolExp>;
+  color?: InputMaybe<StringComparisonExp>;
   created_at?: InputMaybe<TimestamptzComparisonExp>;
+  description?: InputMaybe<StringComparisonExp>;
   folder?: InputMaybe<FoldersBoolExp>;
+  icon?: InputMaybe<StringComparisonExp>;
   id?: InputMaybe<UuidComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
   parent_id?: InputMaybe<UuidComparisonExp>;
@@ -1469,8 +1475,11 @@ export enum FoldersConstraint {
 export type FoldersInsertInput = {
   blocks?: InputMaybe<BlocksArrRelInsertInput>;
   children?: InputMaybe<FoldersArrRelInsertInput>;
+  color?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
   folder?: InputMaybe<FoldersObjRelInsertInput>;
+  icon?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   parent_id?: InputMaybe<Scalars['uuid']['input']>;
@@ -1483,7 +1492,10 @@ export type FoldersInsertInput = {
 /** aggregate max on columns */
 export type FoldersMaxFields = {
   __typename?: 'folders_max_fields';
+  color?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  icon?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   parent_id?: Maybe<Scalars['uuid']['output']>;
@@ -1493,7 +1505,10 @@ export type FoldersMaxFields = {
 
 /** order by max() on columns of table "folders" */
 export type FoldersMaxOrderBy = {
+  color?: InputMaybe<OrderBy>;
   created_at?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  icon?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   parent_id?: InputMaybe<OrderBy>;
@@ -1504,7 +1519,10 @@ export type FoldersMaxOrderBy = {
 /** aggregate min on columns */
 export type FoldersMinFields = {
   __typename?: 'folders_min_fields';
+  color?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  icon?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   parent_id?: Maybe<Scalars['uuid']['output']>;
@@ -1514,7 +1532,10 @@ export type FoldersMinFields = {
 
 /** order by min() on columns of table "folders" */
 export type FoldersMinOrderBy = {
+  color?: InputMaybe<OrderBy>;
   created_at?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  icon?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   parent_id?: InputMaybe<OrderBy>;
@@ -1549,8 +1570,11 @@ export type FoldersOnConflict = {
 export type FoldersOrderBy = {
   blocks_aggregate?: InputMaybe<BlocksAggregateOrderBy>;
   children_aggregate?: InputMaybe<FoldersAggregateOrderBy>;
+  color?: InputMaybe<OrderBy>;
   created_at?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
   folder?: InputMaybe<FoldersOrderBy>;
+  icon?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   parent_id?: InputMaybe<OrderBy>;
@@ -1568,7 +1592,13 @@ export type FoldersPkColumnsInput = {
 /** select columns of table "folders" */
 export enum FoldersSelectColumn {
   /** column name */
+  Color = 'color',
+  /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  Description = 'description',
+  /** column name */
+  Icon = 'icon',
   /** column name */
   Id = 'id',
   /** column name */
@@ -1583,7 +1613,10 @@ export enum FoldersSelectColumn {
 
 /** input type for updating data in table "folders" */
 export type FoldersSetInput = {
+  color?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  icon?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   parent_id?: InputMaybe<Scalars['uuid']['input']>;
@@ -1601,7 +1634,10 @@ export type FoldersStreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type FoldersStreamCursorValueInput = {
+  color?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  icon?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   parent_id?: InputMaybe<Scalars['uuid']['input']>;
@@ -1612,7 +1648,13 @@ export type FoldersStreamCursorValueInput = {
 /** update columns of table "folders" */
 export enum FoldersUpdateColumn {
   /** column name */
+  Color = 'color',
+  /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  Description = 'description',
+  /** column name */
+  Icon = 'icon',
   /** column name */
   Id = 'id',
   /** column name */

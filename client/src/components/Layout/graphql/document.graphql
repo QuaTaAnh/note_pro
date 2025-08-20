@@ -1,5 +1,0 @@
-mutation CreateUntitledPage($input: blocks_insert_input!) {
-  insert_blocks_one(object: $input) {
-    id
-  }
-}
