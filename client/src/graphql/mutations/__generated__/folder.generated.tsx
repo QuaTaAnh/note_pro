@@ -10,6 +10,14 @@ export type InsertFolderMutationVariables = Types.Exact<{
 
 export type InsertFolderMutation = { __typename?: 'mutation_root', insert_folders_one?: { __typename?: 'folders', id: string, name: string, description?: string | null, color?: string | null, icon?: string | null, created_at?: string | null } | null };
 
+export type MoveFolderMutationVariables = Types.Exact<{
+  id: Types.Scalars['uuid']['input'];
+  input: Types.FoldersSetInput;
+}>;
+
+
+export type MoveFolderMutation = { __typename?: 'mutation_root', update_folders_by_pk?: { __typename?: 'folders', id: string, parent_id?: string | null } | null };
+
 
 export const InsertFolderDocument = gql`
     mutation InsertFolder($input: folders_insert_input!) {
@@ -49,3 +57,38 @@ export function useInsertFolderMutation(baseOptions?: Apollo.MutationHookOptions
 export type InsertFolderMutationHookResult = ReturnType<typeof useInsertFolderMutation>;
 export type InsertFolderMutationResult = Apollo.MutationResult<InsertFolderMutation>;
 export type InsertFolderMutationOptions = Apollo.BaseMutationOptions<InsertFolderMutation, InsertFolderMutationVariables>;
+export const MoveFolderDocument = gql`
+    mutation MoveFolder($id: uuid!, $input: folders_set_input!) {
+  update_folders_by_pk(pk_columns: {id: $id}, _set: $input) {
+    id
+    parent_id
+  }
+}
+    `;
+export type MoveFolderMutationFn = Apollo.MutationFunction<MoveFolderMutation, MoveFolderMutationVariables>;
+
+/**
+ * __useMoveFolderMutation__
+ *
+ * To run a mutation, you first call `useMoveFolderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMoveFolderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [moveFolderMutation, { data, loading, error }] = useMoveFolderMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useMoveFolderMutation(baseOptions?: Apollo.MutationHookOptions<MoveFolderMutation, MoveFolderMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<MoveFolderMutation, MoveFolderMutationVariables>(MoveFolderDocument, options);
+      }
+export type MoveFolderMutationHookResult = ReturnType<typeof useMoveFolderMutation>;
+export type MoveFolderMutationResult = Apollo.MutationResult<MoveFolderMutation>;
+export type MoveFolderMutationOptions = Apollo.BaseMutationOptions<MoveFolderMutation, MoveFolderMutationVariables>;

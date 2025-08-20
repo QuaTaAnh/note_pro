@@ -8,3 +8,10 @@ mutation InsertFolder($input: folders_insert_input!) {
     created_at
   }
 }
+
+mutation MoveFolder($id: uuid!, $input: folders_set_input!) {
+  update_folders_by_pk(pk_columns: { id: $id }, _set: $input) {
+    id
+    parent_id
+  }
+}

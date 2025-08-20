@@ -56,3 +56,19 @@ select_permissions:
         - workspace_id
       filter: {}
     comment: ""
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - color
+        - description
+        - icon
+        - name
+        - created_at
+        - id
+        - parent_id
+        - user_id
+        - workspace_id
+      filter: {}
+      check: null
+    comment: ""
