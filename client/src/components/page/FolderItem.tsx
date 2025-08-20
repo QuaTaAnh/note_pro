@@ -30,7 +30,7 @@ export const FolderItem: React.FC<{
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-1">
       <div className="flex items-center">
         {hasChildren ? (
           <Button
