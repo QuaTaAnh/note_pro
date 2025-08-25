@@ -9,3 +9,35 @@ mutation CreateUntitledPage($input: blocks_insert_input!) {
     id
   }
 }
+
+mutation CreateBlock($input: blocks_insert_input!) {
+  insert_blocks_one(object: $input) {
+    id
+    content
+    position
+    parent_id
+    page_id
+    type
+    created_at
+    updated_at
+  }
+}
+
+mutation UpdateBlock($id: uuid!, $input: blocks_set_input!) {
+  update_blocks_by_pk(pk_columns: { id: $id }, _set: $input) {
+    id
+    content
+    position
+    parent_id
+    page_id
+    type
+    created_at
+    updated_at
+  }
+}
+
+mutation DeleteBlock($id: uuid!) {
+  delete_blocks_by_pk(id: $id) {
+    id
+  }
+}
