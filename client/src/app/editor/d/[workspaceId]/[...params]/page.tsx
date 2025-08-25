@@ -4,6 +4,7 @@ import { LayoutEditor } from "@/components/LayoutEditor/LayoutEditor";
 import { LeftSidebar } from "@/components/LayoutEditor/LeftSidebar";
 import { useGetDocumentByIdQuery } from "@/graphql/queries/__generated__/document.generated";
 import { useParams } from "next/navigation";
+import BlockEditor from "@/components/BlockEditor";
 
 export default function EditorPage() {
   const { params } = useParams();
@@ -26,7 +27,7 @@ export default function EditorPage() {
       }
       right={<div>rightSidebar</div>}
     >
-      <div>main</div>
+      {documentId && <BlockEditor pageId={documentId} className="w-full" />}
     </LayoutEditor>
   );
 }

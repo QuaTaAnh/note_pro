@@ -30,3 +30,22 @@ query GetDocumentById($id: uuid!) {
     updated_at
   }
 }
+
+query GetDocumentBlocks($pageId: uuid!) {
+  blocks(
+    where: {
+      _or: [{ id: { _eq: $pageId } }, { page_id: { _eq: $pageId } }]
+      deleted_at: { _is_null: true }
+    }
+    order_by: { position: asc }
+  ) {
+    id
+    content
+    position
+    parent_id
+    page_id
+    type
+    created_at
+    updated_at
+  }
+}
