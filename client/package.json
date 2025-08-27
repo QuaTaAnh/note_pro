@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "type-check": "tsc --noEmit",
     "gql-gen": "npm run gql-gen:app && npm run gql-gen:validate",
     "gql-gen:app": "graphql-codegen --config graphql.config.ts",
     "gql-gen:validate": "tsc --noEmit --project tsconfig.json"
@@ -41,7 +43,9 @@
     "react-dom": "19.1.0",
     "react-icons": "^5.5.0",
     "slugify": "^1.6.6",
-    "sonner": "^2.0.7"
+    "sonner": "^2.0.7",
+    "tailwind-merge": "^3.3.1",
+    "use-debounce": "^10.0.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

@@ -1,16 +1,16 @@
-import React from "react";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { CgMoreO } from "react-icons/cg";
-import { FiTrash } from "react-icons/fi";
 import { useSoftDeleteDocumentMutation } from "@/graphql/mutations/__generated__/document.generated";
 import showToast from "@/lib/toast";
-import { removeBlockFromCache } from "@/cache/removeBlockFromCache";
+import type { Reference } from "@apollo/client";
+import React from "react";
+import { CgMoreO } from "react-icons/cg";
+import { FiTrash } from "react-icons/fi";
 
 interface Props {
   documentId: string;
@@ -33,7 +33,19 @@ export const DocumentMoreMenu = ({ documentId }: Props) => {
           },
         },
         update: (cache) => {
-          removeBlockFromCache(cache, documentId);
+          cache.modify({
+            fields: {
+              blocks(existingRefs: readonly Reference[] = [], { readField }) {
+                return existingRefs.filter(
+                  (ref) => readField("id", ref) !== documentId
+                );
+              },
+            },
+          });
+          cache.evict({
+            id: cache.identify({ __typename: "blocks", id: documentId }),
+          });
+          cache.gc();
         },
       });
       showToast.success("Successfully deleted document");

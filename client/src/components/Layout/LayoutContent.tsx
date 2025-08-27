@@ -3,8 +3,7 @@
 import AuthGuard from "@/components/auth/AuthGuard";
 import { PageLoading } from "@/components/ui/loading";
 import { SidebarProvider, useSidebar } from "@/context/SidebarContext";
-import { useWorkspace } from "@/hooks/use-workspace";
-import { useBinCraftTitle } from "@/hooks/useBinCraftTitle";
+import { useBinCraftTitle, useWorkspace } from "@/hooks";
 import { ROUTES } from "@/lib/routes";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";

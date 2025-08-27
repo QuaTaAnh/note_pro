@@ -88,7 +88,7 @@ export const NewFolderButton = () => {
         color: FolderColor.WHITE,
         icon: "folder",
       });
-    } catch (error) {
+    } catch {
       showToast.error("Failed to create folder");
     }
   };

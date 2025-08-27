@@ -26,20 +26,18 @@ export function LoadingExamples() {
 
   const handleWithLoading = async () => {
     try {
-      const result = await withLoading(() => simulateAsyncOperation());
-      showToast.success(result);
-    } catch (error) {
+      await withLoading(() => simulateAsyncOperation());
+      showToast.success("Operation completed successfully");
+    } catch {
       showToast.error("Operation failed");
     }
   };
 
   const handleMultipleLoading = async (key: string) => {
     try {
-      const result = await multipleLoading.withLoading(key, () =>
-        simulateAsyncOperation()
-      );
+      await multipleLoading.withLoading(key, () => simulateAsyncOperation());
       showToast.success(`${key} completed!`);
-    } catch (error) {
+    } catch {
       showToast.error(`${key} failed`);
     }
   };

@@ -1,4 +1,4 @@
-import { useAutoResize } from "@/hooks/useAutoResize";
+import { useAutoResize } from "@/hooks";
 import React from "react";
 
 interface Props {
