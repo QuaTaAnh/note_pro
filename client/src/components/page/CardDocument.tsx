@@ -46,8 +46,8 @@ export const CardDocument = ({ document }: { document: Document }) => {
     >
       <CardHeader className="flex flex-col p-4">
         <div className="flex justify-between items-start">
-          <div>
-            <CardTitle className="text-sm">
+          <div className="flex-1 min-w-0">
+            <CardTitle className="text-sm truncate">
               {document.content?.title || "Untitled"}
             </CardTitle>
             <CardDescription className="text-xs">
