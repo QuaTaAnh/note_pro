@@ -45,7 +45,7 @@ export const CardDocument = ({ document }: { document: Document }) => {
       onClick={handleClick}
     >
       <CardHeader className="flex flex-col p-4">
-        <div className="flex justify-between items-start">
+        <div className="flex justify-between items-start gap-2">
           <div className="flex-1 min-w-0">
             <CardTitle className="text-sm truncate">
               {document.content?.title || "Untitled"}
