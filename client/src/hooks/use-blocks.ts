@@ -1,20 +1,12 @@
 "use client";
 
-import { useCreateBlockMutation, useUpdateBlockMutation, useDeleteBlockMutation } from "@/graphql/mutations/__generated__/document.generated";
+import { useCreateBlockMutation, useDeleteBlockMutation, useUpdateBlockMutation } from "@/graphql/mutations/__generated__/document.generated";
+import { GetDocumentBlocksQuery } from "@/graphql/queries/__generated__/document.generated";
 import { useUserId } from "@/hooks/use-auth";
 import { useWorkspace } from "@/hooks/use-workspace";
 import { useState } from "react";
 
-export interface Block {
-  id: string;
-  content: Record<string, unknown>;
-  position: number;
-  parent_id?: string;
-  page_id?: string;
-  type: string;
-  created_at: string;
-  updated_at: string;
-}
+export type Block = GetDocumentBlocksQuery["blocks"][number];
 
 export interface CreateBlockInput {
   type: string;

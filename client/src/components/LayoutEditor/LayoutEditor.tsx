@@ -14,17 +14,20 @@ export const LayoutEditor: React.FC<LayoutEditorProps> = ({
   right,
 }) => {
   const { isOpen, isRightOpen } = useSidebar();
+
   return (
-    <div className="w-full h-full flex flex-row">
+    <div className="w-full h-screen flex flex-row">
       <div
-        className="px-2 transition-all duration-300"
+        className="px-2 transition-all duration-300 flex-shrink-0 overflow-hidden"
         style={{ width: isOpen ? SIDEBAR_WIDTH : 0 }}
       >
         {isOpen ? left : null}
       </div>
-      <div className="flex-1 p-4 shadow-y mb-4 rounded-lg">{children}</div>
+      <div className="flex-1 p-4 shadow-y rounded-lg overflow-y-auto">
+        {children}
+      </div>
       <div
-        className="px-2 transition-all duration-300"
+        className="px-2 transition-all duration-300 flex-shrink-0 overflow-hidden"
         style={{ width: isRightOpen ? SIDEBAR_WIDTH : 0 }}
       >
         {isRightOpen ? right : null}

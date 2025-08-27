@@ -17,20 +17,6 @@ query GetAllDocs($workspaceId: uuid!, $limit: Int!, $offset: Int!) {
   }
 }
 
-query GetDocumentById($id: uuid!) {
-  blocks(where: { id: { _eq: $id }, deleted_at: { _is_null: true } }) {
-    id
-    type
-    content
-    parent_id
-    page_id
-    workspace_id
-    folder_id
-    created_at
-    updated_at
-  }
-}
-
 query GetDocumentBlocks($pageId: uuid!) {
   blocks(
     where: {

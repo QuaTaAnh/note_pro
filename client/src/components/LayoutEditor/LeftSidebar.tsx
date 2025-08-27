@@ -3,21 +3,20 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { formatDate } from "@/lib/utils";
 
 interface Props {
-  documentName: string | undefined;
-  createdAt: string | undefined | null;
+  documentId: string | undefined;
 }
 
-export const LeftSidebar = ({ documentName, createdAt }: Props) => {
+export const LeftSidebar = ({ documentId }: Props) => {
   return (
     <div className="h-full flex flex-col">
       <div className="p-2 bg-sidebar-header">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-green-500"></div>
-            <h2 className="text-xs font-medium">{documentName}</h2>
+            <h2 className="text-xs font-medium">{documentId}</h2>
           </div>
           <span className="text-xs">
-            {formatDate(createdAt || "", { relative: true })}
+            {formatDate(new Date(), { relative: true })}
           </span>
         </div>
 
