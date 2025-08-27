@@ -33,6 +33,8 @@ export default function NewDocumentButton() {
               title: "Untitled Page",
             },
             position: 0,
+            parent_id: null,
+            page_id: null,
           },
         },
       });

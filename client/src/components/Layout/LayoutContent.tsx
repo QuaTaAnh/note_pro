@@ -33,7 +33,11 @@ function LayoutMain({ children }: { children: React.ReactNode }) {
     <>{children}</>
   ) : (
     <AuthGuard>
-      <div className="min-h-screen flex flex-col">
+      <div
+        className={`${
+          editorPage ? "h-screen" : "min-h-screen"
+        } flex flex-col overflow-hidden`}
+      >
         {loading ? (
           <PageLoading />
         ) : (

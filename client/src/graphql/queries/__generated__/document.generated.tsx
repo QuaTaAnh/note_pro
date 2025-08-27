@@ -12,12 +12,12 @@ export type GetAllDocsQueryVariables = Types.Exact<{
 
 export type GetAllDocsQuery = { __typename?: 'query_root', blocks: Array<{ __typename?: 'blocks', id: string, content?: any | null, created_at?: string | null, updated_at?: string | null, folder_id?: string | null }> };
 
-export type GetDocumentByIdQueryVariables = Types.Exact<{
-  id: Types.Scalars['uuid']['input'];
+export type GetDocumentBlocksQueryVariables = Types.Exact<{
+  pageId: Types.Scalars['uuid']['input'];
 }>;
 
 
-export type GetDocumentByIdQuery = { __typename?: 'query_root', blocks: Array<{ __typename?: 'blocks', id: string, type: string, content?: any | null, parent_id?: string | null, page_id?: string | null, workspace_id?: string | null, folder_id?: string | null, created_at?: string | null, updated_at?: string | null }> };
+export type GetDocumentBlocksQuery = { __typename?: 'query_root', blocks: Array<{ __typename?: 'blocks', id: string, content?: any | null, position?: number | null, parent_id?: string | null, page_id?: string | null, type: string, created_at?: string | null, updated_at?: string | null }> };
 
 
 export const GetAllDocsDocument = gql`
@@ -71,16 +71,18 @@ export type GetAllDocsQueryHookResult = ReturnType<typeof useGetAllDocsQuery>;
 export type GetAllDocsLazyQueryHookResult = ReturnType<typeof useGetAllDocsLazyQuery>;
 export type GetAllDocsSuspenseQueryHookResult = ReturnType<typeof useGetAllDocsSuspenseQuery>;
 export type GetAllDocsQueryResult = Apollo.QueryResult<GetAllDocsQuery, GetAllDocsQueryVariables>;
-export const GetDocumentByIdDocument = gql`
-    query GetDocumentById($id: uuid!) {
-  blocks(where: {id: {_eq: $id}, deleted_at: {_is_null: true}}) {
+export const GetDocumentBlocksDocument = gql`
+    query GetDocumentBlocks($pageId: uuid!) {
+  blocks(
+    where: {_or: [{id: {_eq: $pageId}}, {page_id: {_eq: $pageId}}], deleted_at: {_is_null: true}}
+    order_by: {position: asc}
+  ) {
     id
-    type
     content
+    position
     parent_id
     page_id
-    workspace_id
-    folder_id
+    type
     created_at
     updated_at
   }
@@ -88,34 +90,34 @@ export const GetDocumentByIdDocument = gql`
     `;
 
 /**
- * __useGetDocumentByIdQuery__
+ * __useGetDocumentBlocksQuery__
  *
- * To run a query within a React component, call `useGetDocumentByIdQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetDocumentByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetDocumentBlocksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetDocumentBlocksQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetDocumentByIdQuery({
+ * const { data, loading, error } = useGetDocumentBlocksQuery({
  *   variables: {
- *      id: // value for 'id'
+ *      pageId: // value for 'pageId'
  *   },
  * });
  */
-export function useGetDocumentByIdQuery(baseOptions: Apollo.QueryHookOptions<GetDocumentByIdQuery, GetDocumentByIdQueryVariables> & ({ variables: GetDocumentByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useGetDocumentBlocksQuery(baseOptions: Apollo.QueryHookOptions<GetDocumentBlocksQuery, GetDocumentBlocksQueryVariables> & ({ variables: GetDocumentBlocksQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetDocumentByIdQuery, GetDocumentByIdQueryVariables>(GetDocumentByIdDocument, options);
+        return Apollo.useQuery<GetDocumentBlocksQuery, GetDocumentBlocksQueryVariables>(GetDocumentBlocksDocument, options);
       }
-export function useGetDocumentByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetDocumentByIdQuery, GetDocumentByIdQueryVariables>) {
+export function useGetDocumentBlocksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetDocumentBlocksQuery, GetDocumentBlocksQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetDocumentByIdQuery, GetDocumentByIdQueryVariables>(GetDocumentByIdDocument, options);
+          return Apollo.useLazyQuery<GetDocumentBlocksQuery, GetDocumentBlocksQueryVariables>(GetDocumentBlocksDocument, options);
         }
-export function useGetDocumentByIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetDocumentByIdQuery, GetDocumentByIdQueryVariables>) {
+export function useGetDocumentBlocksSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetDocumentBlocksQuery, GetDocumentBlocksQueryVariables>) {
           const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetDocumentByIdQuery, GetDocumentByIdQueryVariables>(GetDocumentByIdDocument, options);
+          return Apollo.useSuspenseQuery<GetDocumentBlocksQuery, GetDocumentBlocksQueryVariables>(GetDocumentBlocksDocument, options);
         }
-export type GetDocumentByIdQueryHookResult = ReturnType<typeof useGetDocumentByIdQuery>;
-export type GetDocumentByIdLazyQueryHookResult = ReturnType<typeof useGetDocumentByIdLazyQuery>;
-export type GetDocumentByIdSuspenseQueryHookResult = ReturnType<typeof useGetDocumentByIdSuspenseQuery>;
-export type GetDocumentByIdQueryResult = Apollo.QueryResult<GetDocumentByIdQuery, GetDocumentByIdQueryVariables>;
+export type GetDocumentBlocksQueryHookResult = ReturnType<typeof useGetDocumentBlocksQuery>;
+export type GetDocumentBlocksLazyQueryHookResult = ReturnType<typeof useGetDocumentBlocksLazyQuery>;
+export type GetDocumentBlocksSuspenseQueryHookResult = ReturnType<typeof useGetDocumentBlocksSuspenseQuery>;
+export type GetDocumentBlocksQueryResult = Apollo.QueryResult<GetDocumentBlocksQuery, GetDocumentBlocksQueryVariables>;
