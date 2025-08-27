@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Document } from "@/app/types";
+import { Document } from "@/types/app";
 import { useRouter } from "next/navigation";
 import { useWorkspace } from "@/hooks/use-workspace";
 import { ROUTES } from "@/lib/routes";

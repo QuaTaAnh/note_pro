@@ -1,6 +1,6 @@
 "use client";
 
-import { Document } from "@/app/types";
+import { Document } from "@/types/app";
 import { CardDocument } from "@/components/page/CardDocument";
 import { DocCardSkeleton } from "@/components/page/DocCardSkeleton";
 import { PageLoading } from "@/components/ui/loading";

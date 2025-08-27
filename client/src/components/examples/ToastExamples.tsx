@@ -42,11 +42,13 @@ export function ToastExamples() {
   };
 
   const handlePromiseToast = () => {
-    const simulateAsync = new Promise((resolve, reject) => {
+    const simulateAsync = new Promise<string>((resolve, reject) => {
       setTimeout(() => {
-        Math.random() > 0.5
-          ? resolve("Success!")
-          : reject(new Error("Failed!"));
+        if (Math.random() > 0.5) {
+          resolve("Success!");
+        } else {
+          reject(new Error("Failed!"));
+        }
       }, 2000);
     });
 

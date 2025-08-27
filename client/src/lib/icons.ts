@@ -22,7 +22,6 @@ import {
     FiPhone,
   } from "react-icons/fi";
   import {
-    Folder,
     FolderOpen,
     Archive,
     Bookmark,

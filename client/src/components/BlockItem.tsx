@@ -1,5 +1,5 @@
 import { Block } from "@/hooks/use-blocks";
-import { useAutoResize } from "@/hooks/useAutoResize";
+import { useAutoResize } from "@/hooks";
 import { Heading1, List, Plus, Trash2, Type } from "lucide-react";
 import React from "react";
 

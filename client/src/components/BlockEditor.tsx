@@ -1,8 +1,8 @@
 "use client";
 
 import { useGetDocumentBlocksQuery } from "@/graphql/queries/__generated__/document.generated";
+import { useDebounce } from "@/hooks";
 import { Block, useBlocks } from "@/hooks/use-blocks";
-import { useDebounce } from "@/hooks/use-debounce";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { BlockItem } from "./BlockItem";

@@ -3,11 +3,7 @@ import { iconMap } from "@/lib/icons";
 import { ROUTES } from "@/lib/routes";
 import { FolderColor } from "@/types/types";
 import { useState } from "react";
-import {
-  FiChevronDown,
-  FiChevronRight,
-  FiMoreHorizontal,
-} from "react-icons/fi";
+import { FiChevronDown, FiChevronRight } from "react-icons/fi";
 import { SidebarButton } from "../Layout/Presentational/SidebarButton";
 import { Button } from "../ui/button";
 
