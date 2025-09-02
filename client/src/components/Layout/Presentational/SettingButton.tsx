@@ -6,17 +6,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ROUTES } from "@/lib/routes";
 import { LogOut } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { MdEmojiObjects } from "react-icons/md";
 import { useLogout } from "@/hooks/use-logout";
 import Image from "next/image";
 
 export const SettingButton = () => {
   const { data: session } = useSession();
-  const router = useRouter();
   const { logout, isLoggingOut } = useLogout();
 
   return (
@@ -50,10 +46,6 @@ export const SettingButton = () => {
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => router.push(ROUTES.DEMO)}>
-            <MdEmojiObjects />
-            Demo
-          </DropdownMenuItem>
           <DropdownMenuItem onClick={logout} disabled={isLoggingOut}>
             <LogOut />
             Logout

@@ -6,7 +6,7 @@ import { Block, useBlocks } from "@/hooks/use-blocks";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { BlockItem } from "./BlockItem";
-import { TitleTextarea } from "./TitleTextarea";
+import { Textarea } from "./Textarea";
 import { PageLoading } from "./ui/loading";
 
 interface Props {
@@ -130,7 +130,8 @@ export default function BlockEditor({ pageId, className = "" }: Props) {
   ) : (
     <div className={`notion-like-editor max-w-5xl mx-auto ${className}`}>
       <div className="mb-8">
-        <TitleTextarea
+        <Textarea
+          isTitleDocument
           value={localContent[rootBlock.id] || ""}
           onChange={(value) => {
             setLocalContent((prev) => ({ ...prev, [rootBlock.id]: value }));
@@ -145,14 +146,12 @@ export default function BlockEditor({ pageId, className = "" }: Props) {
         {blocks.map((block) => (
           <BlockItem
             key={block.id}
-            block={block}
             value={localContent[block.id] || ""}
             isFocused={focusedBlock === block.id}
             onFocus={() => setFocusedBlock(block.id)}
             onBlur={() => setFocusedBlock(null)}
             onUpdate={(content) => handleUpdateBlock(block.id, content)}
             onDelete={() => handleDeleteBlock(block.id)}
-            onAddBlock={(type) => handleAddBlock(block.position || 0, type)}
             onKeyDown={(e) => handleKeyDown(e, block.id, block.position || 0)}
             canDelete={blocks.length > 1}
           />
