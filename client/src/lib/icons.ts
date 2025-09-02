@@ -38,7 +38,6 @@ import {
     Zap,
   } from "lucide-react";
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   export const iconMap: Record<string, React.ComponentType<any>> = {
     folder: FiFolder,
     home: FiHome,
