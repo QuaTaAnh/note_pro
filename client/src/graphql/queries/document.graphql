@@ -13,7 +13,10 @@ query GetAllDocs($workspaceId: uuid!, $limit: Int!, $offset: Int!) {
     content
     created_at
     updated_at
-    folder_id
+    folder {
+      id
+      name
+    }
   }
 }
 

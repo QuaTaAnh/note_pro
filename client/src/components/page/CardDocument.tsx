@@ -15,6 +15,7 @@ import { Document } from "@/types/app";
 import { useRouter } from "next/navigation";
 import { useWorkspace } from "@/hooks/use-workspace";
 import { ROUTES } from "@/lib/routes";
+import { Folder } from "lucide-react";
 
 export const CardDocument = ({ document }: { document: Document }) => {
   const router = useRouter();
@@ -25,11 +26,11 @@ export const CardDocument = ({ document }: { document: Document }) => {
     if (!workspace?.id) {
       return;
     }
-    if (document.folder_id) {
+    if (document.folder?.id) {
       router.push(
         ROUTES.WORKSPACE_DOCUMENT_FOLDER(
           workspace.id,
-          document.folder_id,
+          document.folder.id,
           document.id
         )
       );
@@ -50,9 +51,17 @@ export const CardDocument = ({ document }: { document: Document }) => {
             <CardTitle className="text-sm truncate">
               {document.content?.title || "Untitled"}
             </CardTitle>
-            <CardDescription className="text-xs">
-              Updated{" "}
-              {formatDate(document?.updated_at || "", { relative: true })}
+            <CardDescription className="text-xs flex items-center gap-1 whitespace-nowrap overflow-hidden text-ellipsis">
+              {document.folder?.name && (
+                <div className="flex items-center gap-1 shrink-0">
+                  <Folder className="w-3 h-3" />
+                  <span className="truncate">{document.folder?.name} •</span>
+                </div>
+              )}
+              <div className="truncate">
+                Updated{" "}
+                {formatDate(document?.updated_at || "", { relative: true })}
+              </div>
             </CardDescription>
           </div>
           <DocumentMoreMenu documentId={document.id} />
