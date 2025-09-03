@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
-import { FolderColor } from "@/types/types";
 import { COLORS } from "@/consts";
+import { FolderColor } from "@/types/types";
 
 interface ColorPickerProps {
   selectedColor: string;
@@ -14,8 +14,8 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
   onColorChange,
 }) => {
   useEffect(() => {
-    if (!selectedColor) {
-      onColorChange(COLORS[0].value);
+    if (!selectedColor || selectedColor.trim() === "") {
+      onColorChange(FolderColor.WHITE);
     }
   }, [selectedColor, onColorChange]);
 
@@ -32,12 +32,12 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
             onClick={() => onColorChange(color.value)}
             className={cn(
               "relative w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all duration-200",
-              color.className,
               isSelected
                 ? "border-primary ring-2 ring-primary scale-110 shadow-md"
                 : "border-muted hover:scale-105 hover:shadow"
             )}
             style={{
+              backgroundColor: color.hexColor,
               borderColor: isWhite ? "rgba(120,120,120,0.6)" : undefined,
             }}
             title={color.name}
