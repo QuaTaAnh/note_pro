@@ -1,8 +1,8 @@
 "use client";
 
-import BlockEditor from "@/components/BlockEditor";
 import { LayoutEditor } from "@/components/LayoutEditor/LayoutEditor";
 import { LeftSidebar } from "@/components/LayoutEditor/LeftSidebar";
+import TiptapBlockEditor from "@/components/TiptapBlockEditor";
 import { useParams } from "next/navigation";
 
 export default function EditorPage() {
@@ -14,7 +14,9 @@ export default function EditorPage() {
       left={<LeftSidebar documentId={documentId} />}
       right={<div>rightSidebar</div>}
     >
-      {documentId && <BlockEditor pageId={documentId} className="w-full" />}
+      {documentId && (
+        <TiptapBlockEditor pageId={documentId} className="w-full" />
+      )}
     </LayoutEditor>
   );
 }

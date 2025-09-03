@@ -131,7 +131,7 @@ export const WorkspaceButton = () => {
           <DialogFooter>
             <Button
               onClick={handleSave}
-              className="w-full bg-primary hover:bg-primary-hover font-medium"
+              className="w-full h-9 bg-primary-button hover:bg-primary-buttonHover font-medium"
               disabled={
                 !tempName.trim() || tempName === data?.workspaces_by_pk?.name
               }

@@ -1,8 +1,7 @@
 "use client";
 
-import { formatDate } from "@/lib/utils";
-import React from "react";
 import { DocumentMoreMenu } from "@/components/page/DocumentMoreMenu";
+import { SimpleTooltip } from "@/components/page/SimpleTooltip";
 import {
   Card,
   CardContent,
@@ -11,25 +10,46 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Document } from "@/types/app";
-import { useRouter } from "next/navigation";
 import { useWorkspace } from "@/hooks/use-workspace";
 import { ROUTES } from "@/lib/routes";
+import { formatDate } from "@/lib/utils";
+import { Document } from "@/types/app";
+import { Folder } from "lucide-react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useRef, useState } from "react";
 
 export const CardDocument = ({ document }: { document: Document }) => {
   const router = useRouter();
   const { workspace } = useWorkspace();
+
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const updatedRef = useRef<HTMLSpanElement>(null);
+  const [isTitleTruncated, setIsTitleTruncated] = useState(false);
+  const [isUpdatedTruncated, setIsUpdatedTruncated] = useState(false);
+
+  useEffect(() => {
+    if (titleRef.current) {
+      setIsTitleTruncated(
+        titleRef.current.scrollWidth > titleRef.current.clientWidth
+      );
+    }
+    if (updatedRef.current) {
+      setIsUpdatedTruncated(
+        updatedRef.current.scrollWidth > updatedRef.current.clientWidth
+      );
+    }
+  }, [document.content?.title, document.updated_at, document.folder?.name]);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     if (!workspace?.id) {
       return;
     }
-    if (document.folder_id) {
+    if (document.folder?.id) {
       router.push(
         ROUTES.WORKSPACE_DOCUMENT_FOLDER(
           workspace.id,
-          document.folder_id,
+          document.folder.id,
           document.id
         )
       );
@@ -38,21 +58,56 @@ export const CardDocument = ({ document }: { document: Document }) => {
     }
   };
 
+  const titleContent = (
+    <CardTitle ref={titleRef} className="text-sm truncate">
+      {document.content?.title || "Untitled"}
+    </CardTitle>
+  );
+
+  const updatedContent = (
+    <span ref={updatedRef} className="truncate">
+      Updated {formatDate(document?.updated_at || "", { relative: true })}
+    </span>
+  );
+
   return (
     <Card
       key={document.id}
-      className="group relative cursor-pointer transition min-h-[346px] md:min-w-[240px] shadow-sm hover:shadow-lg hover:shadow-black/30 dark:shadow-sm dark:hover:shadow-white/30"
+      className="group relative cursor-pointer transition min-h-[300px] w-full shadow-sm hover:shadow-lg hover:shadow-black/30 dark:shadow-sm dark:hover:shadow-white/30"
       onClick={handleClick}
     >
       <CardHeader className="flex flex-col p-4">
         <div className="flex justify-between items-start gap-2">
           <div className="flex-1 min-w-0">
-            <CardTitle className="text-sm truncate">
-              {document.content?.title || "Untitled"}
-            </CardTitle>
-            <CardDescription className="text-xs">
-              Updated{" "}
-              {formatDate(document?.updated_at || "", { relative: true })}
+            {isTitleTruncated ? (
+              <SimpleTooltip
+                title={document.content?.title || "Untitled"}
+                side="top"
+              >
+                {titleContent}
+              </SimpleTooltip>
+            ) : (
+              titleContent
+            )}
+            <CardDescription className="text-xs flex items-center gap-1 whitespace-nowrap overflow-hidden text-ellipsis">
+              {document.folder?.name && (
+                <span className="flex items-center gap-1 shrink-0">
+                  <Folder className="w-3 h-3" />
+                  <span className="truncate">{document.folder?.name} •</span>
+                </span>
+              )}
+              {isUpdatedTruncated ? (
+                <SimpleTooltip
+                  title={`Updated ${formatDate(document?.updated_at || "", {
+                    relative: false,
+                  })}`}
+                  side="top"
+                >
+                  {updatedContent}
+                </SimpleTooltip>
+              ) : (
+                updatedContent
+              )}
             </CardDescription>
           </div>
           <DocumentMoreMenu documentId={document.id} />

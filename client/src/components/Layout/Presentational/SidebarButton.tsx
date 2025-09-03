@@ -53,7 +53,9 @@ export function SidebarButton({
       <div className="w-5 h-5 flex items-center justify-center shrink-0">
         {icon}
       </div>
-      <span>{isLoading && loadingText ? loadingText : label}</span>
+      <span className="truncate text-ellipsis overflow-hidden">
+        {isLoading && loadingText ? loadingText : label}
+      </span>
     </>
   );
 
