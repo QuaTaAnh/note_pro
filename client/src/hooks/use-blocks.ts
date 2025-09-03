@@ -37,6 +37,18 @@ export function useBlocks() {
             user_id: userId,
           },
         },
+        update: (cache, { data }) => {
+          const newBlock = data?.insert_blocks_one;
+          if (!newBlock) return;
+
+          cache.modify({
+            fields: {
+              blocks(existingBlocks = []) {
+                return [...existingBlocks, newBlock];
+              }
+            }
+          });
+        }
       });
 
       const result = res.data?.insert_blocks_one;
@@ -71,6 +83,37 @@ export function useBlocks() {
             updated_at: new Date().toISOString(),
           },
         },
+        update: (cache, { data }) => {
+          const updatedBlock = data?.update_blocks_by_pk;
+          if (!updatedBlock) return;
+
+          // Update the specific block in cache
+          cache.modify({
+            id: cache.identify({ __typename: 'blocks', id }),
+            fields: {
+              content: () => updatedBlock.content,
+              updated_at: () => updatedBlock.updated_at,
+            }
+          });
+
+          // Also update the blocks array in the query to ensure consistency
+          cache.modify({
+            fields: {
+              blocks(existingBlocks = []) {
+                return existingBlocks.map((block: any) => {
+                  if (block.id === id) {
+                    return {
+                      ...block,
+                      content: updatedBlock.content,
+                      updated_at: updatedBlock.updated_at,
+                    };
+                  }
+                  return block;
+                });
+              }
+            }
+          });
+        }
       });
 
       const result = res.data?.update_blocks_by_pk;
@@ -105,6 +148,18 @@ export function useBlocks() {
             updated_at: new Date().toISOString(),
           },
         },
+        update: (cache, { data }) => {
+          const updatedBlock = data?.update_blocks_by_pk;
+          if (!updatedBlock) return;
+
+          cache.modify({
+            id: cache.identify({ __typename: 'blocks', id }),
+            fields: {
+              position: () => updatedBlock.position,
+              updated_at: () => updatedBlock.updated_at,
+            }
+          });
+        }
       });
 
       const result = res.data?.update_blocks_by_pk;
@@ -133,6 +188,10 @@ export function useBlocks() {
       setIsLoading(true);
       await deleteBlock({
         variables: { id },
+        update: (cache) => {
+          cache.evict({ id: cache.identify({ __typename: 'blocks', id }) });
+          cache.gc();
+        }
       });
       return true;
     } catch (error) {

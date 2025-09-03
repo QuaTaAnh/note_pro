@@ -1,14 +1,25 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 export const useAutoResize = (value: string) => {
-    const textareaRef = useRef<HTMLTextAreaElement>(null);
-  
-    useEffect(() => {
-      if (textareaRef.current) {
-        textareaRef.current.style.height = "auto";
-        textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-      }
-    }, [value]);
-  
-    return textareaRef;
-  };
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Memoize the resize function to prevent unnecessary re-creation
+  const resizeTextarea = useCallback(() => {
+    if (textareaRef.current) {
+      const textarea = textareaRef.current;
+      textarea.style.height = "auto";
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    }
+  }, []);
+
+  useEffect(() => {
+    // Use requestAnimationFrame for better performance
+    const rafId = requestAnimationFrame(resizeTextarea);
+    
+    return () => {
+      cancelAnimationFrame(rafId);
+    };
+  }, [value, resizeTextarea]);
+
+  return textareaRef;
+};
