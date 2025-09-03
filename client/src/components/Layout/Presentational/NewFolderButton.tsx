@@ -36,7 +36,7 @@ export const NewFolderButton = () => {
   const [folderData, setFolderData] = useState<FolderData>({
     name: "",
     description: "",
-    color: "",
+    color: FolderColor.WHITE,
     icon: "folder",
   });
 

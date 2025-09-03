@@ -1,8 +1,8 @@
 import { ROUTES } from "@/lib/routes";
+import { FolderColor, FolderHexColor } from "@/types/types";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { FiFileText } from "react-icons/fi";
 import { LuBookOpenText, LuCalendarRange } from "react-icons/lu";
-import { FolderColor } from "@/types/types";
 
 // Authentication constants
 export const AUTHENTICATED = "authenticated";
@@ -75,32 +75,32 @@ export const COLORS = [
   {
     name: "White",
     value: FolderColor.WHITE,
-    className: "bg-colorPicker-1",
+    hexColor: FolderHexColor.WHITE,
   },
   {
     name: "Blue",
     value: FolderColor.BLUE,
-    className: "bg-colorPicker-2",
+    hexColor: FolderHexColor.BLUE,
   },
   {
     name: "Green",
     value: FolderColor.GREEN,
-    className: "bg-colorPicker-3",
+    hexColor: FolderHexColor.GREEN,
   },
   {
     name: "Yellow",
     value: FolderColor.YELLOW,
-    className: "bg-colorPicker-4",
+    hexColor: FolderHexColor.YELLOW,
   },
   {
     name: "Red",
     value: FolderColor.RED,
-    className: "bg-colorPicker-5",
+    hexColor: FolderHexColor.RED,
   },
   {
     name: "Purple",
     value: FolderColor.PURPLE,
-    className: "bg-colorPicker-6",
+    hexColor: FolderHexColor.PURPLE,
   },
 ];
   

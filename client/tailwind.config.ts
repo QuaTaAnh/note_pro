@@ -46,14 +46,7 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        colorPicker: {
-					1: 'hsl(var(--color-picker-1))',
-					2: 'hsl(var(--color-picker-2))',
-					3: 'hsl(var(--color-picker-3))',
-					4: 'hsl(var(--color-picker-4))',
-					5: 'hsl(var(--color-picker-5))',
-					6: 'hsl(var(--color-picker-6))'
-				},
+
       },
       borderRadius: {
         lg: "var(--radius)",
