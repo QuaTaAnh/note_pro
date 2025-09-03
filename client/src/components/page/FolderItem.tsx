@@ -46,6 +46,7 @@ export const FolderItem: React.FC<{
         )}
 
         <SidebarButton
+          className="min-w-0"
           label={folder.name}
           icon={
             <Icon
