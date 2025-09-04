@@ -1,13 +1,12 @@
 "use client";
 
-import { useGetDocumentBlocksQuery } from "@/graphql/queries/__generated__/document.generated";
-import { useDebounce } from "@/hooks";
-import { Block, useBlocks } from "@/hooks/use-blocks";
-import { useEffect, useState } from "react";
+import { useDocumentBlocks } from "@/hooks";
+import { BlockType } from "@/types/types";
+import { Textarea } from "./Textarea";
 import { TiptapBlockItem } from "./TiptapBlockItem";
 import { TiptapWrapper } from "./TiptapWrapper";
-import { TitleTextarea } from "./TitleTextarea";
 import { PageLoading } from "./ui/loading";
+import { Separator } from "./ui/separator";
 
 interface Props {
   pageId: string;
@@ -15,138 +14,56 @@ interface Props {
 }
 
 export default function TiptapBlockEditor({ pageId, className = "" }: Props) {
-  const { data, loading } = useGetDocumentBlocksQuery({
-    variables: { pageId },
-    skip: !pageId,
-  });
-
-  const { createNewBlock, updateBlockContent, removeBlock } = useBlocks();
-  const [blocks, setBlocks] = useState<Block[]>([]);
-  const [rootBlock, setRootBlock] = useState<Block | null>(null);
-  const [focusedBlock, setFocusedBlock] = useState<string | null>(null);
-  const [localContent, setLocalContent] = useState<Record<string, string>>({});
-
-  useEffect(() => {
-    if (data?.blocks) {
-      const allBlocks = data.blocks as Block[];
-      const root = allBlocks.find((block) => block.id === pageId);
-      const childBlocks = allBlocks
-        .filter((block) => block.page_id === pageId)
-        .sort((a, b) => (a.position || 0) - (b.position || 0));
-
-      // Đảm bảo không có duplicate IDs
-      const uniqueBlocks = childBlocks.filter(
-        (block, index, self) =>
-          index === self.findIndex((b) => b.id === block.id)
-      );
-
-      setRootBlock(root || null);
-      setBlocks(uniqueBlocks);
-
-      const initialContent: Record<string, string> = {};
-      uniqueBlocks.forEach((block) => {
-        initialContent[block.id] = (block.content?.text as string) || "";
-      });
-      if (root) {
-        initialContent[root.id] = (root.content?.title as string) || "";
-      }
-      setLocalContent(initialContent);
-    }
-  }, [data, pageId]);
-
-  useEffect(() => {
-    if (blocks.length === 0 && rootBlock && !loading) {
-      handleAddBlock(0, "paragraph");
-    }
-  }, [blocks.length, rootBlock, loading]);
-
-  const debounce = useDebounce(500);
-
-  const handleAddBlock = async (
-    position: number,
-    type: string = "paragraph"
-  ) => {
-    const newBlock = await createNewBlock({
-      type,
-      content: { text: "" },
-      position,
-      page_id: pageId,
-    });
-
-    if (newBlock) {
-      setBlocks((prev) => {
-        const updated = [...prev];
-        updated.splice(position, 0, newBlock);
-        return updated.map((block, index) => ({
-          ...block,
-          position: index >= position ? index : block.position,
-        }));
-      });
-      setLocalContent((prev) => ({ ...prev, [newBlock.id]: "" }));
-      setFocusedBlock(newBlock.id);
-    }
-  };
-
-  const handleUpdateBlock = (
-    blockId: string,
-    content: Record<string, unknown>
-  ) => {
-    setLocalContent((prev) => ({ ...prev, [blockId]: content.text as string }));
-    debounce(async () => {
-      const updatedBlock = await updateBlockContent(blockId, content);
-      if (updatedBlock) {
-        setBlocks((prev) =>
-          prev.map((block) => (block.id === blockId ? updatedBlock : block))
-        );
-      }
-    });
-  };
-
-  const handleDeleteBlock = async (blockId: string) => {
-    const success = await removeBlock(blockId);
-    if (success) {
-      setBlocks((prev) => prev.filter((block) => block.id !== blockId));
-      setLocalContent((prev) => {
-        const newContent = { ...prev };
-        delete newContent[blockId];
-        return newContent;
-      });
-    }
-  };
+  const {
+    loading,
+    blocks,
+    rootBlock,
+    focusedBlock,
+    handleAddBlock,
+    handleUpdateBlockContent,
+    handleUpdateTitle,
+    handleBlockFocus,
+    handleBlockBlur,
+    handleSaveImmediate, // Thêm dòng này
+  } = useDocumentBlocks(pageId);
 
   return loading || !rootBlock ? (
     <PageLoading />
   ) : (
     <div className={`notion-like-editor max-w-5xl mx-auto ${className}`}>
-      <div className="mb-8">
-        <TitleTextarea
-          value={localContent[rootBlock.id] || ""}
-          onChange={(value) => {
-            setLocalContent((prev) => ({ ...prev, [rootBlock.id]: value }));
-            debounce(async () => {
-              await updateBlockContent(rootBlock.id, { title: value });
-            });
-          }}
-        />
-      </div>
-
+      <Textarea
+        className="text-2xl font-bold mt-8 h-8"
+        value={(rootBlock.content?.title as string) || ""}
+        onChange={handleUpdateTitle}
+        placeholder="Untitled"
+      />
+      <Separator className="mb-4" />
       <TiptapWrapper>
         <div className="space-y-1">
           {blocks.map((block) => (
             <TiptapBlockItem
-              key={`${block.id}-${block.position}`}
-              value={localContent[block.id] || ""}
+              key={block.id}
+              value={(block.content?.text as string) || ""}
+              position={block.position || 0}
               isFocused={focusedBlock === block.id}
-              onFocus={() => setFocusedBlock(block.id)}
-              onBlur={() => setFocusedBlock(null)}
-              onUpdate={(content) => handleUpdateBlock(block.id, content)}
-              onDelete={() => handleDeleteBlock(block.id)}
-              onAddBlock={(type) =>
-                handleAddBlock((block.position || 0) + 1, type)
-              }
-              canDelete={blocks.length > 1}
+              onFocus={() => handleBlockFocus(block.id)}
+              onBlur={handleBlockBlur}
+              onChange={(value) => handleUpdateBlockContent(block.id, value)}
+              onAddBlock={handleAddBlock}
+              onSaveImmediate={handleSaveImmediate}
             />
           ))}
+
+          {blocks.length === 0 && (
+            <div className="flex justify-center py-4">
+              <button
+                onClick={() => handleAddBlock(0, BlockType.PARAGRAPH)}
+                className="px-4 py-2 text-sm text-gray-500 hover:text-gray-700 border border-dashed border-gray-300 rounded-md hover:border-gray-400 transition-colors"
+              >
+                + Add content
+              </button>
+            </div>
+          )}
         </div>
       </TiptapWrapper>
     </div>

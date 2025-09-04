@@ -1,6 +1,5 @@
 export const ROUTES = {
   HOME: "/",
-  DEMO: "/demo",
   LOGIN: "/login",
   
   // Workspace routes

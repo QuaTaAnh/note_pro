@@ -28,7 +28,6 @@ export const TOAST_DURATION = 5000;
 export const PAGE_TITLES: Record<string, string> = {
   [ROUTES.HOME]: "Home",
   [ROUTES.LOGIN]: "Login",
-  [ROUTES.DEMO]: "UI Demo",
 };
 
 // Navigation menu items
