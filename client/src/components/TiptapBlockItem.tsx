@@ -1,10 +1,12 @@
 "use client";
 
 import Placeholder from "@tiptap/extension-placeholder";
-import { EditorContent, useEditor } from "@tiptap/react";
+import { Editor, EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Trash2 } from "lucide-react";
 import { useCallback, useEffect, useMemo } from "react";
+import { BlockType } from "@/types/types";
+import { EditorView } from "@tiptap/pm/view";
 
 interface Props {
   value: string;
@@ -13,7 +15,7 @@ interface Props {
   onFocus: () => void;
   onBlur: () => void;
   onChange: (value: string) => void;
-  onAddBlock: (position: number, type: string) => void;
+  onAddBlock: (position: number, type: BlockType) => void;
 }
 
 export const TiptapBlockItem = ({
@@ -37,15 +39,15 @@ export const TiptapBlockItem = ({
       immediatelyRender: false,
       onFocus,
       onBlur,
-      onUpdate: ({ editor }: { editor: any }) => {
+      onUpdate: ({ editor }: { editor: Editor }) => {
         const content = editor.getText();
         onChange(content);
       },
       editorProps: {
-        handleKeyDown: (view: any, event: KeyboardEvent) => {
+        handleKeyDown: (view: EditorView, event: KeyboardEvent) => {
           if (event.key === "Enter" && !event.shiftKey) {
             event.preventDefault();
-            onAddBlock(position + 1, "paragraph");
+            onAddBlock(position + 1, BlockType.PARAGRAPH);
             return true;
           }
           return false;
@@ -63,6 +65,12 @@ export const TiptapBlockItem = ({
     }
   }, [value, editor]);
 
+  useEffect(() => {
+    if (editor && isFocused) {
+      editor.commands.focus();
+    }
+  }, [editor, isFocused]);
+
   const handleDelete = useCallback(() => {
     // TODO: Implement delete functionality
     console.log("Delete block:", position);
@@ -70,7 +78,7 @@ export const TiptapBlockItem = ({
 
   return !editor ? null : (
     <div
-      className={`group relative flex items-start gap-2 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ${
+      className={`group relative flex items-start gap-2 p-1 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ${
         isFocused ? "bg-blue-50 dark:bg-blue-900/20" : ""
       }`}
     >

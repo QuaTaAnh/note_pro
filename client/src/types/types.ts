@@ -19,3 +19,8 @@ export enum FolderHexColor {
   RED = "#ef4444",
   PURPLE = "#8b5cf6",
 }
+
+export enum BlockType {
+  PARAGRAPH = "paragraph",
+  PAGE = "page",
+}
