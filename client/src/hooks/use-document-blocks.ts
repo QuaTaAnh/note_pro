@@ -6,7 +6,7 @@ import { BlockType } from "@/types/types";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 export function useDocumentBlocks(pageId: string) {
-  const { createNewBlock, updateBlockContent } = useBlocks();
+  const {  createBlockWithPositionUpdate, updateBlockContent } = useBlocks();
   const debounce = useDebounce(500);
 
   const { data, loading } = useGetDocumentBlocksQuery({
@@ -45,18 +45,13 @@ export function useDocumentBlocks(pageId: string) {
 
   const handleAddBlock = useCallback(
     async (position: number, type: BlockType = BlockType.PARAGRAPH) => {
-      const newBlock = await createNewBlock({
-        type,
-        content: { text: "" },
-        position,
-        page_id: pageId,
-      });
+      const newBlock = await createBlockWithPositionUpdate(pageId, position, type);
 
       if (newBlock) {
         setFocusedBlock(newBlock.id);
       }
     },
-    [createNewBlock, pageId]
+    [createBlockWithPositionUpdate, pageId]
   );
 
   const handleUpdateBlockContent = useCallback(
