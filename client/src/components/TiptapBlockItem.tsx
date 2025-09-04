@@ -16,6 +16,7 @@ interface Props {
   onBlur: () => void;
   onChange: (value: string) => void;
   onAddBlock: (position: number, type: BlockType) => void;
+  onSaveImmediate: () => void;
 }
 
 export const TiptapBlockItem = ({
@@ -26,6 +27,7 @@ export const TiptapBlockItem = ({
   onBlur,
   onChange,
   onAddBlock,
+  onSaveImmediate,
 }: Props) => {
   const editorConfig = useMemo(
     () => ({
@@ -38,7 +40,10 @@ export const TiptapBlockItem = ({
       content: value,
       immediatelyRender: false,
       onFocus,
-      onBlur,
+      onBlur: () => {
+        onBlur();
+        onSaveImmediate();
+      },
       onUpdate: ({ editor }: { editor: Editor }) => {
         const content = editor.getText();
         onChange(content);
@@ -47,6 +52,7 @@ export const TiptapBlockItem = ({
         handleKeyDown: (view: EditorView, event: KeyboardEvent) => {
           if (event.key === "Enter" && !event.shiftKey) {
             event.preventDefault();
+            onSaveImmediate();
             onAddBlock(position + 1, BlockType.PARAGRAPH);
             return true;
           }
@@ -54,7 +60,7 @@ export const TiptapBlockItem = ({
         },
       },
     }),
-    [value, onFocus, onBlur, onChange, onAddBlock, position]
+    [value, onFocus, onBlur, onChange, onAddBlock, onSaveImmediate, position]
   );
 
   const editor = useEditor(editorConfig);

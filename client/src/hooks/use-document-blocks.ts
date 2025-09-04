@@ -6,8 +6,8 @@ import { BlockType } from "@/types/types";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 export function useDocumentBlocks(pageId: string) {
-  const {  createBlockWithPositionUpdate, updateBlockContent } = useBlocks();
-  const debounce = useDebounce(500);
+  const { createBlockWithPositionUpdate, updateBlockContent } = useBlocks();
+  const { debounced, flush } = useDebounce(500);
 
   const { data, loading } = useGetDocumentBlocksQuery({
     variables: { pageId },
@@ -65,12 +65,12 @@ export function useDocumentBlocks(pageId: string) {
               : b
           )
         );
-        debounce(async () => {
+        debounced(async () => {
           await updateBlockContent(blockId, { text: content });
         });
       }
     },
-    [blocks, debounce, updateBlockContent]
+    [blocks, debounced, updateBlockContent]
   );
 
   const handleUpdateTitle = useCallback(
@@ -79,12 +79,12 @@ export function useDocumentBlocks(pageId: string) {
         setRootBlock((prev) =>
           prev ? { ...prev, content: { ...prev.content, title } } : null
         );
-        debounce(async () => {
+        debounced(async () => {
           await updateBlockContent(rootBlock.id, { title });
         });
       }
     },
-    [rootBlock, debounce, updateBlockContent]
+    [rootBlock, debounced, updateBlockContent]
   );
 
   const handleBlockFocus = useCallback((blockId: string) => {
@@ -94,6 +94,10 @@ export function useDocumentBlocks(pageId: string) {
   const handleBlockBlur = useCallback(() => {
     setFocusedBlock(null);
   }, []);
+
+  const handleSaveImmediate = useCallback(() => {
+    flush(); // Force save ngay lập tức
+  }, [flush]);
 
   return {
     loading,
@@ -105,5 +109,6 @@ export function useDocumentBlocks(pageId: string) {
     handleUpdateTitle,
     handleBlockFocus,
     handleBlockBlur,
+    handleSaveImmediate, // Thêm function này
   };
 }

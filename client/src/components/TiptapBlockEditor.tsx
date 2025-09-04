@@ -24,6 +24,7 @@ export default function TiptapBlockEditor({ pageId, className = "" }: Props) {
     handleUpdateTitle,
     handleBlockFocus,
     handleBlockBlur,
+    handleSaveImmediate, // Thêm dòng này
   } = useDocumentBlocks(pageId);
 
   return loading || !rootBlock ? (
@@ -49,6 +50,7 @@ export default function TiptapBlockEditor({ pageId, className = "" }: Props) {
               onBlur={handleBlockBlur}
               onChange={(value) => handleUpdateBlockContent(block.id, value)}
               onAddBlock={handleAddBlock}
+              onSaveImmediate={handleSaveImmediate}
             />
           ))}
 
