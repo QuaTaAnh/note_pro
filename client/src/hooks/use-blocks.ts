@@ -1,7 +1,7 @@
 "use client";
 
 import { useDeleteBlockMutation, useInsertBlockAndUpdatePositionMutation, useUpdateBlockMutation } from "@/graphql/mutations/__generated__/document.generated";
-import { GetDocumentBlocksQuery } from "@/graphql/queries/__generated__/document.generated";
+import { GetDocumentBlocksDocument, GetDocumentBlocksQuery } from "@/graphql/queries/__generated__/document.generated";
 import { useUserId } from "@/hooks/use-auth";
 import { useWorkspace } from "@/hooks/use-workspace";
 import { useState } from "react";
@@ -39,7 +39,6 @@ export function useBlocks() {
           const updatedBlock = data?.update_blocks_by_pk;
           if (!updatedBlock) return;
 
-          // Update the specific block in cache
           cache.modify({
             id: cache.identify({ __typename: 'blocks', id }),
             fields: {
@@ -48,7 +47,6 @@ export function useBlocks() {
             }
           });
 
-          // Also update the blocks array in the query to ensure consistency
           cache.modify({
             fields: {
               blocks(existingBlocks = []) {
@@ -141,7 +139,16 @@ export function useBlocks() {
       await deleteBlock({
         variables: { id },
         update: (cache) => {
+          // Remove the entity itself
           cache.evict({ id: cache.identify({ __typename: 'blocks', id }) });
+          // Also remove from any cached lists named 'blocks'
+          cache.modify({
+            fields: {
+              blocks(existingRefs = [], { readField }) {
+                return existingRefs.filter((ref: any) => readField('id', ref) !== id);
+              }
+            }
+          });
           cache.gc();
         }
       });
@@ -171,24 +178,10 @@ export function useBlocks() {
           workspaceId: workspace.id,
           userId: userId,
         },
-        update: (cache, { data }) => {
-          const newBlock = data?.insert_blocks_one;
-          if (!newBlock) return;
-
-          cache.modify({
-            fields: {
-              blocks(existingBlocks = []) {
-                const updatedBlocks = existingBlocks.map((block: any) => {
-                  if (block.page_id === pageId && block.position >= position) {
-                    return { ...block, position: block.position + 1 };
-                  }
-                  return block;
-                });
-                return [...updatedBlocks, newBlock];
-              }
-            }
-          });
-        }
+        refetchQueries: [
+          { query: GetDocumentBlocksDocument, variables: { pageId } },
+        ],
+        awaitRefetchQueries: true,
       });
 
       const result = res.data?.insert_blocks_one;
