@@ -17,6 +17,7 @@ interface Props {
   onChange: (value: string) => void;
   onAddBlock: (position: number, type: BlockType) => void;
   onSaveImmediate: () => void;
+  onDeleteBlock?: () => void;
 }
 
 export const TiptapBlockItem = ({
@@ -28,6 +29,7 @@ export const TiptapBlockItem = ({
   onChange,
   onAddBlock,
   onSaveImmediate,
+  onDeleteBlock,
 }: Props) => {
   const editorConfig = useMemo(
     () => ({
@@ -78,9 +80,10 @@ export const TiptapBlockItem = ({
   }, [editor, isFocused]);
 
   const handleDelete = useCallback(() => {
-    // TODO: Implement delete functionality
-    console.log("Delete block:", position);
-  }, [position]);
+    if (onDeleteBlock) {
+      onDeleteBlock();
+    }
+  }, [onDeleteBlock]);
 
   return !editor ? null : (
     <div
@@ -95,13 +98,15 @@ export const TiptapBlockItem = ({
         />
       </div>
 
-      <button
-        onClick={handleDelete}
-        className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-red-100 dark:hover:bg-red-900/20 rounded text-gray-400 hover:text-red-600 dark:hover:text-red-400 mt-1"
-        title="Delete block"
-      >
-        <Trash2 className="w-3 h-3" />
-      </button>
+      {onDeleteBlock && (
+        <button
+          onClick={handleDelete}
+          className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-red-100 dark:hover:bg-red-900/20 rounded text-gray-400 hover:text-red-600 dark:hover:text-red-400 mt-1"
+          title="Delete block"
+        >
+          <Trash2 className="w-3 h-3" />
+        </button>
+      )}
     </div>
   );
 };

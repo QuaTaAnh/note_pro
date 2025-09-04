@@ -8,3 +8,5 @@ export { useBinCraftTitle } from './use-bin-craft-title';
 export { useDebounce } from './use-debounce';
 export type { Block, CreateBlockInput } from './use-blocks';
 export { useDocumentBlocks } from './use-document-blocks';
+export { useDocumentBlocksData } from './use-document-blocks-data';
+export { useDocumentBlocksEditing } from './use-document-blocks-editing';

@@ -1,114 +1,29 @@
 "use client";
 
-import { useGetDocumentBlocksQuery } from "@/graphql/queries/__generated__/document.generated";
-import { Block, useBlocks, useDebounce } from "@/hooks";
-import { BlockType } from "@/types/types";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { Block } from "@/hooks";
+import { useDocumentBlocksData } from "@/hooks/use-document-blocks-data";
+import { useDocumentBlocksEditing } from "@/hooks/use-document-blocks-editing";
 
 export function useDocumentBlocks(pageId: string) {
-  const { createBlockWithPositionUpdate, updateBlockContent } = useBlocks();
-  const { debounced, flush } = useDebounce(500);
+  const { loading, processedBlocks, processedRootBlock } = useDocumentBlocksData(pageId);
 
-  const { data, loading } = useGetDocumentBlocksQuery({
-    variables: { pageId },
-    skip: !pageId,
-  });
-
-  const [blocks, setBlocks] = useState<Block[]>([]);
-  const [rootBlock, setRootBlock] = useState<Block | null>(null);
-  const [focusedBlock, setFocusedBlock] = useState<string | null>(null);
-
-  const { processedBlocks, processedRootBlock } = useMemo(() => {
-    if (!data?.blocks) return { processedBlocks: [], processedRootBlock: null };
-
-    const allBlocks = data.blocks as Block[];
-    const root = allBlocks.find(
-      (block) => block.id === pageId && block.type === BlockType.PAGE
-    );
-    const childBlocks = allBlocks
-      .filter(
-        (block) => block.page_id === pageId && block.type !== BlockType.PAGE
-      )
-      .sort((a, b) => (a.position || 0) - (b.position || 0));
-
-    return { processedBlocks: childBlocks, processedRootBlock: root };
-  }, [data?.blocks, pageId]);
+  const [initialBlocks, setInitialBlocks] = useState<Block[]>([]);
+  const [initialRootBlock, setInitialRootBlock] = useState<Block | null>(null);
 
   useEffect(() => {
-    if (processedRootBlock) {
-      setRootBlock(processedRootBlock);
-    }
-    if (processedBlocks.length > 0) {
-      setBlocks(processedBlocks);
-    }
-  }, [processedRootBlock, processedBlocks]);
+    setInitialRootBlock((processedRootBlock as Block) ?? null);
+    setInitialBlocks((processedBlocks as Block[]) ?? []);
+  }, [processedBlocks, processedRootBlock]);
 
-  const handleAddBlock = useCallback(
-    async (position: number, type: BlockType = BlockType.PARAGRAPH) => {
-      const newBlock = await createBlockWithPositionUpdate(pageId, position, type);
-
-      if (newBlock) {
-        setFocusedBlock(newBlock.id);
-      }
-    },
-    [createBlockWithPositionUpdate, pageId]
-  );
-
-  const handleUpdateBlockContent = useCallback(
-    (blockId: string, content: string) => {
-      const block = blocks.find((b) => b.id === blockId);
-      if (block && block.type !== BlockType.PAGE) {
-        setBlocks((prev) =>
-          prev.map((b) =>
-            b.id === blockId
-              ? { ...b, content: { ...b.content, text: content } }
-              : b
-          )
-        );
-        debounced(async () => {
-          await updateBlockContent(blockId, { text: content });
-        });
-      }
-    },
-    [blocks, debounced, updateBlockContent]
-  );
-
-  const handleUpdateTitle = useCallback(
-    (title: string) => {
-      if (rootBlock) {
-        setRootBlock((prev) =>
-          prev ? { ...prev, content: { ...prev.content, title } } : null
-        );
-        debounced(async () => {
-          await updateBlockContent(rootBlock.id, { title });
-        });
-      }
-    },
-    [rootBlock, debounced, updateBlockContent]
-  );
-
-  const handleBlockFocus = useCallback((blockId: string) => {
-    setFocusedBlock(blockId);
-  }, []);
-
-  const handleBlockBlur = useCallback(() => {
-    setFocusedBlock(null);
-  }, []);
-
-  const handleSaveImmediate = useCallback(() => {
-    flush(); // Force save ngay lập tức
-  }, [flush]);
+  const editing = useDocumentBlocksEditing({
+    initialBlocks,
+    initialRootBlock,
+    pageId,
+  });
 
   return {
     loading,
-    blocks,
-    rootBlock,
-    focusedBlock,
-    handleAddBlock,
-    handleUpdateBlockContent,
-    handleUpdateTitle,
-    handleBlockFocus,
-    handleBlockBlur,
-    handleSaveImmediate, // Thêm function này
+    ...editing,
   };
 }
