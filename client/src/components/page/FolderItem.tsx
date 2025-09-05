@@ -6,6 +6,7 @@ import { FiChevronDown, FiChevronRight } from "react-icons/fi";
 import { SidebarButton } from "../Layout/Presentational/SidebarButton";
 import { Button } from "../ui/button";
 import { FolderColor, FolderHexColor } from "@/types/types";
+import { usePathname } from "next/navigation";
 
 const getColorValue = (colorName: FolderColor): string => {
   const colorMap: Record<FolderColor, string> = {
@@ -25,6 +26,7 @@ export const FolderItem: React.FC<{
 }> = ({ folder, workspaceSlug }) => {
   const [expanded, setExpanded] = useState(false);
   const hasChildren = folder.children && folder.children.length > 0;
+  const pathname = usePathname();
 
   const Icon =
     folder.icon && iconMap[folder.icon]
@@ -36,6 +38,10 @@ export const FolderItem: React.FC<{
       setExpanded(!expanded);
     }
   };
+
+  const href = workspaceSlug
+    ? ROUTES.WORKSPACE_FOLDER(workspaceSlug, folder.id)
+    : undefined;
 
   return (
     <div className="flex flex-col gap-1">
@@ -72,11 +78,8 @@ export const FolderItem: React.FC<{
               }}
             />
           }
-          href={
-            workspaceSlug
-              ? ROUTES.WORKSPACE_FOLDER(workspaceSlug, folder.id)
-              : undefined
-          }
+          href={href}
+          isActive={href ? pathname === href : false}
         />
       </div>
       {expanded && hasChildren && (
