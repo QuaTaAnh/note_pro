@@ -26,11 +26,21 @@ export default function AllDocsPage() {
 
   const allDocs: Document[] = useMemo(() => data?.blocks || [], [data]);
 
+  const docsToRender: Document[] = useMemo(() => {
+    const seenIds = new Set<string>();
+    return allDocs.filter((doc) => {
+      if (!doc?.id) return false;
+      if (seenIds.has(doc.id)) return false;
+      seenIds.add(doc.id);
+      return true;
+    });
+  }, [allDocs]);
+
   useEffect(() => {
-    if (!loading && allDocs.length < LIMIT) {
+    if (!loading && docsToRender.length < LIMIT) {
       setHasMore(false);
     }
-  }, [loading, allDocs.length]);
+  }, [loading, docsToRender.length]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -40,28 +50,40 @@ export default function AllDocsPage() {
 
       if (nearBottom && !loading && !isFetchingMore && hasMore) {
         setIsFetchingMore(true);
-        const prevLen = allDocs.length;
+        const prevLen = docsToRender.length;
         fetchMore({
           variables: {
             workspaceId: workspace?.id || "",
             offset: prevLen,
             limit: LIMIT,
           },
-        }).then((res) => {
-          const afterLen = res?.data?.blocks?.length ?? prevLen;
-          const added = afterLen - prevLen;
-          if (added < LIMIT) {
+          updateQuery: (prev, { fetchMoreResult }) => {
+            if (!fetchMoreResult) return prev;
+            return {
+              ...prev,
+              blocks: [...prev.blocks, ...fetchMoreResult.blocks],
+            };
+          },
+        })
+          .then((res) => {
+            const fetched = res?.data?.blocks?.length ?? 0;
+            if (fetched < LIMIT) {
+              setHasMore(false);
+            }
+          })
+          .catch(() => {
             setHasMore(false);
-          }
-          setIsFetchingMore(false);
-        });
+          })
+          .finally(() => {
+            setIsFetchingMore(false);
+          });
       }
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [
-    allDocs.length,
+    docsToRender.length,
     loading,
     isFetchingMore,
     hasMore,
@@ -81,13 +103,13 @@ export default function AllDocsPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 w-full">
-            {allDocs.map((document) => (
+            {docsToRender.map((document) => (
               <CardDocument key={document.id} document={document} />
             ))}
-            {allDocs.length < LIMIT &&
-              Array.from({ length: LIMIT - allDocs.length }).map((_, i) => (
-                <DocCardSkeleton key={`default-skeleton-${i}`} />
-              ))}
+            {docsToRender.length < LIMIT &&
+              Array.from({ length: LIMIT - docsToRender.length }).map(
+                (_, i) => <DocCardSkeleton key={`default-skeleton-${i}`} />
+              )}
 
             {isFetchingMore &&
               Array.from({ length: LIMIT }).map((_, i) => (

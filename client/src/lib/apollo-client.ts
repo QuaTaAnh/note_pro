@@ -20,7 +20,7 @@ const authLink = setContext(async (_, { headers }) => {
 });
 
 const TYPE_POLICIES = {
-  Query: {
+  query_root: {
     fields: {
       blocks: offsetLimitPagination(['where', 'order_by']),
     },
