@@ -15,25 +15,24 @@ export const FolderMenu = () => {
   const folders = data?.folders ?? [];
   const tree = buildTree(folders as FolderNode[]);
 
-  return (
+  return loading ? (
+    <PageLoading />
+  ) : (
     <div>
       <div className="flex justify-between items-center mb-2">
         <span className="text-xs font-medium">Folders</span>
         <NewFolderButton />
       </div>
-      {loading ? (
-        <PageLoading />
-      ) : (
-        <div className="space-y-1">
-          {tree.map((folder) => (
-            <FolderItem
-              key={folder.id}
-              folder={folder}
-              workspaceSlug={workspaceSlug}
-            />
-          ))}
-        </div>
-      )}
+
+      <div className="space-y-1">
+        {tree.map((folder) => (
+          <FolderItem
+            key={folder.id}
+            folder={folder}
+            workspaceSlug={workspaceSlug}
+          />
+        ))}
+      </div>
     </div>
   );
 };
