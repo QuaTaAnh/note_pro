@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 export type SidebarButtonVariant = "default" | "primary" | "secondary";
 
@@ -16,6 +15,8 @@ interface SidebarButtonProps {
   loadingText?: string;
   className?: string;
   variant?: SidebarButtonVariant;
+  isActive?: boolean;
+  prefetch?: boolean;
 }
 
 export function SidebarButton({
@@ -28,10 +29,9 @@ export function SidebarButton({
   loadingText,
   className,
   variant = "default",
+  isActive = false,
+  prefetch = false,
 }: SidebarButtonProps) {
-  const pathname = usePathname();
-  const isActive = href ? pathname === href : false;
-
   const variantClasses = {
     default: "",
     primary: "bg-primary text-primary-foreground hover:bg-primary/90",
@@ -61,7 +61,7 @@ export function SidebarButton({
 
   if (href && !onClick) {
     return (
-      <Link href={href} className={baseClasses}>
+      <Link href={href} className={baseClasses} prefetch={prefetch}>
         {content}
       </Link>
     );
