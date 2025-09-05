@@ -80,10 +80,7 @@ export const CardDocument = ({ document }: { document: Document }) => {
         <div className="flex justify-between items-start gap-2">
           <div className="flex-1 min-w-0">
             {isTitleTruncated ? (
-              <SimpleTooltip
-                title={document.content?.title || "Untitled"}
-                side="top"
-              >
+              <SimpleTooltip title={document.content?.title || "Untitled"}>
                 {titleContent}
               </SimpleTooltip>
             ) : (
@@ -101,7 +98,6 @@ export const CardDocument = ({ document }: { document: Document }) => {
                   title={`Updated ${formatDate(document?.updated_at || "", {
                     relative: false,
                   })}`}
-                  side="top"
                 >
                   {updatedContent}
                 </SimpleTooltip>
