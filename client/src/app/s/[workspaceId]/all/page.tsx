@@ -10,7 +10,7 @@ import { FixedSizeGrid as Grid, GridChildComponentProps } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 
 const MIN_CARD_WIDTH = 240;
-const GUTTER = 16;
+const GUTTER = 40;
 const CARD_HEIGHT = 304;
 const rowHeight = CARD_HEIGHT + GUTTER;
 
@@ -75,7 +75,7 @@ export default function AllDocsPage() {
                         height: rowHeight - GUTTER,
                       }}
                     >
-                      <div className="mr-8">
+                      <div className="mr-6">
                         <CardDocument document={doc} />
                       </div>
                     </div>
