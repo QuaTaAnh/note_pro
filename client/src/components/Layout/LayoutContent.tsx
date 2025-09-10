@@ -32,11 +32,7 @@ function LayoutMain({ children }: { children: React.ReactNode }) {
     <>{children}</>
   ) : (
     <AuthGuard>
-      <div
-        className={`${
-          editorPage ? "h-screen" : "min-h-screen"
-        } flex flex-col overflow-hidden`}
-      >
+      <div className={`h-screen flex flex-col overflow-hidden`}>
         {loading ? (
           <PageLoading />
         ) : (
@@ -58,7 +54,7 @@ function LayoutMain({ children }: { children: React.ReactNode }) {
               )}
 
               <main
-                className={`flex-1 transition-all duration-300 flex justify-center ${
+                className={`flex-1 transition-all duration-300 flex justify-center overflow-hidden ${
                   editorPage ? "p-0" : "p-4"
                 }`}
                 style={{
