@@ -2,119 +2,102 @@
 
 import { Document } from "@/types/app";
 import { CardDocument } from "@/components/page/CardDocument";
-import { DocCardSkeleton } from "@/components/page/DocCardSkeleton";
 import { PageLoading } from "@/components/ui/loading";
-import { LIMIT } from "@/consts";
 import { useGetAllDocsQuery } from "@/graphql/queries/__generated__/document.generated";
 import { useWorkspace } from "@/hooks/use-workspace";
-import { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
+import { FixedSizeGrid as Grid, GridChildComponentProps } from "react-window";
+import AutoSizer from "react-virtualized-auto-sizer";
+
+const MIN_CARD_WIDTH = 240;
+const GUTTER = 16;
+const CARD_HEIGHT = 304;
+const rowHeight = CARD_HEIGHT + GUTTER;
 
 export default function AllDocsPage() {
   const { workspace } = useWorkspace();
-  const [isFetchingMore, setIsFetchingMore] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
 
-  const { loading, data, fetchMore } = useGetAllDocsQuery({
-    variables: {
-      workspaceId: workspace?.id || "",
-      limit: LIMIT,
-      offset: 0,
-    },
+  const { loading, data } = useGetAllDocsQuery({
+    variables: { workspaceId: workspace?.id || "" },
     skip: !workspace?.id,
     fetchPolicy: "cache-and-network",
   });
 
   const allDocs: Document[] = useMemo(() => data?.blocks || [], [data]);
 
-  const docsToRender: Document[] = useMemo(() => {
-    const seenIds = new Set<string>();
-    return allDocs.filter((doc) => {
-      if (!doc?.id) return false;
-      if (seenIds.has(doc.id)) return false;
-      seenIds.add(doc.id);
-      return true;
-    });
-  }, [allDocs]);
-
-  useEffect(() => {
-    if (!loading && docsToRender.length < LIMIT) {
-      setHasMore(false);
-    }
-  }, [loading, docsToRender.length]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const { scrollTop, scrollHeight, clientHeight } =
-        document.documentElement;
-      const nearBottom = scrollHeight - scrollTop - clientHeight < 100;
-
-      if (nearBottom && !loading && !isFetchingMore && hasMore) {
-        setIsFetchingMore(true);
-        const prevLen = docsToRender.length;
-        fetchMore({
-          variables: {
-            workspaceId: workspace?.id || "",
-            offset: prevLen,
-            limit: LIMIT,
-          },
-          updateQuery: (prev, { fetchMoreResult }) => {
-            if (!fetchMoreResult) return prev;
-            return {
-              ...prev,
-              blocks: [...prev.blocks, ...fetchMoreResult.blocks],
-            };
-          },
-        })
-          .then((res) => {
-            const fetched = res?.data?.blocks?.length ?? 0;
-            if (fetched < LIMIT) {
-              setHasMore(false);
-            }
-          })
-          .catch(() => {
-            setHasMore(false);
-          })
-          .finally(() => {
-            setIsFetchingMore(false);
-          });
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [
-    docsToRender.length,
-    loading,
-    isFetchingMore,
-    hasMore,
-    fetchMore,
-    workspace?.id,
-  ]);
-
   return loading && allDocs.length === 0 ? (
     <PageLoading />
   ) : (
-    <div className="p-4 min-h-screen">
-      <div className="flex flex-col items-start justify-start mx-auto w-full gap-8">
-        <h1 className="text-xl font-medium">All Docs</h1>
+    <div className="p-0 w-full h-full">
+      <div className="flex flex-col items-start justify-start mx-auto w-full h-full min-h-0 max-w-screen-2xl gap-2">
+        <div className="w-full px-4 pt-4 pb-2">
+          <h1 className="text-xl font-medium">All Docs</h1>
+        </div>
+
         {allDocs.length === 0 ? (
           <div className="text-sm text-muted-foreground flex items-center justify-center w-full h-full">
             You have no documents yet
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 w-full">
-            {docsToRender.map((document) => (
-              <CardDocument key={document.id} document={document} />
-            ))}
-            {docsToRender.length < LIMIT &&
-              Array.from({ length: LIMIT - docsToRender.length }).map(
-                (_, i) => <DocCardSkeleton key={`default-skeleton-${i}`} />
-              )}
+          <div className="flex-1 w-full px-4 pb-4 overflow-hidden">
+            <AutoSizer>
+              {({ width, height }) => {
+                if (width === 0 || height === 0) return null;
 
-            {isFetchingMore &&
-              Array.from({ length: LIMIT }).map((_, i) => (
-                <DocCardSkeleton key={`loadmore-skeleton-${i}`} />
-              ))}
+                const columnCount = Math.max(
+                  1,
+                  Math.floor((width + GUTTER) / (MIN_CARD_WIDTH + GUTTER))
+                );
+
+                const totalGutters = (columnCount - 1) * GUTTER;
+                const columnWidth = Math.floor(
+                  (width - totalGutters) / columnCount
+                );
+
+                const rowCount = Math.ceil(allDocs.length / columnCount);
+
+                const Cell = ({
+                  columnIndex,
+                  rowIndex,
+                  style,
+                }: GridChildComponentProps) => {
+                  const itemIndex = rowIndex * columnCount + columnIndex;
+                  if (itemIndex >= allDocs.length) return null;
+
+                  const doc = allDocs[itemIndex];
+                  return (
+                    <div
+                      style={{
+                        ...style,
+                        left: (style.left as number) + columnIndex * GUTTER,
+                        top: (style.top as number) + rowIndex * GUTTER,
+                        width: columnWidth,
+                        height: rowHeight - GUTTER,
+                      }}
+                    >
+                      <div className="mr-8">
+                        <CardDocument document={doc} />
+                      </div>
+                    </div>
+                  );
+                };
+
+                return (
+                  <Grid
+                    columnCount={columnCount}
+                    columnWidth={columnWidth}
+                    height={height}
+                    rowCount={rowCount}
+                    rowHeight={rowHeight}
+                    width={width}
+                    overscanRowCount={3}
+                    style={{ overflowX: "hidden" }}
+                  >
+                    {Cell}
+                  </Grid>
+                );
+              }}
+            </AutoSizer>
           </div>
         )}
       </div>

@@ -1,4 +1,4 @@
-query GetAllDocs($workspaceId: uuid!, $limit: Int!, $offset: Int!) {
+query GetAllDocs($workspaceId: uuid!) {
   blocks(
     where: {
       workspace_id: { _eq: $workspaceId }
@@ -6,8 +6,6 @@ query GetAllDocs($workspaceId: uuid!, $limit: Int!, $offset: Int!) {
       deleted_at: { _is_null: true }
     }
     order_by: { updated_at: desc }
-    limit: $limit
-    offset: $offset
   ) {
     id
     content

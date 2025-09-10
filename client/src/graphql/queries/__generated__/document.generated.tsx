@@ -5,8 +5,6 @@ import * as Apollo from '@apollo/client';
 const defaultOptions = {"ignoreResults":true} as const;
 export type GetAllDocsQueryVariables = Types.Exact<{
   workspaceId: Types.Scalars['uuid']['input'];
-  limit: Types.Scalars['Int']['input'];
-  offset: Types.Scalars['Int']['input'];
 }>;
 
 
@@ -21,12 +19,10 @@ export type GetDocumentBlocksQuery = { __typename?: 'query_root', blocks: Array<
 
 
 export const GetAllDocsDocument = gql`
-    query GetAllDocs($workspaceId: uuid!, $limit: Int!, $offset: Int!) {
+    query GetAllDocs($workspaceId: uuid!) {
   blocks(
     where: {workspace_id: {_eq: $workspaceId}, type: {_eq: "page"}, deleted_at: {_is_null: true}}
     order_by: {updated_at: desc}
-    limit: $limit
-    offset: $offset
   ) {
     id
     content
@@ -53,8 +49,6 @@ export const GetAllDocsDocument = gql`
  * const { data, loading, error } = useGetAllDocsQuery({
  *   variables: {
  *      workspaceId: // value for 'workspaceId'
- *      limit: // value for 'limit'
- *      offset: // value for 'offset'
  *   },
  * });
  */
