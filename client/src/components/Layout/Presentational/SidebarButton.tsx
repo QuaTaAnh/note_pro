@@ -17,6 +17,8 @@ interface SidebarButtonProps {
   variant?: SidebarButtonVariant;
   isActive?: boolean;
   prefetch?: boolean;
+  count?: number;
+  action?: React.ReactNode;
 }
 
 export function SidebarButton({
@@ -31,6 +33,8 @@ export function SidebarButton({
   variant = "default",
   isActive = false,
   prefetch = false,
+  count,
+  action,
 }: SidebarButtonProps) {
   const variantClasses = {
     default: "",
@@ -48,15 +52,37 @@ export function SidebarButton({
     className
   );
 
-  const content = (
-    <>
+  const left = (
+    <div className="flex items-center gap-1 min-w-0">
       <div className="w-5 h-5 flex items-center justify-center shrink-0">
         {icon}
       </div>
-      <span className="truncate text-ellipsis overflow-hidden">
+      <span className="truncate">
         {isLoading && loadingText ? loadingText : label}
       </span>
+    </div>
+  );
+
+  const right = (
+    <>
+      {typeof count === "number" && (
+        <span className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground text-xs pr-1">
+          {count}
+        </span>
+      )}
+      {action && (
+        <div className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground">
+          {action}
+        </div>
+      )}
     </>
+  );
+
+  const content = (
+    <div className="flex items-center justify-between w-full">
+      {left}
+      {right}
+    </div>
   );
 
   if (href && !onClick) {

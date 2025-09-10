@@ -94,6 +94,7 @@ select_permissions:
         - user_id
         - workspace_id
       filter: {}
+      allow_aggregations: true
     comment: ""
 update_permissions:
   - role: user
