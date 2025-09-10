@@ -73,7 +73,7 @@ export const CardDocument = ({ document }: { document: Document }) => {
   return (
     <Card
       key={document.id}
-      className="group relative cursor-pointer transition min-h-[300px] w-full shadow-sm hover:shadow-lg hover:shadow-black/30 dark:shadow-sm dark:hover:shadow-white/30"
+      className="group relative cursor-pointer transition min-h-[340px] w-full shadow-sm hover:shadow-lg hover:shadow-black/20 dark:shadow-sm dark:hover:shadow-white/20"
       onClick={handleClick}
     >
       <CardHeader className="flex flex-col p-4">
@@ -110,8 +110,14 @@ export const CardDocument = ({ document }: { document: Document }) => {
         </div>
         <Separator className="mt-2" />
       </CardHeader>
-      <CardContent className="flex flex-col px-4 truncate text-muted-foreground">
-        {document.content?.title || ""}
+      <CardContent className="flex flex-col px-4 truncate text-xs text-muted-foreground">
+        {document.sub_blocks.map((block) => {
+          return (
+            <p key={block.id} className="truncate">
+              {block.content?.text || ""}
+            </p>
+          );
+        })}
       </CardContent>
     </Card>
   );
