@@ -1,8 +1,10 @@
+import { createElement } from "react";
 import { ROUTES } from "@/lib/routes";
 import { FolderColor, FolderHexColor } from "@/types/types";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { FiFileText } from "react-icons/fi";
 import { LuBookOpenText, LuCalendarRange } from "react-icons/lu";
+import { FiPlus } from "react-icons/fi";
 
 // Authentication constants
 export const AUTHENTICATED = "authenticated";
@@ -31,16 +33,18 @@ export const PAGE_TITLES: Record<string, string> = {
 };
 
 // Navigation menu items
-export const MENU_ITEMS = (workspaceSlug: string) => [
+export const MENU_ITEMS = (workspaceSlug: string, counts: { allDocs: number }) => [
   {
     icon: FiFileText,
     label: "All Docs",
     href: ROUTES.WORKSPACE_ALL_DOCS(workspaceSlug),
+    count: counts.allDocs,
   },
   {
     icon: AiOutlineCheckCircle,
     label: "Tasks",
     href: ROUTES.WORKSPACE_TASKS(workspaceSlug),
+    action: createElement(FiPlus, { className: "w-3 h-3 cursor-pointer" }),
   },
   {
     icon: LuCalendarRange,

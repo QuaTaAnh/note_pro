@@ -12,7 +12,7 @@ import Sidebar from "./Sidebar";
 import { HEADER_HEIGHT, SIDEBAR_WIDTH } from "@/consts";
 
 function LayoutMain({ children }: { children: React.ReactNode }) {
-  const { workspaceSlug, loading } = useWorkspace();
+  const { workspaceSlug, loading, workspace } = useWorkspace();
   const { isOpen } = useSidebar();
   const pathname = usePathname();
   const router = useRouter();
@@ -49,7 +49,10 @@ function LayoutMain({ children }: { children: React.ReactNode }) {
                     width: isOpen ? SIDEBAR_WIDTH : 0,
                   }}
                 >
-                  <Sidebar workspaceSlug={workspaceSlug ?? ""} />
+                  <Sidebar
+                    workspaceSlug={workspaceSlug || ""}
+                    workspaceId={workspace?.id || ""}
+                  />
                 </div>
               )}
 
