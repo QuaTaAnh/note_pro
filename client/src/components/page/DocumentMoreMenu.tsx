@@ -40,6 +40,18 @@ export const DocumentMoreMenu = ({ documentId }: Props) => {
                   (ref) => readField("id", ref) !== documentId
                 );
               },
+              blocks_aggregate(existingAgg) {
+                if (!existingAgg?.aggregate) {
+                  return existingAgg;
+                }
+                return {
+                  ...existingAgg,
+                  aggregate: {
+                    ...existingAgg.aggregate,
+                    count: existingAgg.aggregate.count - 1,
+                  },
+                };
+              },
             },
           });
           cache.evict({
