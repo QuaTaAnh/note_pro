@@ -18,7 +18,7 @@ import { useUserId } from "@/hooks/use-auth";
 import { useWorkspace } from "@/hooks/use-workspace";
 import showToast from "@/lib/toast";
 import { FolderColor } from "@/types/types";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { FiPlus } from "react-icons/fi";
 
 interface FolderData {
@@ -39,6 +39,7 @@ export const NewFolderButton = () => {
     color: FolderColor.WHITE,
     icon: "folder",
   });
+  const dialogContentRef = useRef<HTMLDivElement | null>(null);
 
   const handleInputChange = (
     field: keyof FolderData,
@@ -90,13 +91,16 @@ export const NewFolderButton = () => {
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen} modal={false}>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon" className="w-5 h-5">
           <FiPlus className="w-4 h-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[400px] shadow-2xl">
+      <DialogContent
+        ref={dialogContentRef}
+        className="sm:max-w-[400px] shadow-2xl"
+      >
         <DialogHeader>
           <DialogTitle>Create New Folder</DialogTitle>
         </DialogHeader>
@@ -133,6 +137,7 @@ export const NewFolderButton = () => {
             <IconPicker
               selectedIcon={folderData.icon}
               onIconChange={(icon) => handleInputChange("icon", icon)}
+              portalContainer={dialogContentRef.current ?? undefined}
             />
           </div>
 

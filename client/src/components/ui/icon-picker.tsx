@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -52,7 +52,7 @@ const iconSets: Record<
   string,
   { key: string; name: string; icon: IconComponent }[]
 > = {
-  Popular: [
+  "Popular Icons": [
     { key: "folder", name: "Folder", icon: FiFolder },
     { key: "home", name: "Home", icon: FiHome },
     { key: "star", name: "Star", icon: FiStar },
@@ -84,7 +84,7 @@ const iconSets: Record<
     { key: "file-text", name: "File Text", icon: FiFileText },
     { key: "shield", name: "Shield", icon: Shield },
   ],
-  Lifestyle: [
+  "Lifestyle Icons": [
     { key: "coffee", name: "Coffee", icon: Coffee },
     { key: "gift", name: "Gift", icon: Gift },
     { key: "globe", name: "Globe", icon: Globe },
@@ -105,13 +105,32 @@ const iconSets: Record<
 interface IconPickerProps {
   selectedIcon: string;
   onIconChange: (iconKey: string) => void;
+  portalContainer?: HTMLElement;
 }
 
 export const IconPicker: React.FC<IconPickerProps> = ({
   selectedIcon,
   onIconChange,
+  portalContainer,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const [container, setContainer] = useState<HTMLElement | undefined>(
+    undefined
+  );
+
+  useEffect(() => {
+    if (portalContainer) {
+      setContainer(portalContainer);
+      return;
+    }
+    if (rootRef.current) {
+      const el = rootRef.current.closest(
+        "[data-radix-dialog-content]"
+      ) as HTMLElement | null;
+      if (el) setContainer(el);
+    }
+  }, [portalContainer]);
 
   const handleIconSelect = (iconKey: string) => {
     onIconChange(iconKey);
@@ -124,54 +143,56 @@ export const IconPicker: React.FC<IconPickerProps> = ({
       .find((i) => i.key === selectedIcon)?.icon || FiFolder;
 
   return (
-    <Popover open={isOpen} onOpenChange={setIsOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          className="w-full justify-start gap-3 p-3 bg-modal-input border-modal-border text-modal-foreground hover:bg-modal-input/80"
+    <div ref={rootRef}>
+      <Popover open={isOpen} onOpenChange={setIsOpen} modal={false}>
+        <PopoverTrigger asChild>
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full justify-start gap-3 p-3 bg-modal-input border-modal-border text-modal-foreground hover:bg-modal-input/80"
+          >
+            <SelectedIconComponent className="w-4 h-4" />
+            <span className="text-sm text-modal-muted">Choose Icon</span>
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent
+          container={container}
+          className="w-100 p-0 border-modal-border z-[60] max-h-80 overflow-y-auto overscroll-contain"
+          align="start"
         >
-          <SelectedIconComponent className="w-4 h-4" />
-          <span className="text-sm text-modal-muted">Choose Icon</span>
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent
-        className="w-80 p-0 border-modal-border z-50 max-h-80 overflow-y-auto overscroll-contain"
-        align="start"
-      >
-        <div className="max-h-full" style={{ scrollbarWidth: "thin" }}>
-          {Object.entries(iconSets).map(([category, icons]) => (
-            <div
-              key={category}
-              className="p-3 border-b border-modal-border last:border-b-0"
-            >
-              <h4 className="text-sm font-medium text-modal-foreground mb-2">
-                {category}
-              </h4>
-              <div className="grid grid-cols-6 gap-2">
-                {icons.map((iconItem) => {
-                  const IconComp = iconItem.icon;
-                  const isSelected = iconItem.key === selectedIcon;
-                  return (
-                    <Button
-                      key={iconItem.key}
-                      variant="ghost"
-                      size="sm"
-                      className={cn(
-                        "w-10 h-10 p-0 hover:bg-primary/10",
-                        isSelected && "bg-primary/20 text-primary"
-                      )}
-                      onClick={() => handleIconSelect(iconItem.key)}
-                      title={iconItem.name}
-                    >
-                      <IconComp className="w-4 h-4" />
-                    </Button>
-                  );
-                })}
+          <div className="max-h-full" style={{ scrollbarWidth: "thin" }}>
+            {Object.entries(iconSets).map(([category, icons]) => (
+              <div
+                key={category}
+                className="p-1 border-b border-modal-border last:border-b-0"
+              >
+                <div className="grid grid-cols-6 gap-1">
+                  {icons.map((iconItem) => {
+                    const IconComp = iconItem.icon;
+                    const isSelected = iconItem.key === selectedIcon;
+                    return (
+                      <Button
+                        type="button"
+                        key={iconItem.key}
+                        variant="ghost"
+                        size="sm"
+                        className={cn(
+                          "w-7 h-7 p-0 hover:bg-primary/10",
+                          isSelected && "bg-primary/20 text-primary"
+                        )}
+                        onClick={() => handleIconSelect(iconItem.key)}
+                        title={iconItem.name}
+                      >
+                        <IconComp className="w-4 h-4" />
+                      </Button>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </PopoverContent>
-    </Popover>
+            ))}
+          </div>
+        </PopoverContent>
+      </Popover>
+    </div>
   );
 };
