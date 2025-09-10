@@ -110,16 +110,14 @@ export const CardDocument = ({ document }: { document: Document }) => {
         </div>
         <Separator className="mt-2" />
       </CardHeader>
-      <CardContent className="flex flex-col px-4 truncate text-muted-foreground">
-        <div className="mt-2 space-y-1 text-xs text-muted-foreground line-clamp-3">
-          {document.sub_blocks.map((block) => {
-            return (
-              <p key={block.id} className="truncate">
-                {block.content?.text || ""}
-              </p>
-            );
-          })}
-        </div>
+      <CardContent className="flex flex-col px-4 truncate text-xs text-muted-foreground">
+        {document.sub_blocks.map((block) => {
+          return (
+            <p key={block.id} className="truncate">
+              {block.content?.text || ""}
+            </p>
+          );
+        })}
       </CardContent>
     </Card>
   );
