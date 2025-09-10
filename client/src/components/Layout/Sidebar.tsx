@@ -8,12 +8,14 @@ import NewDocumentButton from "./Presentational/NewDocumentButton";
 import { SidebarButton } from "./Presentational/SidebarButton";
 import { WorkspaceButton } from "./Presentational/WorkspaceButton";
 import { FolderMenu } from "./Presentational/FolderMenu";
+import { usePathname } from "next/navigation";
 interface Props {
   workspaceSlug: string;
 }
 
 export default function Sidebar({ workspaceSlug }: Props) {
   const { isOpen } = useSidebar();
+  const pathname = usePathname();
 
   return (
     <aside
@@ -35,6 +37,7 @@ export default function Sidebar({ workspaceSlug }: Props) {
               icon={<item.icon className="w-4 h-4" />}
               label={item.label}
               href={item.href}
+              isActive={pathname === item.href}
             />
           ))}
           <Separator />
