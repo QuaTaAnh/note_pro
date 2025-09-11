@@ -1,4 +1,3 @@
-import React, { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -6,34 +5,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { IconComponent } from "@/types/types";
 import {
-  FiFolder,
-  FiHome,
-  FiBook,
-  FiSettings,
-  FiStar,
-  FiHeart,
-  FiMusic,
-  FiCamera,
-  FiImage,
-  FiVideo,
-  FiFileText,
-  FiCode,
-  FiTool,
-  FiUser,
-  FiUsers,
-  FiShoppingCart,
-  FiDollarSign,
-  FiCalendar,
-  FiClock,
-  FiMail,
-  FiPhone,
-} from "react-icons/fi";
-import {
-  Folder,
-  FolderOpen,
-  Archive,
-  Bookmark,
   Briefcase,
   Coffee,
   Gift,
@@ -42,11 +15,32 @@ import {
   Lightbulb,
   MapPin,
   Palette,
-  Shield,
   Target,
   Zap,
 } from "lucide-react";
-import { IconComponent } from "@/types/types";
+import React, { useState } from "react";
+import {
+  FiBook,
+  FiCalendar,
+  FiCamera,
+  FiClock,
+  FiCode,
+  FiDollarSign,
+  FiFolder,
+  FiHeart,
+  FiHome,
+  FiImage,
+  FiMail,
+  FiMusic,
+  FiPhone,
+  FiSettings,
+  FiShoppingCart,
+  FiStar,
+  FiTool,
+  FiUser,
+  FiUsers,
+  FiVideo,
+} from "react-icons/fi";
 
 const iconSets: Record<
   string,
@@ -74,21 +68,13 @@ const iconSets: Record<
     { key: "image", name: "Image", icon: FiImage },
     { key: "video", name: "Video", icon: FiVideo },
     { key: "palette", name: "Palette", icon: Palette },
-    { key: "lightbulb", name: "Lightbulb", icon: Lightbulb },
-  ],
-  "Folders & Storage": [
-    { key: "folder2", name: "Folder", icon: Folder },
-    { key: "folder-open", name: "Folder Open", icon: FolderOpen },
-    { key: "archive", name: "Archive", icon: Archive },
-    { key: "bookmark", name: "Bookmark", icon: Bookmark },
-    { key: "file-text", name: "File Text", icon: FiFileText },
-    { key: "shield", name: "Shield", icon: Shield },
+    { key: "bulb", name: "Lightbulb", icon: Lightbulb },
   ],
   "Lifestyle Icons": [
     { key: "coffee", name: "Coffee", icon: Coffee },
     { key: "gift", name: "Gift", icon: Gift },
     { key: "globe", name: "Globe", icon: Globe },
-    { key: "map-pin", name: "Map Pin", icon: MapPin },
+    { key: "pin", name: "Map Pin", icon: MapPin },
     { key: "target", name: "Target", icon: Target },
     { key: "zap", name: "Zap", icon: Zap },
   ],
@@ -96,9 +82,9 @@ const iconSets: Record<
     { key: "user", name: "User", icon: FiUser },
     { key: "users", name: "Users", icon: FiUsers },
     { key: "phone", name: "Phone", icon: FiPhone },
-    { key: "shopping-cart", name: "Shopping Cart", icon: FiShoppingCart },
-    { key: "dollar-sign", name: "Dollar Sign", icon: FiDollarSign },
-    { key: "graduation-cap", name: "Graduation Cap", icon: GraduationCap },
+    { key: "cart", name: "Shopping Cart", icon: FiShoppingCart },
+    { key: "dollar", name: "Dollar Sign", icon: FiDollarSign },
+    { key: "cap", name: "Graduation Cap", icon: GraduationCap },
   ],
 };
 
@@ -114,23 +100,6 @@ export const IconPicker: React.FC<IconPickerProps> = ({
   portalContainer,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const rootRef = useRef<HTMLDivElement | null>(null);
-  const [container, setContainer] = useState<HTMLElement | undefined>(
-    undefined
-  );
-
-  useEffect(() => {
-    if (portalContainer) {
-      setContainer(portalContainer);
-      return;
-    }
-    if (rootRef.current) {
-      const el = rootRef.current.closest(
-        "[data-radix-dialog-content]"
-      ) as HTMLElement | null;
-      if (el) setContainer(el);
-    }
-  }, [portalContainer]);
 
   const handleIconSelect = (iconKey: string) => {
     onIconChange(iconKey);
@@ -143,8 +112,8 @@ export const IconPicker: React.FC<IconPickerProps> = ({
       .find((i) => i.key === selectedIcon)?.icon || FiFolder;
 
   return (
-    <div ref={rootRef}>
-      <Popover open={isOpen} onOpenChange={setIsOpen} modal={false}>
+    <div>
+      <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <Button
             type="button"
@@ -156,9 +125,10 @@ export const IconPicker: React.FC<IconPickerProps> = ({
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          container={container}
-          className="w-100 p-0 border-modal-border z-[60] max-h-80 overflow-y-auto overscroll-contain"
+          container={portalContainer}
+          className="w-100 p-0 border-modal-border z-[100] max-h-80 overflow-y-auto overscroll-contain pointer-events-auto"
           align="start"
+          sideOffset={8}
         >
           <div className="max-h-full" style={{ scrollbarWidth: "thin" }}>
             {Object.entries(iconSets).map(([category, icons]) => (
@@ -177,7 +147,7 @@ export const IconPicker: React.FC<IconPickerProps> = ({
                         variant="ghost"
                         size="sm"
                         className={cn(
-                          "w-7 h-7 p-0 hover:bg-primary/10",
+                          "w-7 h-7 p-0 hover:bg-primary/10 relative z-10 pointer-events-auto",
                           isSelected && "bg-primary/20 text-primary"
                         )}
                         onClick={() => handleIconSelect(iconItem.key)}
