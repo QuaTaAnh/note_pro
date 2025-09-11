@@ -91,10 +91,10 @@ export const TiptapBlockItem = ({
         isFocused ? "bg-blue-50 dark:bg-blue-900/20" : ""
       }`}
     >
-      <div className="flex-1 min-w-0">
+      <div className="flex-1 min-w-0 overflow-hidden">
         <EditorContent
           editor={editor}
-          className="prose prose-sm max-w-none focus:outline-none text-base"
+          className="prose prose-sm max-w-none focus:outline-none text-base break-words"
         />
       </div>
 
