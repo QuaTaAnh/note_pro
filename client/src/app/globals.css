@@ -86,16 +86,19 @@
   }
 }
 
-/* Tiptap Editor Styles */
 .ProseMirror {
   outline: none;
   word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
   white-space: pre-wrap;
   -webkit-font-variant-ligatures: none;
   font-variant-ligatures: none;
   padding: 4px 8px 4px 14px;
   line-height: 1.5;
   tab-size: 2;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .ProseMirror p.is-editor-empty:first-child::before {
