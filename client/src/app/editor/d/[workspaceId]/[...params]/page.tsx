@@ -2,7 +2,7 @@
 
 import { LayoutEditor } from "@/components/LayoutEditor/LayoutEditor";
 import { LeftSidebar } from "@/components/LayoutEditor/LeftSidebar";
-import TiptapBlockEditor from "@/components/TiptapBlockEditor";
+import TiptapBlockEditor from "@/components/editor/TiptapBlockEditor";
 import { useParams } from "next/navigation";
 
 export default function EditorPage() {

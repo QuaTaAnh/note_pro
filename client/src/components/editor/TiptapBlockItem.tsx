@@ -1,12 +1,17 @@
 "use client";
 
+import { BlockType } from "@/types/types";
+import Highlight from "@tiptap/extension-highlight";
 import Placeholder from "@tiptap/extension-placeholder";
+import Underline from "@tiptap/extension-underline";
+import { EditorView } from "@tiptap/pm/view";
 import { Editor, EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Trash2 } from "lucide-react";
 import { useCallback, useEffect, useMemo } from "react";
-import { BlockType } from "@/types/types";
-import { EditorView } from "@tiptap/pm/view";
+import { EditorBubbleMenu } from "./EditorBubbleMenu";
+import Link from "@tiptap/extension-link";
+import { CustomCode } from "@/lib/customCodeTiptap";
 
 interface Props {
   value: string;
@@ -34,7 +39,19 @@ export const TiptapBlockItem = ({
   const editorConfig = useMemo(
     () => ({
       extensions: [
-        StarterKit,
+        StarterKit.configure({
+          code: false,
+        }),
+        CustomCode,
+        Underline,
+        Highlight.configure({
+          multicolor: true,
+        }),
+        Link.configure({
+          openOnClick: false,
+          autolink: true,
+          linkOnPaste: true,
+        }),
         Placeholder.configure({
           placeholder: 'Type "/" for commands',
         }),
@@ -47,7 +64,7 @@ export const TiptapBlockItem = ({
         onSaveImmediate();
       },
       onUpdate: ({ editor }: { editor: Editor }) => {
-        const content = editor.getText();
+        const content = editor.getHTML();
         onChange(content);
       },
       editorProps: {
@@ -68,7 +85,7 @@ export const TiptapBlockItem = ({
   const editor = useEditor(editorConfig);
 
   useEffect(() => {
-    if (editor && value !== editor.getText()) {
+    if (editor && value !== editor.getHTML()) {
       editor.commands.setContent(value);
     }
   }, [value, editor]);
@@ -92,6 +109,7 @@ export const TiptapBlockItem = ({
       }`}
     >
       <div className="flex-1 min-w-0 overflow-hidden">
+        <EditorBubbleMenu editor={editor} />
         <EditorContent
           editor={editor}
           className="prose prose-sm max-w-none focus:outline-none text-base break-words"
