@@ -2,10 +2,10 @@
 
 import { useDocumentBlocks } from "@/hooks";
 import { TiptapWrapper } from "./TiptapWrapper";
-import { PageLoading } from "./ui/loading";
+import { PageLoading } from "../ui/loading";
 import { DocumentTitleInput } from "@/components/page/DocumentTitleInput";
 import { BlockList } from "@/components/page/BlockList";
-import { Separator } from "./ui/separator";
+import { Separator } from "../ui/separator";
 
 interface Props {
   pageId: string;

@@ -28,6 +28,7 @@
     "@radix-ui/react-toast": "^1.2.14",
     "@radix-ui/react-tooltip": "^1.2.7",
     "@tiptap/extension-code-block": "^3.3.0",
+    "@tiptap/extension-highlight": "^3.4.2",
     "@tiptap/extension-link": "^3.3.0",
     "@tiptap/extension-mention": "^3.3.0",
     "@tiptap/extension-placeholder": "^3.3.0",

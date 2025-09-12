@@ -106,4 +106,23 @@ export const COLORS = [
     hexColor: FolderHexColor.PURPLE,
   },
 ];
+
+export const HIGHLIGHT_COLORS = [
+  { name: "None", color: "transparent", value: null },
+  { name: "Yellow", color: "#fef08a", value: "#fef08a" },
+  { name: "Green", color: "#bbf7d0", value: "#bbf7d0" },
+  { name: "Cyan", color: "#a7f3d0", value: "#a7f3d0" },
+  { name: "Sky", color: "#7dd3fc", value: "#7dd3fc" },
+  { name: "Blue", color: "#93c5fd", value: "#93c5fd" },
+  { name: "Purple", color: "#c4b5fd", value: "#c4b5fd" },
+  { name: "Pink", color: "#f9a8d4", value: "#f9a8d4" },
+  { name: "Rose", color: "#fda4af", value: "#fda4af" },
+  { name: "Orange", color: "#fed7aa", value: "#fed7aa" },
+  { name: "Gray", color: "#d1d5db", value: "#d1d5db" },
+  { name: "Dark Blue", color: "#3b82f6", value: "#3b82f6" },
+  { name: "Dark Purple", color: "#8b5cf6", value: "#8b5cf6" },
+  { name: "Dark Pink", color: "#ec4899", value: "#ec4899" },
+  { name: "Dark Orange", color: "#f97316", value: "#f97316" },
+  { name: "Brown", color: "#a3744a", value: "#a3744a" },
+];
   

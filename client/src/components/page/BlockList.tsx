@@ -1,6 +1,6 @@
 "use client";
 
-import { TiptapBlockItem } from "@/components/TiptapBlockItem";
+import { TiptapBlockItem } from "@/components/editor/TiptapBlockItem";
 import { BlockType } from "@/types/types";
 import { Block } from "@/hooks";
 
