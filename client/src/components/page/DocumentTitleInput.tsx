@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { TiptapEditor } from "../editor/TiptapEditor";
 
 interface Props {
   value: string;
@@ -19,44 +19,20 @@ export function DocumentTitleInput({
   value,
   onChange,
   className,
-  placeholder,
+  placeholder = "Untitled",
 }: Props) {
-  const ref = useRef<HTMLTextAreaElement | null>(null);
-
-  const resize = useCallback(() => {
-    if (!ref.current) return;
-    const el = ref.current;
-    el.style.height = "auto";
-    el.style.height = `${el.scrollHeight}px`;
-  }, []);
-
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      onChange(e.target.value);
-      resize();
-    },
-    [onChange, resize]
-  );
-
-  useEffect(() => {
-    resize();
-  }, [resize, value]);
-
   return (
-    <textarea
-      ref={ref}
-      onKeyDown={onKeyDown}
-      onFocus={onFocus}
+    <TiptapEditor
       value={value}
-      onChange={handleChange}
+      onChange={onChange}
+      onFocus={onFocus}
+      onKeyDown={onKeyDown}
       onBlur={onBlur}
-      className={`text-xl font-bold w-full bg-transparent border-none outline-none resize-none ${className}`}
+      className={className}
       placeholder={placeholder}
-      style={{
-        overflow: "hidden",
-        lineHeight: "1.2",
-      }}
-      rows={1}
+      editorClassName="prose prose-sm max-w-none focus:outline-none text-xl font-bold break-words"
+      isTitle={true}
+      showBubbleMenu={true}
     />
   );
 }
