@@ -60,7 +60,11 @@ export const HighlightPicker = ({
       </button>
 
       {show && (
-        <div className="absolute top-full left-0 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-md shadow-lg p-2 z-50">
+        <div
+          className="fixed mt-1 bg-white dark:bg-gray-800 
+                  border border-gray-200 dark:border-gray-600 
+                  rounded-md shadow-lg p-2 z-50"
+        >
           <div className="grid grid-cols-5 gap-1 w-40">
             {HIGHLIGHT_COLORS.map((colorOption, i) => (
               <button
