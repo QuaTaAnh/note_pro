@@ -60,7 +60,7 @@ export const CardDocument = ({ document }: { document: Document }) => {
 
   const titleContent = (
     <CardTitle ref={titleRef} className="text-sm truncate">
-      {document.content?.title || "Untitled"}
+      {getPlainText(document.content?.title) || "Untitled"}
     </CardTitle>
   );
 
@@ -80,7 +80,7 @@ export const CardDocument = ({ document }: { document: Document }) => {
         <div className="flex justify-between items-start gap-2">
           <div className="flex-1 min-w-0">
             {isTitleTruncated ? (
-              <SimpleTooltip title={document.content?.title || "Untitled"}>
+              <SimpleTooltip title={getPlainText(document.content?.title)}>
                 {titleContent}
               </SimpleTooltip>
             ) : (
@@ -114,11 +114,22 @@ export const CardDocument = ({ document }: { document: Document }) => {
         {document.sub_blocks.map((block) => {
           return (
             <p key={block.id} className="truncate">
-              {block.content?.text || ""}
+              {getPlainText(block.content?.text) || ""}
             </p>
           );
         })}
       </CardContent>
     </Card>
   );
+};
+
+const getPlainText = (html?: string | null) => {
+  if (!html) {
+    return "";
+  }
+  if (typeof window !== "undefined") {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.body.textContent || "";
+  }
+  return html.replace(/<[^>]*>/g, "");
 };
