@@ -17,7 +17,7 @@ import { Folder } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
-const getPlainText = (html?: string | null) => {
+export const getPlainText = (html?: string | null) => {
   if (!html) return "";
   if (typeof window !== "undefined") {
     const doc = new DOMParser().parseFromString(html, "text/html");
