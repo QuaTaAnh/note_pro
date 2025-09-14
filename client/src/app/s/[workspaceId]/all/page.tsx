@@ -1,13 +1,13 @@
 "use client";
 
 import { Document } from "@/types/app";
-import { CardDocument } from "@/components/page/CardDocument";
 import { PageLoading } from "@/components/ui/loading";
 import { useGetAllDocsQuery } from "@/graphql/queries/__generated__/document.generated";
 import { useWorkspace } from "@/hooks/use-workspace";
 import React, { useMemo } from "react";
-import { FixedSizeGrid as Grid, GridChildComponentProps } from "react-window";
+import { FixedSizeGrid as Grid } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
+import { CellDocument } from "@/components/page/CellDocument";
 
 const MIN_CARD_WIDTH = 240;
 const GUTTER = 40;
@@ -56,32 +56,6 @@ export default function AllDocsPage() {
 
                 const rowCount = Math.ceil(allDocs.length / columnCount);
 
-                const Cell = ({
-                  columnIndex,
-                  rowIndex,
-                  style,
-                }: GridChildComponentProps) => {
-                  const itemIndex = rowIndex * columnCount + columnIndex;
-                  if (itemIndex >= allDocs.length) return null;
-
-                  const doc = allDocs[itemIndex];
-                  return (
-                    <div
-                      style={{
-                        ...style,
-                        left: (style.left as number) + columnIndex * GUTTER,
-                        top: (style.top as number) + rowIndex * GUTTER,
-                        width: columnWidth,
-                        height: rowHeight - GUTTER,
-                      }}
-                    >
-                      <div className="mr-6">
-                        <CardDocument document={doc} />
-                      </div>
-                    </div>
-                  );
-                };
-
                 return (
                   <Grid
                     columnCount={columnCount}
@@ -92,8 +66,9 @@ export default function AllDocsPage() {
                     width={width}
                     overscanRowCount={3}
                     style={{ overflowX: "hidden" }}
+                    itemData={{ docs: allDocs, columnCount, columnWidth }}
                   >
-                    {Cell}
+                    {CellDocument}
                   </Grid>
                 );
               }}
