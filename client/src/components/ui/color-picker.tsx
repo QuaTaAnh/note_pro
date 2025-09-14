@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
-import { COLORS } from "@/consts";
-import { FolderColor } from "@/types/types";
+import { FOLDER_COLORS } from "@/consts";
+import { HexColor } from "@/types/types";
 
 interface ColorPickerProps {
   selectedColor: string;
@@ -15,15 +15,15 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
 }) => {
   useEffect(() => {
     if (!selectedColor || selectedColor.trim() === "") {
-      onColorChange(FolderColor.WHITE);
+      onColorChange(HexColor.WHITE);
     }
   }, [selectedColor, onColorChange]);
 
   return (
     <div className="flex gap-2 flex-wrap">
-      {COLORS.map((color) => {
+      {FOLDER_COLORS.map((color) => {
         const isSelected = selectedColor === color.value;
-        const isWhite = color.value === FolderColor.WHITE;
+        const isWhite = color.value === HexColor.WHITE;
 
         return (
           <button
@@ -37,7 +37,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
                 : "border-muted hover:scale-105 hover:shadow"
             )}
             style={{
-              backgroundColor: color.hexColor,
+              backgroundColor: color.color,
               borderColor: isWhite ? "rgba(120,120,120,0.6)" : undefined,
             }}
             title={color.name}

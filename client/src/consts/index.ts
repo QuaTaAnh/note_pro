@@ -1,6 +1,6 @@
 import { createElement } from "react";
 import { ROUTES } from "@/lib/routes";
-import { FolderColor, FolderHexColor } from "@/types/types";
+import {  HexColor } from "@/types/types";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { FiFileText } from "react-icons/fi";
 import { LuBookOpenText, LuCalendarRange } from "react-icons/lu";
@@ -74,55 +74,29 @@ export const MIN_PASSWORD_LENGTH = 8;
 export const MAX_TITLE_LENGTH = 100;
 export const MAX_DESCRIPTION_LENGTH = 500;
 
-export const COLORS = [
-  {
-    name: "White",
-    value: FolderColor.WHITE,
-    hexColor: FolderHexColor.WHITE,
-  },
-  {
-    name: "Blue",
-    value: FolderColor.BLUE,
-    hexColor: FolderHexColor.BLUE,
-  },
-  {
-    name: "Green",
-    value: FolderColor.GREEN,
-    hexColor: FolderHexColor.GREEN,
-  },
-  {
-    name: "Yellow",
-    value: FolderColor.YELLOW,
-    hexColor: FolderHexColor.YELLOW,
-  },
-  {
-    name: "Red",
-    value: FolderColor.RED,
-    hexColor: FolderHexColor.RED,
-  },
-  {
-    name: "Purple",
-    value: FolderColor.PURPLE,
-    hexColor: FolderHexColor.PURPLE,
-  },
-];
+const COLORS = [{ name: "Yellow", color: HexColor.YELLOW, value: HexColor.YELLOW },
+  { name: "Green", color: HexColor.GREEN, value: HexColor.GREEN },
+  { name: "Sky", color: HexColor.SKY, value: HexColor.SKY },
+  { name: "Blue", color: HexColor.BLUE, value: HexColor.BLUE },
+  { name: "Purple", color: HexColor.PURPLE, value: HexColor.PURPLE },
+  { name: "Pink", color: HexColor.PINK, value: HexColor.PINK },
+  { name: "Rose", color: HexColor.ROSE, value: HexColor.ROSE },
+  { name: "Orange", color: HexColor.ORANGE, value: HexColor.ORANGE },
+  { name: "Gray", color: HexColor.GRAY, value: HexColor.GRAY },
+  { name: "Dark Blue", color: HexColor.DARK_BLUE, value:  HexColor.DARK_BLUE },
+  { name: "Dark Purple", color: HexColor.DARK_PURPLE, value: HexColor.DARK_PURPLE },
+  { name: "Dark Pink", color: HexColor.DARK_PINK, value: HexColor.DARK_PINK },
+  { name: "Dark Orange", color: HexColor.DARK_ORANGE, value:  HexColor.DARK_ORANGE },
+  { name: "Brown", color: HexColor.BROWN, value: HexColor.BROWN }
+]
+
+export const FOLDER_COLORS = [
+  { name: "White", color: HexColor.WHITE, value: HexColor.WHITE },
+  ...COLORS
+]
 
 export const HIGHLIGHT_COLORS = [
-  { name: "None", color: "transparent", value: null },
-  { name: "Yellow", color: "#fef08a", value: "#fef08a" },
-  { name: "Green", color: "#bbf7d0", value: "#bbf7d0" },
-  { name: "Cyan", color: "#a7f3d0", value: "#a7f3d0" },
-  { name: "Sky", color: "#7dd3fc", value: "#7dd3fc" },
-  { name: "Blue", color: "#93c5fd", value: "#93c5fd" },
-  { name: "Purple", color: "#c4b5fd", value: "#c4b5fd" },
-  { name: "Pink", color: "#f9a8d4", value: "#f9a8d4" },
-  { name: "Rose", color: "#fda4af", value: "#fda4af" },
-  { name: "Orange", color: "#fed7aa", value: "#fed7aa" },
-  { name: "Gray", color: "#d1d5db", value: "#d1d5db" },
-  { name: "Dark Blue", color: "#3b82f6", value: "#3b82f6" },
-  { name: "Dark Purple", color: "#8b5cf6", value: "#8b5cf6" },
-  { name: "Dark Pink", color: "#ec4899", value: "#ec4899" },
-  { name: "Dark Orange", color: "#f97316", value: "#f97316" },
-  { name: "Brown", color: "#a3744a", value: "#a3744a" },
+  { name: "None", color: HexColor.TRANSPARENT, value: null },
+  ...COLORS
 ];
   
