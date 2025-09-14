@@ -1,23 +1,30 @@
 import { CheckCircle, Menu, Paperclip, Search } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { formatDate } from "@/lib/utils";
-
+import { useDocumentBlocks } from "@/hooks";
+import { MdEditDocument } from "react-icons/md";
+import { getPlainText } from "../page/CardDocument";
 interface Props {
-  documentId: string | undefined;
+  pageId: string;
 }
 
-export const LeftSidebar = ({ documentId }: Props) => {
+export const LeftSidebar = ({ pageId }: Props) => {
+  const { rootBlock } = useDocumentBlocks(pageId);
+
   return (
     <div className="h-full flex flex-col">
-      <div className="p-2 bg-sidebar-header">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-green-500"></div>
-            <h2 className="text-xs font-medium">{documentId}</h2>
+      <div className="p-2">
+        <div className="flex flex-row items-center gap-2 mb-3">
+          <MdEditDocument className="h-9 w-9 shrink-0" />
+
+          <div className="flex flex-col flex-1 min-w-0">
+            <span className="text-sm font-medium truncate">
+              {getPlainText(rootBlock?.content?.title) || "Untitled"}
+            </span>
+            <span className="text-xs text-muted-foreground truncate">
+              {formatDate(rootBlock?.updated_at || "", { relative: true })}
+            </span>
           </div>
-          <span className="text-xs">
-            {formatDate(new Date(), { relative: true })}
-          </span>
         </div>
 
         <Tabs defaultValue="contents" className="w-full">

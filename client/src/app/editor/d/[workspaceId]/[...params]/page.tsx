@@ -9,14 +9,12 @@ export default function EditorPage() {
   const { params } = useParams();
   const documentId = params?.[params.length - 1];
 
-  return (
+  return !documentId ? null : (
     <LayoutEditor
-      left={<LeftSidebar documentId={documentId} />}
+      left={<LeftSidebar pageId={documentId} />}
       right={<div>rightSidebar</div>}
     >
-      {documentId && (
-        <TiptapBlockEditor pageId={documentId} className="w-full" />
-      )}
+      <TiptapBlockEditor pageId={documentId} className="w-full" />
     </LayoutEditor>
   );
 }
