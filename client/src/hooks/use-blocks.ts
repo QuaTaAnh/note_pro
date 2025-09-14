@@ -1,6 +1,6 @@
 "use client";
 
-import { useDeleteBlockMutation, useInsertBlockAndUpdatePositionMutation, useUpdateBlockMutation } from "@/graphql/mutations/__generated__/document.generated";
+import { useDeleteBlockMutation, useInsertBlockAndUpdatePositionMutation, useUpdateBlockMutation, useUpdateBlocksPositionsMutation } from "@/graphql/mutations/__generated__/document.generated";
 import { GetDocumentBlocksDocument, GetDocumentBlocksQuery } from "@/graphql/queries/__generated__/document.generated";
 import { useUserId } from "@/hooks/use-auth";
 import { useWorkspace } from "@/hooks/use-workspace";
@@ -20,6 +20,7 @@ export function useBlocks() {
   const [insertBlockAndUpdatePosition] = useInsertBlockAndUpdatePositionMutation();
   const [updateBlock] = useUpdateBlockMutation();
   const [deleteBlock] = useDeleteBlockMutation();
+  const [updateBlocksPositions] = useUpdateBlocksPositionsMutation();
   const userId = useUserId();
   const { workspace } = useWorkspace();
   const [isLoading, setIsLoading] = useState(false);
@@ -205,11 +206,31 @@ export function useBlocks() {
     }
   };
 
+  const updateBlocksPositionsBatch = async (updates: { id: string; position: number }[]) => {
+    if (!updates.length) return;
+    setIsLoading(true);
+    try {
+      await updateBlocksPositions({
+        variables: {
+          updates: updates.map(({ id, position }) => ({
+            where: { id: { _eq: id } },
+            _set: { position, updated_at: new Date().toISOString() },
+          })),
+        },
+      });
+    } catch (error) {
+      console.error("Failed to batch update block positions:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return {
     createBlockWithPositionUpdate,
     updateBlockContent,
     updateBlockPosition,
+    updateBlocksPositionsBatch,
     removeBlock,
     isLoading,
   };
-} 
+}

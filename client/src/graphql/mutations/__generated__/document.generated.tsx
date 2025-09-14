@@ -43,6 +43,13 @@ export type InsertBlockAndUpdatePositionMutationVariables = Types.Exact<{
 
 export type InsertBlockAndUpdatePositionMutation = { __typename?: 'mutation_root', update_blocks?: { __typename?: 'blocks_mutation_response', affected_rows: number } | null, insert_blocks_one?: { __typename?: 'blocks', id: string, content?: any | null, position?: number | null, parent_id?: string | null, page_id?: string | null, type: string, created_at?: string | null, updated_at?: string | null } | null };
 
+export type UpdateBlocksPositionsMutationVariables = Types.Exact<{
+  updates: Array<Types.BlocksUpdates> | Types.BlocksUpdates;
+}>;
+
+
+export type UpdateBlocksPositionsMutation = { __typename?: 'mutation_root', update_blocks_many?: Array<{ __typename?: 'blocks_mutation_response', returning: Array<{ __typename?: 'blocks', id: string, position?: number | null }> } | null> | null };
+
 
 export const SoftDeleteDocumentDocument = gql`
     mutation SoftDeleteDocument($id: uuid!) {
@@ -236,3 +243,39 @@ export function useInsertBlockAndUpdatePositionMutation(baseOptions?: Apollo.Mut
 export type InsertBlockAndUpdatePositionMutationHookResult = ReturnType<typeof useInsertBlockAndUpdatePositionMutation>;
 export type InsertBlockAndUpdatePositionMutationResult = Apollo.MutationResult<InsertBlockAndUpdatePositionMutation>;
 export type InsertBlockAndUpdatePositionMutationOptions = Apollo.BaseMutationOptions<InsertBlockAndUpdatePositionMutation, InsertBlockAndUpdatePositionMutationVariables>;
+export const UpdateBlocksPositionsDocument = gql`
+    mutation UpdateBlocksPositions($updates: [blocks_updates!]!) {
+  update_blocks_many(updates: $updates) {
+    returning {
+      id
+      position
+    }
+  }
+}
+    `;
+export type UpdateBlocksPositionsMutationFn = Apollo.MutationFunction<UpdateBlocksPositionsMutation, UpdateBlocksPositionsMutationVariables>;
+
+/**
+ * __useUpdateBlocksPositionsMutation__
+ *
+ * To run a mutation, you first call `useUpdateBlocksPositionsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateBlocksPositionsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateBlocksPositionsMutation, { data, loading, error }] = useUpdateBlocksPositionsMutation({
+ *   variables: {
+ *      updates: // value for 'updates'
+ *   },
+ * });
+ */
+export function useUpdateBlocksPositionsMutation(baseOptions?: Apollo.MutationHookOptions<UpdateBlocksPositionsMutation, UpdateBlocksPositionsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateBlocksPositionsMutation, UpdateBlocksPositionsMutationVariables>(UpdateBlocksPositionsDocument, options);
+      }
+export type UpdateBlocksPositionsMutationHookResult = ReturnType<typeof useUpdateBlocksPositionsMutation>;
+export type UpdateBlocksPositionsMutationResult = Apollo.MutationResult<UpdateBlocksPositionsMutation>;
+export type UpdateBlocksPositionsMutationOptions = Apollo.BaseMutationOptions<UpdateBlocksPositionsMutation, UpdateBlocksPositionsMutationVariables>;

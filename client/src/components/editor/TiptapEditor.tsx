@@ -16,6 +16,7 @@ import { useCallback, useEffect, useMemo } from "react";
 import { EditorBubbleMenu } from "./EditorBubbleMenu";
 import Link from "@tiptap/extension-link";
 import { CustomCode } from "@/lib/customCodeTiptap";
+import { GripVertical } from "lucide-react";
 
 interface TiptapEditorProps {
   value: string;
@@ -43,7 +44,7 @@ export const TiptapEditor = ({
   onKeyDown,
   placeholder = 'Type "/" for commands',
   className = "",
-  editorClassName = "prose prose-sm max-w-none focus:outline-none text-base break-words",
+  editorClassName,
   showBubbleMenu = true,
   isFocused = false,
   position = 0,
@@ -51,7 +52,8 @@ export const TiptapEditor = ({
   onSaveImmediate,
   onDeleteBlock,
   isTitle = false,
-}: TiptapEditorProps) => {
+  dragHandle,
+}: TiptapEditorProps & { dragHandle?: React.ReactNode }) => {
   const editorConfig = useMemo(
     () => ({
       extensions: [
@@ -167,15 +169,29 @@ export const TiptapEditor = ({
     </div>
   ) : (
     <div
-      className={`group relative flex items-start gap-2 p-1 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ${
+      className={`group relative flex items-center gap-1 px-2 py-1 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors min-h-[36px] ${
         isFocused ? "bg-blue-50 dark:bg-blue-900/20" : ""
       }`}
+      style={{ boxShadow: isFocused ? "0 0 0 2px #3b82f6" : undefined }}
     >
+      <span
+        className="flex items-center opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity"
+        style={{ minWidth: 24, minHeight: 24 }}
+      >
+        <button
+          tabIndex={-1}
+          type="button"
+          aria-label="Drag block"
+          className="flex items-center text-gray-400 hover:text-gray-600 cursor-grab active:cursor-grabbing p-1 rounded focus:outline-none"
+          style={{ background: "none", border: "none" }}
+        >
+          {dragHandle || <GripVertical size={16} />}
+        </button>
+      </span>
       <div className="flex-1 min-w-0 overflow-hidden">
         {showBubbleMenu && <EditorBubbleMenu editor={editor} />}
         <EditorContent editor={editor} className={editorClassName} />
       </div>
-
       {onDeleteBlock && (
         <button
           onClick={handleDelete}

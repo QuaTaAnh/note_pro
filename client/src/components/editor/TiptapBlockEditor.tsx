@@ -25,6 +25,7 @@ export default function TiptapBlockEditor({ pageId, className = "" }: Props) {
     handleBlockBlur,
     handleSaveImmediate,
     handleDeleteBlock,
+    handleReorderBlocks,
   } = useDocumentBlocks(pageId);
 
   return loading || !rootBlock ? (
@@ -49,6 +50,7 @@ export default function TiptapBlockEditor({ pageId, className = "" }: Props) {
               onAddBlock={handleAddBlock}
               onSaveImmediate={handleSaveImmediate}
               onDeleteBlock={handleDeleteBlock}
+              onReorder={handleReorderBlocks}
             />
           </TiptapWrapper>
         </div>

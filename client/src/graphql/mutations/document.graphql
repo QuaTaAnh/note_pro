@@ -63,3 +63,12 @@ mutation InsertBlockAndUpdatePosition(
     updated_at
   }
 }
+
+mutation UpdateBlocksPositions($updates: [blocks_updates!]!) {
+  update_blocks_many(updates: $updates) {
+    returning {
+      id
+      position
+    }
+  }
+}
