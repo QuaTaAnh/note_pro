@@ -17,7 +17,7 @@ import { useInsertFolderMutation } from "@/graphql/mutations/__generated__/folde
 import { useUserId } from "@/hooks/use-auth";
 import { useWorkspace } from "@/hooks/use-workspace";
 import showToast from "@/lib/toast";
-import { FolderColor } from "@/types/types";
+import { HexColor } from "@/types/types";
 import React, { useRef, useState } from "react";
 import { FiPlus } from "react-icons/fi";
 
@@ -36,7 +36,7 @@ export const NewFolderButton = () => {
   const [folderData, setFolderData] = useState<FolderData>({
     name: "",
     description: "",
-    color: FolderColor.WHITE,
+    color: HexColor.WHITE,
     icon: "folder",
   });
   const dialogContentRef = useRef<HTMLDivElement | null>(null);
@@ -82,7 +82,7 @@ export const NewFolderButton = () => {
       setFolderData({
         name: "",
         description: "",
-        color: FolderColor.WHITE,
+        color: HexColor.WHITE,
         icon: "folder",
       });
     } catch {

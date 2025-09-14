@@ -5,20 +5,8 @@ import { useState } from "react";
 import { FiChevronDown, FiChevronRight } from "react-icons/fi";
 import { SidebarButton } from "../Layout/Presentational/SidebarButton";
 import { Button } from "../ui/button";
-import { FolderColor, FolderHexColor } from "@/types/types";
+import { HexColor } from "@/types/types";
 import { usePathname } from "next/navigation";
-
-const getColorValue = (colorName: FolderColor): string => {
-  const colorMap: Record<FolderColor, string> = {
-    [FolderColor.WHITE]: FolderHexColor.WHITE,
-    [FolderColor.BLUE]: FolderHexColor.BLUE,
-    [FolderColor.GREEN]: FolderHexColor.GREEN,
-    [FolderColor.YELLOW]: FolderHexColor.YELLOW,
-    [FolderColor.RED]: FolderHexColor.RED,
-    [FolderColor.PURPLE]: FolderHexColor.PURPLE,
-  };
-  return colorMap[colorName] || colorMap[FolderColor.WHITE];
-};
 
 export const FolderItem: React.FC<{
   folder: FolderNode;
@@ -70,9 +58,9 @@ export const FolderItem: React.FC<{
             <Icon
               className="w-4 h-4"
               style={{
-                color: getColorValue(folder.color as FolderColor),
+                color: folder.color ?? HexColor.WHITE,
                 filter:
-                  folder.color === FolderColor.WHITE
+                  folder.color === HexColor.WHITE
                     ? "drop-shadow(0 0 1px rgba(0,0,0,0.9))"
                     : "none",
               }}
