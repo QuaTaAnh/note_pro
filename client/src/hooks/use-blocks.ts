@@ -88,52 +88,6 @@ export function useBlocks() {
     }
   };
 
-  const updateBlockPosition = async (id: string, position: number): Promise<Block | null> => {
-    try {
-      setIsLoading(true);
-      const res = await updateBlock({
-        variables: {
-          id,
-          input: {
-            position,
-            updated_at: new Date().toISOString(),
-          },
-        },
-        update: (cache, { data }) => {
-          const updatedBlock = data?.update_blocks_by_pk;
-          if (!updatedBlock) return;
-
-          cache.modify({
-            id: cache.identify({ __typename: 'blocks', id }),
-            fields: {
-              position: () => updatedBlock.position,
-              updated_at: () => updatedBlock.updated_at,
-            }
-          });
-        }
-      });
-
-      const result = res.data?.update_blocks_by_pk;
-      if (!result) return null;
-      
-      return {
-        id: result.id,
-        content: result.content || {},
-        position: result.position || 0,
-        parent_id: result.parent_id || undefined,
-        page_id: result.page_id || undefined,
-        type: result.type,
-        created_at: result.created_at || new Date().toISOString(),
-        updated_at: result.updated_at || new Date().toISOString(),
-      };
-    } catch (error) {
-      console.error("Failed to update block position:", error);
-      return null;
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const removeBlock = async (id: string): Promise<boolean> => {
     try {
       setIsLoading(true);
@@ -228,7 +182,6 @@ export function useBlocks() {
   return {
     createBlockWithPositionUpdate,
     updateBlockContent,
-    updateBlockPosition,
     updateBlocksPositionsBatch,
     removeBlock,
     isLoading,

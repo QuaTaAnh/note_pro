@@ -15,7 +15,7 @@ export function useDocumentBlocksEditing({
   initialRootBlock,
   pageId,
 }: UseDocumentBlocksEditingParams) {
-  const { createBlockWithPositionUpdate, updateBlockContent, updateBlockPosition, updateBlocksPositionsBatch, removeBlock } = useBlocks();
+  const { createBlockWithPositionUpdate, updateBlockContent, updateBlocksPositionsBatch, removeBlock } = useBlocks();
   const { debounced, flush } = useDebounce(500);
 
   const [blocks, setBlocks] = useState<Block[]>(initialBlocks);
@@ -95,7 +95,6 @@ export function useDocumentBlocksEditing({
   const handleReorderBlocks = useCallback(
     async (newBlocks: Block[]) => {
       setBlocks(newBlocks);
-      // Chỉ update những block có position thay đổi
       const updates = newBlocks
         .map((block, idx) => ({ id: block.id, position: idx }))
         .filter((block, idx) => block.position !== (blocks[idx]?.position ?? -1) || block.id !== (blocks[idx]?.id ?? ""));

@@ -40,7 +40,7 @@ export const TiptapBlockItem = ({
       isFocused={isFocused}
       position={position}
       placeholder='Type "/" for commands'
-      editorClassName="prose prose-sm max-w-none focus:outline-none text-base break-words text-sm leading-6"
+      editorClassName="prose prose-sm max-w-none focus:outline-none text-base break-words text-sm"
       showBubbleMenu={true}
       dragHandle={dragHandle}
     />

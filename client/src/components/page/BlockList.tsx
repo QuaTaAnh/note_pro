@@ -29,7 +29,7 @@ interface Props {
   onAddBlock: (position: number, type: BlockType) => void;
   onSaveImmediate: () => void;
   onDeleteBlock?: (blockId: string) => void;
-  onReorder?: (newBlocks: Block[]) => void; // thêm props này
+  onReorder?: (newBlocks: Block[]) => void;
 }
 
 function SortableBlockItem({
@@ -54,14 +54,26 @@ function SortableBlockItem({
     isDragging,
   } = useSortable({ id: block.id });
   const style = {
-    transform: CSS.Transform.toString(transform),
+    transform: CSS.Transform.toString(
+      transform && {
+        ...transform,
+        x: 0,
+        scaleX: 1,
+        scaleY: 1,
+      }
+    ),
     transition,
-    opacity: isDragging ? 0.5 : 1,
+    opacity: isDragging ? 0.8 : 1,
+    position: "relative" as const,
+    zIndex: isDragging ? 999 : "auto",
+    backgroundColor: isDragging ? "white" : "transparent",
+    boxShadow: isDragging ? "0 4px 12px rgba(0, 0, 0, 0.1)" : "none",
   };
+
   return (
     <div ref={setNodeRef} style={style}>
       <TiptapBlockItem
-        value={(block.content?.text as string) || ""}
+        value={block.content?.text || ""}
         position={block.position || 0}
         isFocused={props.focusedBlockId === block.id}
         onFocus={() => props.onFocus(block.id)}
@@ -79,8 +91,7 @@ function SortableBlockItem({
             {...attributes}
             {...listeners}
             tabIndex={-1}
-            className="inline-flex items-center justify-center mr-1 cursor-grab text-gray-400 hover:text-gray-600 focus:outline-none"
-            style={{ touchAction: "none" }}
+            className="opacity-0 group-hover:opacity-100 transition-opacity cursor-grab"
           >
             <GripVertical size={16} />
           </span>
@@ -109,7 +120,9 @@ export function BlockList({
       const oldIndex = blocks.findIndex((b) => b.id === active.id);
       const newIndex = blocks.findIndex((b) => b.id === over?.id);
       const newBlocks = arrayMove(blocks, oldIndex, newIndex);
-      if (onReorder) onReorder(newBlocks);
+      if (onReorder) {
+        onReorder(newBlocks);
+      }
     }
   };
 
@@ -123,7 +136,7 @@ export function BlockList({
         items={blocks.map((b) => b.id)}
         strategy={verticalListSortingStrategy}
       >
-        <div className="space-y-1">
+        <div className="space-y-3">
           {blocks.map((block) => (
             <SortableBlockItem
               key={block.id}
