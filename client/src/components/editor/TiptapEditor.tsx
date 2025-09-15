@@ -1,7 +1,9 @@
 "use client";
 
+import { CustomCode } from "@/lib/customCodeTiptap";
 import { BlockType } from "@/types/types";
 import Highlight from "@tiptap/extension-highlight";
+import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
 import Underline from "@tiptap/extension-underline";
 import { EditorView } from "@tiptap/pm/view";
@@ -13,9 +15,9 @@ import {
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useCallback, useEffect, useMemo } from "react";
+import { FiTrash } from "react-icons/fi";
+import { Button } from "../ui/button";
 import { EditorBubbleMenu } from "./EditorBubbleMenu";
-import Link from "@tiptap/extension-link";
-import { CustomCode } from "@/lib/customCodeTiptap";
 
 interface TiptapEditorProps {
   value: string;
@@ -43,7 +45,7 @@ export const TiptapEditor = ({
   onKeyDown,
   placeholder = 'Type "/" for commands',
   className = "",
-  editorClassName = "prose prose-sm max-w-none focus:outline-none text-base break-words",
+  editorClassName,
   showBubbleMenu = true,
   isFocused = false,
   position = 0,
@@ -51,7 +53,8 @@ export const TiptapEditor = ({
   onSaveImmediate,
   onDeleteBlock,
   isTitle = false,
-}: TiptapEditorProps) => {
+  dragHandle,
+}: TiptapEditorProps & { dragHandle?: React.ReactNode }) => {
   const editorConfig = useMemo(
     () => ({
       extensions: [
@@ -117,7 +120,7 @@ export const TiptapEditor = ({
           class: isTitle
             ? `text-xl font-bold w-full bg-transparent border-none outline-none resize-none ${className}`
             : className,
-          style: isTitle ? "line-height: 1.2;" : undefined,
+          style: isTitle ? "line-height: 1.2;" : "padding: 0px;",
         },
       },
     }),
@@ -167,35 +170,25 @@ export const TiptapEditor = ({
     </div>
   ) : (
     <div
-      className={`group relative flex items-start gap-2 p-1 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ${
+      className={`group relative flex items-start gap-2 p-1 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors${
         isFocused ? "bg-blue-50 dark:bg-blue-900/20" : ""
       }`}
+      style={{ boxShadow: isFocused ? "0 0 0 2px #3b82f6" : undefined }}
     >
+      <div className="pt-0.5">{dragHandle}</div>
       <div className="flex-1 min-w-0 overflow-hidden">
         {showBubbleMenu && <EditorBubbleMenu editor={editor} />}
         <EditorContent editor={editor} className={editorClassName} />
       </div>
-
       {onDeleteBlock && (
-        <button
+        <Button
+          variant="ghost"
+          size="icon"
+          className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-100 dark:hover:bg-red-900/20 rounded text-gray-400 hover:text-red-600 dark:hover:text-red-400 mt-1"
           onClick={handleDelete}
-          className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-red-100 dark:hover:bg-red-900/20 rounded text-gray-400 hover:text-red-600 dark:hover:text-red-400 mt-1"
-          title="Delete block"
         >
-          <svg
-            className="w-3 h-3"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-            />
-          </svg>
-        </button>
+          <FiTrash size={12} />
+        </Button>
       )}
     </div>
   );
