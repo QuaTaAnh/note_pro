@@ -51,6 +51,7 @@ show_usage() {
     echo "  $0 --setup-startup  # Full deployment + PM2 startup"
     echo "  $0 --restart        # Restart all services"
     echo ""
+    echo "For more information, see README.md"
 }
 
 # Function to check if we're in the right directory
@@ -71,7 +72,7 @@ ensure_pm2() {
 
 # Function to check services status
 show_status() {
-    print_header "🔍 Services Status"
+    print_header "�� Services Status"
     echo ""
     
     print_status "PM2 Processes:"
@@ -229,6 +230,8 @@ print_success() {
     echo -e "  • Restart all: ${GREEN}pm2 restart all${NC}"
     echo -e "  • Stop all: ${GREEN}pm2 stop all${NC}"
     echo ""
+    echo -e "${BLUE}For more information, see README.md${NC}"
+    echo ""
     print_status "Happy coding! 💻"
 }
 
@@ -272,4 +275,4 @@ main() {
 }
 
 # Run main function with all arguments
-main "$@" 
+main "$@"
