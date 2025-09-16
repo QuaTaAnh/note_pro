@@ -148,6 +148,20 @@ export const TiptapEditor = ({
 
           return false;
         },
+        handlePaste: (view: EditorView, event: ClipboardEvent) => {
+          const text = event.clipboardData?.getData("text/plain") ?? "";
+          if (text.length === 0) return false;
+          event.preventDefault();
+          const normalizedText = text
+            .replace(/\r\n?/g, "\n")
+            .split("\n")
+            .map((line) =>
+              line.replace(/^\s*(?:[-*•▪‣‒–—·]|\d+[.)]|[a-zA-Z][.)])\s+/, "")
+            )
+            .join("\n");
+          view.dispatch(view.state.tr.insertText(normalizedText));
+          return true;
+        },
         attributes: {
           class: isTitle
             ? `text-xl font-bold w-full bg-transparent border-none outline-none resize-none ${className}`
