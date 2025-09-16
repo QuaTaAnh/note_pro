@@ -18,6 +18,7 @@ import { useCallback, useEffect, useMemo } from "react";
 import { FiTrash } from "react-icons/fi";
 import { Button } from "../ui/button";
 import { EditorBubbleMenu } from "./EditorBubbleMenu";
+import { useSlashCommand } from "./useSlashCommand";
 
 interface TiptapEditorProps {
   value: string;
@@ -86,60 +87,12 @@ export const TiptapEditor = ({
         const content = editor.getHTML();
         onChange(content);
       },
-      editorProps: {
-        handleKeyDown: (view: EditorView, event: KeyboardEvent) => {
-          if (
-            !isTitle &&
-            event.key === "Enter" &&
-            !event.shiftKey &&
-            onAddBlock
-          ) {
-            event.preventDefault();
-            if (onSaveImmediate) onSaveImmediate();
-            onAddBlock(position + 1, BlockType.PARAGRAPH);
-            return true;
-          }
-
-          if (isTitle && onKeyDown) {
-            const reactEvent = {
-              key: event.key,
-              code: event.code,
-              shiftKey: event.shiftKey,
-              ctrlKey: event.ctrlKey,
-              altKey: event.altKey,
-              metaKey: event.metaKey,
-              preventDefault: () => event.preventDefault(),
-              stopPropagation: () => event.stopPropagation(),
-            } as React.KeyboardEvent;
-            onKeyDown(reactEvent);
-          }
-
-          return false;
-        },
-        attributes: {
-          class: isTitle
-            ? `text-xl font-bold w-full bg-transparent border-none outline-none resize-none ${className}`
-            : className,
-          style: isTitle ? "line-height: 1.2;" : "padding: 0px;",
-        },
-      },
     }),
-    [
-      value,
-      onFocus,
-      onBlur,
-      onChange,
-      onAddBlock,
-      onSaveImmediate,
-      position,
-      onKeyDown,
-      className,
-      placeholder,
-      isTitle,
-    ]
+    [value, onFocus, onBlur, onChange, onSaveImmediate, placeholder]
   );
 
   const editor = useEditor(editorConfig as UseEditorOptions);
+  const { handleKeyDown, menus } = useSlashCommand(editor);
 
   useEffect(() => {
     if (editor && value !== editor.getHTML()) {
@@ -159,6 +112,61 @@ export const TiptapEditor = ({
     }
   }, [onDeleteBlock]);
 
+  useEffect(() => {
+    if (!editor) return;
+    editor.setOptions({
+      editorProps: {
+        handleKeyDown: (view: EditorView, event: KeyboardEvent) => {
+          const handled = handleKeyDown(view, event);
+          if (handled) return true;
+
+          if (
+            !isTitle &&
+            event.key === "Enter" &&
+            !event.shiftKey &&
+            onAddBlock
+          ) {
+            event.preventDefault();
+            if (onSaveImmediate) onSaveImmediate();
+            onAddBlock((position ?? 0) + 1, BlockType.PARAGRAPH);
+            return true;
+          }
+
+          if (isTitle && onKeyDown) {
+            const reactEvent = {
+              key: event.key,
+              code: event.code,
+              shiftKey: event.shiftKey,
+              ctrlKey: event.ctrlKey,
+              altKey: event.altKey,
+              metaKey: event.metaKey,
+              preventDefault: () => event.preventDefault(),
+              stopPropagation: () => event.stopPropagation(),
+            } as unknown as React.KeyboardEvent;
+            onKeyDown(reactEvent);
+          }
+
+          return false;
+        },
+        attributes: {
+          class: isTitle
+            ? `text-xl font-bold w-full bg-transparent border-none outline-none resize-none ${className}`
+            : className,
+          style: isTitle ? "line-height: 1.2;" : "padding: 0px;",
+        },
+      },
+    });
+  }, [
+    editor,
+    handleKeyDown,
+    isTitle,
+    className,
+    onAddBlock,
+    onSaveImmediate,
+    position,
+    onKeyDown,
+  ]);
+
   if (!editor) {
     return null;
   }
@@ -167,6 +175,7 @@ export const TiptapEditor = ({
     <div className="relative">
       {showBubbleMenu && <EditorBubbleMenu editor={editor} />}
       <EditorContent editor={editor} className={editorClassName} />
+      {menus}
     </div>
   ) : (
     <div
@@ -179,6 +188,7 @@ export const TiptapEditor = ({
       <div className="flex-1 min-w-0 overflow-hidden">
         {showBubbleMenu && <EditorBubbleMenu editor={editor} />}
         <EditorContent editor={editor} className={editorClassName} />
+        {menus}
       </div>
       {onDeleteBlock && (
         <Button
