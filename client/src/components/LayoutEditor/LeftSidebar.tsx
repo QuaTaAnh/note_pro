@@ -2,8 +2,9 @@ import { CheckCircle, Menu, Paperclip, Search } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { formatDate } from "@/lib/utils";
 import { useDocumentBlocks } from "@/hooks";
-import { MdEditDocument } from "react-icons/md";
 import { getPlainText } from "../page/CardDocument";
+import Image from "next/image";
+
 interface Props {
   pageId: string;
 }
@@ -15,7 +16,13 @@ export const LeftSidebar = ({ pageId }: Props) => {
     <div className="h-full flex flex-col">
       <div className="p-2">
         <div className="flex flex-row items-center gap-2 mb-3">
-          <MdEditDocument className="h-9 w-9 shrink-0" />
+          <Image 
+            src="/images/document-icon.png" 
+            alt="Document" 
+            width={36} 
+            height={36} 
+            className="h-9 w-9 shrink-0" 
+          />
 
           <div className="flex flex-col flex-1 min-w-0">
             <span className="text-sm font-medium truncate">
