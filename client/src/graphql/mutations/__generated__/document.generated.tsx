@@ -48,7 +48,7 @@ export type UpdateBlocksPositionsMutationVariables = Types.Exact<{
 }>;
 
 
-export type UpdateBlocksPositionsMutation = { __typename?: 'mutation_root', update_blocks_many?: Array<{ __typename?: 'blocks_mutation_response', returning: Array<{ __typename?: 'blocks', id: string, position?: number | null }> } | null> | null };
+export type UpdateBlocksPositionsMutation = { __typename?: 'mutation_root', update_blocks_many?: Array<{ __typename?: 'blocks_mutation_response', returning: Array<{ __typename?: 'blocks', id: string, position?: number | null, updated_at?: string | null }> } | null> | null };
 
 
 export const SoftDeleteDocumentDocument = gql`
@@ -196,6 +196,7 @@ export const InsertBlockAndUpdatePositionDocument = gql`
   update_blocks(
     where: {page_id: {_eq: $pageId}, position: {_gte: $position}}
     _inc: {position: 1}
+    _set: {updated_at: "now()"}
   ) {
     affected_rows
   }
@@ -249,6 +250,7 @@ export const UpdateBlocksPositionsDocument = gql`
     returning {
       id
       position
+      updated_at
     }
   }
 }
