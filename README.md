@@ -1,48 +1,35 @@
 # Note Pro 📝
 
-Full-stack note-taking application built with Next.js, NestJS, PostgreSQL, and Hasura GraphQL.
+Modern note-taking application with real-time collaboration, built with Next.js, NestJS, PostgreSQL, and Hasura GraphQL.
 
-## 🏗️ Architecture
+## 🏗️ Tech Stack
 
-- **Frontend**: Next.js 15 with TypeScript
-- **Backend**: NestJS with TypeScript
-- **Database**: PostgreSQL
-- **GraphQL**: Hasura GraphQL Engine
+- **Frontend**: Next.js 15 + TypeScript + Tailwind CSS
+- **Backend**: NestJS + TypeScript
+- **Database**: PostgreSQL + Hasura GraphQL
 - **Process Manager**: PM2
 - **Containerization**: Docker Compose
 
 ## 🚀 Quick Start
 
-### Option 1: One-Command Deployment (Recommended)
+### One-Command Setup (Recommended)
 
 ```bash
-# First time setup with PM2 startup configuration
+# First time setup
 ./start-projects.sh --setup-startup
 
-# Full deployment
-./start-projects.sh --full
-
-# Quick start (default - no arguments needed)
+# Quick start
 ./start-projects.sh
 ```
 
-### Option 2: Quick Start (Existing Dependencies)
-
-```bash
-# Quick start if dependencies exist
-./start-projects.sh --quick
-```
-
-### Option 3: Manual Step-by-Step
+### Manual Setup
 
 ```bash
 # Install dependencies
 npm run install:all
 
-# Start Docker services
+# Start services
 npm run docker:up
-
-# Start all services with PM2
 npm run pm2:dev
 ```
 
@@ -50,99 +37,46 @@ npm run pm2:dev
 
 ```
 note_pro/
-├── client/          # Next.js frontend
-├── server/          # NestJS backend
-├── hasura-metadata/ # Hasura configuration
-├── ecosystem.config.js    # PM2 configuration (TypeScript)
-├── docker-compose.yml     # Docker services
-└── start-projects.sh      # Unified start/deployment script
+├── client/              # Next.js frontend
+├── server/              # NestJS backend  
+├── hasura-metadata/     # Hasura configuration
+├── ecosystem.config.js  # PM2 configuration
+└── start-projects.sh    # Deployment script
 ```
 
-## 🛠️ Available Commands
-
-### NPM Scripts
+## 🛠️ Key Commands
 
 ```bash
-# Setup & Installation
-npm run setup:all          # Install all deps + start docker
-npm run install:all         # Install all dependencies
-npm run install:client      # Install client dependencies
-npm run install:server      # Install server dependencies
-
-# Building
-npm run build:all           # Build all projects
-npm run build:client        # Build Next.js client
-npm run build:server        # Build NestJS server
-
 # Development
-npm run dev:client          # Start client in dev mode
-npm run dev:server          # Start server in dev mode
+npm run pm2:dev          # Start all services
+npm run pm2:logs         # View logs
+npm run pm2:monit        # Monitor processes
 
-# Production
-npm run start:client        # Start client in production
-npm run start:server        # Start server in production
+# Building & Deployment
+npm run build:all        # Build all projects
+npm run update:project   # Pull + install + reload
 
-# Docker
-npm run docker:up           # Start Docker services
-npm run docker:down         # Stop Docker services
-npm run docker:logs         # View Docker logs
-
-# PM2 Management
-npm run pm2:dev             # Start PM2 in development mode
-npm run pm2:prod            # Start PM2 in production mode
-npm run pm2:stop            # Stop all PM2 processes
-npm run pm2:restart         # Restart all PM2 processes
-npm run pm2:reload          # Reload all PM2 processes
-npm run pm2:delete          # Delete all PM2 processes
-npm run pm2:logs            # View PM2 logs
-npm run pm2:monit           # PM2 monitoring dashboard
-
-# Deployment
-npm run deploy:dev          # Deploy to development
-npm run deploy:prod         # Deploy to production
-npm run update:project      # Pull + install + reload
-```
-
-### PM2 Commands
-
-```bash
-# Process Management
-pm2 start ecosystem.config.js --env development
-pm2 stop all
-pm2 restart all
-pm2 reload all
-pm2 delete all
-
-# Monitoring
-pm2 logs                    # View all logs
-pm2 logs note-pro-server    # View server logs
-pm2 logs note-pro-client    # View client logs
-pm2 monit                   # Real-time monitoring
-pm2 list                    # List all processes
+# Docker Management
+npm run docker:up        # Start Docker services
+npm run docker:down      # Stop Docker services
 ```
 
 ## 🌐 Service URLs
 
-- **Frontend (Next.js)**: http://localhost:3000
-- **Backend (NestJS)**: http://localhost:3001
+- **Frontend**: http://localhost:3000
+- **Backend**: http://localhost:3001  
 - **Hasura Console**: http://localhost:8080
-- **PostgreSQL**: localhost:5432
+- **Database**: localhost:5432
 
-## 🔧 Configuration
+## 🔧 Environment Setup
 
-### Environment Variables
-
-Create these files as needed:
-
-#### `client/.env.local`
-
+### Client (`client/.env.local`)
 ```env
 NEXT_PUBLIC_GRAPHQL_URL=http://localhost:8080/v1/graphql
 NEXT_PUBLIC_SERVER_URL=http://localhost:3001
 ```
 
-#### `server/.env`
-
+### Server (`server/.env`)
 ```env
 DATABASE_URL=postgresql://postgres:postgres@localhost:5432/postgres
 HASURA_GRAPHQL_ENDPOINT=http://localhost:8080/v1/graphql
@@ -150,91 +84,32 @@ HASURA_ADMIN_SECRET=notepro_super_admin_secret
 JWT_SECRET=SYohOxXyhqTUdbswC9GP+jWZ4ppwLTkzRY2AgJZKr5E=
 ```
 
-### PM2 Ecosystem
+## 🎯 Features
 
-The `ecosystem.config.js` file contains:
-
-- **note-pro-server**: NestJS backend on port 3001
-- **note-pro-client**: Next.js frontend on port 3000
-- **note-pro-docker**: Docker Compose services
-
-## 🐳 Docker Services
-
-- **postgres**: PostgreSQL database on port 5432
-- **hasura**: Hasura GraphQL Engine on port 8080
-
-## 🔍 Troubleshooting
-
-### Reset Everything
-
-```bash
-pm2 delete all
-docker-compose down
-rm -rf client/node_modules server/node_modules
-npm run install:all
-./deployment.sh
-```
-
-### Check Port Usage
-
-```bash
-lsof -i :3000  # Client
-lsof -i :3001  # Server
-lsof -i :8080  # Hasura
-lsof -i :5432  # PostgreSQL
-```
-
-### View Status
-
-```bash
-pm2 list                # PM2 processes
-docker-compose ps       # Docker containers
-```
-
-## 📚 Development Workflow
-
-1. **Start Development**: `./start-projects.sh` or `npm run pm2:dev`
-2. **View Logs**: `npm run pm2:logs`
-3. **Monitor**: `npm run pm2:monit`
-4. **Update Code**: `npm run update:project`
-5. **Stop Services**: `npm run pm2:stop`
-
-## 🚀 Deployment
-
-### Development
-
-```bash
-pm2 deploy development
-```
-
-### Production
-
-```bash
-npm run build:all
-pm2 deploy production
-```
+- ✅ Real-time document editing
+- ✅ Block-based editor with TipTap
+- ✅ Workspace & folder organization
+- ✅ User authentication
+- ✅ Auto-save functionality
+- ✅ Document sorting by update time
+- ✅ Responsive design
 
 ## 📄 Prerequisites
 
 - Node.js ≥ 18.0.0
-- npm ≥ 8.0.0
 - Docker & Docker Compose
-- PM2 (installed automatically)
+- PM2 (auto-installed)
 
-## 🎯 Features
+## 🔍 Troubleshooting
 
-- ✅ Auto-deployment with git pull
-- ✅ Dependency management
-- ✅ Docker services management
-- ✅ Process monitoring with PM2
-- ✅ Zero-downtime reloads
-- ✅ Comprehensive logging
-- ✅ Development & production modes
+```bash
+# Reset everything
+pm2 delete all && docker-compose down
+rm -rf client/node_modules server/node_modules
+npm run setup:all
 
-## 📖 Additional Resources
+## 📖 Documentation
 
-- See `quick-commands.md` for detailed command reference
-- Check PM2 documentation: https://pm2.keymetrics.io/
-- Next.js documentation: https://nextjs.org/docs
-- NestJS documentation: https://docs.nestjs.com/
-- Hasura documentation: https://hasura.io/docs/
+- [Next.js Docs](https://nextjs.org/docs)
+- [NestJS Docs](https://docs.nestjs.com/)
+- [Hasura Docs](https://hasura.io/docs/)
