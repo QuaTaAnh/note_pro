@@ -3,10 +3,10 @@
 import AuthGuard from "@/components/auth/AuthGuard";
 import { PageLoading } from "@/components/ui/loading";
 import { SidebarProvider, useSidebar } from "@/context/SidebarContext";
-import { useBinCraftTitle, useWorkspace } from "@/hooks";
+import { useBinCraftTitle, useWorkspace, useDocumentTitle } from "@/hooks";
 import { ROUTES } from "@/lib/routes";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import { HEADER_HEIGHT, SIDEBAR_WIDTH } from "@/consts";
@@ -85,7 +85,21 @@ export default function LayoutContent({
 }: {
   children: React.ReactNode;
 }) {
-  useBinCraftTitle();
+  const pathname = usePathname();
+
+  const isEditorPage = useMemo(
+    () => pathname.startsWith("/editor/"),
+    [pathname]
+  );
+
+  const { documentTitle, hasDocument } = useDocumentTitle({
+    enabled: isEditorPage,
+  });
+
+  useBinCraftTitle({
+    dynamicTitle: isEditorPage && hasDocument ? documentTitle : null,
+  });
+
   return (
     <SidebarProvider>
       <LayoutMain>{children}</LayoutMain>
