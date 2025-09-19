@@ -5,6 +5,7 @@ export { useWorkspace } from './use-workspace';
 export { useLoading, useMultipleLoading } from './use-loading';
 export { useToast, toast } from './use-toast';
 export { useBinCraftTitle } from './use-bin-craft-title';
+export { useDocumentTitle } from './use-document-title';
 export { useDebounce } from './use-debounce';
 export type { Block, CreateBlockInput } from './use-blocks';
 export { useDocumentBlocks } from './use-document-blocks';
