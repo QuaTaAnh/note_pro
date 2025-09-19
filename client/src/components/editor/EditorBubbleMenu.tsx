@@ -17,7 +17,7 @@ export const EditorBubbleMenu = ({ editor }: Props) => {
   const [showLinkInput, setShowLinkInput] = useState(false);
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [editorState, setEditorState] = useState(0);
-  const colorPickerRef = useRef<HTMLDivElement>(null);
+  const bubbleMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!editor) return;
@@ -36,23 +36,6 @@ export const EditorBubbleMenu = ({ editor }: Props) => {
       editor.off("update", handleUpdate);
     };
   }, [editor]);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        colorPickerRef.current &&
-        !colorPickerRef.current.contains(event.target as Node)
-      ) {
-        setShowColorPicker(false);
-      }
-    };
-
-    if (showColorPicker) {
-      document.addEventListener("mousedown", handleClickOutside);
-      return () =>
-        document.removeEventListener("mousedown", handleClickOutside);
-    }
-  }, [showColorPicker]);
 
   const isMarkActive = useCallback(
     (type: string) => {
@@ -73,7 +56,10 @@ export const EditorBubbleMenu = ({ editor }: Props) => {
       editor={editor}
       options={{ placement: "top", offset: 8, flip: true }}
     >
-      <div className="bg-white dark:bg-black border border-gray-200 dark:border-gray-700 shadow-md rounded-md flex items-center gap-1 p-1">
+      <div
+        ref={bubbleMenuRef}
+        className="bg-white dark:bg-black border border-gray-200 dark:border-gray-700 shadow-md rounded-md flex items-center gap-1 p-1"
+      >
         <BubbleButton
           onClick={() => editor.chain().focus().toggleBold().run()}
           isActive={isMarkActive("bold")}

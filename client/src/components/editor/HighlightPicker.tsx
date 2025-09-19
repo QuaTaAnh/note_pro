@@ -61,16 +61,16 @@ export const HighlightPicker = ({
 
       {show && (
         <div
-          className="fixed mt-1 bg-white dark:bg-gray-800 
+          className="absolute top-full left-0 mt-1 bg-white dark:bg-gray-800 
                   border border-gray-200 dark:border-gray-600 
-                  rounded-md shadow-lg p-2 z-50"
+                  rounded-md shadow-lg p-2 z-50 whitespace-nowrap"
         >
-          <div className="grid grid-cols-5 gap-1 w-40">
+          <div className="flex items-center gap-1">
             {HIGHLIGHT_COLORS.map((colorOption, i) => (
               <button
                 key={i}
                 onClick={() => onSelect(colorOption.value)}
-                className={`w-6 h-6 rounded border-2 hover:scale-110 transition-transform ${
+                className={`w-6 h-6 rounded border-2 hover:scale-110 transition-transform flex-shrink-0 ${
                   currentColor === colorOption.value
                     ? "border-blue-500"
                     : "border-gray-300 dark:border-gray-600"
