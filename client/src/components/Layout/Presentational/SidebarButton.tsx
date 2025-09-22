@@ -53,7 +53,7 @@ export function SidebarButton({
   );
 
   const left = (
-    <div className="flex items-center gap-1 min-w-0">
+    <div className="flex items-center gap-1 min-w-0 flex-1">
       <div className="w-5 h-5 flex items-center justify-center shrink-0">
         {icon}
       </div>
@@ -71,7 +71,13 @@ export function SidebarButton({
         </span>
       )}
       {action && (
-        <div className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground">
+        <div
+          className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
+        >
           {action}
         </div>
       )}
@@ -87,9 +93,35 @@ export function SidebarButton({
 
   if (href && !onClick) {
     return (
-      <Link href={href} className={baseClasses} prefetch={prefetch}>
-        {content}
-      </Link>
+      <div className={cn(baseClasses, "group")}>
+        <Link
+          href={href}
+          className="flex items-center justify-between w-full"
+          prefetch={prefetch}
+        >
+          {left}
+        </Link>
+        {(count !== undefined || action) && (
+          <div className="flex items-center">
+            {typeof count === "number" && (
+              <span className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground text-xs pr-1">
+                {count}
+              </span>
+            )}
+            {action && (
+              <div
+                className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+              >
+                {action}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     );
   }
 

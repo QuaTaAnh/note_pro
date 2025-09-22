@@ -24,4 +24,5 @@ export enum HexColor {
 export enum BlockType {
   PARAGRAPH = "paragraph",
   PAGE = "page",
+  TASK = "task",
 }

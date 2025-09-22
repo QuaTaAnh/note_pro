@@ -1,6 +1,6 @@
 "use client";
 
-import { MENU_ITEMS, SIDEBAR_WIDTH } from "@/consts";
+import { MENU_ITEMS, SIDEBAR_WIDTH, ModalType } from "@/consts";
 import { useSidebar } from "@/context/SidebarContext";
 import { cn } from "@/lib/utils";
 import { Separator } from "../ui/separator";
@@ -10,6 +10,9 @@ import { WorkspaceButton } from "./Presentational/WorkspaceButton";
 import { FolderMenu } from "./Presentational/FolderMenu";
 import { usePathname } from "next/navigation";
 import { useGetDocsCountQuery } from "@/graphql/queries/__generated__/document.generated";
+import { NewTaskModal } from "./Presentational/NewTaskModal";
+import { cloneElement } from "react";
+
 interface Props {
   workspaceSlug: string;
   workspaceId: string;
@@ -23,6 +26,18 @@ export default function Sidebar({ workspaceSlug, workspaceId }: Props) {
     variables: { workspaceId },
     skip: !workspaceId,
   });
+
+  const renderModalWrapper = (
+    modalType: ModalType,
+    action: React.ReactElement
+  ) => {
+    switch (modalType) {
+      case ModalType.TASK:
+        return <NewTaskModal>{action}</NewTaskModal>;
+      default:
+        return action;
+    }
+  };
 
   return (
     <aside
@@ -40,17 +55,23 @@ export default function Sidebar({ workspaceSlug, workspaceId }: Props) {
         <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain flex flex-col gap-2 group">
           {MENU_ITEMS(workspaceSlug, {
             allDocs: docsCount?.blocks_aggregate?.aggregate?.count || 0,
-          }).map((item) => (
-            <SidebarButton
-              key={item.href}
-              icon={<item.icon className="w-4 h-4" />}
-              label={item.label}
-              href={item.href}
-              isActive={pathname === item.href}
-              count={item.count}
-              action={item.action}
-            />
-          ))}
+          }).map((item) => {
+            return (
+              <SidebarButton
+                key={item.href}
+                icon={<item.icon className="w-4 h-4" />}
+                label={item.label}
+                href={item.href}
+                isActive={pathname === item.href}
+                count={item.count}
+                action={
+                  item.modalType && item.action
+                    ? renderModalWrapper(item.modalType, item.action)
+                    : item.action
+                }
+              />
+            );
+          })}
           <Separator />
           <FolderMenu />
         </div>

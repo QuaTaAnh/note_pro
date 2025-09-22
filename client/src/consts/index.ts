@@ -32,6 +32,13 @@ export const PAGE_TITLES: Record<string, string> = {
   [ROUTES.LOGIN]: "Login",
 };
 
+// Modal types for sidebar actions
+export enum ModalType {
+  TASK = "task",
+  DOCUMENT = "document", 
+  FOLDER = "folder"
+}
+
 // Navigation menu items
 export const MENU_ITEMS = (workspaceSlug: string, counts: { allDocs: number }) => [
   {
@@ -45,6 +52,7 @@ export const MENU_ITEMS = (workspaceSlug: string, counts: { allDocs: number }) =
     label: "Tasks",
     href: ROUTES.WORKSPACE_TASKS(workspaceSlug),
     action: createElement(FiPlus, { className: "w-3 h-3 cursor-pointer" }),
+    modalType: ModalType.TASK,
   },
   {
     icon: LuCalendarRange,

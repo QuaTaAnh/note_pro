@@ -1,0 +1,38 @@
+query GetTasks($workspaceId: uuid!) {
+  tasks(
+    where: { block: { workspace_id: { _eq: $workspaceId } } }
+    order_by: { created_at: desc }
+  ) {
+    id
+    block_id
+    user_id
+    status
+    due_date
+    priority
+    created_at
+    updated_at
+    block {
+      id
+      content
+      type
+    }
+  }
+}
+
+query GetTaskById($id: uuid!) {
+  tasks_by_pk(id: $id) {
+    id
+    block_id
+    user_id
+    status
+    due_date
+    priority
+    created_at
+    updated_at
+    block {
+      id
+      content
+      type
+    }
+  }
+}
