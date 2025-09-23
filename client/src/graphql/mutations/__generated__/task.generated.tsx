@@ -8,7 +8,7 @@ export type CreateTaskMutationVariables = Types.Exact<{
 }>;
 
 
-export type CreateTaskMutation = { __typename?: 'mutation_root', insert_tasks_one?: { __typename?: 'tasks', id: string, block_id?: string | null, user_id?: string | null, status?: string | null, due_date?: string | null, priority?: string | null, created_at?: string | null, updated_at?: string | null } | null };
+export type CreateTaskMutation = { __typename?: 'mutation_root', insert_tasks_one?: { __typename?: 'tasks', id: string, block_id?: string | null, user_id?: string | null, status?: string | null, due_date?: string | null, schedule_date?: string | null, priority?: string | null, created_at?: string | null, updated_at?: string | null } | null };
 
 export type UpdateTaskMutationVariables = Types.Exact<{
   id: Types.Scalars['uuid']['input'];
@@ -16,7 +16,7 @@ export type UpdateTaskMutationVariables = Types.Exact<{
 }>;
 
 
-export type UpdateTaskMutation = { __typename?: 'mutation_root', update_tasks_by_pk?: { __typename?: 'tasks', id: string, block_id?: string | null, user_id?: string | null, status?: string | null, due_date?: string | null, priority?: string | null, created_at?: string | null, updated_at?: string | null } | null };
+export type UpdateTaskMutation = { __typename?: 'mutation_root', update_tasks_by_pk?: { __typename?: 'tasks', id: string, block_id?: string | null, user_id?: string | null, status?: string | null, due_date?: string | null, schedule_date?: string | null, priority?: string | null, created_at?: string | null, updated_at?: string | null } | null };
 
 export type DeleteTaskMutationVariables = Types.Exact<{
   id: Types.Scalars['uuid']['input'];
@@ -34,6 +34,7 @@ export const CreateTaskDocument = gql`
     user_id
     status
     due_date
+    schedule_date
     priority
     created_at
     updated_at
@@ -74,6 +75,7 @@ export const UpdateTaskDocument = gql`
     user_id
     status
     due_date
+    schedule_date
     priority
     created_at
     updated_at

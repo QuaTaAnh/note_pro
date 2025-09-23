@@ -3085,6 +3085,7 @@ export type Tasks = {
   due_date?: Maybe<Scalars['date']['output']>;
   id: Scalars['uuid']['output'];
   priority?: Maybe<Scalars['String']['output']>;
+  schedule_date?: Maybe<Scalars['date']['output']>;
   status?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   /** An object relationship */
@@ -3150,6 +3151,7 @@ export type TasksBoolExp = {
   due_date?: InputMaybe<DateComparisonExp>;
   id?: InputMaybe<UuidComparisonExp>;
   priority?: InputMaybe<StringComparisonExp>;
+  schedule_date?: InputMaybe<DateComparisonExp>;
   status?: InputMaybe<StringComparisonExp>;
   updated_at?: InputMaybe<TimestamptzComparisonExp>;
   user?: InputMaybe<UsersBoolExp>;
@@ -3170,6 +3172,7 @@ export type TasksInsertInput = {
   due_date?: InputMaybe<Scalars['date']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   priority?: InputMaybe<Scalars['String']['input']>;
+  schedule_date?: InputMaybe<Scalars['date']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   user?: InputMaybe<UsersObjRelInsertInput>;
@@ -3184,6 +3187,7 @@ export type TasksMaxFields = {
   due_date?: Maybe<Scalars['date']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   priority?: Maybe<Scalars['String']['output']>;
+  schedule_date?: Maybe<Scalars['date']['output']>;
   status?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   user_id?: Maybe<Scalars['uuid']['output']>;
@@ -3196,6 +3200,7 @@ export type TasksMaxOrderBy = {
   due_date?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   priority?: InputMaybe<OrderBy>;
+  schedule_date?: InputMaybe<OrderBy>;
   status?: InputMaybe<OrderBy>;
   updated_at?: InputMaybe<OrderBy>;
   user_id?: InputMaybe<OrderBy>;
@@ -3209,6 +3214,7 @@ export type TasksMinFields = {
   due_date?: Maybe<Scalars['date']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   priority?: Maybe<Scalars['String']['output']>;
+  schedule_date?: Maybe<Scalars['date']['output']>;
   status?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   user_id?: Maybe<Scalars['uuid']['output']>;
@@ -3221,6 +3227,7 @@ export type TasksMinOrderBy = {
   due_date?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   priority?: InputMaybe<OrderBy>;
+  schedule_date?: InputMaybe<OrderBy>;
   status?: InputMaybe<OrderBy>;
   updated_at?: InputMaybe<OrderBy>;
   user_id?: InputMaybe<OrderBy>;
@@ -3250,6 +3257,7 @@ export type TasksOrderBy = {
   due_date?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   priority?: InputMaybe<OrderBy>;
+  schedule_date?: InputMaybe<OrderBy>;
   status?: InputMaybe<OrderBy>;
   updated_at?: InputMaybe<OrderBy>;
   user?: InputMaybe<UsersOrderBy>;
@@ -3274,6 +3282,8 @@ export enum TasksSelectColumn {
   /** column name */
   Priority = 'priority',
   /** column name */
+  ScheduleDate = 'schedule_date',
+  /** column name */
   Status = 'status',
   /** column name */
   UpdatedAt = 'updated_at',
@@ -3288,6 +3298,7 @@ export type TasksSetInput = {
   due_date?: InputMaybe<Scalars['date']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   priority?: InputMaybe<Scalars['String']['input']>;
+  schedule_date?: InputMaybe<Scalars['date']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   user_id?: InputMaybe<Scalars['uuid']['input']>;
@@ -3308,6 +3319,7 @@ export type TasksStreamCursorValueInput = {
   due_date?: InputMaybe<Scalars['date']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   priority?: InputMaybe<Scalars['String']['input']>;
+  schedule_date?: InputMaybe<Scalars['date']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   user_id?: InputMaybe<Scalars['uuid']['input']>;
@@ -3325,6 +3337,8 @@ export enum TasksUpdateColumn {
   Id = 'id',
   /** column name */
   Priority = 'priority',
+  /** column name */
+  ScheduleDate = 'schedule_date',
   /** column name */
   Status = 'status',
   /** column name */

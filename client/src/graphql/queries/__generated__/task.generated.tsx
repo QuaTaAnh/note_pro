@@ -8,14 +8,14 @@ export type GetTasksQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetTasksQuery = { __typename?: 'query_root', tasks: Array<{ __typename?: 'tasks', id: string, block_id?: string | null, user_id?: string | null, status?: string | null, due_date?: string | null, priority?: string | null, created_at?: string | null, updated_at?: string | null, block?: { __typename?: 'blocks', id: string, content?: any | null, type: string } | null }> };
+export type GetTasksQuery = { __typename?: 'query_root', tasks: Array<{ __typename?: 'tasks', id: string, block_id?: string | null, user_id?: string | null, status?: string | null, due_date?: string | null, schedule_date?: string | null, priority?: string | null, created_at?: string | null, updated_at?: string | null, block?: { __typename?: 'blocks', id: string, content?: any | null, type: string } | null }> };
 
 export type GetTaskByIdQueryVariables = Types.Exact<{
   id: Types.Scalars['uuid']['input'];
 }>;
 
 
-export type GetTaskByIdQuery = { __typename?: 'query_root', tasks_by_pk?: { __typename?: 'tasks', id: string, block_id?: string | null, user_id?: string | null, status?: string | null, due_date?: string | null, priority?: string | null, created_at?: string | null, updated_at?: string | null, block?: { __typename?: 'blocks', id: string, content?: any | null, type: string } | null } | null };
+export type GetTaskByIdQuery = { __typename?: 'query_root', tasks_by_pk?: { __typename?: 'tasks', id: string, block_id?: string | null, user_id?: string | null, status?: string | null, due_date?: string | null, schedule_date?: string | null, priority?: string | null, created_at?: string | null, updated_at?: string | null, block?: { __typename?: 'blocks', id: string, content?: any | null, type: string } | null } | null };
 
 
 export const GetTasksDocument = gql`
@@ -29,6 +29,7 @@ export const GetTasksDocument = gql`
     user_id
     status
     due_date
+    schedule_date
     priority
     created_at
     updated_at
@@ -81,6 +82,7 @@ export const GetTaskByIdDocument = gql`
     user_id
     status
     due_date
+    schedule_date
     priority
     created_at
     updated_at

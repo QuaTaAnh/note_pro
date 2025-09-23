@@ -5,6 +5,7 @@ mutation CreateTask($input: tasks_insert_input!) {
     user_id
     status
     due_date
+    schedule_date
     priority
     created_at
     updated_at
@@ -18,6 +19,7 @@ mutation UpdateTask($id: uuid!, $input: tasks_set_input!) {
     user_id
     status
     due_date
+    schedule_date
     priority
     created_at
     updated_at

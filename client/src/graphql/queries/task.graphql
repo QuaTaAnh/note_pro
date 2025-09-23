@@ -8,6 +8,7 @@ query GetTasks($workspaceId: uuid!) {
     user_id
     status
     due_date
+    schedule_date
     priority
     created_at
     updated_at
@@ -26,6 +27,7 @@ query GetTaskById($id: uuid!) {
     user_id
     status
     due_date
+    schedule_date
     priority
     created_at
     updated_at

@@ -452,7 +452,7 @@ export type tags_mutation_responseFieldPolicy = {
 	affected_rows?: FieldPolicy<any> | FieldReadFunction<any>,
 	returning?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type tasksKeySpecifier = ('block' | 'block_id' | 'created_at' | 'due_date' | 'id' | 'priority' | 'status' | 'updated_at' | 'user' | 'user_id' | tasksKeySpecifier)[];
+export type tasksKeySpecifier = ('block' | 'block_id' | 'created_at' | 'due_date' | 'id' | 'priority' | 'schedule_date' | 'status' | 'updated_at' | 'user' | 'user_id' | tasksKeySpecifier)[];
 export type tasksFieldPolicy = {
 	block?: FieldPolicy<any> | FieldReadFunction<any>,
 	block_id?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -460,6 +460,7 @@ export type tasksFieldPolicy = {
 	due_date?: FieldPolicy<any> | FieldReadFunction<any>,
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
 	priority?: FieldPolicy<any> | FieldReadFunction<any>,
+	schedule_date?: FieldPolicy<any> | FieldReadFunction<any>,
 	status?: FieldPolicy<any> | FieldReadFunction<any>,
 	updated_at?: FieldPolicy<any> | FieldReadFunction<any>,
 	user?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -476,24 +477,26 @@ export type tasks_aggregate_fieldsFieldPolicy = {
 	max?: FieldPolicy<any> | FieldReadFunction<any>,
 	min?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type tasks_max_fieldsKeySpecifier = ('block_id' | 'created_at' | 'due_date' | 'id' | 'priority' | 'status' | 'updated_at' | 'user_id' | tasks_max_fieldsKeySpecifier)[];
+export type tasks_max_fieldsKeySpecifier = ('block_id' | 'created_at' | 'due_date' | 'id' | 'priority' | 'schedule_date' | 'status' | 'updated_at' | 'user_id' | tasks_max_fieldsKeySpecifier)[];
 export type tasks_max_fieldsFieldPolicy = {
 	block_id?: FieldPolicy<any> | FieldReadFunction<any>,
 	created_at?: FieldPolicy<any> | FieldReadFunction<any>,
 	due_date?: FieldPolicy<any> | FieldReadFunction<any>,
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
 	priority?: FieldPolicy<any> | FieldReadFunction<any>,
+	schedule_date?: FieldPolicy<any> | FieldReadFunction<any>,
 	status?: FieldPolicy<any> | FieldReadFunction<any>,
 	updated_at?: FieldPolicy<any> | FieldReadFunction<any>,
 	user_id?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type tasks_min_fieldsKeySpecifier = ('block_id' | 'created_at' | 'due_date' | 'id' | 'priority' | 'status' | 'updated_at' | 'user_id' | tasks_min_fieldsKeySpecifier)[];
+export type tasks_min_fieldsKeySpecifier = ('block_id' | 'created_at' | 'due_date' | 'id' | 'priority' | 'schedule_date' | 'status' | 'updated_at' | 'user_id' | tasks_min_fieldsKeySpecifier)[];
 export type tasks_min_fieldsFieldPolicy = {
 	block_id?: FieldPolicy<any> | FieldReadFunction<any>,
 	created_at?: FieldPolicy<any> | FieldReadFunction<any>,
 	due_date?: FieldPolicy<any> | FieldReadFunction<any>,
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
 	priority?: FieldPolicy<any> | FieldReadFunction<any>,
+	schedule_date?: FieldPolicy<any> | FieldReadFunction<any>,
 	status?: FieldPolicy<any> | FieldReadFunction<any>,
 	updated_at?: FieldPolicy<any> | FieldReadFunction<any>,
 	user_id?: FieldPolicy<any> | FieldReadFunction<any>

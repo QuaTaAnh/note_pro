@@ -1,31 +1,31 @@
 "use client";
 
-import React, { useState, useRef } from "react";
-import { FiCalendar, FiSearch, FiFileText } from "react-icons/fi";
+import { getPlainText } from "@/components/page/CardDocument";
 import { Button } from "@/components/ui/button";
+import { DatePicker } from "@/components/ui/date-picker";
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { InputField } from "@/components/ui/input-field";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { InputField } from "@/components/ui/input-field";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import { showToast } from "@/lib/toast";
+import { useCreateUntitledPageMutation } from "@/graphql/mutations/__generated__/document.generated";
+import { useCreateTaskMutation } from "@/graphql/mutations/__generated__/task.generated";
+import { useGetAllDocsQuery } from "@/graphql/queries/__generated__/document.generated";
 import { useUserId } from "@/hooks/use-auth";
 import { useWorkspace } from "@/hooks/use-workspace";
-import { useCreateTaskMutation } from "@/graphql/mutations/__generated__/task.generated";
-import { useCreateUntitledPageMutation } from "@/graphql/mutations/__generated__/document.generated";
-import { useGetAllDocsQuery } from "@/graphql/queries/__generated__/document.generated";
-
+import { showToast } from "@/lib/toast";
+import React, { useRef, useState } from "react";
+import { FaInbox } from "react-icons/fa";
+import { FiChevronDown, FiFileText, FiSearch } from "react-icons/fi";
+import { CiFlag1 } from "react-icons/ci";
 interface NewTaskModalProps {
   children: React.ReactNode;
 }
@@ -33,6 +33,7 @@ interface NewTaskModalProps {
 interface TaskData {
   title: string;
   selectedDocumentId: string | null;
+  scheduleDate: string;
   dueDate: string;
 }
 
@@ -42,6 +43,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
   const [taskData, setTaskData] = useState<TaskData>({
     title: "",
     selectedDocumentId: null,
+    scheduleDate: "",
     dueDate: "",
   });
 
@@ -66,6 +68,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
     setTaskData({
       title: "",
       selectedDocumentId: null,
+      scheduleDate: "",
       dueDate: "",
     });
     setSearchTerm("");
@@ -88,10 +91,8 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
       let blockId: string | undefined;
 
       if (taskData.selectedDocumentId) {
-        // Use existing document
         blockId = taskData.selectedDocumentId;
       } else {
-        // Create a new block for the task
         const blockResult = await createDocument({
           variables: {
             input: {
@@ -119,7 +120,6 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
         throw new Error("Failed to get block ID");
       }
 
-      // Then create the task record
       await createTask({
         variables: {
           input: {
@@ -127,6 +127,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
             user_id: userId,
             status: "todo",
             due_date: taskData.dueDate || null,
+            schedule_date: taskData.scheduleDate || null,
             priority: null,
           },
         },
@@ -148,75 +149,39 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
         ref={dialogContentRef}
-        className="sm:max-w-[400px] shadow-2xl"
+        className="sm:max-w-[500px] shadow-2xl p-4"
       >
         <DialogHeader>
-          <DialogTitle>New Task</DialogTitle>
-        </DialogHeader>
-        <Separator />
-
-        <div className="space-y-4">
-          {/* Task Title */}
-          <div className="space-y-2">
-            <Label htmlFor="title" className="text-sm font-medium">
-              Task Name <span className="text-destructive">*</span>
-            </Label>
-            <InputField
-              id="title"
-              placeholder="Enter task name..."
-              value={taskData.title}
-              onChange={(e) => handleInputChange("title", e.target.value)}
-              className="placeholder:text-modal-muted focus:ring-primary"
-            />
-          </div>
-
-          {/* Schedule */}
-          <div className="space-y-2">
-            <Label className="text-sm font-medium">Schedule</Label>
-            <div className="flex items-center gap-2">
-              <FiCalendar className="w-4 h-4 text-gray-500" />
-              <input
-                type="date"
-                value={taskData.dueDate}
-                onChange={(e) => handleInputChange("dueDate", e.target.value)}
-                className="flex-1 text-sm border border-input rounded-md px-3 py-2 bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-              />
-            </div>
-          </div>
-
-          {/* Move To Document */}
-          <div className="space-y-2">
-            <Label className="text-sm font-medium">Move To...</Label>
+          <DialogTitle>
             <Popover
               open={isDocumentPopoverOpen}
               onOpenChange={setIsDocumentPopoverOpen}
             >
               <PopoverTrigger asChild>
                 <Button
-                  variant="outline"
-                  className="w-full justify-start text-left font-normal h-10"
+                  variant="ghost"
+                  className="justify-start text-left font-normal h-9 px-2 text-muted-foreground hover:text-foreground"
                 >
-                  <FiSearch className="w-4 h-4 mr-2" />
+                  <FaInbox className="w-4 h-4" />
                   {taskData.selectedDocumentId
                     ? (() => {
                         const doc = docsData?.blocks.find(
                           (d) => d.id === taskData.selectedDocumentId
                         );
                         const title = doc?.content?.title || "Untitled";
-                        return title.length > 30
-                          ? `${title.substring(0, 30)}...`
-                          : title;
+                        return getPlainText(title);
                       })()
-                    : "Select document..."}
+                    : "Inbox"}
+                  <FiChevronDown className="w-4 h-4" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent
                 className="w-80 p-0"
                 container={dialogContentRef.current ?? undefined}
               >
-                <div className="p-3 border-b">
+                <div className="p-3">
                   <InputField
-                    placeholder="Search documents..."
+                    placeholder="Move to..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="h-8"
@@ -246,7 +211,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
                           <FiFileText className="w-4 h-4 text-gray-500" />
                           <div className="flex-1 min-w-0">
                             <div className="text-sm font-medium truncate">
-                              {title}
+                              {getPlainText(title)}
                             </div>
                             {doc.folder && (
                               <div className="text-xs text-gray-500">
@@ -270,18 +235,48 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
                 </div>
               </PopoverContent>
             </Popover>
-          </div>
+          </DialogTitle>
+        </DialogHeader>
+        <div className="space-y-2">
+          <InputField
+            id="title"
+            placeholder="New Task"
+            value={taskData.title}
+            onChange={(e) => handleInputChange("title", e.target.value)}
+            className="placeholder:text-modal-muted !border-0 !border-none focus-visible:!border-0 focus-visible:!ring-0 focus-visible:!ring-transparent focus:!border-0 focus:!ring-0 focus:!outline-none shadow-none"
+          />
         </div>
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <DatePicker
+              value={taskData.scheduleDate}
+              onChange={(date) => handleInputChange("scheduleDate", date)}
+              placeholder="Schedule"
+              textContent="Schedule"
+              container={dialogContentRef.current}
+              showSearch={true}
+              quickActions={true}
+            />
 
-        <DialogFooter>
+            <DatePicker
+              value={taskData.dueDate}
+              onChange={(date) => handleInputChange("dueDate", date)}
+              placeholder="Deadline"
+              icon={<CiFlag1 className="w-4 h-4" />}
+              container={dialogContentRef.current}
+              showSearch={true}
+              quickActions={true}
+            />
+          </div>
+
           <Button
             onClick={handleCreate}
             disabled={!taskData.title.trim() || isCreating}
-            className="w-full h-9 bg-primary-button hover:bg-primary-buttonHover font-medium"
+            className="px-4 h-9 bg-primary-button hover:bg-primary-buttonHover font-mediumrounded-md"
           >
             {isCreating ? "Creating..." : "Create"}
           </Button>
-        </DialogFooter>
+        </div>
       </DialogContent>
     </Dialog>
   );
