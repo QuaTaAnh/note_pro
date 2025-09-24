@@ -65,9 +65,7 @@ export default function InboxPage() {
               key={task.id}
               id={task.id}
               title={task.block?.content?.title || "Untitled"}
-              completed={task.status === "completed"}
-              scheduleDate={task.schedule_date || undefined}
-              dueDate={task.due_date || undefined}
+              completed={task.status === TASK_STATUS.COMPLETED}
               onToggleComplete={handleToggleComplete}
               onMoreClick={handleMoreClick}
             />

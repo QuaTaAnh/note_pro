@@ -3082,7 +3082,7 @@ export type Tasks = {
   block?: Maybe<Blocks>;
   block_id?: Maybe<Scalars['uuid']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
-  due_date?: Maybe<Scalars['date']['output']>;
+  deadline_date?: Maybe<Scalars['date']['output']>;
   id: Scalars['uuid']['output'];
   priority?: Maybe<Scalars['String']['output']>;
   schedule_date?: Maybe<Scalars['date']['output']>;
@@ -3148,7 +3148,7 @@ export type TasksBoolExp = {
   block?: InputMaybe<BlocksBoolExp>;
   block_id?: InputMaybe<UuidComparisonExp>;
   created_at?: InputMaybe<TimestamptzComparisonExp>;
-  due_date?: InputMaybe<DateComparisonExp>;
+  deadline_date?: InputMaybe<DateComparisonExp>;
   id?: InputMaybe<UuidComparisonExp>;
   priority?: InputMaybe<StringComparisonExp>;
   schedule_date?: InputMaybe<DateComparisonExp>;
@@ -3169,7 +3169,7 @@ export type TasksInsertInput = {
   block?: InputMaybe<BlocksObjRelInsertInput>;
   block_id?: InputMaybe<Scalars['uuid']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  due_date?: InputMaybe<Scalars['date']['input']>;
+  deadline_date?: InputMaybe<Scalars['date']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   priority?: InputMaybe<Scalars['String']['input']>;
   schedule_date?: InputMaybe<Scalars['date']['input']>;
@@ -3184,7 +3184,7 @@ export type TasksMaxFields = {
   __typename?: 'tasks_max_fields';
   block_id?: Maybe<Scalars['uuid']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
-  due_date?: Maybe<Scalars['date']['output']>;
+  deadline_date?: Maybe<Scalars['date']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   priority?: Maybe<Scalars['String']['output']>;
   schedule_date?: Maybe<Scalars['date']['output']>;
@@ -3197,7 +3197,7 @@ export type TasksMaxFields = {
 export type TasksMaxOrderBy = {
   block_id?: InputMaybe<OrderBy>;
   created_at?: InputMaybe<OrderBy>;
-  due_date?: InputMaybe<OrderBy>;
+  deadline_date?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   priority?: InputMaybe<OrderBy>;
   schedule_date?: InputMaybe<OrderBy>;
@@ -3211,7 +3211,7 @@ export type TasksMinFields = {
   __typename?: 'tasks_min_fields';
   block_id?: Maybe<Scalars['uuid']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
-  due_date?: Maybe<Scalars['date']['output']>;
+  deadline_date?: Maybe<Scalars['date']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   priority?: Maybe<Scalars['String']['output']>;
   schedule_date?: Maybe<Scalars['date']['output']>;
@@ -3224,7 +3224,7 @@ export type TasksMinFields = {
 export type TasksMinOrderBy = {
   block_id?: InputMaybe<OrderBy>;
   created_at?: InputMaybe<OrderBy>;
-  due_date?: InputMaybe<OrderBy>;
+  deadline_date?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   priority?: InputMaybe<OrderBy>;
   schedule_date?: InputMaybe<OrderBy>;
@@ -3254,7 +3254,7 @@ export type TasksOrderBy = {
   block?: InputMaybe<BlocksOrderBy>;
   block_id?: InputMaybe<OrderBy>;
   created_at?: InputMaybe<OrderBy>;
-  due_date?: InputMaybe<OrderBy>;
+  deadline_date?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   priority?: InputMaybe<OrderBy>;
   schedule_date?: InputMaybe<OrderBy>;
@@ -3276,7 +3276,7 @@ export enum TasksSelectColumn {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
-  DueDate = 'due_date',
+  DeadlineDate = 'deadline_date',
   /** column name */
   Id = 'id',
   /** column name */
@@ -3295,7 +3295,7 @@ export enum TasksSelectColumn {
 export type TasksSetInput = {
   block_id?: InputMaybe<Scalars['uuid']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  due_date?: InputMaybe<Scalars['date']['input']>;
+  deadline_date?: InputMaybe<Scalars['date']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   priority?: InputMaybe<Scalars['String']['input']>;
   schedule_date?: InputMaybe<Scalars['date']['input']>;
@@ -3316,7 +3316,7 @@ export type TasksStreamCursorInput = {
 export type TasksStreamCursorValueInput = {
   block_id?: InputMaybe<Scalars['uuid']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  due_date?: InputMaybe<Scalars['date']['input']>;
+  deadline_date?: InputMaybe<Scalars['date']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   priority?: InputMaybe<Scalars['String']['input']>;
   schedule_date?: InputMaybe<Scalars['date']['input']>;
@@ -3332,7 +3332,7 @@ export enum TasksUpdateColumn {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
-  DueDate = 'due_date',
+  DeadlineDate = 'deadline_date',
   /** column name */
   Id = 'id',
   /** column name */

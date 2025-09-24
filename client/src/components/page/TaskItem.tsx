@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { FiMoreHorizontal } from "react-icons/fi";
 import { Button } from "../ui/button";
@@ -12,7 +11,7 @@ interface TaskItemProps {
   title: string;
   completed?: boolean;
   scheduleDate?: string;
-  dueDate?: string;
+  deadlineDate?: string;
   onToggleComplete?: (id: string, completed: boolean) => void;
   onMoreClick?: (id: string) => void;
   className?: string;
@@ -24,40 +23,12 @@ export const TaskItem = ({
   title,
   completed = false,
   scheduleDate,
-  dueDate,
+  deadlineDate,
   onToggleComplete,
   onMoreClick,
   className,
   variant = "default",
 }: TaskItemProps) => {
-  const getDateDisplay = () => {
-    const targetDate = scheduleDate || dueDate;
-    if (!targetDate) return null;
-
-    try {
-      const date = new Date(targetDate);
-      const today = new Date();
-      const tomorrow = new Date();
-      tomorrow.setDate(today.getDate() + 1);
-
-      today.setHours(0, 0, 0, 0);
-      tomorrow.setHours(0, 0, 0, 0);
-      date.setHours(0, 0, 0, 0);
-
-      if (date.getTime() === today.getTime()) {
-        return "Today";
-      } else if (date.getTime() === tomorrow.getTime()) {
-        return "Tomorrow";
-      } else {
-        return format(date, "MMM d");
-      }
-    } catch (error) {
-      return null;
-    }
-  };
-
-  const dateDisplay = getDateDisplay();
-
   return (
     <div
       className={cn(
@@ -71,7 +42,6 @@ export const TaskItem = ({
         onCheckedChange={(checked) => onToggleComplete?.(id, !!checked)}
       />
 
-      {/* Task content */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
           <div
@@ -83,16 +53,7 @@ export const TaskItem = ({
           >
             {title}
           </div>
-          {dateDisplay && variant === "compact" && (
-            <span className="text-xs text-muted-foreground">{dateDisplay}</span>
-          )}
         </div>
-        {dateDisplay && variant === "default" && (
-          <div className="text-xs text-muted-foreground mt-0.5">
-            {scheduleDate ? "Scheduled for " : "Due "}
-            {dateDisplay}
-          </div>
-        )}
       </div>
 
       {onMoreClick && (

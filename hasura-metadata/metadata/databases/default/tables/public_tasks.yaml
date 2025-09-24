@@ -13,7 +13,7 @@ insert_permissions:
     permission:
       check: {}
       columns:
-        - due_date
+        - deadline_date
         - schedule_date
         - priority
         - status
@@ -27,7 +27,7 @@ select_permissions:
   - role: user
     permission:
       columns:
-        - due_date
+        - deadline_date
         - schedule_date
         - priority
         - status
@@ -42,7 +42,7 @@ update_permissions:
   - role: user
     permission:
       columns:
-        - due_date
+        - deadline_date
         - schedule_date
         - priority
         - status

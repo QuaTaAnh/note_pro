@@ -7,7 +7,7 @@ query GetTasks($workspaceId: uuid!) {
     block_id
     user_id
     status
-    due_date
+    deadline_date
     schedule_date
     priority
     created_at
@@ -32,7 +32,7 @@ query GetTodoTasks($workspaceId: uuid!) {
     block_id
     user_id
     status
-    due_date
+    deadline_date
     schedule_date
     priority
     created_at
@@ -51,7 +51,7 @@ query GetTaskById($id: uuid!) {
     block_id
     user_id
     status
-    due_date
+    deadline_date
     schedule_date
     priority
     created_at

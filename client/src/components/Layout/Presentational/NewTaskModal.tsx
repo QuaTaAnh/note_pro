@@ -35,7 +35,7 @@ interface TaskData {
   title: string;
   selectedDocumentId: string | null;
   scheduleDate: string;
-  dueDate: string;
+  deadlineDate: string;
 }
 
 export const NewTaskModal = ({ children }: NewTaskModalProps) => {
@@ -45,7 +45,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
     title: "",
     selectedDocumentId: null,
     scheduleDate: "",
-    dueDate: "",
+    deadlineDate: "",
   });
 
   const dialogContentRef = useRef<HTMLDivElement>(null);
@@ -70,7 +70,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
       title: "",
       selectedDocumentId: null,
       scheduleDate: "",
-      dueDate: "",
+      deadlineDate: "",
     });
     setSearchTerm("");
   };
@@ -127,7 +127,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
             block_id: blockId,
             user_id: userId,
             status: TASK_STATUS.TODO,
-            due_date: taskData.dueDate || null,
+            deadline_date: taskData.deadlineDate || null,
             schedule_date: taskData.scheduleDate || null,
             priority: null,
           },
@@ -278,8 +278,8 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
             />
 
             <DatePicker
-              value={taskData.dueDate}
-              onChange={(date) => handleInputChange("dueDate", date)}
+              value={taskData.deadlineDate}
+              onChange={(date) => handleInputChange("deadlineDate", date)}
               placeholder="Deadline"
               icon={<CiFlag1 className="w-4 h-4" />}
               container={dialogContentRef.current}
