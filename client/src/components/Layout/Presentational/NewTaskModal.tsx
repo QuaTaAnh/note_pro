@@ -135,7 +135,6 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
 
       showToast.success("Task created successfully");
       setIsOpen(false);
-      resetForm();
     } catch (error) {
       console.error("Failed to create task:", error);
       showToast.error("Failed to create task");
@@ -144,8 +143,16 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
     }
   };
 
+  const handleOpenChange = (open: boolean) => {
+    setIsOpen(open);
+    if (!open) {
+      resetForm();
+      setIsDocumentPopoverOpen(false);
+    }
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
         ref={dialogContentRef}

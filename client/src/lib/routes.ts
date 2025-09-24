@@ -21,6 +21,9 @@ export const ROUTES = {
   // Legacy routes (for backward compatibility)
   WORKSPACE_ALL_DOCS: (workspaceSlug: string) => `/s/${workspaceSlug}/all`,
   WORKSPACE_TASKS: (workspaceSlug: string) => `/s/${workspaceSlug}/tasks`,
+  WORKSPACE_TASKS_INBOX: (workspaceSlug: string) => `/s/${workspaceSlug}/tasks/inbox`,
+  WORKSPACE_TASKS_TODAY: (workspaceSlug: string) => `/s/${workspaceSlug}/tasks/today`,
+  WORKSPACE_TASKS_ALL: (workspaceSlug: string) => `/s/${workspaceSlug}/tasks/all`,
   WORKSPACE_CALENDAR: (workspaceSlug: string) => `/s/${workspaceSlug}/calendar`,
   WORKSPACE_TEMPLATES: (workspaceSlug: string) => `/s/${workspaceSlug}/templates`,
   WORKSPACE_DOCUMENT: (workspaceSlug: string, documentId: string) =>

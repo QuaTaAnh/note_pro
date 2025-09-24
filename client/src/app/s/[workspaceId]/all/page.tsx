@@ -71,8 +71,8 @@ export default function AllDocsPage() {
     <PageLoading />
   ) : (
     <div className="p-0 w-full h-full">
-      <div className="flex flex-col items-start justify-start mx-auto w-full h-full min-h-0 max-w-screen-2xl gap-2">
-        <div className="w-full px-4 pt-4 pb-4 flex items-center justify-between">
+      <div className="flex flex-col items-start justify-start mx-auto w-full h-full min-h-0 max-w-screen-2xl gap-6">
+        <div className="w-full pt-4 flex items-center justify-between">
           <h1 className="text-xl font-medium">All Docs</h1>
           <Button
             variant="outline"
@@ -91,7 +91,7 @@ export default function AllDocsPage() {
             You have no documents yet
           </div>
         ) : (
-          <div className="flex-1 w-full px-4 pb-4 overflow-hidden">
+          <div className="flex-1 w-full pb-4 overflow-hidden">
             <AutoSizer>
               {({ width, height }) => {
                 if (width === 0 || height === 0) return null;
