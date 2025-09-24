@@ -167,7 +167,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
               <PopoverTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="justify-start text-left font-normal h-9 px-2 text-muted-foreground hover:text-foreground"
+                  className="justify-start text-left font-normal h-9 px-2 text-muted-foreground hover:text-foreground focus-visible:ring-0 focus-visible:ring-transparent"
                 >
                   <FaInbox className="w-4 h-4" />
                   {taskData.selectedDocumentId
