@@ -26,6 +26,7 @@ import React, { useRef, useState } from "react";
 import { FaInbox } from "react-icons/fa";
 import { FiChevronDown, FiFileText, FiSearch } from "react-icons/fi";
 import { CiFlag1 } from "react-icons/ci";
+import { TASK_STATUS } from "@/consts";
 interface NewTaskModalProps {
   children: React.ReactNode;
 }
@@ -125,11 +126,22 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
           input: {
             block_id: blockId,
             user_id: userId,
-            status: "todo",
+            status: TASK_STATUS.TODO,
             due_date: taskData.dueDate || null,
             schedule_date: taskData.scheduleDate || null,
             priority: null,
           },
+        },
+        update(cache, { data }) {
+          if (!data?.insert_tasks_one) return;
+          const newTask = data.insert_tasks_one;
+          cache.modify({
+            fields: {
+              tasks(existingTasks = []) {
+                return [...existingTasks, newTask];
+              },
+            },
+          });
         },
       });
 

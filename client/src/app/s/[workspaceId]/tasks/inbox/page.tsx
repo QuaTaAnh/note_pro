@@ -2,20 +2,53 @@
 
 import React, { useMemo } from "react";
 import { PageLoading } from "@/components/ui/loading";
-import { useGetTasksQuery } from "@/graphql/queries/__generated__/task.generated";
+import {
+  GetTodoTasksDocument,
+  useGetTodoTasksQuery,
+} from "@/graphql/queries/__generated__/task.generated";
+import { useUpdateTaskMutation } from "@/graphql/mutations/__generated__/task.generated";
 import { useWorkspace } from "@/hooks/use-workspace";
 import { Task } from "@/types/app";
+import { TaskItem } from "@/components/page/TaskItem";
+import { showToast } from "@/lib/toast";
+import { TASK_STATUS } from "@/consts";
 
 export default function InboxPage() {
   const { workspace } = useWorkspace();
 
-  const { loading, data } = useGetTasksQuery({
+  const { loading, data } = useGetTodoTasksQuery({
     variables: { workspaceId: workspace?.id || "" },
     skip: !workspace?.id,
     fetchPolicy: "cache-and-network",
   });
 
-  const tasks: Task[] = useMemo(() => data?.tasks || [], [data]);
+  const [updateTask] = useUpdateTaskMutation();
+
+  const tasks: Task[] = useMemo(() => {
+    return data?.tasks || [];
+  }, [data]);
+
+  const handleToggleComplete = async (taskId: string, completed: boolean) => {
+    try {
+      await updateTask({
+        variables: {
+          id: taskId,
+          input: {
+            status: completed ? TASK_STATUS.COMPLETED : TASK_STATUS.TODO,
+          },
+        },
+        refetchQueries: [GetTodoTasksDocument],
+      });
+      showToast.success(completed ? "Task completed" : "Task reopened");
+    } catch (error) {
+      console.error("Failed to update task:", error);
+      showToast.error("Failed to update task");
+    }
+  };
+
+  const handleMoreClick = (taskId: string) => {
+    console.log("More options for task:", taskId);
+  };
 
   return loading && tasks.length === 0 ? (
     <PageLoading />
@@ -26,16 +59,18 @@ export default function InboxPage() {
           No tasks in inbox yet
         </div>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-1">
           {tasks.map((task) => (
-            <div key={task.id} className="p-3 border rounded-lg">
-              <div className="font-medium">
-                {task.block?.content?.title || "Untitled"}
-              </div>
-              <div className="text-sm text-muted-foreground">
-                Status: {task.status}
-              </div>
-            </div>
+            <TaskItem
+              key={task.id}
+              id={task.id}
+              title={task.block?.content?.title || "Untitled"}
+              completed={task.status === "completed"}
+              scheduleDate={task.schedule_date || undefined}
+              dueDate={task.due_date || undefined}
+              onToggleComplete={handleToggleComplete}
+              onMoreClick={handleMoreClick}
+            />
           ))}
         </div>
       )}

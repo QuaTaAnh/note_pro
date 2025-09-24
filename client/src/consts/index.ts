@@ -107,4 +107,9 @@ export const HIGHLIGHT_COLORS = [
   { name: "None", color: HexColor.TRANSPARENT, value: null },
   ...COLORS
 ];
+
+export const TASK_STATUS = {
+  TODO: "todo",
+  COMPLETED: "completed",
+};
   

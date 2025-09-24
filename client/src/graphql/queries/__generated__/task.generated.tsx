@@ -10,6 +10,13 @@ export type GetTasksQueryVariables = Types.Exact<{
 
 export type GetTasksQuery = { __typename?: 'query_root', tasks: Array<{ __typename?: 'tasks', id: string, block_id?: string | null, user_id?: string | null, status?: string | null, due_date?: string | null, schedule_date?: string | null, priority?: string | null, created_at?: string | null, updated_at?: string | null, block?: { __typename?: 'blocks', id: string, content?: any | null, type: string } | null }> };
 
+export type GetTodoTasksQueryVariables = Types.Exact<{
+  workspaceId: Types.Scalars['uuid']['input'];
+}>;
+
+
+export type GetTodoTasksQuery = { __typename?: 'query_root', tasks: Array<{ __typename?: 'tasks', id: string, block_id?: string | null, user_id?: string | null, status?: string | null, due_date?: string | null, schedule_date?: string | null, priority?: string | null, created_at?: string | null, updated_at?: string | null, block?: { __typename?: 'blocks', id: string, content?: any | null, type: string } | null }> };
+
 export type GetTaskByIdQueryVariables = Types.Exact<{
   id: Types.Scalars['uuid']['input'];
 }>;
@@ -74,6 +81,62 @@ export type GetTasksQueryHookResult = ReturnType<typeof useGetTasksQuery>;
 export type GetTasksLazyQueryHookResult = ReturnType<typeof useGetTasksLazyQuery>;
 export type GetTasksSuspenseQueryHookResult = ReturnType<typeof useGetTasksSuspenseQuery>;
 export type GetTasksQueryResult = Apollo.QueryResult<GetTasksQuery, GetTasksQueryVariables>;
+export const GetTodoTasksDocument = gql`
+    query GetTodoTasks($workspaceId: uuid!) {
+  tasks(
+    where: {block: {workspace_id: {_eq: $workspaceId}}, status: {_eq: "todo"}}
+    order_by: {created_at: desc}
+  ) {
+    id
+    block_id
+    user_id
+    status
+    due_date
+    schedule_date
+    priority
+    created_at
+    updated_at
+    block {
+      id
+      content
+      type
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetTodoTasksQuery__
+ *
+ * To run a query within a React component, call `useGetTodoTasksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTodoTasksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTodoTasksQuery({
+ *   variables: {
+ *      workspaceId: // value for 'workspaceId'
+ *   },
+ * });
+ */
+export function useGetTodoTasksQuery(baseOptions: Apollo.QueryHookOptions<GetTodoTasksQuery, GetTodoTasksQueryVariables> & ({ variables: GetTodoTasksQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTodoTasksQuery, GetTodoTasksQueryVariables>(GetTodoTasksDocument, options);
+      }
+export function useGetTodoTasksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTodoTasksQuery, GetTodoTasksQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTodoTasksQuery, GetTodoTasksQueryVariables>(GetTodoTasksDocument, options);
+        }
+export function useGetTodoTasksSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetTodoTasksQuery, GetTodoTasksQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetTodoTasksQuery, GetTodoTasksQueryVariables>(GetTodoTasksDocument, options);
+        }
+export type GetTodoTasksQueryHookResult = ReturnType<typeof useGetTodoTasksQuery>;
+export type GetTodoTasksLazyQueryHookResult = ReturnType<typeof useGetTodoTasksLazyQuery>;
+export type GetTodoTasksSuspenseQueryHookResult = ReturnType<typeof useGetTodoTasksSuspenseQuery>;
+export type GetTodoTasksQueryResult = Apollo.QueryResult<GetTodoTasksQuery, GetTodoTasksQueryVariables>;
 export const GetTaskByIdDocument = gql`
     query GetTaskById($id: uuid!) {
   tasks_by_pk(id: $id) {
