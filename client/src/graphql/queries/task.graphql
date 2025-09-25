@@ -1,6 +1,11 @@
 query GetTasks($workspaceId: uuid!) {
   tasks(
-    where: { block: { workspace_id: { _eq: $workspaceId } } }
+    where: {
+      block: {
+        workspace_id: { _eq: $workspaceId }
+        page_id: { _is_null: true }
+      }
+    }
     order_by: { created_at: desc }
   ) {
     id
@@ -23,7 +28,10 @@ query GetTasks($workspaceId: uuid!) {
 query GetTodoTasks($workspaceId: uuid!) {
   tasks(
     where: {
-      block: { workspace_id: { _eq: $workspaceId } }
+      block: {
+        workspace_id: { _eq: $workspaceId }
+        page_id: { _is_null: true }
+      }
       status: { _eq: "todo" }
     }
     order_by: { created_at: desc }

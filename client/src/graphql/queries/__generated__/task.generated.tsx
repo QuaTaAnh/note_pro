@@ -28,7 +28,7 @@ export type GetTaskByIdQuery = { __typename?: 'query_root', tasks_by_pk?: { __ty
 export const GetTasksDocument = gql`
     query GetTasks($workspaceId: uuid!) {
   tasks(
-    where: {block: {workspace_id: {_eq: $workspaceId}}}
+    where: {block: {workspace_id: {_eq: $workspaceId}, page_id: {_is_null: true}}}
     order_by: {created_at: desc}
   ) {
     id
@@ -84,7 +84,7 @@ export type GetTasksQueryResult = Apollo.QueryResult<GetTasksQuery, GetTasksQuer
 export const GetTodoTasksDocument = gql`
     query GetTodoTasks($workspaceId: uuid!) {
   tasks(
-    where: {block: {workspace_id: {_eq: $workspaceId}}, status: {_eq: "todo"}}
+    where: {block: {workspace_id: {_eq: $workspaceId}, page_id: {_is_null: true}}, status: {_eq: "todo"}}
     order_by: {created_at: desc}
   ) {
     id

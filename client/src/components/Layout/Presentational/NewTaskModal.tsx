@@ -92,7 +92,27 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
       let blockId: string | undefined;
 
       if (taskData.selectedDocumentId) {
-        blockId = taskData.selectedDocumentId;
+        const blockResult = await createDocument({
+          variables: {
+            input: {
+              type: "task",
+              workspace_id: workspace.id,
+              user_id: userId,
+              folder_id: null,
+              content: {
+                title: taskData.title,
+              },
+              position: 0,
+              parent_id: null,
+              page_id: taskData.selectedDocumentId,
+            },
+          },
+        });
+
+        blockId = blockResult.data?.insert_blocks_one?.id;
+        if (!blockId) {
+          throw new Error("Failed to create task block");
+        }
       } else {
         const blockResult = await createDocument({
           variables: {
@@ -152,6 +172,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
       showToast.error("Failed to create task");
     } finally {
       setIsCreating(false);
+      resetForm();
     }
   };
 
@@ -291,7 +312,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
           <Button
             onClick={handleCreate}
             disabled={!taskData.title.trim() || isCreating}
-            className="px-4 h-9 bg-primary-button hover:bg-primary-buttonHover font-mediumrounded-md"
+            className="px-4 h-9 bg-primary-button hover:bg-primary-buttonHover font-medium rounded-md"
           >
             {isCreating ? "Creating..." : "Create"}
           </Button>
