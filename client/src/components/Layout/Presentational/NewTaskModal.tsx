@@ -247,20 +247,20 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
                       return (
                         <div
                           key={doc.id}
-                          className="flex items-center gap-2 px-3 py-2 hover:bg-gray-50 cursor-pointer"
+                          className="flex items-center gap-2 px-3 py-2 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors"
                           onClick={() => {
                             handleInputChange("selectedDocumentId", doc.id);
                             handleDocumentPopoverOpenChange(false);
                             setSearchTerm("");
                           }}
                         >
-                          <FiFileText className="w-4 h-4 text-gray-500" />
+                          <FiFileText className="w-4 h-4 text-muted-foreground" />
                           <div className="flex-1 min-w-0">
                             <div className="text-sm font-medium truncate">
                               {getPlainText(title)}
                             </div>
                             {doc.folder && (
-                              <div className="text-xs text-gray-500">
+                              <div className="text-xs text-muted-foreground">
                                 in {doc.folder.name}
                               </div>
                             )}
@@ -274,7 +274,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
                       .toLowerCase()
                       .includes(searchTerm.toLowerCase());
                   }).length === 0 && (
-                    <div className="px-3 py-2 text-sm text-gray-500">
+                    <div className="px-3 py-2 text-sm text-muted-foreground">
                       No documents found
                     </div>
                   )}
@@ -300,7 +300,6 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
               placeholder="Schedule"
               textContent="Schedule"
               container={dialogContentRef.current}
-              showSearch={true}
               quickActions={true}
             />
 
@@ -310,7 +309,6 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
               placeholder="Deadline"
               icon={<CiFlag1 className="w-4 h-4" />}
               container={dialogContentRef.current}
-              showSearch={true}
               quickActions={true}
             />
           </div>

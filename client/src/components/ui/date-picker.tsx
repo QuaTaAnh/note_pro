@@ -1,11 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import { format } from "date-fns";
-import { FiCalendar, FiSearch } from "react-icons/fi";
+import { format, isToday, isTomorrow } from "date-fns";
+import { FiCalendar } from "react-icons/fi";
 import { Calendar } from "./calendar";
 import { Button } from "./button";
-import { InputField } from "./input-field";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 
 interface DatePickerProps {
@@ -13,7 +12,6 @@ interface DatePickerProps {
   onChange: (date: string) => void;
   placeholder?: string;
   container?: HTMLElement | null;
-  showSearch?: boolean;
   quickActions?: boolean;
   textContent?: string;
   icon?: React.ReactNode;
@@ -24,32 +22,23 @@ export const DatePicker = ({
   onChange,
   placeholder = "Select date",
   container,
-  showSearch = true,
   quickActions = true,
   textContent,
   icon,
 }: DatePickerProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
 
   const getDateDisplayText = (dateString: string) => {
     if (!dateString) return placeholder;
 
     const date = new Date(dateString);
-    const today = new Date();
-    const tomorrow = new Date();
-    tomorrow.setDate(today.getDate() + 1);
 
-    today.setHours(0, 0, 0, 0);
-    tomorrow.setHours(0, 0, 0, 0);
-    date.setHours(0, 0, 0, 0);
-
-    if (date.getTime() === today.getTime()) {
+    if (isToday(date)) {
       return "Today";
-    } else if (date.getTime() === tomorrow.getTime()) {
+    } else if (isTomorrow(date)) {
       return "Tomorrow";
     } else {
-      return format(new Date(dateString), "MMM d");
+      return format(date, "MMM d");
     }
   };
 
@@ -88,38 +77,27 @@ export const DatePicker = ({
       <PopoverTrigger asChild>
         <Button
           variant="ghost"
-          className="justify-start text-left font-normal h-9 px-2 text-muted-foreground hover:text-foreground"
+          className="justify-start text-left font-normal h-9 px-3 text-muted-foreground hover:text-foreground border border-input hover:border-border rounded-md bg-background hover:bg-accent transition-colors"
         >
-          {icon ? icon : <FiCalendar className="w-4 h-4" />}
+          {icon ? icon : <FiCalendar className="w-4 h-4 mr-2" />}
           {value ? getDateDisplayText(value) : textContent}
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-auto p-0"
+        className="w-auto p-0 shadow-lg border"
         container={container ?? undefined}
         side="bottom"
         align="start"
-        sideOffset={8}
+        sideOffset={4}
+        avoidCollisions={false}
       >
-        <div className="p-2 space-y-2">
-          {showSearch && (
-            <div className="pb-1">
-              <InputField
-                placeholder={placeholder}
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="h-7 text-xs"
-                icon={<FiSearch className="w-3 h-3" />}
-              />
-            </div>
-          )}
-
+        <div className="p-2">
           {quickActions && (
-            <div className="flex gap-1 pb-1 border-b">
+            <div className="flex gap-1 pb-2 border-b border-border">
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-6 px-2 text-xs font-normal"
+                className="h-6 px-2 text-xs font-normal hover:bg-accent rounded-md"
                 onClick={(event) => handleQuickActionClick(event, 0)}
               >
                 <FiCalendar className="w-3 h-3 mr-1" />
@@ -128,7 +106,7 @@ export const DatePicker = ({
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-6 px-2 text-xs font-normal"
+                className="h-6 px-2 text-xs font-normal hover:bg-accent rounded-md"
                 onClick={(event) => handleQuickActionClick(event, 1)}
               >
                 Tomorrow
@@ -136,7 +114,7 @@ export const DatePicker = ({
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-6 px-2 text-xs font-normal"
+                className="h-6 px-2 text-xs font-normal hover:bg-accent rounded-md"
                 onClick={(event) => handleQuickActionClick(event, -1)}
               >
                 Weekend
@@ -145,7 +123,7 @@ export const DatePicker = ({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-6 px-2 text-xs font-normal text-muted-foreground"
+                  className="h-6 px-2 text-xs font-normal text-destructive hover:bg-destructive/10 hover:text-destructive rounded-md ml-auto"
                   onClick={handleClearClick}
                 >
                   Clear
@@ -154,19 +132,18 @@ export const DatePicker = ({
             </div>
           )}
 
-          <div>
-            <Calendar
-              mode="single"
-              selected={value ? new Date(value) : undefined}
-              onSelect={(date) => {
-                if (date) {
-                  handleDateSelect(date);
-                }
-              }}
-              initialFocus
-              className="w-full"
-            />
-          </div>
+          <Calendar
+            mode="single"
+            selected={value ? new Date(value) : undefined}
+            defaultMonth={value ? new Date(value) : new Date()}
+            onSelect={(date) => {
+              if (date) {
+                handleDateSelect(date);
+              }
+            }}
+            initialFocus
+            className="rounded-md [--cell-size:1.75rem] p-1"
+          />
         </div>
       </PopoverContent>
     </Popover>
