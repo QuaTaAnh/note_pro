@@ -14,6 +14,12 @@ interface Props {
   onSaveImmediate: () => void;
   onDeleteBlock?: () => void;
   dragHandle?: React.ReactNode;
+  blockType?: string;
+  task?: {
+    id: string;
+    status: string;
+    block_id: string;
+  } | null;
 }
 
 export const TiptapBlockItem = ({
@@ -27,6 +33,8 @@ export const TiptapBlockItem = ({
   onSaveImmediate,
   onDeleteBlock,
   dragHandle,
+  blockType,
+  task,
 }: Props) => {
   return (
     <TiptapEditor
@@ -43,6 +51,8 @@ export const TiptapBlockItem = ({
       editorClassName="prose prose-sm max-w-none focus:outline-none text-base break-words text-sm"
       showBubbleMenu={true}
       dragHandle={dragHandle}
+      isTask={blockType === BlockType.TASK}
+      task={task}
     />
   );
 };

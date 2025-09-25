@@ -19,6 +19,8 @@ import { TiptapBlockItem } from "@/components/editor/TiptapBlockItem";
 import { BlockType } from "@/types/types";
 import { Block } from "@/hooks";
 import { GripVertical } from "lucide-react";
+import { TASK_STATUS } from "@/consts";
+import { useMemo } from "react";
 
 interface Props {
   blocks: Block[];
@@ -53,6 +55,23 @@ function SortableBlockItem({
     transition,
     isDragging,
   } = useSortable({ id: block.id });
+
+  const task = useMemo(() => {
+    if (
+      block.type !== BlockType.TASK ||
+      !block.tasks ||
+      block.tasks.length === 0
+    ) {
+      return null;
+    }
+
+    return {
+      id: block.tasks[0].id,
+      status: block.tasks[0].status || TASK_STATUS.TODO,
+      block_id: block.id,
+    };
+  }, [block]);
+
   const style = {
     transform: CSS.Transform.toString(
       transform && {
@@ -86,6 +105,8 @@ function SortableBlockItem({
             ? () => props.onDeleteBlock && props.onDeleteBlock(block.id)
             : undefined
         }
+        blockType={block.type}
+        task={task}
         dragHandle={
           <span
             {...attributes}
@@ -136,7 +157,7 @@ export function BlockList({
         items={blocks.map((b) => b.id)}
         strategy={verticalListSortingStrategy}
       >
-        <div className="space-y-3">
+        <div>
           {blocks.map((block) => (
             <SortableBlockItem
               key={block.id}

@@ -14,11 +14,16 @@ import {
   UseEditorOptions,
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { FiTrash } from "react-icons/fi";
+import { Check } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { EditorBubbleMenu } from "./EditorBubbleMenu";
 import { useSlashCommand } from "./useSlashCommand";
+import { useUpdateTaskMutation } from "@/graphql/mutations/__generated__/task.generated";
+import { TASK_STATUS } from "@/consts";
+import { showToast } from "@/lib/toast";
 
 interface TiptapEditorProps {
   value: string;
@@ -36,6 +41,12 @@ interface TiptapEditorProps {
   onSaveImmediate?: () => void;
   onDeleteBlock?: () => void;
   isTitle?: boolean;
+  isTask?: boolean;
+  task?: {
+    id: string;
+    status: string;
+    block_id: string;
+  } | null;
 }
 
 export const TiptapEditor = ({
@@ -54,8 +65,37 @@ export const TiptapEditor = ({
   onSaveImmediate,
   onDeleteBlock,
   isTitle = false,
+  isTask = false,
+  task,
   dragHandle,
 }: TiptapEditorProps & { dragHandle?: React.ReactNode }) => {
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [updateTask] = useUpdateTaskMutation();
+
+  const isCompleted = task?.status === TASK_STATUS.COMPLETED;
+
+  const handleToggleComplete = async () => {
+    if (!task || isUpdating) return;
+
+    try {
+      setIsUpdating(true);
+      await updateTask({
+        variables: {
+          id: task.id,
+          input: {
+            status: isCompleted ? TASK_STATUS.TODO : TASK_STATUS.COMPLETED,
+          },
+        },
+      });
+      showToast.success(isCompleted ? "Task reopened" : "Task completed");
+    } catch (error) {
+      console.error("Failed to update task:", error);
+      showToast.error("Failed to update task");
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
   const editorConfig = useMemo(
     () => ({
       extensions: [
@@ -114,58 +154,53 @@ export const TiptapEditor = ({
 
   useEffect(() => {
     if (!editor) return;
-    editor.setOptions({
-      editorProps: {
-        handleKeyDown: (view: EditorView, event: KeyboardEvent) => {
-          const handled = handleKeyDown(view, event);
-          if (handled) return true;
 
-          if (
-            !isTitle &&
-            event.key === "Enter" &&
-            !event.shiftKey &&
-            onAddBlock
-          ) {
+    const handleEditorKeyDown = (e: KeyboardEvent) => {
+      if (onKeyDown) {
+        onKeyDown(e as any);
+      }
+      handleKeyDown(editor.view, e);
+    };
+
+    editor.view.dom.addEventListener("keydown", handleEditorKeyDown);
+    return () => {
+      editor.view.dom.removeEventListener("keydown", handleEditorKeyDown);
+    };
+  }, [editor, handleKeyDown, onKeyDown]);
+
+  useEffect(() => {
+    if (!editor) return;
+
+    const handleKey = (view: EditorView, event: KeyboardEvent) => {
+      if (event.key === "Enter" && !event.shiftKey) {
+        if (onAddBlock) {
+          const { empty } = view.state.selection;
+          const { $from } = view.state.selection;
+          const currentPos = $from.pos;
+          const currentNodeSize = $from.node().nodeSize;
+
+          if (empty && currentPos >= currentNodeSize - 1) {
             event.preventDefault();
-            if (onSaveImmediate) onSaveImmediate();
-            onAddBlock((position ?? 0) + 1, BlockType.PARAGRAPH);
+            onAddBlock(position + 1, BlockType.PARAGRAPH);
             return true;
           }
+        }
+      }
+      return false;
+    };
 
-          if (isTitle && onKeyDown) {
-            const reactEvent = {
-              key: event.key,
-              code: event.code,
-              shiftKey: event.shiftKey,
-              ctrlKey: event.ctrlKey,
-              altKey: event.altKey,
-              metaKey: event.metaKey,
-              preventDefault: () => event.preventDefault(),
-              stopPropagation: () => event.stopPropagation(),
-            } as unknown as React.KeyboardEvent;
-            onKeyDown(reactEvent);
-          }
+    editor.view.setProps({
+      handleKeyDown: handleKey,
+    });
+  }, [editor, onAddBlock, position]);
 
-          return false;
-        },
-        handlePaste: (view: EditorView, event: ClipboardEvent) => {
-          const text = event.clipboardData?.getData("text/plain") ?? "";
-          if (text.length === 0) return false;
-          event.preventDefault();
-          const normalizedText = text
-            .replace(/\r\n?/g, "\n")
-            .split("\n")
-            .map((line) =>
-              line.replace(/^\s*(?:[-*•▪‣‒–—·]|\d+[.)]|[a-zA-Z][.)])\s+/, "")
-            )
-            .join("\n");
-          view.dispatch(view.state.tr.insertText(normalizedText));
-          return true;
-        },
+  useEffect(() => {
+    if (!editor) return;
+
+    editor.setOptions({
+      editorProps: {
         attributes: {
-          class: isTitle
-            ? `text-xl font-bold w-full bg-transparent border-none outline-none resize-none ${className}`
-            : className,
+          class: editorClassName || "",
           style: isTitle ? "line-height: 1.2;" : "padding: 0px;",
         },
       },
@@ -179,30 +214,56 @@ export const TiptapEditor = ({
     onSaveImmediate,
     position,
     onKeyDown,
+    editorClassName,
   ]);
 
   if (!editor) {
     return null;
   }
 
-  return isTitle ? (
-    <div className="relative">
-      {showBubbleMenu && <EditorBubbleMenu editor={editor} />}
-      <EditorContent editor={editor} className={editorClassName} />
-      {menus}
-    </div>
-  ) : (
+  if (isTitle) {
+    return (
+      <div className="relative">
+        {showBubbleMenu && <EditorBubbleMenu editor={editor} />}
+        <EditorContent editor={editor} className={editorClassName} />
+        {menus}
+      </div>
+    );
+  }
+
+  return (
     <div
-      className={`group relative flex items-start gap-2 p-1 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors${
+      className={`group relative flex items-start gap-2 p-1 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ${
         isFocused ? "bg-blue-50 dark:bg-blue-900/20" : ""
       }`}
       style={{ boxShadow: isFocused ? "0 0 0 2px #3b82f6" : undefined }}
     >
       <div className="pt-0.5">{dragHandle}</div>
+
+      {isTask && (
+        <div className="flex items-center pt-1">
+          <button
+            onClick={handleToggleComplete}
+            disabled={isUpdating}
+            className={cn(
+              "w-4 h-4 rounded border-2 flex items-center justify-center transition-all duration-200",
+              isCompleted
+                ? "bg-green-500 border-green-500 text-white"
+                : "border-gray-300 hover:border-gray-400",
+              isUpdating && "opacity-50 cursor-not-allowed"
+            )}
+          >
+            {isCompleted && <Check className="w-3 h-3" />}
+          </button>
+        </div>
+      )}
+
       <div className="flex-1 min-w-0 overflow-hidden">
-        {showBubbleMenu && <EditorBubbleMenu editor={editor} />}
-        <EditorContent editor={editor} className={editorClassName} />
-        {menus}
+        <div className={cn(isTask && isCompleted && "line-through opacity-60")}>
+          {showBubbleMenu && <EditorBubbleMenu editor={editor} />}
+          <EditorContent editor={editor} className={editorClassName} />
+          {menus}
+        </div>
       </div>
       {onDeleteBlock && (
         <Button

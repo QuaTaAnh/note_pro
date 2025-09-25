@@ -32,7 +32,7 @@ interface NewTaskModalProps {
 }
 
 interface TaskData {
-  title: string;
+  text: string;
   selectedDocumentId: string | null;
   scheduleDate: string;
   deadlineDate: string;
@@ -42,7 +42,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [taskData, setTaskData] = useState<TaskData>({
-    title: "",
+    text: "",
     selectedDocumentId: null,
     scheduleDate: "",
     deadlineDate: "",
@@ -67,7 +67,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
 
   const resetForm = () => {
     setTaskData({
-      title: "",
+      text: "",
       selectedDocumentId: null,
       scheduleDate: "",
       deadlineDate: "",
@@ -76,7 +76,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
   };
 
   const handleCreate = async () => {
-    if (!taskData.title.trim()) {
+    if (!taskData.text.trim()) {
       showToast.error("Please enter a task title");
       return;
     }
@@ -100,7 +100,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
               user_id: userId,
               folder_id: null,
               content: {
-                title: taskData.title,
+                text: taskData.text,
               },
               position: 0,
               parent_id: null,
@@ -122,7 +122,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
               user_id: userId,
               folder_id: null,
               content: {
-                title: taskData.title,
+                text: taskData.text,
               },
               position: 0,
               parent_id: null,
@@ -279,10 +279,10 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
         </DialogHeader>
         <div className="space-y-2">
           <InputField
-            id="title"
+            id="text"
             placeholder="New Task"
-            value={taskData.title}
-            onChange={(e) => handleInputChange("title", e.target.value)}
+            value={taskData.text}
+            onChange={(e) => handleInputChange("text", e.target.value)}
             className="placeholder:text-modal-muted !border-0 !border-none focus-visible:!border-0 focus-visible:!ring-0 focus-visible:!ring-transparent focus:!border-0 focus:!ring-0 focus:!outline-none shadow-none"
           />
         </div>
@@ -311,7 +311,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
 
           <Button
             onClick={handleCreate}
-            disabled={!taskData.title.trim() || isCreating}
+            disabled={!taskData.text.trim() || isCreating}
             className="px-4 h-9 bg-primary-button hover:bg-primary-buttonHover font-medium rounded-md"
           >
             {isCreating ? "Creating..." : "Create"}

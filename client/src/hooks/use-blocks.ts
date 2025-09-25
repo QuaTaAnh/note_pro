@@ -79,6 +79,7 @@ export function useBlocks() {
         type: result.type,
         created_at: result.created_at || new Date().toISOString(),
         updated_at: result.updated_at || new Date().toISOString(),
+        tasks: [],
       };
     } catch (error) {
       console.error("Failed to update block:", error);
@@ -151,6 +152,7 @@ export function useBlocks() {
         type: result.type,
         created_at: result.created_at || new Date().toISOString(),
         updated_at: result.updated_at || new Date().toISOString(),
+        tasks: [],
       };
     } catch (error) {
       console.error("Failed to create block with position update:", error);
