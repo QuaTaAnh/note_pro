@@ -64,7 +64,7 @@ export default function InboxPage() {
             <TaskItem
               key={task.id}
               id={task.id}
-              title={task.block?.content?.title || "Untitled"}
+              title={task.block?.content?.text || "Untitled"}
               completed={task.status === TASK_STATUS.COMPLETED}
               onToggleComplete={handleToggleComplete}
               onMoreClick={handleMoreClick}
