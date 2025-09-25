@@ -1,15 +1,17 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { NewTaskModal } from "@/components/Layout/Presentational/NewTaskModal";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { PlusIcon } from "lucide-react";
-import { FiInbox } from "react-icons/fi";
-import { PiSunHorizonBold } from "react-icons/pi";
-import { useRouter, usePathname } from "next/navigation";
-import { ROUTES } from "@/lib/routes";
 import { useWorkspace } from "@/hooks/use-workspace";
+import { ROUTES } from "@/lib/routes";
+import { PlusIcon } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { FiInbox } from "react-icons/fi";
 import { HiOutlineClipboardList } from "react-icons/hi";
+import { PiSunHorizonBold } from "react-icons/pi";
+import { Setting } from "./Setting";
+import { TaskSettingsProvider } from "@/context/TaskSettingsProvider";
 
 interface TasksLayoutProps {
   children: React.ReactNode;
@@ -49,43 +51,46 @@ export default function TasksLayout({ children }: TasksLayoutProps) {
   };
 
   return (
-    <div className="p-0 w-full h-full">
-      <div className="flex flex-col items-start justify-start mx-auto w-full h-full min-h-0 max-w-screen-2xl gap-6">
-        <div className="w-full pt-4 flex items-center justify-between">
-          <div className="flex items-center gap-2 h-full">
-            <NewTaskModal>
-              <Button
-                variant="outline"
-                size="sm"
-                className="w-8 h-8 rounded-full"
-              >
-                <PlusIcon className="w-5 h-5" />
-              </Button>
-            </NewTaskModal>
-            <Separator orientation="vertical" />
-            <h1 className="text-xl font-medium">Tasks</h1>
+    <TaskSettingsProvider>
+      <div className="p-0 w-full h-full">
+        <div className="flex flex-col items-start justify-start mx-auto w-full h-full min-h-0 max-w-screen-2xl gap-6">
+          <div className="w-full pt-4 flex items-center justify-between">
+            <div className="flex items-center gap-2 h-full">
+              <NewTaskModal>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-8 h-8 rounded-full"
+                >
+                  <PlusIcon className="w-5 h-5" />
+                </Button>
+              </NewTaskModal>
+              <Separator orientation="vertical" />
+              <h1 className="text-xl font-medium">Tasks</h1>
+            </div>
+            <Setting />
           </div>
-        </div>
 
-        <div className="w-full">
-          <div className="flex items-center gap-2">
-            {NAV_ITEMS.map(({ id, label, icon: Icon, href, active }) => (
-              <Button
-                key={id}
-                variant={active ? "default" : "outline"}
-                size="sm"
-                className="gap-2 text-xs rounded-xl"
-                onClick={() => navigateTo(href)}
-              >
-                <Icon className="w-4 h-4" />
-                {label}
-              </Button>
-            ))}
+          <div className="w-full">
+            <div className="flex items-center gap-2">
+              {NAV_ITEMS.map(({ id, label, icon: Icon, href, active }) => (
+                <Button
+                  key={id}
+                  variant={active ? "default" : "outline"}
+                  size="sm"
+                  className="gap-2 text-xs rounded-xl"
+                  onClick={() => navigateTo(href)}
+                >
+                  <Icon className="w-4 h-4" />
+                  {label}
+                </Button>
+              ))}
+            </div>
           </div>
-        </div>
 
-        <div className="flex-1 w-full overflow-hidden">{children}</div>
+          <div className="flex-1 w-full overflow-hidden">{children}</div>
+        </div>
       </div>
-    </div>
+    </TaskSettingsProvider>
   );
 }

@@ -14,6 +14,7 @@ import { showToast } from "@/lib/toast";
 import { TASK_STATUS } from "@/consts";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { VariableSizeList as List } from "react-window";
+import { useTaskSettings } from "@/context/TaskSettingsProvider";
 
 const TASK_ITEM_HEIGHT_WITHOUT_DATE = 32;
 const TASK_ITEM_HEIGHT_WITH_DATE = 32;
@@ -53,6 +54,7 @@ const TaskItemRow = ({ index, style, data }: TaskItemRowProps) => {
 
 export default function InboxPage() {
   const { workspace } = useWorkspace();
+  const { settings } = useTaskSettings();
 
   const { loading, data } = useGetTodoTasksQuery({
     variables: { workspaceId: workspace?.id || "" },
@@ -63,8 +65,16 @@ export default function InboxPage() {
   const [updateTask] = useUpdateTaskMutation();
 
   const tasks: Task[] = useMemo(() => {
-    return data?.tasks || [];
-  }, [data]);
+    const allTasks = data?.tasks || [];
+
+    if (settings.showScheduledTasks) {
+      return allTasks;
+    } else {
+      return allTasks.filter(
+        (task) => !task.schedule_date || task.schedule_date.trim() === ""
+      );
+    }
+  }, [data?.tasks, settings.showScheduledTasks]);
 
   const getItemSize = useCallback(
     (index: number) => {
@@ -119,7 +129,9 @@ export default function InboxPage() {
     <div className="flex flex-col h-full w-full">
       {tasks.length === 0 ? (
         <div className="text-sm text-muted-foreground flex items-center justify-center w-full h-64">
-          No tasks in inbox yet
+          {settings.showScheduledTasks
+            ? "No tasks in inbox yet"
+            : "No unscheduled tasks"}
         </div>
       ) : (
         <div className="flex-1 w-full overflow-hidden">
