@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/popover";
 import { useCreateUntitledPageMutation } from "@/graphql/mutations/__generated__/document.generated";
 import { useCreateTaskMutation } from "@/graphql/mutations/__generated__/task.generated";
-import { useGetAllDocsQuery } from "@/graphql/queries/__generated__/document.generated";
+import { useGetAllDocsLazyQuery } from "@/graphql/queries/__generated__/document.generated";
 import { useUserId } from "@/hooks/use-auth";
 import { useWorkspace } from "@/hooks/use-workspace";
 import { showToast } from "@/lib/toast";
@@ -56,10 +56,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isDocumentPopoverOpen, setIsDocumentPopoverOpen] = useState(false);
 
-  const { data: docsData } = useGetAllDocsQuery({
-    variables: { workspaceId: workspace?.id || "" },
-    skip: !workspace?.id,
-  });
+  const [fetchDocs, { data: docsData }] = useGetAllDocsLazyQuery();
 
   const handleInputChange = (field: keyof TaskData, value: string) => {
     setTaskData((prev) => ({ ...prev, [field]: value }));
@@ -184,6 +181,15 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
     }
   };
 
+  const handleDocumentPopoverOpenChange = (open: boolean) => {
+    setIsDocumentPopoverOpen(open);
+    if (open && workspace?.id && !docsData) {
+      fetchDocs({
+        variables: { workspaceId: workspace.id },
+      });
+    }
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -195,7 +201,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
           <DialogTitle>
             <Popover
               open={isDocumentPopoverOpen}
-              onOpenChange={setIsDocumentPopoverOpen}
+              onOpenChange={handleDocumentPopoverOpenChange}
             >
               <PopoverTrigger asChild>
                 <Button
@@ -206,7 +212,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
                   {taskData.selectedDocumentId
                     ? (() => {
                         const doc = docsData?.blocks.find(
-                          (d) => d.id === taskData.selectedDocumentId
+                          (item) => item.id === taskData.selectedDocumentId
                         );
                         const title = doc?.content?.title || "Untitled";
                         return getPlainText(title);
@@ -244,7 +250,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
                           className="flex items-center gap-2 px-3 py-2 hover:bg-gray-50 cursor-pointer"
                           onClick={() => {
                             handleInputChange("selectedDocumentId", doc.id);
-                            setIsDocumentPopoverOpen(false);
+                            handleDocumentPopoverOpenChange(false);
                             setSearchTerm("");
                           }}
                         >
