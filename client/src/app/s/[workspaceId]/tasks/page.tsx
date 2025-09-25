@@ -1,9 +1,20 @@
 "use client";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { ROUTES } from "@/lib/routes";
+import { useWorkspace } from "@/hooks/use-workspace";
+import { PageLoading } from "@/components/ui/loading";
+
 export default function TasksPage() {
-  return (
-    <div>
-      <h1>Task</h1>
-    </div>
-  );
+  const { workspaceSlug } = useWorkspace();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (workspaceSlug) {
+      router.replace(ROUTES.WORKSPACE_TASKS_INBOX(workspaceSlug));
+    }
+  }, [workspaceSlug, router]);
+
+  return <PageLoading />;
 }

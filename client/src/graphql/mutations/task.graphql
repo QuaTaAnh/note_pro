@@ -1,0 +1,33 @@
+mutation CreateTask($input: tasks_insert_input!) {
+  insert_tasks_one(object: $input) {
+    id
+    block_id
+    user_id
+    status
+    deadline_date
+    schedule_date
+    priority
+    created_at
+    updated_at
+  }
+}
+
+mutation UpdateTask($id: uuid!, $input: tasks_set_input!) {
+  update_tasks_by_pk(pk_columns: { id: $id }, _set: $input) {
+    id
+    block_id
+    user_id
+    status
+    deadline_date
+    schedule_date
+    priority
+    created_at
+    updated_at
+  }
+}
+
+mutation DeleteTask($id: uuid!) {
+  delete_tasks_by_pk(id: $id) {
+    id
+  }
+}

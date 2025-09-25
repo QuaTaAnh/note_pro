@@ -39,6 +39,14 @@ query GetDocumentBlocks($pageId: uuid!) {
     type
     created_at
     updated_at
+    tasks {
+      id
+      status
+      deadline_date
+      schedule_date
+      priority
+      user_id
+    }
   }
 }
 

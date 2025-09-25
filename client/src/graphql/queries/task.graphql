@@ -1,0 +1,73 @@
+query GetTasks($workspaceId: uuid!) {
+  tasks(
+    where: {
+      block: {
+        workspace_id: { _eq: $workspaceId }
+        page_id: { _is_null: true }
+      }
+    }
+    order_by: { created_at: desc }
+  ) {
+    id
+    block_id
+    user_id
+    status
+    deadline_date
+    schedule_date
+    priority
+    created_at
+    updated_at
+    block {
+      id
+      content
+      type
+    }
+  }
+}
+
+query GetTodoTasks($workspaceId: uuid!) {
+  tasks(
+    where: {
+      block: {
+        workspace_id: { _eq: $workspaceId }
+        page_id: { _is_null: true }
+      }
+      status: { _eq: "todo" }
+    }
+    order_by: { created_at: desc }
+  ) {
+    id
+    block_id
+    user_id
+    status
+    deadline_date
+    schedule_date
+    priority
+    created_at
+    updated_at
+    block {
+      id
+      content
+      type
+    }
+  }
+}
+
+query GetTaskById($id: uuid!) {
+  tasks_by_pk(id: $id) {
+    id
+    block_id
+    user_id
+    status
+    deadline_date
+    schedule_date
+    priority
+    created_at
+    updated_at
+    block {
+      id
+      content
+      type
+    }
+  }
+}
