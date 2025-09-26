@@ -14,7 +14,7 @@ export default function EditorPage() {
       left={<LeftSidebar pageId={documentId} />}
       right={<div>rightSidebar</div>}
     >
-      <TiptapBlockEditor pageId={documentId} className="w-full" />
+      <TiptapBlockEditor pageId={documentId} className="w-full " />
     </LayoutEditor>
   );
 }

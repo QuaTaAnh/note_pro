@@ -31,6 +31,7 @@ export const WorkspaceButton = () => {
 
   const { data } = useGetWorkspaceNameQuery({
     variables: { id: workspace?.id || "" },
+    skip: !workspace?.id,
   });
 
   useEffect(() => {
@@ -112,7 +113,7 @@ export const WorkspaceButton = () => {
             className="px-2 py-1 h-auto cursor-pointer justify-start"
           >
             <WorkspaceNameWithTooltip
-              name={data?.workspaces_by_pk?.name ?? ""}
+              name={data?.workspaces_by_pk?.name || ""}
             />
           </Button>
         </DialogTrigger>
@@ -131,7 +132,7 @@ export const WorkspaceButton = () => {
           <DialogFooter>
             <Button
               onClick={handleSave}
-              className="w-full h-9 bg-primary-button hover:bg-primary-buttonHover font-medium"
+              className="w-full h-9 bg-primary-button rounded-xl hover:bg-primary-buttonHover font-medium"
               disabled={
                 !tempName.trim() || tempName === data?.workspaces_by_pk?.name
               }

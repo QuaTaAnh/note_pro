@@ -45,6 +45,13 @@ const config: Config = {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+          document: "hsl(var(--card-document))",
+        },
+        modal: {
+          input: "hsl(var(--modal-input))",
+          foreground: "hsl(var(--modal-foreground))",
+          muted: "hsl(var(--modal-muted))",
+          border: "hsl(var(--modal-border))",
         },
 
       },

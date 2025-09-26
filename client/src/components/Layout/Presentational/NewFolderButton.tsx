@@ -115,7 +115,7 @@ export const NewFolderButton = () => {
               placeholder="Folder Name"
               value={folderData.name}
               onChange={(e) => handleInputChange("name", e.target.value)}
-              className="placeholder:text-modal-muted focus:ring-primary"
+              className="placeholder:text-muted-foreground focus:ring-0"
             />
           </div>
 
@@ -128,7 +128,7 @@ export const NewFolderButton = () => {
               placeholder="Enter folder description..."
               value={folderData.description}
               onChange={(e) => handleInputChange("description", e.target.value)}
-              className="placeholder:text-modal-muted focus:ring-primary resize-none h-20"
+              className="placeholder:text-muted-foreground focus:ring-0 resize-none h-20"
             />
           </div>
 
@@ -154,7 +154,7 @@ export const NewFolderButton = () => {
           <Button
             onClick={handleCreate}
             disabled={!folderData.name.trim()}
-            className="w-full h-9 bg-primary-button hover:bg-primary-buttonHover font-medium"
+            className="w-full h-9 bg-primary-button rounded-xl hover:bg-primary-buttonHover font-medium"
           >
             Create
           </Button>

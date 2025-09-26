@@ -32,7 +32,7 @@ export default function TiptapBlockEditor({ pageId, className = "" }: Props) {
     <PageLoading />
   ) : (
     <div className={`max-w-full mx-auto px-2 md:px-4 lg:px-6 ${className}`}>
-      <div className="mx-auto max-w-full border rounded-xl overflow-hidden">
+      <div className="mx-auto max-w-full border rounded-xl overflow-hidden bg-card-document">
         <div className="h-[calc(100vh-80px)] overflow-y-auto p-8 md:p-10 lg:p-12">
           <DocumentTitleInput
             value={rootBlock.content?.title || ""}

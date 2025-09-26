@@ -33,7 +33,7 @@ const ErrorFallback: React.FC<ErrorFallbackProps> = ({
             <summary className="cursor-pointer text-sm text-muted-foreground">
               Error details (development only)
             </summary>
-            <pre className="mt-2 p-4 bg-muted rounded-md text-xs overflow-auto">
+            <pre className="mt-2 p-4 bg-muted rounded-xl text-xs overflow-auto">
               {error.stack}
             </pre>
           </details>

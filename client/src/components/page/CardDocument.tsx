@@ -64,7 +64,7 @@ const CardDocumentComponent = ({ document }: { document: Document }) => {
   return (
     <Card
       key={document.id}
-      className="group relative cursor-pointer transition min-h-[340px] w-full shadow-sm hover:shadow-lg hover:shadow-black/20 dark:shadow-sm dark:hover:shadow-white/20"
+      className="group relative cursor-pointer transition-all duration-200 min-h-[340px] w-full rounded-2xl shadow-sm hover:shadow-lg dark:hover:shadow-white/10 !bg-card-document border-border/80 hover:border-border dark:border-border dark:hover:border-border"
       onClick={handleClick}
     >
       <CardHeader className="flex flex-col p-4">

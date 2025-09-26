@@ -45,7 +45,6 @@ export function SidebarButton({
   const baseClasses = cn(
     "flex items-center gap-1 rounded-md px-2 py-1.5 text-xs w-full whitespace-nowrap",
     "hover:bg-accent hover:text-accent-foreground",
-    "transition-colors duration-200",
     isActive && "bg-accent text-accent-foreground",
     disabled && "opacity-50 cursor-not-allowed",
     variantClasses[variant],
@@ -66,13 +65,13 @@ export function SidebarButton({
   const right = (
     <>
       {typeof count === "number" && (
-        <span className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground text-xs pr-1">
+        <span className="opacity-0 group-hover:opacity-100 text-muted-foreground text-xs pr-1">
           {count}
         </span>
       )}
       {action && (
         <div
-          className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground"
+          className="opacity-0 group-hover:opacity-100 text-muted-foreground"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -104,13 +103,13 @@ export function SidebarButton({
         {(count !== undefined || action) && (
           <div className="flex items-center">
             {typeof count === "number" && (
-              <span className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground text-xs pr-1">
+              <span className="opacity-0 group-hover:opacity-100 text-muted-foreground text-xs pr-1">
                 {count}
               </span>
             )}
             {action && (
               <div
-                className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground"
+                className="opacity-0 group-hover:opacity-100 text-muted-foreground"
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();

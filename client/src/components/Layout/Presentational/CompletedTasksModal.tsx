@@ -98,7 +98,7 @@ export const CompletedTasksModal = ({
                   deadlineDate={task.deadlineDate}
                   onToggleComplete={handleTaskToggle}
                   variant="compact"
-                  className="hover:bg-gray-50 dark:hover:bg-gray-800 break-words"
+                  className="hover:bg-accent/50 break-words"
                 />
               ))}
             </div>

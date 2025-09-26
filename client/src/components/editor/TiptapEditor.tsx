@@ -233,10 +233,8 @@ export const TiptapEditor = ({
 
   return (
     <div
-      className={`group relative flex items-start gap-2 p-1 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ${
-        isFocused ? "bg-blue-50 dark:bg-blue-900/20" : ""
-      }`}
-      style={{ boxShadow: isFocused ? "0 0 0 2px #3b82f6" : undefined }}
+      className={`group relative flex items-start gap-2 p-1 rounded-md hover:bg-accent/50 transition-colors`}
+      style={{ boxShadow: undefined }}
     >
       <div className="pt-0.5">{dragHandle}</div>
 

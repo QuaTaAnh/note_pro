@@ -51,7 +51,7 @@ export const HighlightPicker = ({
           />
           {currentColor && (
             <div
-              className="absolute -bottom-1 left-0 w-4 h-1 rounded-sm"
+              className="absolute -bottom-1 left-0 w-4 h-1 rounded"
               style={{ backgroundColor: currentColor }}
             />
           )}
@@ -60,11 +60,7 @@ export const HighlightPicker = ({
       </button>
 
       {show && (
-        <div
-          className="absolute top-full left-0 mt-1 bg-white dark:bg-gray-800 
-                  border border-gray-200 dark:border-gray-600 
-                  rounded-md shadow-lg p-2 z-50 whitespace-nowrap"
-        >
+        <div className="absolute top-full left-0 mt-1 bg-popover border border-border rounded-xl shadow-lg p-2 z-50 whitespace-nowrap">
           <div className="flex items-center gap-1">
             {HIGHLIGHT_COLORS.map((colorOption, i) => (
               <button
@@ -72,8 +68,8 @@ export const HighlightPicker = ({
                 onClick={() => onSelect(colorOption.value)}
                 className={`w-6 h-6 rounded border-2 hover:scale-110 transition-transform flex-shrink-0 ${
                   currentColor === colorOption.value
-                    ? "border-blue-500"
-                    : "border-gray-300 dark:border-gray-600"
+                    ? "border-primary"
+                    : "border-border"
                 }`}
                 style={{
                   backgroundColor: colorOption.color,

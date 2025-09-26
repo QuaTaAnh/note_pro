@@ -82,7 +82,7 @@ export const SlashCommand = ({
   return (
     <div
       ref={ref}
-      className="fixed bg-popover text-popover-foreground border border-border rounded-md shadow-lg p-2 z-50 w-80 max-h-96 overflow-hidden"
+      className="fixed bg-popover text-popover-foreground border border-border rounded-xl shadow-lg p-2 z-50 w-80 max-h-96 overflow-hidden"
       style={{ top: position.top, left: position.left }}
       role="listbox"
       aria-activedescendant={COMMANDS[selectedIndex]?.id}
@@ -103,7 +103,7 @@ export const SlashCommand = ({
                 close();
               }}
               className={cn(
-                "w-full flex items-center gap-1 rounded-md px-2 py-1.5 text-xs text-left transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background",
+                "w-full flex items-center gap-1 rounded px-2 py-1.5 text-xs text-left transition-colors duration-200 focus-visible:outline-none focus-visible:ring-0 ring-offset-background",
                 isActive
                   ? "bg-accent text-accent-foreground"
                   : "hover:bg-accent/60 hover:text-accent-foreground"
