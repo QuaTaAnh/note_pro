@@ -11,7 +11,11 @@ object_relationships:
 insert_permissions:
   - role: user
     permission:
-      check: {}
+      check:
+        block:
+          workspace:
+            created_by:
+              _eq: X-Hasura-User-Id
       columns:
         - deadline_date
         - schedule_date
@@ -36,7 +40,11 @@ select_permissions:
         - block_id
         - id
         - user_id
-      filter: {}
+      filter:
+        block:
+          workspace:
+            created_by:
+              _eq: X-Hasura-User-Id
     comment: ""
 update_permissions:
   - role: user
@@ -51,6 +59,14 @@ update_permissions:
         - block_id
         - id
         - user_id
-      filter: {}
-      check: null
+      filter:
+        block:
+          workspace:
+            created_by:
+              _eq: X-Hasura-User-Id
+      check:
+        block:
+          workspace:
+            created_by:
+              _eq: X-Hasura-User-Id
     comment: ""

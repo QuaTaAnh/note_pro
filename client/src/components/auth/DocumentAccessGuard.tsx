@@ -29,6 +29,10 @@ export function DocumentAccessGuard({
   });
 
   const hasAccess = useMemo(() => {
+    if (error) {
+      return false;
+    }
+
     if (!data?.blocks || !workspace?.id || !isAuthenticated) {
       return false;
     }
@@ -42,7 +46,7 @@ export function DocumentAccessGuard({
     }
 
     return rootBlock.workspace_id === workspace.id;
-  }, [data?.blocks, workspace?.id, documentId, isAuthenticated]);
+  }, [data?.blocks, workspace?.id, documentId, isAuthenticated, error]);
 
   // Update access status in context
   useEffect(() => {

@@ -63,7 +63,10 @@ array_relationships:
 insert_permissions:
   - role: user
     permission:
-      check: {}
+      check:
+        workspace:
+          created_by:
+            _eq: X-Hasura-User-Id
       columns:
         - content
         - created_at
@@ -93,7 +96,10 @@ select_permissions:
         - updated_at
         - user_id
         - workspace_id
-      filter: {}
+      filter:
+        workspace:
+          created_by:
+            _eq: X-Hasura-User-Id
       allow_aggregations: true
     comment: ""
 update_permissions:
@@ -112,11 +118,20 @@ update_permissions:
         - updated_at
         - user_id
         - workspace_id
-      filter: {}
-      check: null
+      filter:
+        workspace:
+          created_by:
+            _eq: X-Hasura-User-Id
+      check:
+        workspace:
+          created_by:
+            _eq: X-Hasura-User-Id
     comment: ""
 delete_permissions:
   - role: user
     permission:
-      filter: {}
+      filter:
+        workspace:
+          created_by:
+            _eq: X-Hasura-User-Id
     comment: ""
