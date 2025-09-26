@@ -29,7 +29,10 @@ array_relationships:
 insert_permissions:
   - role: user
     permission:
-      check: {}
+      check:
+        workspace:
+          created_by:
+            _eq: X-Hasura-User-Id
       columns:
         - color
         - description
@@ -54,7 +57,10 @@ select_permissions:
         - parent_id
         - user_id
         - workspace_id
-      filter: {}
+      filter:
+        workspace:
+          created_by:
+            _eq: X-Hasura-User-Id
     comment: ""
 update_permissions:
   - role: user
@@ -69,6 +75,12 @@ update_permissions:
         - parent_id
         - user_id
         - workspace_id
-      filter: {}
-      check: null
+      filter:
+        workspace:
+          created_by:
+            _eq: X-Hasura-User-Id
+      check:
+        workspace:
+          created_by:
+            _eq: X-Hasura-User-Id
     comment: ""

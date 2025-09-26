@@ -28,13 +28,19 @@ select_permissions:
         - created_by
         - id
         - name
-      filter: {}
+      filter:
+        created_by:
+          _eq: X-Hasura-User-Id
     comment: ""
 update_permissions:
   - role: user
     permission:
       columns:
         - name
-      filter: {}
-      check: null
+      filter:
+        created_by:
+          _eq: X-Hasura-User-Id
+      check:
+        created_by:
+          _eq: X-Hasura-User-Id
     comment: ""
