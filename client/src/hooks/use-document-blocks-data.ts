@@ -24,9 +24,23 @@ export function useDocumentBlocksData(pageId: string) {
       .filter(
         (block) => block.page_id === pageId && block.type !== BlockType.PAGE
       )
-      .sort((a, b) => (a.position || 0) - (b.position || 0));
+      .sort((a, b) => {
+        const positionA = a.position || 0;
+        const positionB = b.position || 0;
+        
+        if (positionA !== positionB) {
+          return positionA - positionB;
+        }
+        
+        const isTaskA = a.type === BlockType.TASK;
+        const isTaskB = b.type === BlockType.TASK;
+        
+        if (isTaskA && !isTaskB) return -1;
+        if (!isTaskA && isTaskB) return 1;
+        
+        return 0;
+      });
 
-    // Deduplicate by id to avoid duplicate keys in React
     const seen = new Set<string>();
     const childBlocks = childBlocksRaw.filter((b) => {
       if (seen.has(b.id)) return false;

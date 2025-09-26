@@ -1,6 +1,10 @@
 "use client";
 
+import { TASK_STATUS } from "@/consts";
 import { CustomCode } from "@/lib/customCodeTiptap";
+import { PasteHandler } from "@/lib/pasteHandler";
+import { cn } from "@/lib/utils";
+import { Task } from "@/types/app";
 import { BlockType } from "@/types/types";
 import Highlight from "@tiptap/extension-highlight";
 import Link from "@tiptap/extension-link";
@@ -16,14 +20,10 @@ import {
 import StarterKit from "@tiptap/starter-kit";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { FiTrash } from "react-icons/fi";
-import { Check } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
+import { CheckTask } from "./CheckTask";
 import { EditorBubbleMenu } from "./EditorBubbleMenu";
 import { useSlashCommand } from "./useSlashCommand";
-import { useUpdateTaskMutation } from "@/graphql/mutations/__generated__/task.generated";
-import { TASK_STATUS } from "@/consts";
-import { showToast } from "@/lib/toast";
 
 interface TiptapEditorProps {
   value: string;
@@ -42,11 +42,7 @@ interface TiptapEditorProps {
   onDeleteBlock?: () => void;
   isTitle?: boolean;
   isTask?: boolean;
-  task?: {
-    id: string;
-    status: string;
-    block_id: string;
-  } | null;
+  task?: Task | null;
 }
 
 export const TiptapEditor = ({
@@ -70,31 +66,7 @@ export const TiptapEditor = ({
   dragHandle,
 }: TiptapEditorProps & { dragHandle?: React.ReactNode }) => {
   const [isUpdating, setIsUpdating] = useState(false);
-  const [updateTask] = useUpdateTaskMutation();
-
   const isCompleted = task?.status === TASK_STATUS.COMPLETED;
-
-  const handleToggleComplete = async () => {
-    if (!task || isUpdating) return;
-
-    try {
-      setIsUpdating(true);
-      await updateTask({
-        variables: {
-          id: task.id,
-          input: {
-            status: isCompleted ? TASK_STATUS.TODO : TASK_STATUS.COMPLETED,
-          },
-        },
-      });
-      showToast.success(isCompleted ? "Task reopened" : "Task completed");
-    } catch (error) {
-      console.error("Failed to update task:", error);
-      showToast.error("Failed to update task");
-    } finally {
-      setIsUpdating(false);
-    }
-  };
 
   const editorConfig = useMemo(
     () => ({
@@ -115,6 +87,7 @@ export const TiptapEditor = ({
         Placeholder.configure({
           placeholder,
         }),
+        PasteHandler,
       ],
       content: value,
       immediatelyRender: false,
@@ -157,7 +130,7 @@ export const TiptapEditor = ({
 
     const handleEditorKeyDown = (e: KeyboardEvent) => {
       if (onKeyDown) {
-        onKeyDown(e as any);
+        onKeyDown(e as unknown as React.KeyboardEvent);
       }
       handleKeyDown(editor.view, e);
     };
@@ -233,28 +206,18 @@ export const TiptapEditor = ({
 
   return (
     <div
-      className={`group relative flex items-start gap-2 p-1 rounded-md hover:bg-accent/50 transition-colors`}
+      className={`group relative flex items-start gap-3 px-2 rounded-md hover:bg-accent/30 transition-colors my-1`}
       style={{ boxShadow: undefined }}
     >
-      <div className="pt-0.5">{dragHandle}</div>
+      <div className="pt-1">{dragHandle}</div>
 
-      {isTask && (
-        <div className="flex items-center pt-1">
-          <button
-            onClick={handleToggleComplete}
-            disabled={isUpdating}
-            className={cn(
-              "w-4 h-4 rounded border-2 flex items-center justify-center transition-all duration-200",
-              isCompleted
-                ? "bg-green-500 border-green-500 text-white"
-                : "border-gray-300 hover:border-gray-400",
-              isUpdating && "opacity-50 cursor-not-allowed"
-            )}
-          >
-            {isCompleted && <Check className="w-3 h-3" />}
-          </button>
-        </div>
-      )}
+      <CheckTask
+        task={task as Task}
+        isTask={isTask}
+        isCompleted={isCompleted}
+        isUpdating={isUpdating}
+        setIsUpdating={setIsUpdating}
+      />
 
       <div className="flex-1 min-w-0 overflow-hidden">
         <div className={cn(isTask && isCompleted && "line-through opacity-60")}>
@@ -267,10 +230,10 @@ export const TiptapEditor = ({
         <Button
           variant="ghost"
           size="icon"
-          className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-100 dark:hover:bg-red-900/20 rounded text-gray-400 hover:text-red-600 dark:hover:text-red-400 mt-1"
+          className="w-6 h-6 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-100 dark:hover:bg-red-900/20 rounded text-gray-400 hover:text-red-600 dark:hover:text-red-400 mt-0.5"
           onClick={handleDelete}
         >
-          <FiTrash size={12} />
+          <FiTrash size={14} />
         </Button>
       )}
     </div>
