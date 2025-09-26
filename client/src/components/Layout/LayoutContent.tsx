@@ -3,6 +3,7 @@
 import AuthGuard from "@/components/auth/AuthGuard";
 import { PageLoading } from "@/components/ui/loading";
 import { SidebarProvider, useSidebar } from "@/context/SidebarContext";
+import { useDocumentAccess } from "@/context/DocumentAccessContext";
 import { useBinCraftTitle, useWorkspace, useDocumentTitle } from "@/hooks";
 import { ROUTES } from "@/lib/routes";
 import { usePathname, useRouter } from "next/navigation";
@@ -86,6 +87,7 @@ export default function LayoutContent({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const { hasAccess } = useDocumentAccess();
 
   const isEditorPage = useMemo(
     () => pathname.startsWith("/editor/"),
@@ -97,7 +99,8 @@ export default function LayoutContent({
   });
 
   useBinCraftTitle({
-    dynamicTitle: isEditorPage && hasDocument ? documentTitle : null,
+    dynamicTitle:
+      isEditorPage && hasDocument && hasAccess ? documentTitle : null,
   });
 
   return (

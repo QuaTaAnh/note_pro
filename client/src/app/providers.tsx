@@ -6,6 +6,7 @@ import AuthWrapper from "@/components/auth/AuthWrapper";
 import { NextAuthProvider } from "@/context/AuthContext";
 import { ToastProvider } from "@/context/ToastProvider";
 import { ApolloClientProvider } from "@/context/ApolloClientProvider";
+import { DocumentAccessProvider } from "@/context/DocumentAccessContext";
 import ErrorBoundary from "@/components/ErrorBoundary";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
@@ -20,9 +21,11 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         <ApolloClientProvider>
           <NextAuthProvider>
             <ToastProvider>
-              <AuthWrapper>
-                <LayoutContent>{children}</LayoutContent>
-              </AuthWrapper>
+              <DocumentAccessProvider>
+                <AuthWrapper>
+                  <LayoutContent>{children}</LayoutContent>
+                </AuthWrapper>
+              </DocumentAccessProvider>
             </ToastProvider>
           </NextAuthProvider>
         </ApolloClientProvider>
