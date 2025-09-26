@@ -293,8 +293,7 @@ export const EmojiPicker = ({ show, onSelect, close }: Props) => {
   return (
     <div
       ref={ref}
-      className="fixed bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 
-                 rounded-lg shadow-lg p-3 z-50 max-w-sm"
+      className="fixed bg-popover border border-border rounded-xl shadow-lg p-3 z-50 max-w-sm"
     >
       <div className="flex gap-1 mb-3 overflow-x-auto">
         {Object.entries(EMOJI_CATEGORIES).map(([key, category]) => {
@@ -307,8 +306,8 @@ export const EmojiPicker = ({ show, onSelect, close }: Props) => {
               }
               className={`flex items-center gap-1 px-2 py-1 rounded text-xs whitespace-nowrap transition-colors ${
                 activeCategory === key
-                  ? "bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300"
-                  : "hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300"
+                  ? "bg-accent text-accent-foreground"
+                  : "hover:bg-accent/60 text-muted-foreground hover:text-accent-foreground"
               }`}
             >
               <IconComponent className="w-3 h-3" />
@@ -326,8 +325,7 @@ export const EmojiPicker = ({ show, onSelect, close }: Props) => {
               onSelect(emoji);
               close();
             }}
-            className="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100 
-                       dark:hover:bg-gray-700 text-lg transition-colors"
+            className="w-8 h-8 flex items-center justify-center rounded hover:bg-accent hover:text-accent-foreground text-lg transition-colors"
             title={emoji}
           >
             {emoji}

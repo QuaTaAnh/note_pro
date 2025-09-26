@@ -289,7 +289,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
             placeholder="New Task"
             value={taskData.text}
             onChange={(e) => handleInputChange("text", e.target.value)}
-            className="placeholder:text-modal-muted !border-0 !border-none focus-visible:!border-0 focus-visible:!ring-0 focus-visible:!ring-transparent focus:!border-0 focus:!ring-0 focus:!outline-none shadow-none"
+            className="placeholder:text-muted-foreground !border-0 !border-none focus-visible:!border-0 focus-visible:!ring-0 focus-visible:!ring-transparent focus:!border-0 focus:!ring-0 focus:!outline-none shadow-none"
           />
         </div>
         <div className="flex items-center justify-between gap-3">
@@ -316,7 +316,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
           <Button
             onClick={handleCreate}
             disabled={!taskData.text.trim() || isCreating}
-            className="px-4 h-9 bg-primary-button hover:bg-primary-buttonHover font-medium rounded-md"
+            className="px-4 h-9 bg-primary-button hover:bg-primary-buttonHover font-medium rounded-xl"
           >
             {isCreating ? "Creating..." : "Create"}
           </Button>

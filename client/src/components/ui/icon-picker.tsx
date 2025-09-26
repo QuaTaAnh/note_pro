@@ -118,15 +118,15 @@ export const IconPicker: React.FC<IconPickerProps> = ({
           <Button
             type="button"
             variant="outline"
-            className="w-full justify-start gap-3 p-3 bg-modal-input border-modal-border text-modal-foreground hover:bg-modal-input/80"
+            className="w-full justify-start gap-3 p-3 bg-background border-border text-foreground hover:bg-accent"
           >
             <SelectedIconComponent className="w-4 h-4" />
-            <span className="text-sm text-modal-muted">Choose Icon</span>
+            <span className="text-sm text-muted-foreground">Choose Icon</span>
           </Button>
         </PopoverTrigger>
         <PopoverContent
           container={portalContainer}
-          className="w-100 p-0 border-modal-border z-[100] max-h-80 overflow-y-auto overscroll-contain pointer-events-auto"
+          className="w-100 p-0 border-border z-[100] max-h-80 overflow-y-auto overscroll-contain pointer-events-auto"
           align="start"
           sideOffset={8}
         >
@@ -134,7 +134,7 @@ export const IconPicker: React.FC<IconPickerProps> = ({
             {Object.entries(iconSets).map(([category, icons]) => (
               <div
                 key={category}
-                className="p-1 border-b border-modal-border last:border-b-0"
+                className="p-1 border-b border-border last:border-b-0"
               >
                 <div className="grid grid-cols-6 gap-1">
                   {icons.map((iconItem) => {
