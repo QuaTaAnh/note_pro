@@ -37,6 +37,7 @@ query GetDocumentBlocks($pageId: uuid!) {
     parent_id
     page_id
     type
+    workspace_id
     created_at
     updated_at
     tasks {
