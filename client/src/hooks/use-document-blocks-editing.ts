@@ -32,13 +32,14 @@ export function useDocumentBlocksEditing({
   }, [initialRootBlock]);
 
   const handleAddBlock = useCallback(
-    async (position: number, type: BlockType = BlockType.PARAGRAPH) => {
+    async (position: number, type: BlockType = BlockType.PARAGRAPH, content?: string) => {
+      flush(); 
       const newBlock = await createBlockWithPositionUpdate(pageId, position, type);
       if (newBlock) {
         setFocusedBlock(newBlock.id);
       }
     },
-    [createBlockWithPositionUpdate, pageId]
+    [createBlockWithPositionUpdate, pageId, flush]
   );
 
   const handleUpdateBlockContent = useCallback(
