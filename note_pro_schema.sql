@@ -1,11 +1,10 @@
-
 -- users
 CREATE TABLE users (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   email TEXT UNIQUE NOT NULL,
   name TEXT,
   avatar_url TEXT,
-  created_at TIMESTAMP DEFAULT now()
+  created_at TIMESTAMPTZ DEFAULT now()
 );
 
 -- workspaces
@@ -13,7 +12,7 @@ CREATE TABLE workspaces (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT,
   created_by UUID REFERENCES users(id),
-  created_at TIMESTAMP DEFAULT now()
+  created_at TIMESTAMPTZ DEFAULT now()
 );
 
 -- folders
@@ -23,7 +22,7 @@ CREATE TABLE folders (
   parent_id UUID REFERENCES folders(id) ON DELETE CASCADE,
   user_id UUID REFERENCES users(id) ON DELETE CASCADE,
   workspace_id UUID REFERENCES workspaces(id),
-  created_at TIMESTAMP DEFAULT now()
+  created_at TIMESTAMPTZ DEFAULT now()
 );
 
 -- blocks
@@ -37,8 +36,8 @@ CREATE TABLE blocks (
   content JSONB,
   position INTEGER,
   user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-  created_at TIMESTAMP DEFAULT now(),
-  updated_at TIMESTAMP DEFAULT now(),
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now(),
   is_deleted BOOLEAN DEFAULT FALSE
 );
 
@@ -70,8 +69,8 @@ CREATE TABLE tasks (
   status TEXT DEFAULT 'todo',
   due_date DATE,
   priority TEXT,
-  created_at TIMESTAMP DEFAULT now(),
-  updated_at TIMESTAMP DEFAULT now()
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
 );
 
 -- files
@@ -80,5 +79,5 @@ CREATE TABLE files (
   url TEXT NOT NULL,
   mime_type TEXT,
   uploaded_by UUID REFERENCES users(id),
-  uploaded_at TIMESTAMP DEFAULT now()
+  uploaded_at TIMESTAMPTZ DEFAULT now()
 );

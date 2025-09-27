@@ -1,4 +1,5 @@
 import { format, formatDistanceToNow } from "date-fns";
+import { toZonedTime } from "date-fns-tz";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -31,7 +32,12 @@ export function formatDate(
 ) {
   if (!date || date === "Unknown") return "Unknown";
 
-  const parsed = typeof date === "string" ? new Date(date) : date;
+  let parsed: Date;
+  if (typeof date === "string") {
+    parsed = toZonedTime(new Date(date), "UTC");
+  } else {
+    parsed = toZonedTime(date, "UTC");
+  }
 
   if (options.relative) {
     return formatDistanceToNow(parsed, { addSuffix: true }); 
