@@ -21,10 +21,12 @@ import { showToast } from "@/lib/toast";
 import { TASK_STATUS } from "@/consts";
 import { useCallback } from "react";
 import { useTaskSettings } from "@/context/TaskSettingsProvider";
+import { usePathname } from "next/navigation";
 
 export const Setting = () => {
   const { settings, updateSetting } = useTaskSettings();
   const { workspace } = useWorkspace();
+  const pathname = usePathname();
 
   const [
     getCompletedTasks,
@@ -77,16 +79,20 @@ export const Setting = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56 p-2" align="end">
-          <DropdownMenuCheckboxItem
-            checked={settings.showScheduledTasks}
-            onCheckedChange={(checked) =>
-              updateSetting("showScheduledTasks", checked)
-            }
-            className="flex items-center space-x-2 py-2 text-xs font-bold cursor-pointer"
-          >
-            Show Scheduled Tasks
-          </DropdownMenuCheckboxItem>
-          <DropdownMenuSeparator />
+          {!pathname?.includes("/today") && (
+            <>
+              <DropdownMenuCheckboxItem
+                checked={settings.showScheduledTasks}
+                onCheckedChange={(checked) =>
+                  updateSetting("showScheduledTasks", checked)
+                }
+                className="flex items-center space-x-2 py-2 text-xs font-bold cursor-pointer"
+              >
+                Show Scheduled Tasks
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuSeparator />
+            </>
+          )}
 
           <CompletedTasksModal
             completedTasks={completedTasksForDisplay}
