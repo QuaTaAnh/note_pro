@@ -44,6 +44,7 @@ export default function TiptapBlockEditor({ pageId, className = "" }: Props) {
                   value={rootBlock.content?.title || ""}
                   onChange={handleUpdateTitle}
                   placeholder="Page Title"
+                  editable={canEdit}
                 />
               </div>
               <RequestEditButton />

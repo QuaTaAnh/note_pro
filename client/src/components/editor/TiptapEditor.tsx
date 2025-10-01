@@ -212,9 +212,10 @@ export const TiptapEditor = ({
       className={`group relative flex items-start gap-3 px-2 rounded-md hover:bg-accent/30 transition-colors my-1`}
       style={{ boxShadow: undefined }}
     >
-      <div className="pt-1">{dragHandle}</div>
+      {editable && <div className="pt-1">{dragHandle}</div>}
 
       <CheckTask
+        editable={editable}
         task={task as Task}
         isTask={isTask}
         isCompleted={isCompleted}
@@ -229,7 +230,7 @@ export const TiptapEditor = ({
           {menus}
         </div>
       </div>
-      {onDeleteBlock && (
+      {onDeleteBlock && editable && (
         <Button
           variant="ghost"
           size="icon"
