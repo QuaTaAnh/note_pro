@@ -1,10 +1,9 @@
-import { createElement } from "react";
 import { ROUTES } from "@/lib/routes";
-import {  HexColor } from "@/types/types";
+import { HexColor } from "@/types/types";
+import { createElement } from "react";
 import { AiOutlineCheckCircle } from "react-icons/ai";
-import { FiFileText } from "react-icons/fi";
+import { FiFileText, FiPlus } from "react-icons/fi";
 import { LuBookOpenText, LuCalendarRange } from "react-icons/lu";
-import { FiPlus } from "react-icons/fi";
 
 // Authentication constants
 export const AUTHENTICATED = "authenticated";

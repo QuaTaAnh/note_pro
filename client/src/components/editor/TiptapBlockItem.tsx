@@ -20,6 +20,7 @@ interface Props {
     status: string;
     block_id: string;
   } | null;
+  editable?: boolean;
 }
 
 export const TiptapBlockItem = ({
@@ -35,6 +36,7 @@ export const TiptapBlockItem = ({
   dragHandle,
   blockType,
   task,
+  editable = true,
 }: Props) => {
   return (
     <TiptapEditor
@@ -53,6 +55,7 @@ export const TiptapBlockItem = ({
       dragHandle={dragHandle}
       isTask={blockType === BlockType.TASK}
       task={task}
+      editable={editable}
     />
   );
 };

@@ -19,6 +19,19 @@ export type Scalars = {
   uuid: { input: string; output: string; }
 };
 
+/** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
+export type BooleanComparisonExp = {
+  _eq?: InputMaybe<Scalars['Boolean']['input']>;
+  _gt?: InputMaybe<Scalars['Boolean']['input']>;
+  _gte?: InputMaybe<Scalars['Boolean']['input']>;
+  _in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['Boolean']['input']>;
+  _lte?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<Scalars['Boolean']['input']>;
+  _nin?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+};
+
 /** Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'. */
 export type IntComparisonExp = {
   _eq?: InputMaybe<Scalars['Int']['input']>;
@@ -63,6 +76,292 @@ export type StringComparisonExp = {
   _regex?: InputMaybe<Scalars['String']['input']>;
   /** does the column match the given SQL regular expression */
   _similar?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** columns and relationships of "access_requests" */
+export type AccessRequests = {
+  __typename?: 'access_requests';
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  /** An object relationship */
+  document: Blocks;
+  document_id: Scalars['uuid']['output'];
+  id: Scalars['uuid']['output'];
+  message?: Maybe<Scalars['String']['output']>;
+  /** An object relationship */
+  owner: Users;
+  owner_id: Scalars['uuid']['output'];
+  permission_type?: Maybe<Scalars['String']['output']>;
+  /** An object relationship */
+  requester: Users;
+  requester_id: Scalars['uuid']['output'];
+  status?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** aggregated selection of "access_requests" */
+export type AccessRequestsAggregate = {
+  __typename?: 'access_requests_aggregate';
+  aggregate?: Maybe<AccessRequestsAggregateFields>;
+  nodes: Array<AccessRequests>;
+};
+
+export type AccessRequestsAggregateBoolExp = {
+  count?: InputMaybe<AccessRequestsAggregateBoolExpCount>;
+};
+
+export type AccessRequestsAggregateBoolExpCount = {
+  arguments?: InputMaybe<Array<AccessRequestsSelectColumn>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<AccessRequestsBoolExp>;
+  predicate: IntComparisonExp;
+};
+
+/** aggregate fields of "access_requests" */
+export type AccessRequestsAggregateFields = {
+  __typename?: 'access_requests_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<AccessRequestsMaxFields>;
+  min?: Maybe<AccessRequestsMinFields>;
+};
+
+
+/** aggregate fields of "access_requests" */
+export type AccessRequestsAggregateFieldsCountArgs = {
+  columns?: InputMaybe<Array<AccessRequestsSelectColumn>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** order by aggregate values of table "access_requests" */
+export type AccessRequestsAggregateOrderBy = {
+  count?: InputMaybe<OrderBy>;
+  max?: InputMaybe<AccessRequestsMaxOrderBy>;
+  min?: InputMaybe<AccessRequestsMinOrderBy>;
+};
+
+/** input type for inserting array relation for remote table "access_requests" */
+export type AccessRequestsArrRelInsertInput = {
+  data: Array<AccessRequestsInsertInput>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<AccessRequestsOnConflict>;
+};
+
+/** Boolean expression to filter rows from the table "access_requests". All fields are combined with a logical 'AND'. */
+export type AccessRequestsBoolExp = {
+  _and?: InputMaybe<Array<AccessRequestsBoolExp>>;
+  _not?: InputMaybe<AccessRequestsBoolExp>;
+  _or?: InputMaybe<Array<AccessRequestsBoolExp>>;
+  created_at?: InputMaybe<TimestamptzComparisonExp>;
+  document?: InputMaybe<BlocksBoolExp>;
+  document_id?: InputMaybe<UuidComparisonExp>;
+  id?: InputMaybe<UuidComparisonExp>;
+  message?: InputMaybe<StringComparisonExp>;
+  owner?: InputMaybe<UsersBoolExp>;
+  owner_id?: InputMaybe<UuidComparisonExp>;
+  permission_type?: InputMaybe<StringComparisonExp>;
+  requester?: InputMaybe<UsersBoolExp>;
+  requester_id?: InputMaybe<UuidComparisonExp>;
+  status?: InputMaybe<StringComparisonExp>;
+  updated_at?: InputMaybe<TimestamptzComparisonExp>;
+};
+
+/** unique or primary key constraints on table "access_requests" */
+export enum AccessRequestsConstraint {
+  /** unique or primary key constraint on columns "requester_id", "document_id" */
+  AccessRequestsDocumentIdRequesterIdKey = 'access_requests_document_id_requester_id_key',
+  /** unique or primary key constraint on columns "id" */
+  AccessRequestsPkey = 'access_requests_pkey'
+}
+
+/** input type for inserting data into table "access_requests" */
+export type AccessRequestsInsertInput = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  document?: InputMaybe<BlocksObjRelInsertInput>;
+  document_id?: InputMaybe<Scalars['uuid']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  message?: InputMaybe<Scalars['String']['input']>;
+  owner?: InputMaybe<UsersObjRelInsertInput>;
+  owner_id?: InputMaybe<Scalars['uuid']['input']>;
+  permission_type?: InputMaybe<Scalars['String']['input']>;
+  requester?: InputMaybe<UsersObjRelInsertInput>;
+  requester_id?: InputMaybe<Scalars['uuid']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate max on columns */
+export type AccessRequestsMaxFields = {
+  __typename?: 'access_requests_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  document_id?: Maybe<Scalars['uuid']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  owner_id?: Maybe<Scalars['uuid']['output']>;
+  permission_type?: Maybe<Scalars['String']['output']>;
+  requester_id?: Maybe<Scalars['uuid']['output']>;
+  status?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** order by max() on columns of table "access_requests" */
+export type AccessRequestsMaxOrderBy = {
+  created_at?: InputMaybe<OrderBy>;
+  document_id?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  message?: InputMaybe<OrderBy>;
+  owner_id?: InputMaybe<OrderBy>;
+  permission_type?: InputMaybe<OrderBy>;
+  requester_id?: InputMaybe<OrderBy>;
+  status?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+};
+
+/** aggregate min on columns */
+export type AccessRequestsMinFields = {
+  __typename?: 'access_requests_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  document_id?: Maybe<Scalars['uuid']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  owner_id?: Maybe<Scalars['uuid']['output']>;
+  permission_type?: Maybe<Scalars['String']['output']>;
+  requester_id?: Maybe<Scalars['uuid']['output']>;
+  status?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** order by min() on columns of table "access_requests" */
+export type AccessRequestsMinOrderBy = {
+  created_at?: InputMaybe<OrderBy>;
+  document_id?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  message?: InputMaybe<OrderBy>;
+  owner_id?: InputMaybe<OrderBy>;
+  permission_type?: InputMaybe<OrderBy>;
+  requester_id?: InputMaybe<OrderBy>;
+  status?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+};
+
+/** response of any mutation on the table "access_requests" */
+export type AccessRequestsMutationResponse = {
+  __typename?: 'access_requests_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<AccessRequests>;
+};
+
+/** on_conflict condition type for table "access_requests" */
+export type AccessRequestsOnConflict = {
+  constraint: AccessRequestsConstraint;
+  update_columns?: Array<AccessRequestsUpdateColumn>;
+  where?: InputMaybe<AccessRequestsBoolExp>;
+};
+
+/** Ordering options when selecting data from "access_requests". */
+export type AccessRequestsOrderBy = {
+  created_at?: InputMaybe<OrderBy>;
+  document?: InputMaybe<BlocksOrderBy>;
+  document_id?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  message?: InputMaybe<OrderBy>;
+  owner?: InputMaybe<UsersOrderBy>;
+  owner_id?: InputMaybe<OrderBy>;
+  permission_type?: InputMaybe<OrderBy>;
+  requester?: InputMaybe<UsersOrderBy>;
+  requester_id?: InputMaybe<OrderBy>;
+  status?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+};
+
+/** primary key columns input for table: access_requests */
+export type AccessRequestsPkColumnsInput = {
+  id: Scalars['uuid']['input'];
+};
+
+/** select columns of table "access_requests" */
+export enum AccessRequestsSelectColumn {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  DocumentId = 'document_id',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Message = 'message',
+  /** column name */
+  OwnerId = 'owner_id',
+  /** column name */
+  PermissionType = 'permission_type',
+  /** column name */
+  RequesterId = 'requester_id',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** input type for updating data in table "access_requests" */
+export type AccessRequestsSetInput = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  document_id?: InputMaybe<Scalars['uuid']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  message?: InputMaybe<Scalars['String']['input']>;
+  owner_id?: InputMaybe<Scalars['uuid']['input']>;
+  permission_type?: InputMaybe<Scalars['String']['input']>;
+  requester_id?: InputMaybe<Scalars['uuid']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** Streaming cursor of the table "access_requests" */
+export type AccessRequestsStreamCursorInput = {
+  /** Stream column input with initial value */
+  initial_value: AccessRequestsStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type AccessRequestsStreamCursorValueInput = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  document_id?: InputMaybe<Scalars['uuid']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  message?: InputMaybe<Scalars['String']['input']>;
+  owner_id?: InputMaybe<Scalars['uuid']['input']>;
+  permission_type?: InputMaybe<Scalars['String']['input']>;
+  requester_id?: InputMaybe<Scalars['uuid']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** update columns of table "access_requests" */
+export enum AccessRequestsUpdateColumn {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  DocumentId = 'document_id',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Message = 'message',
+  /** column name */
+  OwnerId = 'owner_id',
+  /** column name */
+  PermissionType = 'permission_type',
+  /** column name */
+  RequesterId = 'requester_id',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+export type AccessRequestsUpdates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<AccessRequestsSetInput>;
+  /** filter the rows which have to be updated */
+  where: AccessRequestsBoolExp;
 };
 
 /** columns and relationships of "block_links" */
@@ -433,6 +732,10 @@ export type BlockTagsUpdates = {
 export type Blocks = {
   __typename?: 'blocks';
   /** An array relationship */
+  access_requests: Array<AccessRequests>;
+  /** An aggregate relationship */
+  access_requests_aggregate: AccessRequestsAggregate;
+  /** An array relationship */
   block_links_from: Array<BlockLinks>;
   /** An aggregate relationship */
   block_links_from_aggregate: BlockLinksAggregate;
@@ -478,6 +781,26 @@ export type Blocks = {
   /** An object relationship */
   workspace?: Maybe<Workspaces>;
   workspace_id?: Maybe<Scalars['uuid']['output']>;
+};
+
+
+/** columns and relationships of "blocks" */
+export type BlocksAccessRequestsArgs = {
+  distinct_on?: InputMaybe<Array<AccessRequestsSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<AccessRequestsOrderBy>>;
+  where?: InputMaybe<AccessRequestsBoolExp>;
+};
+
+
+/** columns and relationships of "blocks" */
+export type BlocksAccessRequestsAggregateArgs = {
+  distinct_on?: InputMaybe<Array<AccessRequestsSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<AccessRequestsOrderBy>>;
+  where?: InputMaybe<AccessRequestsBoolExp>;
 };
 
 
@@ -690,6 +1013,8 @@ export type BlocksBoolExp = {
   _and?: InputMaybe<Array<BlocksBoolExp>>;
   _not?: InputMaybe<BlocksBoolExp>;
   _or?: InputMaybe<Array<BlocksBoolExp>>;
+  access_requests?: InputMaybe<AccessRequestsBoolExp>;
+  access_requests_aggregate?: InputMaybe<AccessRequestsAggregateBoolExp>;
   block_links_from?: InputMaybe<BlockLinksBoolExp>;
   block_links_from_aggregate?: InputMaybe<BlockLinksAggregateBoolExp>;
   block_links_to?: InputMaybe<BlockLinksBoolExp>;
@@ -749,6 +1074,7 @@ export type BlocksIncInput = {
 
 /** input type for inserting data into table "blocks" */
 export type BlocksInsertInput = {
+  access_requests?: InputMaybe<AccessRequestsArrRelInsertInput>;
   block_links_from?: InputMaybe<BlockLinksArrRelInsertInput>;
   block_links_to?: InputMaybe<BlockLinksArrRelInsertInput>;
   block_tags?: InputMaybe<BlockTagsArrRelInsertInput>;
@@ -861,6 +1187,7 @@ export type BlocksOnConflict = {
 
 /** Ordering options when selecting data from "blocks". */
 export type BlocksOrderBy = {
+  access_requests_aggregate?: InputMaybe<AccessRequestsAggregateOrderBy>;
   block_links_from_aggregate?: InputMaybe<BlockLinksAggregateOrderBy>;
   block_links_to_aggregate?: InputMaybe<BlockLinksAggregateOrderBy>;
   block_tags_aggregate?: InputMaybe<BlockTagsAggregateOrderBy>;
@@ -1705,6 +2032,10 @@ export type JsonbComparisonExp = {
 /** mutation root */
 export type MutationRoot = {
   __typename?: 'mutation_root';
+  /** delete data from the table: "access_requests" */
+  delete_access_requests?: Maybe<AccessRequestsMutationResponse>;
+  /** delete single row from the table: "access_requests" */
+  delete_access_requests_by_pk?: Maybe<AccessRequests>;
   /** delete data from the table: "block_links" */
   delete_block_links?: Maybe<BlockLinksMutationResponse>;
   /** delete single row from the table: "block_links" */
@@ -1725,6 +2056,10 @@ export type MutationRoot = {
   delete_folders?: Maybe<FoldersMutationResponse>;
   /** delete single row from the table: "folders" */
   delete_folders_by_pk?: Maybe<Folders>;
+  /** delete data from the table: "notifications" */
+  delete_notifications?: Maybe<NotificationsMutationResponse>;
+  /** delete single row from the table: "notifications" */
+  delete_notifications_by_pk?: Maybe<Notifications>;
   /** delete data from the table: "tags" */
   delete_tags?: Maybe<TagsMutationResponse>;
   /** delete single row from the table: "tags" */
@@ -1741,6 +2076,10 @@ export type MutationRoot = {
   delete_workspaces?: Maybe<WorkspacesMutationResponse>;
   /** delete single row from the table: "workspaces" */
   delete_workspaces_by_pk?: Maybe<Workspaces>;
+  /** insert data into the table: "access_requests" */
+  insert_access_requests?: Maybe<AccessRequestsMutationResponse>;
+  /** insert a single row into the table: "access_requests" */
+  insert_access_requests_one?: Maybe<AccessRequests>;
   /** insert data into the table: "block_links" */
   insert_block_links?: Maybe<BlockLinksMutationResponse>;
   /** insert a single row into the table: "block_links" */
@@ -1761,6 +2100,10 @@ export type MutationRoot = {
   insert_folders?: Maybe<FoldersMutationResponse>;
   /** insert a single row into the table: "folders" */
   insert_folders_one?: Maybe<Folders>;
+  /** insert data into the table: "notifications" */
+  insert_notifications?: Maybe<NotificationsMutationResponse>;
+  /** insert a single row into the table: "notifications" */
+  insert_notifications_one?: Maybe<Notifications>;
   /** insert data into the table: "tags" */
   insert_tags?: Maybe<TagsMutationResponse>;
   /** insert a single row into the table: "tags" */
@@ -1777,6 +2120,12 @@ export type MutationRoot = {
   insert_workspaces?: Maybe<WorkspacesMutationResponse>;
   /** insert a single row into the table: "workspaces" */
   insert_workspaces_one?: Maybe<Workspaces>;
+  /** update data of the table: "access_requests" */
+  update_access_requests?: Maybe<AccessRequestsMutationResponse>;
+  /** update single row of the table: "access_requests" */
+  update_access_requests_by_pk?: Maybe<AccessRequests>;
+  /** update multiples rows of table: "access_requests" */
+  update_access_requests_many?: Maybe<Array<Maybe<AccessRequestsMutationResponse>>>;
   /** update data of the table: "block_links" */
   update_block_links?: Maybe<BlockLinksMutationResponse>;
   /** update single row of the table: "block_links" */
@@ -1807,6 +2156,12 @@ export type MutationRoot = {
   update_folders_by_pk?: Maybe<Folders>;
   /** update multiples rows of table: "folders" */
   update_folders_many?: Maybe<Array<Maybe<FoldersMutationResponse>>>;
+  /** update data of the table: "notifications" */
+  update_notifications?: Maybe<NotificationsMutationResponse>;
+  /** update single row of the table: "notifications" */
+  update_notifications_by_pk?: Maybe<Notifications>;
+  /** update multiples rows of table: "notifications" */
+  update_notifications_many?: Maybe<Array<Maybe<NotificationsMutationResponse>>>;
   /** update data of the table: "tags" */
   update_tags?: Maybe<TagsMutationResponse>;
   /** update single row of the table: "tags" */
@@ -1831,6 +2186,18 @@ export type MutationRoot = {
   update_workspaces_by_pk?: Maybe<Workspaces>;
   /** update multiples rows of table: "workspaces" */
   update_workspaces_many?: Maybe<Array<Maybe<WorkspacesMutationResponse>>>;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteAccessRequestsArgs = {
+  where: AccessRequestsBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteAccessRequestsByPkArgs = {
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -1897,6 +2264,18 @@ export type MutationRootDeleteFoldersByPkArgs = {
 
 
 /** mutation root */
+export type MutationRootDeleteNotificationsArgs = {
+  where: NotificationsBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteNotificationsByPkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+/** mutation root */
 export type MutationRootDeleteTagsArgs = {
   where: TagsBoolExp;
 };
@@ -1941,6 +2320,20 @@ export type MutationRootDeleteWorkspacesArgs = {
 /** mutation root */
 export type MutationRootDeleteWorkspacesByPkArgs = {
   id: Scalars['uuid']['input'];
+};
+
+
+/** mutation root */
+export type MutationRootInsertAccessRequestsArgs = {
+  objects: Array<AccessRequestsInsertInput>;
+  on_conflict?: InputMaybe<AccessRequestsOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertAccessRequestsOneArgs = {
+  object: AccessRequestsInsertInput;
+  on_conflict?: InputMaybe<AccessRequestsOnConflict>;
 };
 
 
@@ -2015,6 +2408,20 @@ export type MutationRootInsertFoldersOneArgs = {
 
 
 /** mutation root */
+export type MutationRootInsertNotificationsArgs = {
+  objects: Array<NotificationsInsertInput>;
+  on_conflict?: InputMaybe<NotificationsOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertNotificationsOneArgs = {
+  object: NotificationsInsertInput;
+  on_conflict?: InputMaybe<NotificationsOnConflict>;
+};
+
+
+/** mutation root */
 export type MutationRootInsertTagsArgs = {
   objects: Array<TagsInsertInput>;
   on_conflict?: InputMaybe<TagsOnConflict>;
@@ -2067,6 +2474,26 @@ export type MutationRootInsertWorkspacesArgs = {
 export type MutationRootInsertWorkspacesOneArgs = {
   object: WorkspacesInsertInput;
   on_conflict?: InputMaybe<WorkspacesOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateAccessRequestsArgs = {
+  _set?: InputMaybe<AccessRequestsSetInput>;
+  where: AccessRequestsBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateAccessRequestsByPkArgs = {
+  _set?: InputMaybe<AccessRequestsSetInput>;
+  pk_columns: AccessRequestsPkColumnsInput;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateAccessRequestsManyArgs = {
+  updates: Array<AccessRequestsUpdates>;
 };
 
 
@@ -2183,6 +2610,36 @@ export type MutationRootUpdateFoldersManyArgs = {
 
 
 /** mutation root */
+export type MutationRootUpdateNotificationsArgs = {
+  _append?: InputMaybe<NotificationsAppendInput>;
+  _delete_at_path?: InputMaybe<NotificationsDeleteAtPathInput>;
+  _delete_elem?: InputMaybe<NotificationsDeleteElemInput>;
+  _delete_key?: InputMaybe<NotificationsDeleteKeyInput>;
+  _prepend?: InputMaybe<NotificationsPrependInput>;
+  _set?: InputMaybe<NotificationsSetInput>;
+  where: NotificationsBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateNotificationsByPkArgs = {
+  _append?: InputMaybe<NotificationsAppendInput>;
+  _delete_at_path?: InputMaybe<NotificationsDeleteAtPathInput>;
+  _delete_elem?: InputMaybe<NotificationsDeleteElemInput>;
+  _delete_key?: InputMaybe<NotificationsDeleteKeyInput>;
+  _prepend?: InputMaybe<NotificationsPrependInput>;
+  _set?: InputMaybe<NotificationsSetInput>;
+  pk_columns: NotificationsPkColumnsInput;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateNotificationsManyArgs = {
+  updates: Array<NotificationsUpdates>;
+};
+
+
+/** mutation root */
 export type MutationRootUpdateTagsArgs = {
   _set?: InputMaybe<TagsSetInput>;
   where: TagsBoolExp;
@@ -2261,6 +2718,254 @@ export type MutationRootUpdateWorkspacesManyArgs = {
   updates: Array<WorkspacesUpdates>;
 };
 
+/** columns and relationships of "notifications" */
+export type Notifications = {
+  __typename?: 'notifications';
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  data?: Maybe<Scalars['jsonb']['output']>;
+  id: Scalars['uuid']['output'];
+  is_read?: Maybe<Scalars['Boolean']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  title: Scalars['String']['output'];
+  type: Scalars['String']['output'];
+  /** An object relationship */
+  user: Users;
+  user_id: Scalars['uuid']['output'];
+};
+
+
+/** columns and relationships of "notifications" */
+export type NotificationsDataArgs = {
+  path?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregated selection of "notifications" */
+export type NotificationsAggregate = {
+  __typename?: 'notifications_aggregate';
+  aggregate?: Maybe<NotificationsAggregateFields>;
+  nodes: Array<Notifications>;
+};
+
+/** aggregate fields of "notifications" */
+export type NotificationsAggregateFields = {
+  __typename?: 'notifications_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<NotificationsMaxFields>;
+  min?: Maybe<NotificationsMinFields>;
+};
+
+
+/** aggregate fields of "notifications" */
+export type NotificationsAggregateFieldsCountArgs = {
+  columns?: InputMaybe<Array<NotificationsSelectColumn>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type NotificationsAppendInput = {
+  data?: InputMaybe<Scalars['jsonb']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "notifications". All fields are combined with a logical 'AND'. */
+export type NotificationsBoolExp = {
+  _and?: InputMaybe<Array<NotificationsBoolExp>>;
+  _not?: InputMaybe<NotificationsBoolExp>;
+  _or?: InputMaybe<Array<NotificationsBoolExp>>;
+  created_at?: InputMaybe<TimestamptzComparisonExp>;
+  data?: InputMaybe<JsonbComparisonExp>;
+  id?: InputMaybe<UuidComparisonExp>;
+  is_read?: InputMaybe<BooleanComparisonExp>;
+  message?: InputMaybe<StringComparisonExp>;
+  title?: InputMaybe<StringComparisonExp>;
+  type?: InputMaybe<StringComparisonExp>;
+  user?: InputMaybe<UsersBoolExp>;
+  user_id?: InputMaybe<UuidComparisonExp>;
+};
+
+/** unique or primary key constraints on table "notifications" */
+export enum NotificationsConstraint {
+  /** unique or primary key constraint on columns "id" */
+  NotificationsPkey = 'notifications_pkey'
+}
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type NotificationsDeleteAtPathInput = {
+  data?: InputMaybe<Array<Scalars['String']['input']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type NotificationsDeleteElemInput = {
+  data?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type NotificationsDeleteKeyInput = {
+  data?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** input type for inserting data into table "notifications" */
+export type NotificationsInsertInput = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  data?: InputMaybe<Scalars['jsonb']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  is_read?: InputMaybe<Scalars['Boolean']['input']>;
+  message?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['String']['input']>;
+  user?: InputMaybe<UsersObjRelInsertInput>;
+  user_id?: InputMaybe<Scalars['uuid']['input']>;
+};
+
+/** aggregate max on columns */
+export type NotificationsMaxFields = {
+  __typename?: 'notifications_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  title?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['String']['output']>;
+  user_id?: Maybe<Scalars['uuid']['output']>;
+};
+
+/** aggregate min on columns */
+export type NotificationsMinFields = {
+  __typename?: 'notifications_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  title?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['String']['output']>;
+  user_id?: Maybe<Scalars['uuid']['output']>;
+};
+
+/** response of any mutation on the table "notifications" */
+export type NotificationsMutationResponse = {
+  __typename?: 'notifications_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Notifications>;
+};
+
+/** on_conflict condition type for table "notifications" */
+export type NotificationsOnConflict = {
+  constraint: NotificationsConstraint;
+  update_columns?: Array<NotificationsUpdateColumn>;
+  where?: InputMaybe<NotificationsBoolExp>;
+};
+
+/** Ordering options when selecting data from "notifications". */
+export type NotificationsOrderBy = {
+  created_at?: InputMaybe<OrderBy>;
+  data?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  is_read?: InputMaybe<OrderBy>;
+  message?: InputMaybe<OrderBy>;
+  title?: InputMaybe<OrderBy>;
+  type?: InputMaybe<OrderBy>;
+  user?: InputMaybe<UsersOrderBy>;
+  user_id?: InputMaybe<OrderBy>;
+};
+
+/** primary key columns input for table: notifications */
+export type NotificationsPkColumnsInput = {
+  id: Scalars['uuid']['input'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type NotificationsPrependInput = {
+  data?: InputMaybe<Scalars['jsonb']['input']>;
+};
+
+/** select columns of table "notifications" */
+export enum NotificationsSelectColumn {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Data = 'data',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  IsRead = 'is_read',
+  /** column name */
+  Message = 'message',
+  /** column name */
+  Title = 'title',
+  /** column name */
+  Type = 'type',
+  /** column name */
+  UserId = 'user_id'
+}
+
+/** input type for updating data in table "notifications" */
+export type NotificationsSetInput = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  data?: InputMaybe<Scalars['jsonb']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  is_read?: InputMaybe<Scalars['Boolean']['input']>;
+  message?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['String']['input']>;
+  user_id?: InputMaybe<Scalars['uuid']['input']>;
+};
+
+/** Streaming cursor of the table "notifications" */
+export type NotificationsStreamCursorInput = {
+  /** Stream column input with initial value */
+  initial_value: NotificationsStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type NotificationsStreamCursorValueInput = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  data?: InputMaybe<Scalars['jsonb']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  is_read?: InputMaybe<Scalars['Boolean']['input']>;
+  message?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['String']['input']>;
+  user_id?: InputMaybe<Scalars['uuid']['input']>;
+};
+
+/** update columns of table "notifications" */
+export enum NotificationsUpdateColumn {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Data = 'data',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  IsRead = 'is_read',
+  /** column name */
+  Message = 'message',
+  /** column name */
+  Title = 'title',
+  /** column name */
+  Type = 'type',
+  /** column name */
+  UserId = 'user_id'
+}
+
+export type NotificationsUpdates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append?: InputMaybe<NotificationsAppendInput>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path?: InputMaybe<NotificationsDeleteAtPathInput>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem?: InputMaybe<NotificationsDeleteElemInput>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key?: InputMaybe<NotificationsDeleteKeyInput>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend?: InputMaybe<NotificationsPrependInput>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<NotificationsSetInput>;
+  /** filter the rows which have to be updated */
+  where: NotificationsBoolExp;
+};
+
 /** column ordering options */
 export enum OrderBy {
   /** in ascending order, nulls last */
@@ -2279,6 +2984,12 @@ export enum OrderBy {
 
 export type QueryRoot = {
   __typename?: 'query_root';
+  /** An array relationship */
+  access_requests: Array<AccessRequests>;
+  /** An aggregate relationship */
+  access_requests_aggregate: AccessRequestsAggregate;
+  /** fetch data from the table: "access_requests" using primary key columns */
+  access_requests_by_pk?: Maybe<AccessRequests>;
   /** fetch data from the table: "block_links" */
   block_links: Array<BlockLinks>;
   /** fetch aggregated fields from the table: "block_links" */
@@ -2309,6 +3020,12 @@ export type QueryRoot = {
   folders_aggregate: FoldersAggregate;
   /** fetch data from the table: "folders" using primary key columns */
   folders_by_pk?: Maybe<Folders>;
+  /** fetch data from the table: "notifications" */
+  notifications: Array<Notifications>;
+  /** fetch aggregated fields from the table: "notifications" */
+  notifications_aggregate: NotificationsAggregate;
+  /** fetch data from the table: "notifications" using primary key columns */
+  notifications_by_pk?: Maybe<Notifications>;
   /** fetch data from the table: "tags" */
   tags: Array<Tags>;
   /** fetch aggregated fields from the table: "tags" */
@@ -2333,6 +3050,29 @@ export type QueryRoot = {
   workspaces_aggregate: WorkspacesAggregate;
   /** fetch data from the table: "workspaces" using primary key columns */
   workspaces_by_pk?: Maybe<Workspaces>;
+};
+
+
+export type QueryRootAccessRequestsArgs = {
+  distinct_on?: InputMaybe<Array<AccessRequestsSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<AccessRequestsOrderBy>>;
+  where?: InputMaybe<AccessRequestsBoolExp>;
+};
+
+
+export type QueryRootAccessRequestsAggregateArgs = {
+  distinct_on?: InputMaybe<Array<AccessRequestsSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<AccessRequestsOrderBy>>;
+  where?: InputMaybe<AccessRequestsBoolExp>;
+};
+
+
+export type QueryRootAccessRequestsByPkArgs = {
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -2453,6 +3193,29 @@ export type QueryRootFoldersByPkArgs = {
 };
 
 
+export type QueryRootNotificationsArgs = {
+  distinct_on?: InputMaybe<Array<NotificationsSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<NotificationsOrderBy>>;
+  where?: InputMaybe<NotificationsBoolExp>;
+};
+
+
+export type QueryRootNotificationsAggregateArgs = {
+  distinct_on?: InputMaybe<Array<NotificationsSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<NotificationsOrderBy>>;
+  where?: InputMaybe<NotificationsBoolExp>;
+};
+
+
+export type QueryRootNotificationsByPkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
 export type QueryRootTagsArgs = {
   distinct_on?: InputMaybe<Array<TagsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -2546,6 +3309,14 @@ export type QueryRootWorkspacesByPkArgs = {
 
 export type SubscriptionRoot = {
   __typename?: 'subscription_root';
+  /** An array relationship */
+  access_requests: Array<AccessRequests>;
+  /** An aggregate relationship */
+  access_requests_aggregate: AccessRequestsAggregate;
+  /** fetch data from the table: "access_requests" using primary key columns */
+  access_requests_by_pk?: Maybe<AccessRequests>;
+  /** fetch data from the table in a streaming manner: "access_requests" */
+  access_requests_stream: Array<AccessRequests>;
   /** fetch data from the table: "block_links" */
   block_links: Array<BlockLinks>;
   /** fetch aggregated fields from the table: "block_links" */
@@ -2586,6 +3357,14 @@ export type SubscriptionRoot = {
   folders_by_pk?: Maybe<Folders>;
   /** fetch data from the table in a streaming manner: "folders" */
   folders_stream: Array<Folders>;
+  /** fetch data from the table: "notifications" */
+  notifications: Array<Notifications>;
+  /** fetch aggregated fields from the table: "notifications" */
+  notifications_aggregate: NotificationsAggregate;
+  /** fetch data from the table: "notifications" using primary key columns */
+  notifications_by_pk?: Maybe<Notifications>;
+  /** fetch data from the table in a streaming manner: "notifications" */
+  notifications_stream: Array<Notifications>;
   /** fetch data from the table: "tags" */
   tags: Array<Tags>;
   /** fetch aggregated fields from the table: "tags" */
@@ -2618,6 +3397,36 @@ export type SubscriptionRoot = {
   workspaces_by_pk?: Maybe<Workspaces>;
   /** fetch data from the table in a streaming manner: "workspaces" */
   workspaces_stream: Array<Workspaces>;
+};
+
+
+export type SubscriptionRootAccessRequestsArgs = {
+  distinct_on?: InputMaybe<Array<AccessRequestsSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<AccessRequestsOrderBy>>;
+  where?: InputMaybe<AccessRequestsBoolExp>;
+};
+
+
+export type SubscriptionRootAccessRequestsAggregateArgs = {
+  distinct_on?: InputMaybe<Array<AccessRequestsSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<AccessRequestsOrderBy>>;
+  where?: InputMaybe<AccessRequestsBoolExp>;
+};
+
+
+export type SubscriptionRootAccessRequestsByPkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type SubscriptionRootAccessRequestsStreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<AccessRequestsStreamCursorInput>>;
+  where?: InputMaybe<AccessRequestsBoolExp>;
 };
 
 
@@ -2770,6 +3579,36 @@ export type SubscriptionRootFoldersStreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<FoldersStreamCursorInput>>;
   where?: InputMaybe<FoldersBoolExp>;
+};
+
+
+export type SubscriptionRootNotificationsArgs = {
+  distinct_on?: InputMaybe<Array<NotificationsSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<NotificationsOrderBy>>;
+  where?: InputMaybe<NotificationsBoolExp>;
+};
+
+
+export type SubscriptionRootNotificationsAggregateArgs = {
+  distinct_on?: InputMaybe<Array<NotificationsSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<NotificationsOrderBy>>;
+  where?: InputMaybe<NotificationsBoolExp>;
+};
+
+
+export type SubscriptionRootNotificationsByPkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type SubscriptionRootNotificationsStreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<NotificationsStreamCursorInput>>;
+  where?: InputMaybe<NotificationsBoolExp>;
 };
 
 

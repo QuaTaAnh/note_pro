@@ -1,12 +1,13 @@
 "use client";
 
 import { useGetDocumentBlocksQuery } from "@/graphql/queries/__generated__/document.generated";
+import { useGetAccessRequestByDocumentQuery } from "@/graphql/queries/__generated__/access-request.generated";
 import { useWorkspace } from "@/hooks/use-workspace";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth, useUserId } from "@/hooks/use-auth";
 import { useMemo, useEffect } from "react";
 import { Loading } from "../ui/loading";
 import { RequestAccessView } from "./RequestAccessView";
-import { BlockType } from "@/types/types";
+import { AccessRequestStatus, BlockType } from "@/types/types";
 import { useDocumentAccess } from "@/context/DocumentAccessContext";
 
 interface DocumentAccessGuardProps {
@@ -19,6 +20,7 @@ export function DocumentAccessGuard({
   children,
 }: DocumentAccessGuardProps) {
   const { isAuthenticated } = useAuth();
+  const userId = useUserId();
   const { workspace } = useWorkspace();
   const { setHasAccess } = useDocumentAccess();
 
@@ -27,6 +29,16 @@ export function DocumentAccessGuard({
     skip: !documentId || !isAuthenticated,
     errorPolicy: "all",
   });
+
+  const { data: accessRequestData, loading: accessRequestLoading } =
+    useGetAccessRequestByDocumentQuery({
+      variables: {
+        documentId: documentId || "",
+        requesterId: userId || "",
+      },
+      skip: !documentId || !userId,
+      pollInterval: 3000,
+    });
 
   const hasAccess = useMemo(() => {
     if (error) {
@@ -45,15 +57,33 @@ export function DocumentAccessGuard({
       return false;
     }
 
-    return rootBlock.workspace_id === workspace.id;
-  }, [data?.blocks, workspace?.id, documentId, isAuthenticated, error]);
+    if (rootBlock.workspace_id === workspace.id) {
+      return true;
+    }
 
-  // Update access status in context
+    const accessRequest = accessRequestData?.access_requests?.[0];
+    if (
+      accessRequest &&
+      accessRequest.status === AccessRequestStatus.APPROVED
+    ) {
+      return true;
+    }
+
+    return false;
+  }, [
+    data?.blocks,
+    workspace?.id,
+    documentId,
+    isAuthenticated,
+    error,
+    accessRequestData,
+  ]);
+
   useEffect(() => {
     setHasAccess(hasAccess);
   }, [hasAccess, setHasAccess]);
 
-  if (loading) {
+  if (loading || accessRequestLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <Loading />
@@ -62,7 +92,7 @@ export function DocumentAccessGuard({
   }
 
   if (!hasAccess || error) {
-    return <RequestAccessView />;
+    return <RequestAccessView documentId={documentId} />;
   }
 
   return <>{children}</>;
