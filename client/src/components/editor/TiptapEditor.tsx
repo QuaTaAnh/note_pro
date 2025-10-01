@@ -43,6 +43,7 @@ interface TiptapEditorProps {
   isTitle?: boolean;
   isTask?: boolean;
   task?: Task | null;
+  editable?: boolean;
 }
 
 export const TiptapEditor = ({
@@ -64,6 +65,7 @@ export const TiptapEditor = ({
   isTask = false,
   task,
   dragHandle,
+  editable = true,
 }: TiptapEditorProps & { dragHandle?: React.ReactNode }) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const isCompleted = task?.status === TASK_STATUS.COMPLETED;
@@ -91,6 +93,7 @@ export const TiptapEditor = ({
       ],
       content: value,
       immediatelyRender: false,
+      editable,
       onFocus,
       onBlur: () => {
         if (onBlur) onBlur();
@@ -101,7 +104,7 @@ export const TiptapEditor = ({
         onChange(content);
       },
     }),
-    [value, onFocus, onBlur, onChange, onSaveImmediate, placeholder]
+    [value, onFocus, onBlur, onChange, onSaveImmediate, placeholder, editable]
   );
 
   const editor = useEditor(editorConfig as UseEditorOptions);

@@ -32,6 +32,7 @@ interface Props {
   onSaveImmediate: () => void;
   onDeleteBlock?: (blockId: string) => void;
   onReorder?: (newBlocks: Block[]) => void;
+  editable?: boolean;
 }
 
 function SortableBlockItem({
@@ -46,6 +47,7 @@ function SortableBlockItem({
   onAddBlock: (position: number, type: BlockType) => void;
   onSaveImmediate: () => void;
   onDeleteBlock?: (blockId: string) => void;
+  editable?: boolean;
 }) {
   const {
     attributes,
@@ -107,6 +109,7 @@ function SortableBlockItem({
         }
         blockType={block.type}
         task={task}
+        editable={props.editable}
         dragHandle={
           <span
             {...attributes}
@@ -132,6 +135,7 @@ export function BlockList({
   onSaveImmediate,
   onDeleteBlock,
   onReorder,
+  editable = true,
 }: Props) {
   const sensors = useSensors(useSensor(PointerSensor));
 
@@ -169,6 +173,7 @@ export function BlockList({
               onAddBlock={onAddBlock}
               onSaveImmediate={onSaveImmediate}
               onDeleteBlock={onDeleteBlock}
+              editable={editable}
             />
           ))}
 

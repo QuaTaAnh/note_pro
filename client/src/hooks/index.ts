@@ -13,3 +13,4 @@ export type { FilteredTasksResult } from './use-filtered-tasks';
 export { useDocumentBlocks } from './use-document-blocks';
 export { useDocumentBlocksData } from './use-document-blocks-data';
 export { useDocumentBlocksEditing } from './use-document-blocks-editing';
+export { useDocumentPermission } from './use-document-permission';

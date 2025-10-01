@@ -1,11 +1,12 @@
 "use client";
 
-import { useDocumentBlocks } from "@/hooks";
+import { useDocumentBlocks, useDocumentPermission } from "@/hooks";
 import { TiptapWrapper } from "./TiptapWrapper";
 import { PageLoading } from "../ui/loading";
 import { DocumentTitleInput } from "@/components/page/DocumentTitleInput";
 import { BlockList } from "@/components/page/BlockList";
 import { Separator } from "../ui/separator";
+import { RequestEditButton } from "@/components/Layout/RequestEditButton";
 
 interface Props {
   pageId: string;
@@ -28,6 +29,8 @@ export default function TiptapBlockEditor({ pageId, className = "" }: Props) {
     handleReorderBlocks,
   } = useDocumentBlocks(pageId);
 
+  const { canEdit } = useDocumentPermission(pageId);
+
   return loading || !rootBlock ? (
     <PageLoading />
   ) : (
@@ -35,11 +38,16 @@ export default function TiptapBlockEditor({ pageId, className = "" }: Props) {
       <div className="mx-auto max-w-full border rounded-xl overflow-hidden bg-card-document">
         <div className="h-[calc(100vh-80px)] overflow-y-auto">
           <div className="mx-auto py-16 px-8 md:px-10 lg:px-12">
-            <DocumentTitleInput
-              value={rootBlock.content?.title || ""}
-              onChange={handleUpdateTitle}
-              placeholder="Page Title"
-            />
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex-1">
+                <DocumentTitleInput
+                  value={rootBlock.content?.title || ""}
+                  onChange={handleUpdateTitle}
+                  placeholder="Page Title"
+                />
+              </div>
+              <RequestEditButton />
+            </div>
             <Separator className="my-6" />
             <TiptapWrapper>
               <BlockList
@@ -52,6 +60,7 @@ export default function TiptapBlockEditor({ pageId, className = "" }: Props) {
                 onSaveImmediate={handleSaveImmediate}
                 onDeleteBlock={handleDeleteBlock}
                 onReorder={handleReorderBlocks}
+                editable={canEdit}
               />
             </TiptapWrapper>
             <div className="h-[50vh]" />

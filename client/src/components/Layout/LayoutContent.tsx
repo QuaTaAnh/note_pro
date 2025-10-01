@@ -18,6 +18,10 @@ function LayoutMain({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
 
+  // Check if it's a global route (not under /s/ or /editor/)
+  const isGlobalRoute =
+    !pathname.startsWith("/s/") && !pathname.startsWith("/editor/");
+
   useEffect(() => {
     if (!loading && workspaceSlug && pathname.startsWith("/s/")) {
       const currentSlug = pathname.split("/")[2];
@@ -27,6 +31,7 @@ function LayoutMain({ children }: { children: React.ReactNode }) {
       }
     }
   }, [loading, workspaceSlug, pathname, router]);
+
   const editorPage = Boolean(pathname.startsWith("/editor/"));
 
   return pathname === ROUTES.LOGIN ? (
@@ -34,7 +39,8 @@ function LayoutMain({ children }: { children: React.ReactNode }) {
   ) : (
     <AuthGuard>
       <div className={`h-screen flex flex-col overflow-hidden`}>
-        {loading ? (
+        {/* Only show loading for workspace-dependent routes */}
+        {loading && !isGlobalRoute ? (
           <PageLoading />
         ) : (
           <>

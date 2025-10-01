@@ -1,6 +1,7 @@
 export const ROUTES = {
   HOME: "/",
   LOGIN: "/login",
+  SHARED_WITH_ME: "/shared-with-me",
   
   // Workspace routes
   WORKSPACE: {

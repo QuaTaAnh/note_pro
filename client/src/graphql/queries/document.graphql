@@ -11,6 +11,7 @@ query GetAllDocs($workspaceId: uuid!) {
     content
     created_at
     updated_at
+    workspace_id
     folder {
       id
       name
@@ -38,6 +39,7 @@ query GetDocumentBlocks($pageId: uuid!) {
     page_id
     type
     workspace_id
+    user_id
     created_at
     updated_at
     tasks {
@@ -61,6 +63,40 @@ query GetDocsCount($workspaceId: uuid!) {
   ) {
     aggregate {
       count
+    }
+  }
+}
+
+query GetSharedWithMeDocs($userId: uuid!) {
+  blocks(
+    where: {
+      type: { _eq: "page" }
+      deleted_at: { _is_null: true }
+      access_requests: {
+        requester_id: { _eq: $userId }
+        status: { _eq: "approved" }
+      }
+    }
+    order_by: { updated_at: desc }
+  ) {
+    id
+    content
+    created_at
+    updated_at
+    user_id
+    workspace_id
+    folder {
+      id
+      name
+    }
+    sub_blocks(order_by: { position: asc }, limit: 10) {
+      id
+      type
+      content
+    }
+    access_requests(where: { requester_id: { _eq: $userId } }) {
+      permission_type
+      status
     }
   }
 }

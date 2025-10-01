@@ -1,0 +1,34 @@
+mutation CreateNotification($input: notifications_insert_input!) {
+  insert_notifications_one(object: $input) {
+    id
+    user_id
+    type
+    title
+    message
+    data
+    is_read
+    created_at
+  }
+}
+
+mutation MarkNotificationAsRead($id: uuid!) {
+  update_notifications_by_pk(pk_columns: { id: $id }, _set: { is_read: true }) {
+    id
+    is_read
+  }
+}
+
+mutation MarkAllNotificationsAsRead($userId: uuid!) {
+  update_notifications(
+    where: { user_id: { _eq: $userId }, is_read: { _eq: false } }
+    _set: { is_read: true }
+  ) {
+    affected_rows
+  }
+}
+
+mutation DeleteNotification($id: uuid!) {
+  delete_notifications_by_pk(id: $id) {
+    id
+  }
+}

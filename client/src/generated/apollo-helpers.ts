@@ -1,4 +1,59 @@
 import { FieldPolicy, FieldReadFunction, TypePolicies, TypePolicy } from '@apollo/client/cache';
+export type access_requestsKeySpecifier = ('created_at' | 'document' | 'document_id' | 'id' | 'message' | 'owner' | 'owner_id' | 'permission_type' | 'requester' | 'requester_id' | 'status' | 'updated_at' | access_requestsKeySpecifier)[];
+export type access_requestsFieldPolicy = {
+	created_at?: FieldPolicy<any> | FieldReadFunction<any>,
+	document?: FieldPolicy<any> | FieldReadFunction<any>,
+	document_id?: FieldPolicy<any> | FieldReadFunction<any>,
+	id?: FieldPolicy<any> | FieldReadFunction<any>,
+	message?: FieldPolicy<any> | FieldReadFunction<any>,
+	owner?: FieldPolicy<any> | FieldReadFunction<any>,
+	owner_id?: FieldPolicy<any> | FieldReadFunction<any>,
+	permission_type?: FieldPolicy<any> | FieldReadFunction<any>,
+	requester?: FieldPolicy<any> | FieldReadFunction<any>,
+	requester_id?: FieldPolicy<any> | FieldReadFunction<any>,
+	status?: FieldPolicy<any> | FieldReadFunction<any>,
+	updated_at?: FieldPolicy<any> | FieldReadFunction<any>
+};
+export type access_requests_aggregateKeySpecifier = ('aggregate' | 'nodes' | access_requests_aggregateKeySpecifier)[];
+export type access_requests_aggregateFieldPolicy = {
+	aggregate?: FieldPolicy<any> | FieldReadFunction<any>,
+	nodes?: FieldPolicy<any> | FieldReadFunction<any>
+};
+export type access_requests_aggregate_fieldsKeySpecifier = ('count' | 'max' | 'min' | access_requests_aggregate_fieldsKeySpecifier)[];
+export type access_requests_aggregate_fieldsFieldPolicy = {
+	count?: FieldPolicy<any> | FieldReadFunction<any>,
+	max?: FieldPolicy<any> | FieldReadFunction<any>,
+	min?: FieldPolicy<any> | FieldReadFunction<any>
+};
+export type access_requests_max_fieldsKeySpecifier = ('created_at' | 'document_id' | 'id' | 'message' | 'owner_id' | 'permission_type' | 'requester_id' | 'status' | 'updated_at' | access_requests_max_fieldsKeySpecifier)[];
+export type access_requests_max_fieldsFieldPolicy = {
+	created_at?: FieldPolicy<any> | FieldReadFunction<any>,
+	document_id?: FieldPolicy<any> | FieldReadFunction<any>,
+	id?: FieldPolicy<any> | FieldReadFunction<any>,
+	message?: FieldPolicy<any> | FieldReadFunction<any>,
+	owner_id?: FieldPolicy<any> | FieldReadFunction<any>,
+	permission_type?: FieldPolicy<any> | FieldReadFunction<any>,
+	requester_id?: FieldPolicy<any> | FieldReadFunction<any>,
+	status?: FieldPolicy<any> | FieldReadFunction<any>,
+	updated_at?: FieldPolicy<any> | FieldReadFunction<any>
+};
+export type access_requests_min_fieldsKeySpecifier = ('created_at' | 'document_id' | 'id' | 'message' | 'owner_id' | 'permission_type' | 'requester_id' | 'status' | 'updated_at' | access_requests_min_fieldsKeySpecifier)[];
+export type access_requests_min_fieldsFieldPolicy = {
+	created_at?: FieldPolicy<any> | FieldReadFunction<any>,
+	document_id?: FieldPolicy<any> | FieldReadFunction<any>,
+	id?: FieldPolicy<any> | FieldReadFunction<any>,
+	message?: FieldPolicy<any> | FieldReadFunction<any>,
+	owner_id?: FieldPolicy<any> | FieldReadFunction<any>,
+	permission_type?: FieldPolicy<any> | FieldReadFunction<any>,
+	requester_id?: FieldPolicy<any> | FieldReadFunction<any>,
+	status?: FieldPolicy<any> | FieldReadFunction<any>,
+	updated_at?: FieldPolicy<any> | FieldReadFunction<any>
+};
+export type access_requests_mutation_responseKeySpecifier = ('affected_rows' | 'returning' | access_requests_mutation_responseKeySpecifier)[];
+export type access_requests_mutation_responseFieldPolicy = {
+	affected_rows?: FieldPolicy<any> | FieldReadFunction<any>,
+	returning?: FieldPolicy<any> | FieldReadFunction<any>
+};
 export type block_linksKeySpecifier = ('from_block' | 'from_block_id' | 'to_block' | 'to_block_id' | block_linksKeySpecifier)[];
 export type block_linksFieldPolicy = {
 	from_block?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -65,8 +120,10 @@ export type block_tags_mutation_responseFieldPolicy = {
 	affected_rows?: FieldPolicy<any> | FieldReadFunction<any>,
 	returning?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type blocksKeySpecifier = ('block_links_from' | 'block_links_from_aggregate' | 'block_links_to' | 'block_links_to_aggregate' | 'block_tags' | 'block_tags_aggregate' | 'children' | 'children_aggregate' | 'content' | 'created_at' | 'deleted_at' | 'folder' | 'folder_id' | 'id' | 'page' | 'page_id' | 'parent_block' | 'parent_id' | 'position' | 'sub_blocks' | 'sub_blocks_aggregate' | 'tasks' | 'tasks_aggregate' | 'type' | 'updated_at' | 'user' | 'user_id' | 'workspace' | 'workspace_id' | blocksKeySpecifier)[];
+export type blocksKeySpecifier = ('access_requests' | 'access_requests_aggregate' | 'block_links_from' | 'block_links_from_aggregate' | 'block_links_to' | 'block_links_to_aggregate' | 'block_tags' | 'block_tags_aggregate' | 'children' | 'children_aggregate' | 'content' | 'created_at' | 'deleted_at' | 'folder' | 'folder_id' | 'id' | 'page' | 'page_id' | 'parent_block' | 'parent_id' | 'position' | 'sub_blocks' | 'sub_blocks_aggregate' | 'tasks' | 'tasks_aggregate' | 'type' | 'updated_at' | 'user' | 'user_id' | 'workspace' | 'workspace_id' | blocksKeySpecifier)[];
 export type blocksFieldPolicy = {
+	access_requests?: FieldPolicy<any> | FieldReadFunction<any>,
+	access_requests_aggregate?: FieldPolicy<any> | FieldReadFunction<any>,
 	block_links_from?: FieldPolicy<any> | FieldReadFunction<any>,
 	block_links_from_aggregate?: FieldPolicy<any> | FieldReadFunction<any>,
 	block_links_to?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -281,8 +338,10 @@ export type folders_mutation_responseFieldPolicy = {
 	affected_rows?: FieldPolicy<any> | FieldReadFunction<any>,
 	returning?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type mutation_rootKeySpecifier = ('delete_block_links' | 'delete_block_links_by_pk' | 'delete_block_tags' | 'delete_block_tags_by_pk' | 'delete_blocks' | 'delete_blocks_by_pk' | 'delete_files' | 'delete_files_by_pk' | 'delete_folders' | 'delete_folders_by_pk' | 'delete_tags' | 'delete_tags_by_pk' | 'delete_tasks' | 'delete_tasks_by_pk' | 'delete_users' | 'delete_users_by_pk' | 'delete_workspaces' | 'delete_workspaces_by_pk' | 'insert_block_links' | 'insert_block_links_one' | 'insert_block_tags' | 'insert_block_tags_one' | 'insert_blocks' | 'insert_blocks_one' | 'insert_files' | 'insert_files_one' | 'insert_folders' | 'insert_folders_one' | 'insert_tags' | 'insert_tags_one' | 'insert_tasks' | 'insert_tasks_one' | 'insert_users' | 'insert_users_one' | 'insert_workspaces' | 'insert_workspaces_one' | 'update_block_links' | 'update_block_links_by_pk' | 'update_block_links_many' | 'update_block_tags' | 'update_block_tags_by_pk' | 'update_block_tags_many' | 'update_blocks' | 'update_blocks_by_pk' | 'update_blocks_many' | 'update_files' | 'update_files_by_pk' | 'update_files_many' | 'update_folders' | 'update_folders_by_pk' | 'update_folders_many' | 'update_tags' | 'update_tags_by_pk' | 'update_tags_many' | 'update_tasks' | 'update_tasks_by_pk' | 'update_tasks_many' | 'update_users' | 'update_users_by_pk' | 'update_users_many' | 'update_workspaces' | 'update_workspaces_by_pk' | 'update_workspaces_many' | mutation_rootKeySpecifier)[];
+export type mutation_rootKeySpecifier = ('delete_access_requests' | 'delete_access_requests_by_pk' | 'delete_block_links' | 'delete_block_links_by_pk' | 'delete_block_tags' | 'delete_block_tags_by_pk' | 'delete_blocks' | 'delete_blocks_by_pk' | 'delete_files' | 'delete_files_by_pk' | 'delete_folders' | 'delete_folders_by_pk' | 'delete_notifications' | 'delete_notifications_by_pk' | 'delete_tags' | 'delete_tags_by_pk' | 'delete_tasks' | 'delete_tasks_by_pk' | 'delete_users' | 'delete_users_by_pk' | 'delete_workspaces' | 'delete_workspaces_by_pk' | 'insert_access_requests' | 'insert_access_requests_one' | 'insert_block_links' | 'insert_block_links_one' | 'insert_block_tags' | 'insert_block_tags_one' | 'insert_blocks' | 'insert_blocks_one' | 'insert_files' | 'insert_files_one' | 'insert_folders' | 'insert_folders_one' | 'insert_notifications' | 'insert_notifications_one' | 'insert_tags' | 'insert_tags_one' | 'insert_tasks' | 'insert_tasks_one' | 'insert_users' | 'insert_users_one' | 'insert_workspaces' | 'insert_workspaces_one' | 'update_access_requests' | 'update_access_requests_by_pk' | 'update_access_requests_many' | 'update_block_links' | 'update_block_links_by_pk' | 'update_block_links_many' | 'update_block_tags' | 'update_block_tags_by_pk' | 'update_block_tags_many' | 'update_blocks' | 'update_blocks_by_pk' | 'update_blocks_many' | 'update_files' | 'update_files_by_pk' | 'update_files_many' | 'update_folders' | 'update_folders_by_pk' | 'update_folders_many' | 'update_notifications' | 'update_notifications_by_pk' | 'update_notifications_many' | 'update_tags' | 'update_tags_by_pk' | 'update_tags_many' | 'update_tasks' | 'update_tasks_by_pk' | 'update_tasks_many' | 'update_users' | 'update_users_by_pk' | 'update_users_many' | 'update_workspaces' | 'update_workspaces_by_pk' | 'update_workspaces_many' | mutation_rootKeySpecifier)[];
 export type mutation_rootFieldPolicy = {
+	delete_access_requests?: FieldPolicy<any> | FieldReadFunction<any>,
+	delete_access_requests_by_pk?: FieldPolicy<any> | FieldReadFunction<any>,
 	delete_block_links?: FieldPolicy<any> | FieldReadFunction<any>,
 	delete_block_links_by_pk?: FieldPolicy<any> | FieldReadFunction<any>,
 	delete_block_tags?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -293,6 +352,8 @@ export type mutation_rootFieldPolicy = {
 	delete_files_by_pk?: FieldPolicy<any> | FieldReadFunction<any>,
 	delete_folders?: FieldPolicy<any> | FieldReadFunction<any>,
 	delete_folders_by_pk?: FieldPolicy<any> | FieldReadFunction<any>,
+	delete_notifications?: FieldPolicy<any> | FieldReadFunction<any>,
+	delete_notifications_by_pk?: FieldPolicy<any> | FieldReadFunction<any>,
 	delete_tags?: FieldPolicy<any> | FieldReadFunction<any>,
 	delete_tags_by_pk?: FieldPolicy<any> | FieldReadFunction<any>,
 	delete_tasks?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -301,6 +362,8 @@ export type mutation_rootFieldPolicy = {
 	delete_users_by_pk?: FieldPolicy<any> | FieldReadFunction<any>,
 	delete_workspaces?: FieldPolicy<any> | FieldReadFunction<any>,
 	delete_workspaces_by_pk?: FieldPolicy<any> | FieldReadFunction<any>,
+	insert_access_requests?: FieldPolicy<any> | FieldReadFunction<any>,
+	insert_access_requests_one?: FieldPolicy<any> | FieldReadFunction<any>,
 	insert_block_links?: FieldPolicy<any> | FieldReadFunction<any>,
 	insert_block_links_one?: FieldPolicy<any> | FieldReadFunction<any>,
 	insert_block_tags?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -311,6 +374,8 @@ export type mutation_rootFieldPolicy = {
 	insert_files_one?: FieldPolicy<any> | FieldReadFunction<any>,
 	insert_folders?: FieldPolicy<any> | FieldReadFunction<any>,
 	insert_folders_one?: FieldPolicy<any> | FieldReadFunction<any>,
+	insert_notifications?: FieldPolicy<any> | FieldReadFunction<any>,
+	insert_notifications_one?: FieldPolicy<any> | FieldReadFunction<any>,
 	insert_tags?: FieldPolicy<any> | FieldReadFunction<any>,
 	insert_tags_one?: FieldPolicy<any> | FieldReadFunction<any>,
 	insert_tasks?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -319,6 +384,9 @@ export type mutation_rootFieldPolicy = {
 	insert_users_one?: FieldPolicy<any> | FieldReadFunction<any>,
 	insert_workspaces?: FieldPolicy<any> | FieldReadFunction<any>,
 	insert_workspaces_one?: FieldPolicy<any> | FieldReadFunction<any>,
+	update_access_requests?: FieldPolicy<any> | FieldReadFunction<any>,
+	update_access_requests_by_pk?: FieldPolicy<any> | FieldReadFunction<any>,
+	update_access_requests_many?: FieldPolicy<any> | FieldReadFunction<any>,
 	update_block_links?: FieldPolicy<any> | FieldReadFunction<any>,
 	update_block_links_by_pk?: FieldPolicy<any> | FieldReadFunction<any>,
 	update_block_links_many?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -334,6 +402,9 @@ export type mutation_rootFieldPolicy = {
 	update_folders?: FieldPolicy<any> | FieldReadFunction<any>,
 	update_folders_by_pk?: FieldPolicy<any> | FieldReadFunction<any>,
 	update_folders_many?: FieldPolicy<any> | FieldReadFunction<any>,
+	update_notifications?: FieldPolicy<any> | FieldReadFunction<any>,
+	update_notifications_by_pk?: FieldPolicy<any> | FieldReadFunction<any>,
+	update_notifications_many?: FieldPolicy<any> | FieldReadFunction<any>,
 	update_tags?: FieldPolicy<any> | FieldReadFunction<any>,
 	update_tags_by_pk?: FieldPolicy<any> | FieldReadFunction<any>,
 	update_tags_many?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -347,8 +418,57 @@ export type mutation_rootFieldPolicy = {
 	update_workspaces_by_pk?: FieldPolicy<any> | FieldReadFunction<any>,
 	update_workspaces_many?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type query_rootKeySpecifier = ('block_links' | 'block_links_aggregate' | 'block_links_by_pk' | 'block_tags' | 'block_tags_aggregate' | 'block_tags_by_pk' | 'blocks' | 'blocks_aggregate' | 'blocks_by_pk' | 'files' | 'files_aggregate' | 'files_by_pk' | 'folders' | 'folders_aggregate' | 'folders_by_pk' | 'tags' | 'tags_aggregate' | 'tags_by_pk' | 'tasks' | 'tasks_aggregate' | 'tasks_by_pk' | 'users' | 'users_aggregate' | 'users_by_pk' | 'workspaces' | 'workspaces_aggregate' | 'workspaces_by_pk' | query_rootKeySpecifier)[];
+export type notificationsKeySpecifier = ('created_at' | 'data' | 'id' | 'is_read' | 'message' | 'title' | 'type' | 'user' | 'user_id' | notificationsKeySpecifier)[];
+export type notificationsFieldPolicy = {
+	created_at?: FieldPolicy<any> | FieldReadFunction<any>,
+	data?: FieldPolicy<any> | FieldReadFunction<any>,
+	id?: FieldPolicy<any> | FieldReadFunction<any>,
+	is_read?: FieldPolicy<any> | FieldReadFunction<any>,
+	message?: FieldPolicy<any> | FieldReadFunction<any>,
+	title?: FieldPolicy<any> | FieldReadFunction<any>,
+	type?: FieldPolicy<any> | FieldReadFunction<any>,
+	user?: FieldPolicy<any> | FieldReadFunction<any>,
+	user_id?: FieldPolicy<any> | FieldReadFunction<any>
+};
+export type notifications_aggregateKeySpecifier = ('aggregate' | 'nodes' | notifications_aggregateKeySpecifier)[];
+export type notifications_aggregateFieldPolicy = {
+	aggregate?: FieldPolicy<any> | FieldReadFunction<any>,
+	nodes?: FieldPolicy<any> | FieldReadFunction<any>
+};
+export type notifications_aggregate_fieldsKeySpecifier = ('count' | 'max' | 'min' | notifications_aggregate_fieldsKeySpecifier)[];
+export type notifications_aggregate_fieldsFieldPolicy = {
+	count?: FieldPolicy<any> | FieldReadFunction<any>,
+	max?: FieldPolicy<any> | FieldReadFunction<any>,
+	min?: FieldPolicy<any> | FieldReadFunction<any>
+};
+export type notifications_max_fieldsKeySpecifier = ('created_at' | 'id' | 'message' | 'title' | 'type' | 'user_id' | notifications_max_fieldsKeySpecifier)[];
+export type notifications_max_fieldsFieldPolicy = {
+	created_at?: FieldPolicy<any> | FieldReadFunction<any>,
+	id?: FieldPolicy<any> | FieldReadFunction<any>,
+	message?: FieldPolicy<any> | FieldReadFunction<any>,
+	title?: FieldPolicy<any> | FieldReadFunction<any>,
+	type?: FieldPolicy<any> | FieldReadFunction<any>,
+	user_id?: FieldPolicy<any> | FieldReadFunction<any>
+};
+export type notifications_min_fieldsKeySpecifier = ('created_at' | 'id' | 'message' | 'title' | 'type' | 'user_id' | notifications_min_fieldsKeySpecifier)[];
+export type notifications_min_fieldsFieldPolicy = {
+	created_at?: FieldPolicy<any> | FieldReadFunction<any>,
+	id?: FieldPolicy<any> | FieldReadFunction<any>,
+	message?: FieldPolicy<any> | FieldReadFunction<any>,
+	title?: FieldPolicy<any> | FieldReadFunction<any>,
+	type?: FieldPolicy<any> | FieldReadFunction<any>,
+	user_id?: FieldPolicy<any> | FieldReadFunction<any>
+};
+export type notifications_mutation_responseKeySpecifier = ('affected_rows' | 'returning' | notifications_mutation_responseKeySpecifier)[];
+export type notifications_mutation_responseFieldPolicy = {
+	affected_rows?: FieldPolicy<any> | FieldReadFunction<any>,
+	returning?: FieldPolicy<any> | FieldReadFunction<any>
+};
+export type query_rootKeySpecifier = ('access_requests' | 'access_requests_aggregate' | 'access_requests_by_pk' | 'block_links' | 'block_links_aggregate' | 'block_links_by_pk' | 'block_tags' | 'block_tags_aggregate' | 'block_tags_by_pk' | 'blocks' | 'blocks_aggregate' | 'blocks_by_pk' | 'files' | 'files_aggregate' | 'files_by_pk' | 'folders' | 'folders_aggregate' | 'folders_by_pk' | 'notifications' | 'notifications_aggregate' | 'notifications_by_pk' | 'tags' | 'tags_aggregate' | 'tags_by_pk' | 'tasks' | 'tasks_aggregate' | 'tasks_by_pk' | 'users' | 'users_aggregate' | 'users_by_pk' | 'workspaces' | 'workspaces_aggregate' | 'workspaces_by_pk' | query_rootKeySpecifier)[];
 export type query_rootFieldPolicy = {
+	access_requests?: FieldPolicy<any> | FieldReadFunction<any>,
+	access_requests_aggregate?: FieldPolicy<any> | FieldReadFunction<any>,
+	access_requests_by_pk?: FieldPolicy<any> | FieldReadFunction<any>,
 	block_links?: FieldPolicy<any> | FieldReadFunction<any>,
 	block_links_aggregate?: FieldPolicy<any> | FieldReadFunction<any>,
 	block_links_by_pk?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -364,6 +484,9 @@ export type query_rootFieldPolicy = {
 	folders?: FieldPolicy<any> | FieldReadFunction<any>,
 	folders_aggregate?: FieldPolicy<any> | FieldReadFunction<any>,
 	folders_by_pk?: FieldPolicy<any> | FieldReadFunction<any>,
+	notifications?: FieldPolicy<any> | FieldReadFunction<any>,
+	notifications_aggregate?: FieldPolicy<any> | FieldReadFunction<any>,
+	notifications_by_pk?: FieldPolicy<any> | FieldReadFunction<any>,
 	tags?: FieldPolicy<any> | FieldReadFunction<any>,
 	tags_aggregate?: FieldPolicy<any> | FieldReadFunction<any>,
 	tags_by_pk?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -377,8 +500,12 @@ export type query_rootFieldPolicy = {
 	workspaces_aggregate?: FieldPolicy<any> | FieldReadFunction<any>,
 	workspaces_by_pk?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type subscription_rootKeySpecifier = ('block_links' | 'block_links_aggregate' | 'block_links_by_pk' | 'block_links_stream' | 'block_tags' | 'block_tags_aggregate' | 'block_tags_by_pk' | 'block_tags_stream' | 'blocks' | 'blocks_aggregate' | 'blocks_by_pk' | 'blocks_stream' | 'files' | 'files_aggregate' | 'files_by_pk' | 'files_stream' | 'folders' | 'folders_aggregate' | 'folders_by_pk' | 'folders_stream' | 'tags' | 'tags_aggregate' | 'tags_by_pk' | 'tags_stream' | 'tasks' | 'tasks_aggregate' | 'tasks_by_pk' | 'tasks_stream' | 'users' | 'users_aggregate' | 'users_by_pk' | 'users_stream' | 'workspaces' | 'workspaces_aggregate' | 'workspaces_by_pk' | 'workspaces_stream' | subscription_rootKeySpecifier)[];
+export type subscription_rootKeySpecifier = ('access_requests' | 'access_requests_aggregate' | 'access_requests_by_pk' | 'access_requests_stream' | 'block_links' | 'block_links_aggregate' | 'block_links_by_pk' | 'block_links_stream' | 'block_tags' | 'block_tags_aggregate' | 'block_tags_by_pk' | 'block_tags_stream' | 'blocks' | 'blocks_aggregate' | 'blocks_by_pk' | 'blocks_stream' | 'files' | 'files_aggregate' | 'files_by_pk' | 'files_stream' | 'folders' | 'folders_aggregate' | 'folders_by_pk' | 'folders_stream' | 'notifications' | 'notifications_aggregate' | 'notifications_by_pk' | 'notifications_stream' | 'tags' | 'tags_aggregate' | 'tags_by_pk' | 'tags_stream' | 'tasks' | 'tasks_aggregate' | 'tasks_by_pk' | 'tasks_stream' | 'users' | 'users_aggregate' | 'users_by_pk' | 'users_stream' | 'workspaces' | 'workspaces_aggregate' | 'workspaces_by_pk' | 'workspaces_stream' | subscription_rootKeySpecifier)[];
 export type subscription_rootFieldPolicy = {
+	access_requests?: FieldPolicy<any> | FieldReadFunction<any>,
+	access_requests_aggregate?: FieldPolicy<any> | FieldReadFunction<any>,
+	access_requests_by_pk?: FieldPolicy<any> | FieldReadFunction<any>,
+	access_requests_stream?: FieldPolicy<any> | FieldReadFunction<any>,
 	block_links?: FieldPolicy<any> | FieldReadFunction<any>,
 	block_links_aggregate?: FieldPolicy<any> | FieldReadFunction<any>,
 	block_links_by_pk?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -399,6 +526,10 @@ export type subscription_rootFieldPolicy = {
 	folders_aggregate?: FieldPolicy<any> | FieldReadFunction<any>,
 	folders_by_pk?: FieldPolicy<any> | FieldReadFunction<any>,
 	folders_stream?: FieldPolicy<any> | FieldReadFunction<any>,
+	notifications?: FieldPolicy<any> | FieldReadFunction<any>,
+	notifications_aggregate?: FieldPolicy<any> | FieldReadFunction<any>,
+	notifications_by_pk?: FieldPolicy<any> | FieldReadFunction<any>,
+	notifications_stream?: FieldPolicy<any> | FieldReadFunction<any>,
 	tags?: FieldPolicy<any> | FieldReadFunction<any>,
 	tags_aggregate?: FieldPolicy<any> | FieldReadFunction<any>,
 	tags_by_pk?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -602,6 +733,30 @@ export type workspaces_mutation_responseFieldPolicy = {
 	returning?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type StrictTypedTypePolicies = {
+	access_requests?: Omit<TypePolicy, "fields" | "keyFields"> & {
+		keyFields?: false | access_requestsKeySpecifier | (() => undefined | access_requestsKeySpecifier),
+		fields?: access_requestsFieldPolicy,
+	},
+	access_requests_aggregate?: Omit<TypePolicy, "fields" | "keyFields"> & {
+		keyFields?: false | access_requests_aggregateKeySpecifier | (() => undefined | access_requests_aggregateKeySpecifier),
+		fields?: access_requests_aggregateFieldPolicy,
+	},
+	access_requests_aggregate_fields?: Omit<TypePolicy, "fields" | "keyFields"> & {
+		keyFields?: false | access_requests_aggregate_fieldsKeySpecifier | (() => undefined | access_requests_aggregate_fieldsKeySpecifier),
+		fields?: access_requests_aggregate_fieldsFieldPolicy,
+	},
+	access_requests_max_fields?: Omit<TypePolicy, "fields" | "keyFields"> & {
+		keyFields?: false | access_requests_max_fieldsKeySpecifier | (() => undefined | access_requests_max_fieldsKeySpecifier),
+		fields?: access_requests_max_fieldsFieldPolicy,
+	},
+	access_requests_min_fields?: Omit<TypePolicy, "fields" | "keyFields"> & {
+		keyFields?: false | access_requests_min_fieldsKeySpecifier | (() => undefined | access_requests_min_fieldsKeySpecifier),
+		fields?: access_requests_min_fieldsFieldPolicy,
+	},
+	access_requests_mutation_response?: Omit<TypePolicy, "fields" | "keyFields"> & {
+		keyFields?: false | access_requests_mutation_responseKeySpecifier | (() => undefined | access_requests_mutation_responseKeySpecifier),
+		fields?: access_requests_mutation_responseFieldPolicy,
+	},
 	block_links?: Omit<TypePolicy, "fields" | "keyFields"> & {
 		keyFields?: false | block_linksKeySpecifier | (() => undefined | block_linksKeySpecifier),
 		fields?: block_linksFieldPolicy,
@@ -757,6 +912,30 @@ export type StrictTypedTypePolicies = {
 	mutation_root?: Omit<TypePolicy, "fields" | "keyFields"> & {
 		keyFields?: false | mutation_rootKeySpecifier | (() => undefined | mutation_rootKeySpecifier),
 		fields?: mutation_rootFieldPolicy,
+	},
+	notifications?: Omit<TypePolicy, "fields" | "keyFields"> & {
+		keyFields?: false | notificationsKeySpecifier | (() => undefined | notificationsKeySpecifier),
+		fields?: notificationsFieldPolicy,
+	},
+	notifications_aggregate?: Omit<TypePolicy, "fields" | "keyFields"> & {
+		keyFields?: false | notifications_aggregateKeySpecifier | (() => undefined | notifications_aggregateKeySpecifier),
+		fields?: notifications_aggregateFieldPolicy,
+	},
+	notifications_aggregate_fields?: Omit<TypePolicy, "fields" | "keyFields"> & {
+		keyFields?: false | notifications_aggregate_fieldsKeySpecifier | (() => undefined | notifications_aggregate_fieldsKeySpecifier),
+		fields?: notifications_aggregate_fieldsFieldPolicy,
+	},
+	notifications_max_fields?: Omit<TypePolicy, "fields" | "keyFields"> & {
+		keyFields?: false | notifications_max_fieldsKeySpecifier | (() => undefined | notifications_max_fieldsKeySpecifier),
+		fields?: notifications_max_fieldsFieldPolicy,
+	},
+	notifications_min_fields?: Omit<TypePolicy, "fields" | "keyFields"> & {
+		keyFields?: false | notifications_min_fieldsKeySpecifier | (() => undefined | notifications_min_fieldsKeySpecifier),
+		fields?: notifications_min_fieldsFieldPolicy,
+	},
+	notifications_mutation_response?: Omit<TypePolicy, "fields" | "keyFields"> & {
+		keyFields?: false | notifications_mutation_responseKeySpecifier | (() => undefined | notifications_mutation_responseKeySpecifier),
+		fields?: notifications_mutation_responseFieldPolicy,
 	},
 	query_root?: Omit<TypePolicy, "fields" | "keyFields"> & {
 		keyFields?: false | query_rootKeySpecifier | (() => undefined | query_rootKeySpecifier),
