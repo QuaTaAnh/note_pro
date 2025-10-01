@@ -24,7 +24,8 @@ export function useDocumentPermission(documentId: string) {
       requesterId: userId || ""
     },
     skip: !documentId || !userId,
-    pollInterval: 3000,
+    // Removed pollInterval - rely on cache shared with DocumentAccessGuard
+    fetchPolicy: "cache-first",
   });
 
   const permission = useMemo(() => {

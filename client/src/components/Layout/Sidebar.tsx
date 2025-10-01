@@ -11,10 +11,8 @@ import { FolderMenu } from "./Presentational/FolderMenu";
 import { usePathname } from "next/navigation";
 import { useGetDocsCountQuery } from "@/graphql/queries/__generated__/document.generated";
 import { NewTaskModal } from "./Presentational/NewTaskModal";
-import { cloneElement } from "react";
 import { ROUTES } from "@/lib/routes";
-import { FiUsers } from "react-icons/fi";
-
+import { IoShareOutline } from "react-icons/io5";
 interface Props {
   workspaceSlug: string;
   workspaceId: string;
@@ -52,7 +50,7 @@ export default function Sidebar({ workspaceSlug, workspaceId }: Props) {
       <div className="flex h-full flex-col p-4 gap-2">
         <NewDocumentButton />
         <SidebarButton
-          icon={<FiUsers className="w-4 h-4" />}
+          icon={<IoShareOutline className="w-4 h-4" />}
           label="Shared with me"
           href={ROUTES.SHARED_WITH_ME}
         />

@@ -6,24 +6,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { FaRegBell } from "react-icons/fa6";
-import {
-  useNotificationSubscriptionSubscription,
-  useGetNotificationsQuery,
-} from "@/graphql/queries/__generated__/notification.generated";
-import {
-  useMarkNotificationAsReadMutation,
-  useMarkAllNotificationsAsReadMutation,
-} from "@/graphql/mutations/__generated__/notification.generated";
 import { useUpdateAccessRequestStatusMutation } from "@/graphql/mutations/__generated__/access-request.generated";
-import { useCreateNotificationMutation } from "@/graphql/mutations/__generated__/notification.generated";
+import {
+  useCreateNotificationMutation,
+  useMarkAllNotificationsAsReadMutation,
+  useMarkNotificationAsReadMutation,
+} from "@/graphql/mutations/__generated__/notification.generated";
+import { useNotificationSubscriptionSubscription } from "@/graphql/queries/__generated__/notification.generated";
 import { useUserId } from "@/hooks/use-auth";
-import { formatDistanceToNow } from "date-fns";
-import { useMemo, useState } from "react";
-import { FiCheck, FiX } from "react-icons/fi";
 import { showToast } from "@/lib/toast";
 import { Notification } from "@/types/app";
 import { AccessRequestStatus } from "@/types/types";
+import { formatDistanceToNow } from "date-fns";
+import { useMemo, useState } from "react";
+import { FaRegBell } from "react-icons/fa6";
+import { FiCheck, FiX } from "react-icons/fi";
 
 export const NotificationButton = () => {
   const userId = useUserId();
@@ -31,28 +28,21 @@ export const NotificationButton = () => {
     null
   );
 
-  const {
-    data: subscriptionData,
-    loading: subLoading,
-    error: subError,
-  } = useNotificationSubscriptionSubscription({
-    variables: { userId: userId || "" },
-    skip: !userId,
-  });
-
-  const { data: queryData, loading: queryLoading } = useGetNotificationsQuery({
-    variables: { userId: userId || "" },
-    skip: !userId || !!subscriptionData,
-    pollInterval: 5000,
-  });
-
-  const notificationsData = subscriptionData || queryData;
-  const loading = subLoading || queryLoading;
-  const error = subError;
+  const { data: notificationsData, loading } =
+    useNotificationSubscriptionSubscription({
+      variables: { userId: userId || "" },
+      skip: !userId,
+      fetchPolicy: "network-only",
+      ignoreResults: false,
+    });
 
   const [markAsRead] = useMarkNotificationAsReadMutation();
   const [markAllAsRead] = useMarkAllNotificationsAsReadMutation();
-  const [updateAccessRequest] = useUpdateAccessRequestStatusMutation();
+  const [updateAccessRequest] = useUpdateAccessRequestStatusMutation({
+    // Refetch access request queries to update UI across all components
+    refetchQueries: ["GetAccessRequestByDocument"],
+    awaitRefetchQueries: true,
+  });
   const [createNotification] = useCreateNotificationMutation();
 
   const notifications = useMemo(
@@ -61,7 +51,9 @@ export const NotificationButton = () => {
   );
 
   const unreadCountValue = useMemo(() => {
-    const count = notifications.filter((n) => !n.is_read).length;
+    const count = notifications.filter(
+      (notification) => !notification.is_read
+    ).length;
     return count;
   }, [notifications]);
 
@@ -221,10 +213,6 @@ export const NotificationButton = () => {
           {loading ? (
             <div className="text-center py-8 text-muted-foreground text-sm">
               Loading notifications...
-            </div>
-          ) : error ? (
-            <div className="text-center py-8 text-red-500 text-sm">
-              Error: {error.message}
             </div>
           ) : notifications.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground text-sm">

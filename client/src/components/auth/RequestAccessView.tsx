@@ -30,14 +30,16 @@ export function RequestAccessView({ documentId }: RequestAccessViewProps) {
     errorPolicy: "all",
   });
 
-  const { data: accessRequestData } = useGetAccessRequestByDocumentQuery({
-    variables: {
-      documentId: documentId || "",
-      requesterId: userId || "",
-    },
-    skip: !documentId || !userId,
-    pollInterval: 3000,
-  });
+  const { data: accessRequestData, refetch } =
+    useGetAccessRequestByDocumentQuery({
+      variables: {
+        documentId: documentId || "",
+        requesterId: userId || "",
+      },
+      skip: !documentId || !userId,
+      // Removed pollInterval - will refetch after request is sent
+      fetchPolicy: "cache-and-network",
+    });
 
   const [createAccessRequest] = useCreateAccessRequestMutation();
   const [createNotification] = useCreateNotificationMutation();
@@ -104,6 +106,8 @@ export function RequestAccessView({ documentId }: RequestAccessViewProps) {
       });
 
       showToast.success("Access request sent successfully");
+      // Refetch to update UI with new request status
+      await refetch();
     } catch (error: any) {
       if (error?.message?.includes("Uniqueness violation")) {
         showToast.error("You have already requested access to this document");

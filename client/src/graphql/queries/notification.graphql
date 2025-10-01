@@ -1,20 +1,3 @@
-query GetNotifications($userId: uuid!, $limit: Int = 20) {
-  notifications(
-    where: { user_id: { _eq: $userId } }
-    order_by: { created_at: desc }
-    limit: $limit
-  ) {
-    id
-    user_id
-    type
-    title
-    message
-    data
-    is_read
-    created_at
-  }
-}
-
 query GetUnreadNotificationsCount($userId: uuid!) {
   notifications_aggregate(
     where: { user_id: { _eq: $userId }, is_read: { _eq: false } }

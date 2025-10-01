@@ -30,6 +30,8 @@ export function RequestEditButton() {
         requesterId: userId || "",
       },
       skip: !documentId || !userId,
+      // Use cache-first since this data is shared with other components
+      fetchPolicy: "cache-first",
     });
 
   // Get document data to get owner

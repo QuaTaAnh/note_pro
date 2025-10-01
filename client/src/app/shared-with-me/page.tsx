@@ -9,6 +9,7 @@ import { useMemo } from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeGrid as Grid } from "react-window";
 import { FiUsers } from "react-icons/fi";
+import { IoShareOutline } from "react-icons/io5";
 
 const MIN_CARD_WIDTH = 240;
 const GUTTER = 40;
@@ -22,7 +23,7 @@ export default function SharedWithMePage() {
     variables: { userId: userId || "" },
     skip: !userId,
     fetchPolicy: "cache-and-network",
-    pollInterval: 5000, // Poll every 5s for real-time updates
+    pollInterval: 5000,
   });
 
   const sharedDocs: Document[] = useMemo(() => data?.blocks || [], [data]);
@@ -34,8 +35,8 @@ export default function SharedWithMePage() {
       <div className="flex flex-col items-start justify-start mx-auto w-full h-full min-h-0 max-w-screen-2xl gap-6">
         <div className="w-full pt-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <FiUsers className="w-6 h-6 text-muted-foreground" />
-            <h1 className="text-xl font-medium">Shared with me</h1>
+            <IoShareOutline className="w-6 h-6 text-muted-foreground" />
+            <h1 className="text-xl font-medium">Shared With Me</h1>
           </div>
           <span className="text-sm text-muted-foreground">
             {sharedDocs.length}{" "}

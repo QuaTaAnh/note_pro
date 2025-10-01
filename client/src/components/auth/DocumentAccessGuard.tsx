@@ -37,7 +37,8 @@ export function DocumentAccessGuard({
         requesterId: userId || "",
       },
       skip: !documentId || !userId,
-      pollInterval: 3000,
+      // Removed pollInterval - rely on cache and refetch when needed
+      fetchPolicy: "cache-and-network",
     });
 
   const hasAccess = useMemo(() => {
