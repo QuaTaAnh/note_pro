@@ -1,6 +1,5 @@
 "use client";
 
-import { useParams } from "next/navigation";
 import { useUserId } from "./use-auth";
 import { useGetAccessRequestByDocumentQuery } from "@/graphql/queries/__generated__/access-request.generated";
 import { useWorkspace } from "./use-workspace";
@@ -45,13 +44,36 @@ export function useDocumentPermission(documentId: string) {
       return { canView: true, canEdit: true, permissionType: PermissionType.OWNER };
     }
 
-    const accessRequest = accessRequestData?.access_requests?.[0];
-    if (accessRequest && accessRequest.status === AccessRequestStatus.APPROVED) {
-      const canEdit = accessRequest.permission_type === PermissionType.WRITE;
+    const accessRequests = accessRequestData?.access_requests || [];
+    
+    // Find approved request
+    const approvedRequest = accessRequests.find(
+      (req) => req.status === AccessRequestStatus.APPROVED
+    );
+    
+    // Check if user has pending write request (upgrading from read)
+    const hasPendingWriteRequest = accessRequests.some(
+      (req) => 
+        req.status === AccessRequestStatus.PENDING && 
+        req.permission_type === PermissionType.WRITE
+    );
+    
+    if (approvedRequest) {
+      const canEdit = approvedRequest.permission_type === PermissionType.WRITE;
       return { 
         canView: true, 
         canEdit, 
-        permissionType: accessRequest.permission_type 
+        permissionType: approvedRequest.permission_type 
+      };
+    }
+    
+    // If user has pending write request, they can view (but not edit)
+    // This means they're upgrading from approved read to write
+    if (hasPendingWriteRequest) {
+      return {
+        canView: true,
+        canEdit: false,
+        permissionType: PermissionType.READ
       };
     }
 

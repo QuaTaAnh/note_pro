@@ -30,8 +30,8 @@ export function RequestEditButton() {
         requesterId: userId || "",
       },
       skip: !documentId || !userId,
-      // Use cache-first since this data is shared with other components
-      fetchPolicy: "cache-first",
+      // Use network-only to always get fresh data
+      fetchPolicy: "network-only",
     });
 
   // Get document data to get owner
@@ -44,15 +44,22 @@ export function RequestEditButton() {
   const [createAccessRequest] = useCreateAccessRequestMutation();
   const [createNotification] = useCreateNotificationMutation();
 
-  const existingRequest = accessRequestData?.access_requests?.[0];
+  const accessRequests = accessRequestData?.access_requests || [];
 
-  // Only show button if user has READ permission but NOT WRITE
-  const hasReadPermission =
-    existingRequest?.status === "approved" &&
-    existingRequest?.permission_type === "read";
-  const hasWriteRequest = existingRequest?.permission_type === "write";
+  // Check if there's an approved read request
+  const hasApprovedReadAccess = accessRequests.some(
+    (req) => req.status === "approved" && req.permission_type === "read"
+  );
 
-  if (!hasReadPermission || hasWriteRequest) {
+  // Check if there's already a write request (pending or approved)
+  const hasWriteRequest = accessRequests.some(
+    (req) =>
+      req.permission_type === "write" &&
+      (req.status === "pending" || req.status === "approved")
+  );
+
+  // Only show button if user has approved READ permission but no pending/approved WRITE request
+  if (!hasApprovedReadAccess || hasWriteRequest) {
     return null;
   }
 
@@ -75,7 +82,7 @@ export function RequestEditButton() {
     try {
       setIsRequesting(true);
 
-      // Create write access request
+      // Create write access request (or update existing read request to write)
       const accessRequestResult = await createAccessRequest({
         variables: {
           input: {
@@ -84,6 +91,8 @@ export function RequestEditButton() {
             owner_id: ownerId,
             message: `${session?.user?.email} requested edit access to "${documentTitle}"`,
             permission_type: "write",
+            status: "pending", // Reset to pending when upgrading from read to write
+            updated_at: new Date().toISOString(),
           },
         },
       });
@@ -113,9 +122,11 @@ export function RequestEditButton() {
 
       showToast.success("Edit access request sent successfully");
       refetch();
-    } catch (error: any) {
+    } catch (error) {
       console.error("Failed to request edit access:", error);
-      if (error?.message?.includes("Uniqueness violation")) {
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      if (errorMessage.includes("Uniqueness violation")) {
         showToast.error("You have already requested edit access");
       } else {
         showToast.error("Failed to send edit access request");

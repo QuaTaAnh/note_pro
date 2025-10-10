@@ -85,7 +85,7 @@ export const GetAccessRequestByDocumentDocument = gql`
     query GetAccessRequestByDocument($documentId: uuid!, $requesterId: uuid!) {
   access_requests(
     where: {document_id: {_eq: $documentId}, requester_id: {_eq: $requesterId}}
-    limit: 1
+    order_by: {created_at: desc}
   ) {
     id
     status

@@ -62,11 +62,21 @@ export function DocumentAccessGuard({
       return true;
     }
 
-    const accessRequest = accessRequestData?.access_requests?.[0];
-    if (
-      accessRequest &&
-      accessRequest.status === AccessRequestStatus.APPROVED
-    ) {
+    const accessRequests = accessRequestData?.access_requests || [];
+
+    // Allow access if user has any approved request OR pending write request
+    // (pending write means they're upgrading from approved read)
+    const hasApprovedAccess = accessRequests.some(
+      (req) => req.status === AccessRequestStatus.APPROVED
+    );
+
+    const hasPendingWriteRequest = accessRequests.some(
+      (req) =>
+        req.status === AccessRequestStatus.PENDING &&
+        req.permission_type === "write"
+    );
+
+    if (hasApprovedAccess || hasPendingWriteRequest) {
       return true;
     }
 

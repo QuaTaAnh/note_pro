@@ -3,14 +3,6 @@ import * as Types from 'generated/graphql';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 const defaultOptions = {"ignoreResults":true} as const;
-export type GetNotificationsQueryVariables = Types.Exact<{
-  userId: Types.Scalars['uuid']['input'];
-  limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
-}>;
-
-
-export type GetNotificationsQuery = { __typename?: 'query_root', notifications: Array<{ __typename?: 'notifications', id: string, user_id: string, type: string, title: string, message?: string | null, data?: any | null, is_read?: boolean | null, created_at?: string | null }> };
-
 export type GetUnreadNotificationsCountQueryVariables = Types.Exact<{
   userId: Types.Scalars['uuid']['input'];
 }>;
@@ -26,58 +18,6 @@ export type NotificationSubscriptionSubscriptionVariables = Types.Exact<{
 export type NotificationSubscriptionSubscription = { __typename?: 'subscription_root', notifications: Array<{ __typename?: 'notifications', id: string, user_id: string, type: string, title: string, message?: string | null, data?: any | null, is_read?: boolean | null, created_at?: string | null }> };
 
 
-export const GetNotificationsDocument = gql`
-    query GetNotifications($userId: uuid!, $limit: Int = 20) {
-  notifications(
-    where: {user_id: {_eq: $userId}}
-    order_by: {created_at: desc}
-    limit: $limit
-  ) {
-    id
-    user_id
-    type
-    title
-    message
-    data
-    is_read
-    created_at
-  }
-}
-    `;
-
-/**
- * __useGetNotificationsQuery__
- *
- * To run a query within a React component, call `useGetNotificationsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetNotificationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetNotificationsQuery({
- *   variables: {
- *      userId: // value for 'userId'
- *      limit: // value for 'limit'
- *   },
- * });
- */
-export function useGetNotificationsQuery(baseOptions: Apollo.QueryHookOptions<GetNotificationsQuery, GetNotificationsQueryVariables> & ({ variables: GetNotificationsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetNotificationsQuery, GetNotificationsQueryVariables>(GetNotificationsDocument, options);
-      }
-export function useGetNotificationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetNotificationsQuery, GetNotificationsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetNotificationsQuery, GetNotificationsQueryVariables>(GetNotificationsDocument, options);
-        }
-export function useGetNotificationsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetNotificationsQuery, GetNotificationsQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetNotificationsQuery, GetNotificationsQueryVariables>(GetNotificationsDocument, options);
-        }
-export type GetNotificationsQueryHookResult = ReturnType<typeof useGetNotificationsQuery>;
-export type GetNotificationsLazyQueryHookResult = ReturnType<typeof useGetNotificationsLazyQuery>;
-export type GetNotificationsSuspenseQueryHookResult = ReturnType<typeof useGetNotificationsSuspenseQuery>;
-export type GetNotificationsQueryResult = Apollo.QueryResult<GetNotificationsQuery, GetNotificationsQueryVariables>;
 export const GetUnreadNotificationsCountDocument = gql`
     query GetUnreadNotificationsCount($userId: uuid!) {
   notifications_aggregate(where: {user_id: {_eq: $userId}, is_read: {_eq: false}}) {

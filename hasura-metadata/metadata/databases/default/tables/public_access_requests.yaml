@@ -42,15 +42,22 @@ insert_permissions:
         - owner_id
         - message
         - permission_type
+        - status
+        - updated_at
 update_permissions:
   - role: user
     permission:
       columns:
         - status
         - updated_at
+        - permission_type
+        - message
       filter:
-        owner_id:
-          _eq: X-Hasura-User-Id
+        _or:
+          - owner_id:
+              _eq: X-Hasura-User-Id
+          - requester_id:
+              _eq: X-Hasura-User-Id
       check: null
 delete_permissions:
   - role: user

@@ -8,7 +8,7 @@ export type CreateAccessRequestMutationVariables = Types.Exact<{
 }>;
 
 
-export type CreateAccessRequestMutation = { __typename?: 'mutation_root', insert_access_requests_one?: { __typename?: 'access_requests', id: string, document_id: string, requester_id: string, owner_id: string, status?: string | null, message?: string | null, created_at?: string | null } | null };
+export type CreateAccessRequestMutation = { __typename?: 'mutation_root', insert_access_requests_one?: { __typename?: 'access_requests', id: string, document_id: string, requester_id: string, owner_id: string, status?: string | null, message?: string | null, permission_type?: string | null, created_at?: string | null } | null };
 
 export type UpdateAccessRequestStatusMutationVariables = Types.Exact<{
   id: Types.Scalars['uuid']['input'];
@@ -22,13 +22,17 @@ export type UpdateAccessRequestStatusMutation = { __typename?: 'mutation_root', 
 
 export const CreateAccessRequestDocument = gql`
     mutation CreateAccessRequest($input: access_requests_insert_input!) {
-  insert_access_requests_one(object: $input) {
+  insert_access_requests_one(
+    object: $input
+    on_conflict: {constraint: access_requests_document_id_requester_id_key, update_columns: [permission_type, status, message, updated_at]}
+  ) {
     id
     document_id
     requester_id
     owner_id
     status
     message
+    permission_type
     created_at
   }
 }
