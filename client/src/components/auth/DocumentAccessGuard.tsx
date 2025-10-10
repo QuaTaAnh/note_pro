@@ -7,7 +7,7 @@ import { useAuth, useUserId } from "@/hooks/use-auth";
 import { useMemo, useEffect } from "react";
 import { Loading } from "../ui/loading";
 import { RequestAccessView } from "./RequestAccessView";
-import { AccessRequestStatus, BlockType } from "@/types/types";
+import { AccessRequestStatus, BlockType, PermissionType } from "@/types/types";
 import { useDocumentAccess } from "@/context/DocumentAccessContext";
 
 interface DocumentAccessGuardProps {
@@ -28,7 +28,19 @@ export function DocumentAccessGuard({
     variables: { pageId: documentId },
     skip: !documentId || !isAuthenticated,
     errorPolicy: "all",
+    fetchPolicy: "cache-first",
   });
+
+  const rootBlock = useMemo(() => {
+    return data?.blocks?.find(
+      (block) => block.id === documentId && block.type === BlockType.PAGE
+    );
+  }, [data?.blocks, documentId]);
+
+  const isOwnDocument = rootBlock?.workspace_id === workspace?.id;
+
+  const shouldFetchAccessRequests =
+    !loading && data?.blocks && rootBlock && !isOwnDocument;
 
   const { data: accessRequestData, loading: accessRequestLoading } =
     useGetAccessRequestByDocumentQuery({
@@ -36,8 +48,7 @@ export function DocumentAccessGuard({
         documentId: documentId || "",
         requesterId: userId || "",
       },
-      skip: !documentId || !userId,
-      // Removed pollInterval - rely on cache and refetch when needed
+      skip: !documentId || !userId || !shouldFetchAccessRequests,
       fetchPolicy: "cache-and-network",
     });
 
@@ -50,22 +61,16 @@ export function DocumentAccessGuard({
       return false;
     }
 
-    const rootBlock = data.blocks.find(
-      (block) => block.id === documentId && block.type === BlockType.PAGE
-    );
-
     if (!rootBlock || !rootBlock.workspace_id) {
       return false;
     }
 
-    if (rootBlock.workspace_id === workspace.id) {
+    if (isOwnDocument) {
       return true;
     }
 
     const accessRequests = accessRequestData?.access_requests || [];
 
-    // Allow access if user has any approved request OR pending write request
-    // (pending write means they're upgrading from approved read)
     const hasApprovedAccess = accessRequests.some(
       (req) => req.status === AccessRequestStatus.APPROVED
     );
@@ -73,7 +78,7 @@ export function DocumentAccessGuard({
     const hasPendingWriteRequest = accessRequests.some(
       (req) =>
         req.status === AccessRequestStatus.PENDING &&
-        req.permission_type === "write"
+        req.permission_type === PermissionType.WRITE
     );
 
     if (hasApprovedAccess || hasPendingWriteRequest) {
@@ -88,6 +93,8 @@ export function DocumentAccessGuard({
     isAuthenticated,
     error,
     accessRequestData,
+    rootBlock,
+    isOwnDocument,
   ]);
 
   useEffect(() => {

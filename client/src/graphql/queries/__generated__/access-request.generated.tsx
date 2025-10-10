@@ -8,7 +8,7 @@ export type GetAccessRequestsQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetAccessRequestsQuery = { __typename?: 'query_root', access_requests: Array<{ __typename?: 'access_requests', id: string, document_id: string, requester_id: string, owner_id: string, status?: string | null, message?: string | null, permission_type?: string | null, created_at?: string | null, updated_at?: string | null, requester: { __typename?: 'users', id: string, email: string, name?: string | null, avatar_url?: string | null }, document: { __typename?: 'blocks', id: string, content?: any | null, type: string } }> };
+export type GetAccessRequestsQuery = { __typename?: 'query_root', access_requests: Array<{ __typename?: 'access_requests', id: string, document_id: string, requester_id: string, owner_id: string, status?: string | null, message?: string | null, permission_type?: string | null, created_at?: string | null, updated_at?: string | null, requester: { __typename?: 'users', id: string, email: string, name?: string | null, avatar_url?: string | null }, document: { __typename?: 'blocks', id: string, type: string } }> };
 
 export type GetAccessRequestByDocumentQueryVariables = Types.Exact<{
   documentId: Types.Scalars['uuid']['input'];
@@ -42,7 +42,6 @@ export const GetAccessRequestsDocument = gql`
     }
     document {
       id
-      content
       type
     }
   }

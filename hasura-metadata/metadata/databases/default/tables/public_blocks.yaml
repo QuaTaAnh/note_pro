@@ -121,6 +121,11 @@ select_permissions:
                   _eq: page
               - deleted_at:
                   _is_null: true
+              - access_requests:
+                  requester_id:
+                    _eq: X-Hasura-User-Id
+                  status:
+                    _eq: approved
       allow_aggregations: true
     comment: ""
 update_permissions:

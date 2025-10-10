@@ -20,7 +20,6 @@ query GetAccessRequests($userId: uuid!) {
     }
     document {
       id
-      content
       type
     }
   }

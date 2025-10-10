@@ -122,6 +122,12 @@ export const TiptapEditor = ({
     }
   }, [editor, isFocused]);
 
+  useEffect(() => {
+    if (editor && editor.isEditable !== editable) {
+      editor.setEditable(editable);
+    }
+  }, [editor, editable]);
+
   const handleDelete = useCallback(() => {
     if (onDeleteBlock) {
       onDeleteBlock();

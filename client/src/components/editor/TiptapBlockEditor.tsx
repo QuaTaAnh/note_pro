@@ -47,7 +47,7 @@ export default function TiptapBlockEditor({ pageId, className = "" }: Props) {
                   editable={canEdit}
                 />
               </div>
-              <RequestEditButton />
+              <RequestEditButton documentId={pageId} />
             </div>
             <Separator className="my-6" />
             <TiptapWrapper>

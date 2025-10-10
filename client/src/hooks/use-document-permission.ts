@@ -11,19 +11,32 @@ export function useDocumentPermission(documentId: string) {
   const userId = useUserId();
   const { workspace } = useWorkspace();
 
-  const { data: documentData } = useGetDocumentBlocksQuery({
+  const { data: documentData, loading: documentLoading } = useGetDocumentBlocksQuery({
     variables: { pageId: documentId },
     skip: !documentId,
     errorPolicy: "all",
   });
+
+  const rootBlock = useMemo(() => {
+    return documentData?.blocks?.find(
+      (block) => block.id === documentId && block.type === BlockType.PAGE
+    );
+  }, [documentData?.blocks, documentId]);
+
+  const isOwnDocument = rootBlock?.workspace_id === workspace?.id;
+
+  const shouldFetchAccessRequests = 
+    !documentLoading && 
+    documentData?.blocks && 
+    rootBlock && 
+    !isOwnDocument;
 
   const { data: accessRequestData } = useGetAccessRequestByDocumentQuery({
     variables: { 
       documentId: documentId || "",
       requesterId: userId || ""
     },
-    skip: !documentId || !userId,
-    // Removed pollInterval - rely on cache shared with DocumentAccessGuard
+    skip: !documentId || !userId || !shouldFetchAccessRequests,
     fetchPolicy: "cache-first",
   });
 
@@ -32,26 +45,20 @@ export function useDocumentPermission(documentId: string) {
       return { canView: false, canEdit: false, permissionType: null };
     }
 
-    const rootBlock = documentData.blocks.find(
-      (block) => block.id === documentId && block.type === BlockType.PAGE
-    );
-
     if (!rootBlock) {
       return { canView: false, canEdit: false, permissionType: null };
     }
 
-    if (rootBlock.workspace_id === workspace?.id) {
+    if (isOwnDocument) {
       return { canView: true, canEdit: true, permissionType: PermissionType.OWNER };
     }
 
     const accessRequests = accessRequestData?.access_requests || [];
     
-    // Find approved request
     const approvedRequest = accessRequests.find(
       (req) => req.status === AccessRequestStatus.APPROVED
     );
     
-    // Check if user has pending write request (upgrading from read)
     const hasPendingWriteRequest = accessRequests.some(
       (req) => 
         req.status === AccessRequestStatus.PENDING && 
@@ -67,8 +74,6 @@ export function useDocumentPermission(documentId: string) {
       };
     }
     
-    // If user has pending write request, they can view (but not edit)
-    // This means they're upgrading from approved read to write
     if (hasPendingWriteRequest) {
       return {
         canView: true,
@@ -78,7 +83,15 @@ export function useDocumentPermission(documentId: string) {
     }
 
     return { canView: false, canEdit: false, permissionType: null };
-  }, [documentData, userId, workspace, accessRequestData, documentId]);
+  }, [
+    documentData,
+    userId,
+    workspace,
+    accessRequestData,
+    documentId,
+    rootBlock,
+    isOwnDocument,
+  ]);
 
   return permission;
 } 

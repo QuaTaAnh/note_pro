@@ -1,28 +1,22 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useUserId } from "@/hooks/use-auth";
-import { useParams } from "next/navigation";
-import { useState } from "react";
-import { FiEdit } from "react-icons/fi";
-import { useGetAccessRequestByDocumentQuery } from "@/graphql/queries/__generated__/access-request.generated";
-import { useGetDocumentBlocksQuery } from "@/graphql/queries/__generated__/document.generated";
 import { useCreateAccessRequestMutation } from "@/graphql/mutations/__generated__/access-request.generated";
 import { useCreateNotificationMutation } from "@/graphql/mutations/__generated__/notification.generated";
-import { useSession } from "next-auth/react";
+import { useGetAccessRequestByDocumentQuery } from "@/graphql/queries/__generated__/access-request.generated";
+import { useGetDocumentBlocksQuery } from "@/graphql/queries/__generated__/document.generated";
+import { useUserId } from "@/hooks/use-auth";
 import { showToast } from "@/lib/toast";
-import { BlockType } from "@/types/types";
+import { AccessRequestStatus, BlockType, PermissionType } from "@/types/types";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
+import { FiEdit } from "react-icons/fi";
 
-export function RequestEditButton() {
+export function RequestEditButton({ documentId }: { documentId: string }) {
   const userId = useUserId();
   const { data: session } = useSession();
-  const params = useParams();
   const [isRequesting, setIsRequesting] = useState(false);
 
-  // Get document ID from URL params
-  const documentId = params.params?.[params.params.length - 1] as string;
-
-  // Check current access request
   const { data: accessRequestData, refetch } =
     useGetAccessRequestByDocumentQuery({
       variables: {
@@ -30,11 +24,9 @@ export function RequestEditButton() {
         requesterId: userId || "",
       },
       skip: !documentId || !userId,
-      // Use network-only to always get fresh data
       fetchPolicy: "network-only",
     });
 
-  // Get document data to get owner
   const { data: documentData } = useGetDocumentBlocksQuery({
     variables: { pageId: documentId || "" },
     skip: !documentId,
@@ -46,19 +38,19 @@ export function RequestEditButton() {
 
   const accessRequests = accessRequestData?.access_requests || [];
 
-  // Check if there's an approved read request
   const hasApprovedReadAccess = accessRequests.some(
-    (req) => req.status === "approved" && req.permission_type === "read"
+    (req) =>
+      req.status === AccessRequestStatus.APPROVED &&
+      req.permission_type === PermissionType.READ
   );
 
-  // Check if there's already a write request (pending or approved)
   const hasWriteRequest = accessRequests.some(
     (req) =>
-      req.permission_type === "write" &&
-      (req.status === "pending" || req.status === "approved")
+      req.permission_type === PermissionType.WRITE &&
+      (req.status === AccessRequestStatus.PENDING ||
+        req.status === AccessRequestStatus.APPROVED)
   );
 
-  // Only show button if user has approved READ permission but no pending/approved WRITE request
   if (!hasApprovedReadAccess || hasWriteRequest) {
     return null;
   }
@@ -76,22 +68,19 @@ export function RequestEditButton() {
     }
 
     const ownerId = rootBlock.user_id;
-    const documentTitle =
-      (rootBlock.content as { title?: string })?.title || "Untitled";
 
     try {
       setIsRequesting(true);
 
-      // Create write access request (or update existing read request to write)
       const accessRequestResult = await createAccessRequest({
         variables: {
           input: {
             document_id: documentId,
             requester_id: userId,
             owner_id: ownerId,
-            message: `${session?.user?.email} requested edit access to "${documentTitle}"`,
-            permission_type: "write",
-            status: "pending", // Reset to pending when upgrading from read to write
+            message: `${session?.user?.email} requested edit access`,
+            permission_type: PermissionType.WRITE,
+            status: AccessRequestStatus.PENDING,
             updated_at: new Date().toISOString(),
           },
         },
@@ -100,21 +89,19 @@ export function RequestEditButton() {
       const requestId =
         accessRequestResult.data?.insert_access_requests_one?.id;
 
-      // Create notification for owner
       await createNotification({
         variables: {
           input: {
             user_id: ownerId,
             type: "access_request",
             title: "Edit access request",
-            message: `${session?.user?.email} requested edit access to "${documentTitle}"`,
+            message: `${session?.user?.email} requested edit access`,
             data: {
               request_id: requestId,
               document_id: documentId,
               requester_id: userId,
               requester_email: session?.user?.email,
-              document_title: documentTitle,
-              permission_type: "write",
+              permission_type: PermissionType.WRITE,
             },
           },
         },
