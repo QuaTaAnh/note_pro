@@ -32,32 +32,36 @@ const CardDocumentComponent = ({ document }: { document: Document }) => {
 
   const plainTitle = getPlainText(document.content?.title) || "Untitled";
 
+  // Use workspace_id from document first (important for shared documents)
+  // Fallback to workspace from context if not available
+  const workspaceId = document.workspace_id || workspace?.id;
+
   useEffect(() => {
-    if (!workspace?.id) return;
+    if (!workspaceId) return;
     const href = document.folder?.id
       ? ROUTES.WORKSPACE_DOCUMENT_FOLDER(
-          workspace.id,
+          workspaceId,
           document.folder.id,
           document.id
         )
-      : ROUTES.WORKSPACE_DOCUMENT(workspace.id, document.id);
+      : ROUTES.WORKSPACE_DOCUMENT(workspaceId, document.id);
     router.prefetch(href);
-  }, [workspace?.id, document.folder?.id, document.id, router]);
+  }, [workspaceId, document.folder?.id, document.id, router]);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    if (!workspace?.id) return;
+    if (!workspaceId) return;
 
     if (document.folder?.id) {
       router.push(
         ROUTES.WORKSPACE_DOCUMENT_FOLDER(
-          workspace.id,
+          workspaceId,
           document.folder.id,
           document.id
         )
       );
     } else {
-      router.push(ROUTES.WORKSPACE_DOCUMENT(workspace.id, document.id));
+      router.push(ROUTES.WORKSPACE_DOCUMENT(workspaceId, document.id));
     }
   };
 

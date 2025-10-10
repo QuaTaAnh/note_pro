@@ -18,6 +18,15 @@ object_relationships:
     using:
       foreign_key_constraint_on: workspace_id
 array_relationships:
+  - name: access_requests
+    using:
+      manual_configuration:
+        column_mapping:
+          id: document_id
+        insertion_order: null
+        remote_table:
+          name: access_requests
+          schema: public
   - name: block_links_from
     using:
       foreign_key_constraint_on:
@@ -97,9 +106,26 @@ select_permissions:
         - user_id
         - workspace_id
       filter:
-        workspace:
-          created_by:
-            _eq: X-Hasura-User-Id
+        _or:
+          - workspace:
+              created_by:
+                _eq: X-Hasura-User-Id
+          - page:
+              access_requests:
+                requester_id:
+                  _eq: X-Hasura-User-Id
+                status:
+                  _eq: approved
+          - _and:
+              - type:
+                  _eq: page
+              - deleted_at:
+                  _is_null: true
+              - access_requests:
+                  requester_id:
+                    _eq: X-Hasura-User-Id
+                  status:
+                    _eq: approved
       allow_aggregations: true
     comment: ""
 update_permissions:
@@ -119,13 +145,31 @@ update_permissions:
         - user_id
         - workspace_id
       filter:
-        workspace:
-          created_by:
-            _eq: X-Hasura-User-Id
+        _or:
+          - workspace:
+              created_by:
+                _eq: X-Hasura-User-Id
+          - page:
+              access_requests:
+                requester_id:
+                  _eq: X-Hasura-User-Id
+                status:
+                  _eq: approved
+                permission_type:
+                  _eq: write
       check:
-        workspace:
-          created_by:
-            _eq: X-Hasura-User-Id
+        _or:
+          - workspace:
+              created_by:
+                _eq: X-Hasura-User-Id
+          - page:
+              access_requests:
+                requester_id:
+                  _eq: X-Hasura-User-Id
+                status:
+                  _eq: approved
+                permission_type:
+                  _eq: write
     comment: ""
 delete_permissions:
   - role: user

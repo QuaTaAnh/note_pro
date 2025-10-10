@@ -43,6 +43,7 @@ interface TiptapEditorProps {
   isTitle?: boolean;
   isTask?: boolean;
   task?: Task | null;
+  editable?: boolean;
 }
 
 export const TiptapEditor = ({
@@ -64,6 +65,7 @@ export const TiptapEditor = ({
   isTask = false,
   task,
   dragHandle,
+  editable = true,
 }: TiptapEditorProps & { dragHandle?: React.ReactNode }) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const isCompleted = task?.status === TASK_STATUS.COMPLETED;
@@ -91,6 +93,7 @@ export const TiptapEditor = ({
       ],
       content: value,
       immediatelyRender: false,
+      editable,
       onFocus,
       onBlur: () => {
         if (onBlur) onBlur();
@@ -101,7 +104,7 @@ export const TiptapEditor = ({
         onChange(content);
       },
     }),
-    [value, onFocus, onBlur, onChange, onSaveImmediate, placeholder]
+    [value, onFocus, onBlur, onChange, onSaveImmediate, placeholder, editable]
   );
 
   const editor = useEditor(editorConfig as UseEditorOptions);
@@ -118,6 +121,12 @@ export const TiptapEditor = ({
       editor.commands.focus();
     }
   }, [editor, isFocused]);
+
+  useEffect(() => {
+    if (editor && editor.isEditable !== editable) {
+      editor.setEditable(editable);
+    }
+  }, [editor, editable]);
 
   const handleDelete = useCallback(() => {
     if (onDeleteBlock) {
@@ -209,9 +218,10 @@ export const TiptapEditor = ({
       className={`group relative flex items-start gap-3 px-2 rounded-md hover:bg-accent/30 transition-colors my-1`}
       style={{ boxShadow: undefined }}
     >
-      <div className="pt-1">{dragHandle}</div>
+      {editable && <div className="pt-1">{dragHandle}</div>}
 
       <CheckTask
+        editable={editable}
         task={task as Task}
         isTask={isTask}
         isCompleted={isCompleted}
@@ -226,7 +236,7 @@ export const TiptapEditor = ({
           {menus}
         </div>
       </div>
-      {onDeleteBlock && (
+      {onDeleteBlock && editable && (
         <Button
           variant="ghost"
           size="icon"

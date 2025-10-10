@@ -8,14 +8,14 @@ export type GetAllDocsQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetAllDocsQuery = { __typename?: 'query_root', blocks: Array<{ __typename?: 'blocks', id: string, content?: any | null, created_at?: string | null, updated_at?: string | null, folder?: { __typename?: 'folders', id: string, name: string } | null, sub_blocks: Array<{ __typename?: 'blocks', id: string, type: string, content?: any | null }> }> };
+export type GetAllDocsQuery = { __typename?: 'query_root', blocks: Array<{ __typename?: 'blocks', id: string, content?: any | null, created_at?: string | null, updated_at?: string | null, workspace_id?: string | null, folder?: { __typename?: 'folders', id: string, name: string } | null, sub_blocks: Array<{ __typename?: 'blocks', id: string, type: string, content?: any | null }> }> };
 
 export type GetDocumentBlocksQueryVariables = Types.Exact<{
   pageId: Types.Scalars['uuid']['input'];
 }>;
 
 
-export type GetDocumentBlocksQuery = { __typename?: 'query_root', blocks: Array<{ __typename?: 'blocks', id: string, content?: any | null, position?: number | null, parent_id?: string | null, page_id?: string | null, type: string, workspace_id?: string | null, created_at?: string | null, updated_at?: string | null, tasks: Array<{ __typename?: 'tasks', id: string, status?: string | null, deadline_date?: string | null, schedule_date?: string | null, priority?: string | null, user_id?: string | null }> }> };
+export type GetDocumentBlocksQuery = { __typename?: 'query_root', blocks: Array<{ __typename?: 'blocks', id: string, content?: any | null, position?: number | null, parent_id?: string | null, page_id?: string | null, type: string, workspace_id?: string | null, user_id?: string | null, created_at?: string | null, updated_at?: string | null, tasks: Array<{ __typename?: 'tasks', id: string, status?: string | null, deadline_date?: string | null, schedule_date?: string | null, priority?: string | null, user_id?: string | null }> }> };
 
 export type GetDocsCountQueryVariables = Types.Exact<{
   workspaceId: Types.Scalars['uuid']['input'];
@@ -23,6 +23,13 @@ export type GetDocsCountQueryVariables = Types.Exact<{
 
 
 export type GetDocsCountQuery = { __typename?: 'query_root', blocks_aggregate: { __typename?: 'blocks_aggregate', aggregate?: { __typename?: 'blocks_aggregate_fields', count: number } | null } };
+
+export type GetSharedWithMeDocsQueryVariables = Types.Exact<{
+  userId: Types.Scalars['uuid']['input'];
+}>;
+
+
+export type GetSharedWithMeDocsQuery = { __typename?: 'query_root', blocks: Array<{ __typename?: 'blocks', id: string, content?: any | null, created_at?: string | null, updated_at?: string | null, user_id?: string | null, workspace_id?: string | null, folder?: { __typename?: 'folders', id: string, name: string } | null, sub_blocks: Array<{ __typename?: 'blocks', id: string, type: string, content?: any | null }>, access_requests: Array<{ __typename?: 'access_requests', permission_type?: string | null, status?: string | null }> }> };
 
 
 export const GetAllDocsDocument = gql`
@@ -35,6 +42,7 @@ export const GetAllDocsDocument = gql`
     content
     created_at
     updated_at
+    workspace_id
     folder {
       id
       name
@@ -93,6 +101,7 @@ export const GetDocumentBlocksDocument = gql`
     page_id
     type
     workspace_id
+    user_id
     created_at
     updated_at
     tasks {
@@ -183,3 +192,64 @@ export type GetDocsCountQueryHookResult = ReturnType<typeof useGetDocsCountQuery
 export type GetDocsCountLazyQueryHookResult = ReturnType<typeof useGetDocsCountLazyQuery>;
 export type GetDocsCountSuspenseQueryHookResult = ReturnType<typeof useGetDocsCountSuspenseQuery>;
 export type GetDocsCountQueryResult = Apollo.QueryResult<GetDocsCountQuery, GetDocsCountQueryVariables>;
+export const GetSharedWithMeDocsDocument = gql`
+    query GetSharedWithMeDocs($userId: uuid!) {
+  blocks(
+    where: {type: {_eq: "page"}, deleted_at: {_is_null: true}, access_requests: {requester_id: {_eq: $userId}, status: {_eq: "approved"}}}
+    order_by: {updated_at: desc}
+  ) {
+    id
+    content
+    created_at
+    updated_at
+    user_id
+    workspace_id
+    folder {
+      id
+      name
+    }
+    sub_blocks(order_by: {position: asc}, limit: 10) {
+      id
+      type
+      content
+    }
+    access_requests(where: {requester_id: {_eq: $userId}}) {
+      permission_type
+      status
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetSharedWithMeDocsQuery__
+ *
+ * To run a query within a React component, call `useGetSharedWithMeDocsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSharedWithMeDocsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSharedWithMeDocsQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useGetSharedWithMeDocsQuery(baseOptions: Apollo.QueryHookOptions<GetSharedWithMeDocsQuery, GetSharedWithMeDocsQueryVariables> & ({ variables: GetSharedWithMeDocsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSharedWithMeDocsQuery, GetSharedWithMeDocsQueryVariables>(GetSharedWithMeDocsDocument, options);
+      }
+export function useGetSharedWithMeDocsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSharedWithMeDocsQuery, GetSharedWithMeDocsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSharedWithMeDocsQuery, GetSharedWithMeDocsQueryVariables>(GetSharedWithMeDocsDocument, options);
+        }
+export function useGetSharedWithMeDocsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetSharedWithMeDocsQuery, GetSharedWithMeDocsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetSharedWithMeDocsQuery, GetSharedWithMeDocsQueryVariables>(GetSharedWithMeDocsDocument, options);
+        }
+export type GetSharedWithMeDocsQueryHookResult = ReturnType<typeof useGetSharedWithMeDocsQuery>;
+export type GetSharedWithMeDocsLazyQueryHookResult = ReturnType<typeof useGetSharedWithMeDocsLazyQuery>;
+export type GetSharedWithMeDocsSuspenseQueryHookResult = ReturnType<typeof useGetSharedWithMeDocsSuspenseQuery>;
+export type GetSharedWithMeDocsQueryResult = Apollo.QueryResult<GetSharedWithMeDocsQuery, GetSharedWithMeDocsQueryVariables>;

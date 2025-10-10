@@ -1,0 +1,70 @@
+table:
+  name: access_requests
+  schema: public
+object_relationships:
+  - name: document
+    using:
+      foreign_key_constraint_on: document_id
+  - name: owner
+    using:
+      foreign_key_constraint_on: owner_id
+  - name: requester
+    using:
+      foreign_key_constraint_on: requester_id
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - id
+        - document_id
+        - requester_id
+        - owner_id
+        - status
+        - message
+        - permission_type
+        - created_at
+        - updated_at
+      filter:
+        _or:
+          - requester_id:
+              _eq: X-Hasura-User-Id
+          - owner_id:
+              _eq: X-Hasura-User-Id
+insert_permissions:
+  - role: user
+    permission:
+      check:
+        requester_id:
+          _eq: X-Hasura-User-Id
+      columns:
+        - document_id
+        - requester_id
+        - owner_id
+        - message
+        - permission_type
+        - status
+        - updated_at
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - status
+        - updated_at
+        - permission_type
+        - message
+      filter:
+        _or:
+          - owner_id:
+              _eq: X-Hasura-User-Id
+          - requester_id:
+              _eq: X-Hasura-User-Id
+      check: null
+delete_permissions:
+  - role: user
+    permission:
+      filter:
+        _or:
+          - requester_id:
+              _eq: X-Hasura-User-Id
+          - owner_id:
+              _eq: X-Hasura-User-Id

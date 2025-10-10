@@ -10,6 +10,7 @@ interface Props {
   onBlur?: () => void;
   className?: string;
   placeholder?: string;
+  editable?: boolean;
 }
 
 export function DocumentTitleInput({
@@ -20,6 +21,7 @@ export function DocumentTitleInput({
   onChange,
   className,
   placeholder = "Untitled",
+  editable = true,
 }: Props) {
   return (
     <TiptapEditor
@@ -33,6 +35,7 @@ export function DocumentTitleInput({
       editorClassName="prose prose-sm max-w-none focus:outline-none text-xl font-bold break-words"
       isTitle={true}
       showBubbleMenu={true}
+      editable={editable}
     />
   );
 }

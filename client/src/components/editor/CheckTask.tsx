@@ -12,17 +12,19 @@ export const CheckTask = ({
   isCompleted,
   isUpdating,
   setIsUpdating,
+  editable,
 }: {
   task: Task;
   isTask: boolean;
   isCompleted: boolean;
   isUpdating: boolean;
   setIsUpdating: (isUpdating: boolean) => void;
+  editable: boolean;
 }) => {
   const [updateTask] = useUpdateTaskMutation();
 
   const handleToggleComplete = async () => {
-    if (!task || isUpdating) return;
+    if (!task || isUpdating || !editable) return;
 
     try {
       setIsUpdating(true);
@@ -48,7 +50,7 @@ export const CheckTask = ({
       <div className="flex items-center pt-1.5">
         <button
           onClick={handleToggleComplete}
-          disabled={isUpdating}
+          disabled={isUpdating || !editable}
           className={cn(
             "w-4 h-4 rounded border-2 flex items-center justify-center transition-all duration-200",
             isCompleted

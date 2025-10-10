@@ -26,3 +26,15 @@ export enum BlockType {
   PAGE = "page",
   TASK = "task",
 }
+
+export enum AccessRequestStatus {
+  PENDING = "pending",
+  APPROVED = "approved",
+  REJECTED = "rejected",
+}
+
+export enum PermissionType {
+  READ = "read",
+  WRITE = "write",
+  OWNER = "owner",
+}
