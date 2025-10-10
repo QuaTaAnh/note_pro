@@ -29,7 +29,7 @@ export const WorkspaceButton = () => {
   const userId = useUserId();
   const { workspace } = useWorkspace();
 
-  const { data } = useGetWorkspaceNameQuery({
+  const { data, loading } = useGetWorkspaceNameQuery({
     variables: { id: workspace?.id || "" },
     skip: !workspace?.id,
   });
@@ -112,9 +112,15 @@ export const WorkspaceButton = () => {
             variant="ghost"
             className="px-2 py-1 h-auto cursor-pointer justify-start"
           >
-            <WorkspaceNameWithTooltip
-              name={data?.workspaces_by_pk?.name || ""}
-            />
+            {loading ? (
+              <span className="text-xs text-muted-foreground animate-pulse">
+                Loading...
+              </span>
+            ) : (
+              <WorkspaceNameWithTooltip
+                name={data?.workspaces_by_pk?.name || ""}
+              />
+            )}
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[400px]">

@@ -13,6 +13,7 @@ import { useCreateNotificationMutation } from "@/graphql/mutations/__generated__
 import { useState } from "react";
 import { showToast } from "@/lib/toast";
 import { AccessRequestStatus, PermissionType } from "@/types/types";
+import { Loading } from "../ui/loading";
 
 interface RequestAccessViewProps {
   documentId: string;
@@ -24,15 +25,18 @@ export function RequestAccessView({ documentId }: RequestAccessViewProps) {
   const userId = useUserId();
   const [isRequesting, setIsRequesting] = useState(false);
 
-  const { data: accessRequestData, refetch } =
-    useGetAccessRequestByDocumentQuery({
-      variables: {
-        documentId: documentId || "",
-        requesterId: userId || "",
-      },
-      skip: !documentId || !userId,
-      fetchPolicy: "cache-and-network",
-    });
+  const {
+    data: accessRequestData,
+    loading: accessRequestLoading,
+    refetch,
+  } = useGetAccessRequestByDocumentQuery({
+    variables: {
+      documentId: documentId || "",
+      requesterId: userId || "",
+    },
+    skip: !documentId || !userId,
+    fetchPolicy: "cache-and-network",
+  });
 
   const [createAccessRequest] = useCreateAccessRequestMutation();
   const [createNotification] = useCreateNotificationMutation();
@@ -50,7 +54,6 @@ export function RequestAccessView({ documentId }: RequestAccessViewProps) {
     try {
       setIsRequesting(true);
 
-      // Create access request - database trigger will set owner_id automatically
       const result = await createAccessRequest({
         variables: {
           input: {
@@ -65,7 +68,6 @@ export function RequestAccessView({ documentId }: RequestAccessViewProps) {
 
       const accessRequest = result.data?.insert_access_requests_one;
 
-      // Create notification for owner (owner_id was set by trigger)
       if (accessRequest?.owner_id) {
         await createNotification({
           variables: {
@@ -102,7 +104,11 @@ export function RequestAccessView({ documentId }: RequestAccessViewProps) {
     }
   };
 
-  return (
+  return accessRequestLoading ? (
+    <div className="flex items-center justify-center min-h-screen">
+      <Loading />
+    </div>
+  ) : (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="max-w-md w-full text-center space-y-6">
         <div className="flex justify-center">
