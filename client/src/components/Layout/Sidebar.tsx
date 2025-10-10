@@ -22,7 +22,7 @@ export default function Sidebar({ workspaceSlug, workspaceId }: Props) {
   const { isOpen } = useSidebar();
   const pathname = usePathname();
 
-  const { data: docsCount } = useGetDocsCountQuery({
+  const { data: docsCount, loading: docsCountLoading } = useGetDocsCountQuery({
     variables: { workspaceId },
     skip: !workspaceId,
   });
@@ -59,7 +59,9 @@ export default function Sidebar({ workspaceSlug, workspaceId }: Props) {
         {/* Scrollable area starting from MENU_ITEMS */}
         <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain flex flex-col gap-2 group">
           {MENU_ITEMS(workspaceSlug, {
-            allDocs: docsCount?.blocks_aggregate?.aggregate?.count || 0,
+            allDocs: docsCountLoading
+              ? undefined
+              : docsCount?.blocks_aggregate?.aggregate?.count || 0,
           }).map((item) => {
             return (
               <SidebarButton

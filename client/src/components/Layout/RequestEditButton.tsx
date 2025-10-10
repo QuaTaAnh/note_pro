@@ -17,21 +17,25 @@ export function RequestEditButton({ documentId }: { documentId: string }) {
   const { data: session } = useSession();
   const [isRequesting, setIsRequesting] = useState(false);
 
-  const { data: accessRequestData, refetch } =
-    useGetAccessRequestByDocumentQuery({
-      variables: {
-        documentId: documentId || "",
-        requesterId: userId || "",
-      },
-      skip: !documentId || !userId,
-      fetchPolicy: "network-only",
-    });
-
-  const { data: documentData } = useGetDocumentBlocksQuery({
-    variables: { pageId: documentId || "" },
-    skip: !documentId,
-    errorPolicy: "all",
+  const {
+    data: accessRequestData,
+    loading: accessRequestLoading,
+    refetch,
+  } = useGetAccessRequestByDocumentQuery({
+    variables: {
+      documentId: documentId || "",
+      requesterId: userId || "",
+    },
+    skip: !documentId || !userId,
+    fetchPolicy: "network-only",
   });
+
+  const { data: documentData, loading: documentLoading } =
+    useGetDocumentBlocksQuery({
+      variables: { pageId: documentId || "" },
+      skip: !documentId,
+      errorPolicy: "all",
+    });
 
   const [createAccessRequest] = useCreateAccessRequestMutation();
   const [createNotification] = useCreateNotificationMutation();
@@ -50,6 +54,11 @@ export function RequestEditButton({ documentId }: { documentId: string }) {
       (req.status === AccessRequestStatus.PENDING ||
         req.status === AccessRequestStatus.APPROVED)
   );
+
+  // Don't show button while loading data
+  if (accessRequestLoading || documentLoading) {
+    return null;
+  }
 
   if (!hasApprovedReadAccess || hasWriteRequest) {
     return null;

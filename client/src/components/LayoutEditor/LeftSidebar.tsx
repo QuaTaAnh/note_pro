@@ -10,27 +10,40 @@ interface Props {
 }
 
 export const LeftSidebar = ({ pageId }: Props) => {
-  const { rootBlock } = useDocumentBlocks(pageId);
+  const { rootBlock, loading } = useDocumentBlocks(pageId);
 
   return (
     <div className="h-full flex flex-col">
       <div className="p-2">
         <div className="flex flex-row items-center gap-2 mb-3">
-          <Image 
-            src="/images/document-icon.png" 
-            alt="Document" 
-            width={36} 
-            height={36} 
-            className="h-9 w-9 shrink-0" 
+          <Image
+            src="/images/document-icon.png"
+            alt="Document"
+            width={36}
+            height={36}
+            className="h-9 w-9 shrink-0"
           />
 
           <div className="flex flex-col flex-1 min-w-0">
-            <span className="text-sm font-medium truncate">
-              {getPlainText(rootBlock?.content?.title) || "Untitled"}
-            </span>
-            <span className="text-xs text-muted-foreground truncate">
-              {formatDate(rootBlock?.updated_at || "", { relative: true })}
-            </span>
+            {loading ? (
+              <>
+                <span className="text-sm font-medium truncate animate-pulse">
+                  Loading...
+                </span>
+                <span className="text-xs text-muted-foreground truncate animate-pulse">
+                  ...
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="text-sm font-medium truncate">
+                  {getPlainText(rootBlock?.content?.title) || "Untitled"}
+                </span>
+                <span className="text-xs text-muted-foreground truncate">
+                  {formatDate(rootBlock?.updated_at || "", { relative: true })}
+                </span>
+              </>
+            )}
           </div>
         </div>
 

@@ -39,7 +39,7 @@ export enum ModalType {
 }
 
 // Navigation menu items
-export const MENU_ITEMS = (workspaceSlug: string, counts: { allDocs: number }) => [
+export const MENU_ITEMS = (workspaceSlug: string, counts: { allDocs: number | undefined }) => [
   {
     icon: FiFileText,
     label: "All Docs",

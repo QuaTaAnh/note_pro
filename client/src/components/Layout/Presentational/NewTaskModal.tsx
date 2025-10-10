@@ -56,7 +56,8 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isDocumentPopoverOpen, setIsDocumentPopoverOpen] = useState(false);
 
-  const [fetchDocs, { data: docsData }] = useGetAllDocsLazyQuery();
+  const [fetchDocs, { data: docsData, loading: docsLoading }] =
+    useGetAllDocsLazyQuery();
 
   const handleInputChange = (field: keyof TaskData, value: string) => {
     setTaskData((prev) => ({ ...prev, [field]: value }));
@@ -235,49 +236,56 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
                   />
                 </div>
                 <div className="max-h-48 overflow-y-auto">
-                  {docsData?.blocks
-                    .filter((doc) => {
+                  {docsLoading ? (
+                    <div className="px-3 py-8 text-sm text-muted-foreground text-center">
+                      Loading documents...
+                    </div>
+                  ) : (
+                    docsData?.blocks
+                      .filter((doc) => {
+                        const title = doc.content?.title || "Untitled";
+                        return title
+                          .toLowerCase()
+                          .includes(searchTerm.toLowerCase());
+                      })
+                      .map((doc) => {
+                        const title = doc.content?.title || "Untitled";
+                        return (
+                          <div
+                            key={doc.id}
+                            className="flex items-center gap-2 px-3 py-2 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors"
+                            onClick={() => {
+                              handleInputChange("selectedDocumentId", doc.id);
+                              handleDocumentPopoverOpenChange(false);
+                              setSearchTerm("");
+                            }}
+                          >
+                            <FiFileText className="w-4 h-4 text-muted-foreground" />
+                            <div className="flex-1 min-w-0">
+                              <div className="text-sm font-medium truncate">
+                                {getPlainText(title)}
+                              </div>
+                              {doc.folder && (
+                                <div className="text-xs text-muted-foreground">
+                                  in {doc.folder.name}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })
+                  )}
+                  {!docsLoading &&
+                    docsData?.blocks.filter((doc) => {
                       const title = doc.content?.title || "Untitled";
                       return title
                         .toLowerCase()
                         .includes(searchTerm.toLowerCase());
-                    })
-                    .map((doc) => {
-                      const title = doc.content?.title || "Untitled";
-                      return (
-                        <div
-                          key={doc.id}
-                          className="flex items-center gap-2 px-3 py-2 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors"
-                          onClick={() => {
-                            handleInputChange("selectedDocumentId", doc.id);
-                            handleDocumentPopoverOpenChange(false);
-                            setSearchTerm("");
-                          }}
-                        >
-                          <FiFileText className="w-4 h-4 text-muted-foreground" />
-                          <div className="flex-1 min-w-0">
-                            <div className="text-sm font-medium truncate">
-                              {getPlainText(title)}
-                            </div>
-                            {doc.folder && (
-                              <div className="text-xs text-muted-foreground">
-                                in {doc.folder.name}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  {docsData?.blocks.filter((doc) => {
-                    const title = doc.content?.title || "Untitled";
-                    return title
-                      .toLowerCase()
-                      .includes(searchTerm.toLowerCase());
-                  }).length === 0 && (
-                    <div className="px-3 py-2 text-sm text-muted-foreground">
-                      No documents found
-                    </div>
-                  )}
+                    }).length === 0 && (
+                      <div className="px-3 py-2 text-sm text-muted-foreground">
+                        No documents found
+                      </div>
+                    )}
                 </div>
               </PopoverContent>
             </Popover>
