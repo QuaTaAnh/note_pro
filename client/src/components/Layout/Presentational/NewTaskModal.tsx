@@ -309,6 +309,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
               textContent="Schedule"
               container={dialogContentRef.current}
               quickActions={true}
+              className="!border-0 !border-none"
             />
 
             <DatePicker
@@ -318,6 +319,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
               icon={<CiFlag1 className="w-4 h-4" />}
               container={dialogContentRef.current}
               quickActions={true}
+              className="!border-0 !border-none"
             />
           </div>
 

@@ -6,6 +6,7 @@ import { FiCalendar } from "react-icons/fi";
 import { Calendar } from "./calendar";
 import { Button } from "./button";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
+import { cn } from "@/lib/utils";
 
 interface DatePickerProps {
   value?: string;
@@ -15,6 +16,7 @@ interface DatePickerProps {
   quickActions?: boolean;
   textContent?: string;
   icon?: React.ReactNode;
+  className?: string;
 }
 
 export const DatePicker = ({
@@ -25,6 +27,7 @@ export const DatePicker = ({
   quickActions = true,
   textContent,
   icon,
+  className,
 }: DatePickerProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -77,7 +80,10 @@ export const DatePicker = ({
       <PopoverTrigger asChild>
         <Button
           variant="ghost"
-          className="justify-start text-left font-normal h-9 px-3 text-muted-foreground hover:text-foreground border border-input hover:border-border rounded-md bg-background hover:bg-accent transition-colors"
+          className={cn(
+            "justify-start text-left font-normal h-9 px-3 text-muted-foreground hover:text-foreground border border-input hover:border-border rounded-md bg-background hover:bg-accent transition-colors",
+            className
+          )}
         >
           {icon ? icon : <FiCalendar className="w-4 h-4 mr-2" />}
           {value ? getDateDisplayText(value) : textContent}
