@@ -51,6 +51,7 @@ export function SearchResults({ results, onResultClick }: Props) {
                 title={getPlainText(document.content.title)}
                 href={`/editor/d/${workspace?.id}/${document.id}`}
                 onClick={onResultClick}
+                avatarUrl={document.user?.avatar_url ?? ""}
               />
             ))}
           </div>
@@ -68,6 +69,7 @@ export function SearchResults({ results, onResultClick }: Props) {
                   title={task.block?.content?.text}
                   href={`/s/${workspace?.id}/tasks`}
                   onClick={onResultClick}
+                  avatarUrl={task.user?.avatar_url ?? ""}
                 />
               );
             })}
@@ -87,6 +89,7 @@ export function SearchResults({ results, onResultClick }: Props) {
                 title={folder.name}
                 href={`/s/${workspace?.id}/f/${folder.id}`}
                 onClick={onResultClick}
+                avatarUrl={folder.user?.avatar_url ?? ""}
               />
             ))}
           </div>

@@ -23,7 +23,7 @@ export function useSearch() {
 
   const executeSearch = useCallback(
     (term: string) => {
-      if (!workspace?.id || !term || term.trim().length < 1) {
+      if (!workspace?.id || !term) {
         return;
       }
 
@@ -43,7 +43,7 @@ export function useSearch() {
   );
 
   useEffect(() => {
-    if (debouncedSearchTerm && debouncedSearchTerm.trim().length >= 2) {
+    if (debouncedSearchTerm && debouncedSearchTerm.trim().length > 0) {
       executeSearch(debouncedSearchTerm);
     }
   }, [debouncedSearchTerm, executeSearch]);

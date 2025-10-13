@@ -37,3 +37,16 @@ array_relationships:
         table:
           name: workspaces
           schema: public
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - id
+        - email
+        - name
+        - avatar_url
+        - created_at
+        - role
+      filter: {}
+      allow_aggregations: false
+    comment: ""

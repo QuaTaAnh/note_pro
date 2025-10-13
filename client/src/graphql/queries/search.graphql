@@ -12,7 +12,10 @@ query SearchAll($workspaceId: uuid!, $searchTerm: String!) {
   ) {
     id
     name
-    user_id
+    user {
+      id
+      avatar_url
+    }
   }
 
   documents: blocks(
@@ -27,7 +30,10 @@ query SearchAll($workspaceId: uuid!, $searchTerm: String!) {
   ) {
     id
     content
-    user_id
+    user {
+      id
+      avatar_url
+    }
   }
 
   tasks(
@@ -41,7 +47,10 @@ query SearchAll($workspaceId: uuid!, $searchTerm: String!) {
     order_by: { created_at: desc }
   ) {
     id
-    user_id
+    user {
+      id
+      avatar_url
+    }
     block {
       id
       content
