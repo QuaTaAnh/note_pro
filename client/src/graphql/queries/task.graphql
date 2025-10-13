@@ -141,6 +141,37 @@ query GetScheduledTasks($workspaceId: uuid!) {
   }
 }
 
+query GetAllScheduledTasks($workspaceId: uuid!) {
+  tasks(
+    where: {
+      block: { workspace_id: { _eq: $workspaceId } }
+      schedule_date: { _is_null: false }
+      status: { _neq: "completed" }
+    }
+    order_by: { schedule_date: asc }
+  ) {
+    id
+    block_id
+    user_id
+    status
+    deadline_date
+    schedule_date
+    priority
+    created_at
+    updated_at
+    block {
+      id
+      content
+      type
+      page_id
+      page {
+        id
+        content
+      }
+    }
+  }
+}
+
 query GetTodayTasks($workspaceId: uuid!, $today: date!) {
   tasks(
     where: {

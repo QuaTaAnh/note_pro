@@ -32,6 +32,13 @@ export type GetScheduledTasksQueryVariables = Types.Exact<{
 
 export type GetScheduledTasksQuery = { __typename?: 'query_root', tasks: Array<{ __typename?: 'tasks', id: string, block_id?: string | null, user_id?: string | null, status?: string | null, deadline_date?: string | null, schedule_date?: string | null, priority?: string | null, created_at?: string | null, updated_at?: string | null, block?: { __typename?: 'blocks', id: string, content?: any | null, type: string } | null }> };
 
+export type GetAllScheduledTasksQueryVariables = Types.Exact<{
+  workspaceId: Types.Scalars['uuid']['input'];
+}>;
+
+
+export type GetAllScheduledTasksQuery = { __typename?: 'query_root', tasks: Array<{ __typename?: 'tasks', id: string, block_id?: string | null, user_id?: string | null, status?: string | null, deadline_date?: string | null, schedule_date?: string | null, priority?: string | null, created_at?: string | null, updated_at?: string | null, block?: { __typename?: 'blocks', id: string, content?: any | null, type: string, page_id?: string | null, page?: { __typename?: 'blocks', id: string, content?: any | null } | null } | null }> };
+
 export type GetTodayTasksQueryVariables = Types.Exact<{
   workspaceId: Types.Scalars['uuid']['input'];
   today: Types.Scalars['date']['input'];
@@ -306,6 +313,67 @@ export type GetScheduledTasksQueryHookResult = ReturnType<typeof useGetScheduled
 export type GetScheduledTasksLazyQueryHookResult = ReturnType<typeof useGetScheduledTasksLazyQuery>;
 export type GetScheduledTasksSuspenseQueryHookResult = ReturnType<typeof useGetScheduledTasksSuspenseQuery>;
 export type GetScheduledTasksQueryResult = Apollo.QueryResult<GetScheduledTasksQuery, GetScheduledTasksQueryVariables>;
+export const GetAllScheduledTasksDocument = gql`
+    query GetAllScheduledTasks($workspaceId: uuid!) {
+  tasks(
+    where: {block: {workspace_id: {_eq: $workspaceId}}, schedule_date: {_is_null: false}, status: {_neq: "completed"}}
+    order_by: {schedule_date: asc}
+  ) {
+    id
+    block_id
+    user_id
+    status
+    deadline_date
+    schedule_date
+    priority
+    created_at
+    updated_at
+    block {
+      id
+      content
+      type
+      page_id
+      page {
+        id
+        content
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAllScheduledTasksQuery__
+ *
+ * To run a query within a React component, call `useGetAllScheduledTasksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllScheduledTasksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllScheduledTasksQuery({
+ *   variables: {
+ *      workspaceId: // value for 'workspaceId'
+ *   },
+ * });
+ */
+export function useGetAllScheduledTasksQuery(baseOptions: Apollo.QueryHookOptions<GetAllScheduledTasksQuery, GetAllScheduledTasksQueryVariables> & ({ variables: GetAllScheduledTasksQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllScheduledTasksQuery, GetAllScheduledTasksQueryVariables>(GetAllScheduledTasksDocument, options);
+      }
+export function useGetAllScheduledTasksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllScheduledTasksQuery, GetAllScheduledTasksQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllScheduledTasksQuery, GetAllScheduledTasksQueryVariables>(GetAllScheduledTasksDocument, options);
+        }
+export function useGetAllScheduledTasksSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetAllScheduledTasksQuery, GetAllScheduledTasksQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAllScheduledTasksQuery, GetAllScheduledTasksQueryVariables>(GetAllScheduledTasksDocument, options);
+        }
+export type GetAllScheduledTasksQueryHookResult = ReturnType<typeof useGetAllScheduledTasksQuery>;
+export type GetAllScheduledTasksLazyQueryHookResult = ReturnType<typeof useGetAllScheduledTasksLazyQuery>;
+export type GetAllScheduledTasksSuspenseQueryHookResult = ReturnType<typeof useGetAllScheduledTasksSuspenseQuery>;
+export type GetAllScheduledTasksQueryResult = Apollo.QueryResult<GetAllScheduledTasksQuery, GetAllScheduledTasksQueryVariables>;
 export const GetTodayTasksDocument = gql`
     query GetTodayTasks($workspaceId: uuid!, $today: date!) {
   tasks(
