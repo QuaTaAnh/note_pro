@@ -1,7 +1,6 @@
 "use client";
 
-import { LayoutEditor } from "@/components/LayoutEditor/LayoutEditor";
-import { LeftSidebar } from "@/components/LayoutEditor/LeftSidebar";
+import { LayoutEditor, LeftSidebar } from "@/components/LayoutEditor";
 import TiptapBlockEditor from "@/components/editor/TiptapBlockEditor";
 import { DocumentAccessGuard } from "@/components/auth/DocumentAccessGuard";
 import { useParams } from "next/navigation";

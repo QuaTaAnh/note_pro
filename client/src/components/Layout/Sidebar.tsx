@@ -4,13 +4,13 @@ import { MENU_ITEMS, SIDEBAR_WIDTH, ModalType } from "@/consts";
 import { useSidebar } from "@/context/SidebarContext";
 import { cn } from "@/lib/utils";
 import { Separator } from "../ui/separator";
-import NewDocumentButton from "./Presentational/NewDocumentButton";
-import { SidebarButton } from "./Presentational/SidebarButton";
-import { WorkspaceButton } from "./Presentational/WorkspaceButton";
-import { FolderMenu } from "./Presentational/FolderMenu";
+import NewDocumentButton from "./components/NewDocumentButton";
+import { SidebarButton } from "./components/SidebarButton";
+import { WorkspaceButton } from "./components/WorkspaceButton";
+import { FolderMenu } from "./components/FolderMenu";
 import { usePathname } from "next/navigation";
 import { useGetDocsCountQuery } from "@/graphql/queries/__generated__/document.generated";
-import { NewTaskModal } from "./Presentational/NewTaskModal";
+import { NewTaskModal } from "./components/NewTaskModal";
 import { ROUTES } from "@/lib/routes";
 import { IoShareOutline } from "react-icons/io5";
 interface Props {

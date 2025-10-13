@@ -87,7 +87,7 @@ function LayoutMain({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function LayoutContent({
+export default function MainLayout({
   children,
 }: {
   children: React.ReactNode;
