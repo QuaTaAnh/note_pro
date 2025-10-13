@@ -1,6 +1,6 @@
 "use client";
 
-import { NewTaskModal } from "@/components/Layout/Presentational/NewTaskModal";
+import { NewTaskModal } from "@/components/Layout/components/NewTaskModal";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useWorkspace } from "@/hooks/use-workspace";

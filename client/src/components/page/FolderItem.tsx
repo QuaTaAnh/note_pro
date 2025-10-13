@@ -3,7 +3,7 @@ import { iconMap } from "@/lib/icons";
 import { ROUTES } from "@/lib/routes";
 import { useState } from "react";
 import { FiChevronDown, FiChevronRight } from "react-icons/fi";
-import { SidebarButton } from "../Layout/Presentational/SidebarButton";
+import { SidebarButton } from "../Layout/components/SidebarButton";
 import { Button } from "../ui/button";
 import { HexColor } from "@/types/types";
 import { usePathname } from "next/navigation";

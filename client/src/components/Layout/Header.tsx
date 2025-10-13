@@ -9,8 +9,8 @@ import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { MdOutlineViewSidebar } from "react-icons/md";
-import { NotificationButton } from "./Presentational/NotificationButton";
-import { SettingButton } from "./Presentational/SettingButton";
+import { NotificationButton } from "./components/NotificationButton";
+import { SettingButton } from "./components/SettingButton";
 
 interface Props {
   workspaceSlug: string;

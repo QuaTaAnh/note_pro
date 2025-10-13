@@ -10,7 +10,7 @@ import {
 import { GiSettingsKnobs } from "react-icons/gi";
 import { CheckCircle } from "lucide-react";
 import { taskToDisplayFormat } from "@/hooks/use-filtered-tasks";
-import { CompletedTasksModal } from "@/components/Layout/Presentational/CompletedTasksModal";
+import { CompletedTasksModal } from "@/components/Layout/components/CompletedTasksModal";
 import {
   useGetCompletedTasksLazyQuery,
   GetCompletedTasksDocument,

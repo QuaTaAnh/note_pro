@@ -1,7 +1,7 @@
 "use client";
 
 import { ThemeProvider } from "next-themes";
-import LayoutContent from "@/components/Layout/LayoutContent";
+import { MainLayout } from "@/components/Layout";
 import AuthWrapper from "@/components/auth/AuthWrapper";
 import { NextAuthProvider } from "@/context/AuthContext";
 import { ToastProvider } from "@/context/ToastProvider";
@@ -23,7 +23,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
             <ToastProvider>
               <DocumentAccessProvider>
                 <AuthWrapper>
-                  <LayoutContent>{children}</LayoutContent>
+                  <MainLayout>{children}</MainLayout>
                 </AuthWrapper>
               </DocumentAccessProvider>
             </ToastProvider>
