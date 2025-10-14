@@ -70,6 +70,89 @@ ensure_pm2() {
     fi
 }
 
+# Function to ensure Hasura CLI is available
+ensure_hasura_cli() {
+    if ! command -v hasura &> /dev/null; then
+        print_warning "Hasura CLI not found. Attempting installation..."
+        if command -v brew &> /dev/null; then
+            if ! brew list hasura-cli &> /dev/null; then
+                print_status "Installing Hasura CLI via Homebrew..."
+                brew install hasura-cli || {
+                    print_error "Failed to install Hasura CLI via Homebrew. Please install it manually: brew install hasura-cli"
+                    exit 1
+                }
+            fi
+        else
+            print_error "Homebrew not found. Please install Hasura CLI manually: https://hasura.io/docs/latest/hasura-cli/install/"
+            exit 1
+        fi
+    fi
+}
+
+# Function to wait for Docker and Hasura to be ready
+wait_for_hasura() {
+    print_status "Waiting for Hasura to be ready at http://localhost:8080..."
+    local retries=60
+    local count=0
+    until curl -sSf http://localhost:8080/healthz > /dev/null 2>&1; do
+        count=$((count+1))
+        if [ $count -ge $retries ]; then
+            print_error "Hasura did not become ready in time. Please check docker logs."
+            return 1
+        fi
+        sleep 2
+    done
+    print_status "Hasura is ready."
+}
+
+# Function to apply Hasura migrations/metadata/seeds
+apply_hasura() {
+    print_header "🧩 Applying Hasura migrations, metadata, and seeds"
+
+    ensure_hasura_cli
+    wait_for_hasura || return 1
+
+    if [ ! -d "hasura-metadata" ]; then
+        print_error "hasura-metadata directory not found at project root."
+        return 1
+    fi
+
+    pushd hasura-metadata > /dev/null
+
+    # Apply migrations if present
+    if [ -d "migrations" ] && [ "$(ls -A migrations 2>/dev/null)" ]; then
+        print_status "Applying Hasura migrations (database: default)..."
+        hasura migrate apply --database-name default || {
+            print_error "Failed to apply Hasura migrations."
+            popd > /dev/null
+            return 1
+        }
+    else
+        print_warning "No Hasura migrations found. Skipping migration apply."
+    fi
+
+    # Apply metadata
+    print_status "Applying Hasura metadata..."
+    hasura metadata apply || {
+        print_error "Failed to apply Hasura metadata."
+        popd > /dev/null
+        return 1
+    }
+
+    # Reload metadata
+    print_status "Reloading Hasura metadata..."
+    hasura metadata reload || print_warning "Failed to reload metadata, continuing..."
+
+    # Apply seeds if present
+    if [ -d "seeds" ] && [ "$(ls -A seeds 2>/dev/null)" ]; then
+        print_status "Applying Hasura seeds (database: default)..."
+        hasura seeds apply --database-name default || print_warning "Failed to apply seeds, continuing..."
+    fi
+
+    popd > /dev/null
+    print_status "Hasura configuration applied successfully."
+}
+
 # Function to check services status
 show_status() {
     print_header "�� Services Status"
@@ -124,9 +207,8 @@ quick_start() {
     print_status "Starting Docker services..."
     docker compose up -d
     
-    # Wait a bit for services to start
-    print_status "Waiting for Docker services to be ready..."
-    sleep 5
+    # Apply Hasura after services are up
+    apply_hasura || print_warning "Hasura apply encountered an issue. Check logs and continue."
     
     # Start PM2 services
     print_status "Starting PM2 services..."
@@ -149,7 +231,7 @@ full_deployment() {
     
     # Step 1: Pull latest code
     print_status "Pulling latest code from git..."
-    git pull origin main
+    git pull --rebase --autostash origin main || git pull origin main
     
     # Step 2: Install PM2 globally if not installed
     ensure_pm2
@@ -175,11 +257,10 @@ full_deployment() {
     docker compose down 2>/dev/null || true
     docker compose up -d
     
-    # Wait for Docker services to be ready
-    print_status "Waiting for Docker services to be ready..."
-    sleep 10
+    # Step 7: Apply Hasura configuration (migrations/metadata/seeds)
+    apply_hasura || print_warning "Hasura apply encountered an issue. Check logs and continue."
     
-    # Step 7: Check if processes are already running
+    # Step 8: Check if processes are already running
     if pm2 list | grep -q "note-pro"; then
         print_status "Reloading existing PM2 processes..."
         pm2 reload ecosystem.config.js --env development
@@ -188,11 +269,11 @@ full_deployment() {
         pm2 start ecosystem.config.js --env development
     fi
     
-    # Step 8: Save PM2 configuration
+    # Step 9: Save PM2 configuration
     print_status "Saving PM2 configuration..."
     pm2 save
     
-    # Step 9: Setup PM2 startup (optional)
+    # Step 10: Setup PM2 startup (optional)
     if [ "$setup_startup" = "true" ]; then
         print_status "Setting up PM2 startup..."
         pm2 startup
