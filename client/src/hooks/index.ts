@@ -7,6 +7,7 @@ export { useToast, toast } from './use-toast';
 export { useBinCraftTitle } from './use-bin-craft-title';
 export { useDocumentTitle } from './use-document-title';
 export { useDebounce } from './use-debounce';
+export { useSearch } from './use-search';
 export { useFilteredTasks, taskToDisplayFormat } from './use-filtered-tasks';
 export type { Block, CreateBlockInput } from './use-blocks';
 export type { FilteredTasksResult } from './use-filtered-tasks';

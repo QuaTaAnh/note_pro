@@ -69,6 +69,15 @@ const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
       onBlur?.(e);
     };
 
+    // Auto-open popover when content becomes available and input is focused
+    React.useEffect(() => {
+      if (hasPopover && document.activeElement === inputRef.current) {
+        setOpen(true);
+      } else if (!hasPopover) {
+        setOpen(false);
+      }
+    }, [hasPopover]);
+
     // Close dropdown when clicking outside (only if popover is enabled)
     React.useEffect(() => {
       if (!hasPopover) return;
@@ -125,12 +134,20 @@ const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
               "absolute z-50 mt-1 w-full rounded-md border border-border bg-popover dark:bg-card dark:border-border/60 text-popover-foreground shadow-md dark:shadow-xl animate-in fade-in-0 zoom-in-95",
               popoverClassName
             )}
-            style={{
-              height: popoverHeight,
-              maxHeight: "400px",
-            }}
+            style={
+              popoverHeight === "auto"
+                ? undefined
+                : {
+                    height: popoverHeight,
+                    maxHeight: "400px",
+                  }
+            }
           >
-            <div className="h-full overflow-auto">{popoverContent}</div>
+            <div
+              className={popoverHeight === "auto" ? "" : "h-full overflow-auto"}
+            >
+              {popoverContent}
+            </div>
           </div>
         )}
       </div>

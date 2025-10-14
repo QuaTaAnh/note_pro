@@ -1,16 +1,15 @@
 "use client";
 
-import { InputField } from "@/components/ui/input-field";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { HEADER_HEIGHT } from "@/consts";
 import { useSidebar } from "@/context/SidebarContext";
 import { ROUTES } from "@/lib/routes";
-import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { MdOutlineViewSidebar } from "react-icons/md";
 import { NotificationButton } from "./components/NotificationButton";
 import { SettingButton } from "./components/SettingButton";
+import { SearchInputField } from "@/components/search";
 
 interface Props {
   workspaceSlug: string;
@@ -41,15 +40,8 @@ export default function Header({ workspaceSlug, isEditorPage }: Props) {
             onClick={toggle}
           />
         </div>
-        <div className="min-w-[480px] cursor-pointer">
-          <InputField
-            placeholder="Open"
-            className="w-full h-8"
-            popoverContent={
-              <div className="p-4 text-sm text-muted-foreground"></div>
-            }
-            icon={<Search className="h-4 w-4" />}
-          />
+        <div className="min-w-[480px]">
+          <SearchInputField placeholder="Search..." className="h-8" />
         </div>
         <div className="flex items-center gap-2">
           <ThemeToggle />
