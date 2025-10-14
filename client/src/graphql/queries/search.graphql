@@ -1,4 +1,4 @@
-query SearchAll($workspaceId: uuid!, $searchTerm: String!) {
+query SearchAll($workspaceId: uuid!, $searchTerm: String!, $userId: uuid!) {
   folders(
     where: {
       workspace_id: { _eq: $workspaceId }
@@ -16,6 +16,10 @@ query SearchAll($workspaceId: uuid!, $searchTerm: String!) {
       id
       avatar_url
     }
+    workspace {
+      id
+      name
+    }
   }
 
   documents: blocks(
@@ -32,6 +36,33 @@ query SearchAll($workspaceId: uuid!, $searchTerm: String!) {
     content
     user {
       id
+      avatar_url
+    }
+    workspace {
+      id
+      name
+    }
+  }
+
+  sharedDocuments: blocks(
+    where: {
+      type: { _eq: "page" }
+      deleted_at: { _is_null: true }
+      content: { _cast: { String: { _ilike: $searchTerm } } }
+      access_requests: {
+        requester_id: { _eq: $userId }
+        status: { _eq: "approved" }
+      }
+    }
+    limit: 20
+    order_by: { updated_at: desc }
+  ) {
+    id
+    content
+    workspace_id
+    user {
+      id
+      name
       avatar_url
     }
   }

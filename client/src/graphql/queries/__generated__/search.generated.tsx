@@ -6,14 +6,15 @@ const defaultOptions = {"ignoreResults":true} as const;
 export type SearchAllQueryVariables = Types.Exact<{
   workspaceId: Types.Scalars['uuid']['input'];
   searchTerm: Types.Scalars['String']['input'];
+  userId: Types.Scalars['uuid']['input'];
 }>;
 
 
-export type SearchAllQuery = { __typename?: 'query_root', folders: Array<{ __typename?: 'folders', id: string, name: string, user?: { __typename?: 'users', id: string, avatar_url?: string | null } | null }>, documents: Array<{ __typename?: 'blocks', id: string, content?: any | null, user?: { __typename?: 'users', id: string, avatar_url?: string | null } | null }>, tasks: Array<{ __typename?: 'tasks', id: string, user?: { __typename?: 'users', id: string, avatar_url?: string | null } | null, block?: { __typename?: 'blocks', id: string, content?: any | null } | null }> };
+export type SearchAllQuery = { __typename?: 'query_root', folders: Array<{ __typename?: 'folders', id: string, name: string, user?: { __typename?: 'users', id: string, avatar_url?: string | null } | null, workspace?: { __typename?: 'workspaces', id: string, name?: string | null } | null }>, documents: Array<{ __typename?: 'blocks', id: string, content?: any | null, user?: { __typename?: 'users', id: string, avatar_url?: string | null } | null, workspace?: { __typename?: 'workspaces', id: string, name?: string | null } | null }>, sharedDocuments: Array<{ __typename?: 'blocks', id: string, content?: any | null, workspace_id?: string | null, user?: { __typename?: 'users', id: string, name?: string | null, avatar_url?: string | null } | null }>, tasks: Array<{ __typename?: 'tasks', id: string, user?: { __typename?: 'users', id: string, avatar_url?: string | null } | null, block?: { __typename?: 'blocks', id: string, content?: any | null } | null }> };
 
 
 export const SearchAllDocument = gql`
-    query SearchAll($workspaceId: uuid!, $searchTerm: String!) {
+    query SearchAll($workspaceId: uuid!, $searchTerm: String!, $userId: uuid!) {
   folders(
     where: {workspace_id: {_eq: $workspaceId}, _or: [{name: {_ilike: $searchTerm}}, {description: {_ilike: $searchTerm}}]}
     limit: 20
@@ -25,6 +26,10 @@ export const SearchAllDocument = gql`
       id
       avatar_url
     }
+    workspace {
+      id
+      name
+    }
   }
   documents: blocks(
     where: {workspace_id: {_eq: $workspaceId}, type: {_eq: "page"}, deleted_at: {_is_null: true}, content: {_cast: {String: {_ilike: $searchTerm}}}}
@@ -35,6 +40,24 @@ export const SearchAllDocument = gql`
     content
     user {
       id
+      avatar_url
+    }
+    workspace {
+      id
+      name
+    }
+  }
+  sharedDocuments: blocks(
+    where: {type: {_eq: "page"}, deleted_at: {_is_null: true}, content: {_cast: {String: {_ilike: $searchTerm}}}, access_requests: {requester_id: {_eq: $userId}, status: {_eq: "approved"}}}
+    limit: 20
+    order_by: {updated_at: desc}
+  ) {
+    id
+    content
+    workspace_id
+    user {
+      id
+      name
       avatar_url
     }
   }
@@ -70,6 +93,7 @@ export const SearchAllDocument = gql`
  *   variables: {
  *      workspaceId: // value for 'workspaceId'
  *      searchTerm: // value for 'searchTerm'
+ *      userId: // value for 'userId'
  *   },
  * });
  */

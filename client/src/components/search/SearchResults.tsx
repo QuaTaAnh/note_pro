@@ -1,99 +1,71 @@
-"use client";
-
-import { Skeleton } from "@/components/ui/skeleton";
 import { SearchResult } from "@/hooks/use-search";
 import { useWorkspace } from "@/hooks/use-workspace";
-import { getPlainText } from "../page/CardDocument";
+import { useMemo } from "react";
 import { SearchEmptyState } from "./SearchEmptyState";
-import { SearchItem } from "./SearchItem";
-import { SearchSectionHeader } from "./SearchSectionHeader";
+import { SearchSection } from "./SearchSection";
+import { SearchSkeleton } from "./SearchSkeleton";
 
 interface Props {
   results: SearchResult;
-  onResultClick?: () => void;
+  onResultClick: () => void;
 }
 
 export function SearchResults({ results, onResultClick }: Props) {
-  const { folders, documents, tasks, isLoading } = results;
+  const { folders, documents, tasks, sharedDocuments, isLoading } = results;
   const { workspace } = useWorkspace();
 
-  const totalResults = folders.length + documents.length + tasks.length;
+  const totalResults = useMemo(
+    () =>
+      folders.length + documents.length + tasks.length + sharedDocuments.length,
+    [folders.length, documents.length, tasks.length, sharedDocuments.length]
+  );
 
   if (isLoading) {
-    return (
-      <div className="py-2">
-        {[...Array(4)].map((_, i) => (
-          <div key={i} className="flex items-center gap-3 px-3 py-2">
-            <Skeleton className="h-5 w-5 rounded" />
-            <div className="flex-1 space-y-1">
-              <Skeleton className="h-4 w-3/4" />
-              <Skeleton className="h-3 w-1/2" />
-            </div>
-          </div>
-        ))}
-      </div>
-    );
+    return <SearchSkeleton />;
   }
 
-  return totalResults === 0 ? (
-    <SearchEmptyState message="No Results Found" />
-  ) : (
+  if (totalResults === 0) {
+    return <SearchEmptyState message="No Results Found" />;
+  }
+
+  return (
     <div className="max-h-[calc(60vh-2rem)] overflow-y-auto">
-      <div className="py-1">
-        {documents.length > 0 && (
-          <div>
-            <SearchSectionHeader title="Documents" count={documents.length} />
-            {documents.map((document) => (
-              <SearchItem
-                key={document.id}
-                type="document"
-                id={document.id}
-                title={getPlainText(document.content.title)}
-                href={`/editor/d/${workspace?.id}/${document.id}`}
-                onClick={onResultClick}
-                avatarUrl={document.user?.avatar_url ?? ""}
-              />
-            ))}
-          </div>
-        )}
+      <div className="m-3">
+        <SearchSection
+          title="Documents"
+          items={documents}
+          type="document"
+          workspaceId={workspace?.id ?? ""}
+          onResultClick={onResultClick}
+          renderSubtitle={(doc) => `In ${doc.workspace?.name ?? ""}`}
+        />
 
-        {tasks.length > 0 && (
-          <div className={documents.length > 0 ? "mt-2" : ""}>
-            <SearchSectionHeader title="Tasks" count={tasks.length} />
-            {tasks.map((task) => {
-              return (
-                <SearchItem
-                  key={task.id}
-                  type="task"
-                  id={task.id}
-                  title={task.block?.content?.text}
-                  href={`/s/${workspace?.id}/tasks`}
-                  onClick={onResultClick}
-                  avatarUrl={task.user?.avatar_url ?? ""}
-                />
-              );
-            })}
-          </div>
-        )}
+        <SearchSection
+          title="Tasks"
+          items={tasks}
+          type="task"
+          workspaceId={workspace?.id ?? ""}
+          onResultClick={onResultClick}
+          renderSubtitle={(task) => `By ${task.user?.name ?? ""}`}
+        />
 
-        {folders.length > 0 && (
-          <div
-            className={documents.length > 0 || tasks.length > 0 ? "mt-2" : ""}
-          >
-            <SearchSectionHeader title="Folders" count={folders.length} />
-            {folders.map((folder) => (
-              <SearchItem
-                key={folder.id}
-                type="folder"
-                id={folder.id}
-                title={folder.name}
-                href={`/s/${workspace?.id}/f/${folder.id}`}
-                onClick={onResultClick}
-                avatarUrl={folder.user?.avatar_url ?? ""}
-              />
-            ))}
-          </div>
-        )}
+        <SearchSection
+          title="Folders"
+          items={folders}
+          type="folder"
+          workspaceId={workspace?.id ?? ""}
+          onResultClick={onResultClick}
+          renderSubtitle={(folder) => `In ${folder.workspace?.name ?? ""}`}
+        />
+
+        <SearchSection
+          title="Shared Documents"
+          items={sharedDocuments}
+          type="document"
+          getWorkspaceId={(doc) => doc.workspace_id}
+          onResultClick={onResultClick}
+          renderSubtitle={(doc) => `By ${doc.user?.name ?? ""}`}
+        />
       </div>
     </div>
   );

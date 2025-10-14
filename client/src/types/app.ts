@@ -17,3 +17,5 @@ export interface SchedulerAppointment {
     priority?: string | null;
     deadlineDate?: string | null;
   }
+
+export type SearchItemType = "folder" | "document" | "task" | "sharedDocument";

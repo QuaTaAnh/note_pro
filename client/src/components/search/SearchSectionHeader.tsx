@@ -12,7 +12,7 @@ export function SearchSectionHeader({
   count,
 }: SearchSectionHeaderProps) {
   return (
-    <div className="px-3 py-2 text-xs font-medium text-gray-500">
+    <div className="mb-1 text-xs font-medium text-gray-500">
       {title}
       {count !== undefined && count > 0 && ` (${count})`}
     </div>

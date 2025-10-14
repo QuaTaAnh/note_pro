@@ -5,19 +5,21 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import { useDebounce as useDebounceValue } from "use-debounce";
 import { useWorkspace } from "./use-workspace";
+import { useAuth } from "./use-auth";
 
 export interface SearchResult {
   folders: SearchAllQuery["folders"];
-  documents: SearchAllQuery["documents"];
-  tasks: SearchAllQuery["tasks"];
+  documents: SearchAllQuery["documents"]; 
+  sharedDocuments: SearchAllQuery["sharedDocuments"];
+  tasks: SearchAllQuery["tasks"]; 
   isLoading: boolean;
 }
 
 export function useSearch() {
+  const { userId } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
-  const [debouncedSearchTerm] = useDebounceValue(searchTerm, 500);
+  const [debouncedSearchTerm] = useDebounceValue(searchTerm, 700);
   const { workspace } = useWorkspace();
-
   const [searchAll, { data: allData, loading: allLoading }] =
     useSearchAllLazyQuery();
 
@@ -33,25 +35,29 @@ export function useSearch() {
         variables: {
           workspaceId: workspace.id,
           searchTerm: searchPattern,
+          userId: userId!,
         },
+        fetchPolicy: "network-only",
       });
     },
     [
       workspace?.id,
       searchAll,
+      userId,
     ]
   );
 
   useEffect(() => {
-    if (debouncedSearchTerm && debouncedSearchTerm.trim().length > 0) {
+    if (debouncedSearchTerm) {
       executeSearch(debouncedSearchTerm);
-    }
-  }, [debouncedSearchTerm, executeSearch]);
+    } 
+  }, [debouncedSearchTerm, executeSearch, setSearchTerm]);
 
   const results: SearchResult = {
     folders: allData?.folders || [],
     documents:
       allData?.documents || [],
+    sharedDocuments: allData?.sharedDocuments || [],
     tasks: allData?.tasks || [],
     isLoading:
       allLoading,
@@ -64,6 +70,7 @@ export function useSearch() {
     hasResults:
       results.folders.length > 0 ||
       results.documents.length > 0 ||
+      results.sharedDocuments.length > 0 ||
       results.tasks.length > 0,
   };
 }

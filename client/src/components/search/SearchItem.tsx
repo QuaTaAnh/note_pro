@@ -5,13 +5,13 @@ import { Folder, FileText, CheckCircle } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-
-type ItemType = "folder" | "document" | "task";
+import { SearchItemType } from "@/types/app";
 
 interface SearchItemProps {
-  type: ItemType;
+  type: SearchItemType;
   id: string;
   title: string;
+  subtitle?: string;
   href: string;
   onClick?: () => void;
   className?: string;
@@ -21,6 +21,7 @@ interface SearchItemProps {
 export function SearchItem({
   type,
   title,
+  subtitle,
   href,
   onClick,
   className,
@@ -43,7 +44,7 @@ export function SearchItem({
     <Link
       href={href}
       className={cn(
-        "flex items-center gap-3 px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer",
+        "flex items-center gap-3 py-1 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer",
         className
       )}
       onClick={onClick}
@@ -64,6 +65,9 @@ export function SearchItem({
         <div className="text-xs font-medium text-gray-900 dark:text-gray-100 truncate">
           {title}
         </div>
+        {subtitle && (
+          <div className="text-xs text-gray-500 truncate">{subtitle}</div>
+        )}
       </div>
     </Link>
   );
