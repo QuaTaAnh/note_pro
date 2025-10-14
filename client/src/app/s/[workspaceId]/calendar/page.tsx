@@ -7,7 +7,6 @@ import { TASK_STATUS } from "@/consts";
 import { useGetAllScheduledTasksQuery } from "@/graphql/queries/__generated__/task.generated";
 import { useWorkspace } from "@/hooks/use-workspace";
 import { SchedulerAppointment } from "@/types/app";
-import "devextreme/dist/css/dx.light.css";
 import { useMemo } from "react";
 
 export default function CalendarPage() {
@@ -21,9 +20,7 @@ export default function CalendarPage() {
     fetchPolicy: "cache-and-network",
   });
 
-  const tasks = useMemo(() => {
-    return data?.tasks || [];
-  }, [data]);
+  const tasks = useMemo(() => data?.tasks || [], [data]);
 
   const appointments: SchedulerAppointment[] = useMemo(() => {
     return tasks.map((task) => {
@@ -35,7 +32,6 @@ export default function CalendarPage() {
       endDate.setHours(23, 59, 59);
 
       const taskTitle = task.block?.content?.text || "Untitled Task";
-
       const documentTitle = getPlainText(task.block?.page?.content?.title);
 
       const displayText = documentTitle

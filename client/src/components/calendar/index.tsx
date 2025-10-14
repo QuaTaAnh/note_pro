@@ -1,32 +1,48 @@
-import dynamic from "next/dynamic";
-import React, { useMemo } from "react";
-import { SchedulerAppointment } from "@/types/app";
-import { DEFAULT_CURRENT_VIEW, VIEWS } from "./defaults";
+"use client";
 
-// Dynamically import Scheduler to avoid SSR issues
-const Scheduler = dynamic(
-  () => import("devextreme-react/scheduler").then((mod) => mod.Scheduler),
-  { ssr: false }
-);
+import React, { useMemo } from "react";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import { SchedulerAppointment } from "@/types/app";
 
 interface Props {
   appointments: SchedulerAppointment[];
 }
 
 export const Calendar = ({ appointments }: Props) => {
-  const currentDate = useMemo(() => new Date(), []);
+  const events = useMemo(
+    () =>
+      appointments.map((a) => ({
+        title: a.text,
+        start: a.startDate,
+        end: a.endDate,
+        allDay: a.allDay,
+        extendedProps: {
+          taskId: a.taskId,
+          status: a.status,
+          priority: a.priority,
+          deadlineDate: a.deadlineDate,
+        },
+      })),
+    [appointments]
+  );
 
   return (
-    <Scheduler
-      dataSource={appointments}
-      defaultCurrentView={DEFAULT_CURRENT_VIEW}
-      defaultCurrentDate={currentDate}
+    <FullCalendar
+      plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+      initialView="dayGridMonth"
+      headerToolbar={{
+        left: "prev,next today",
+        center: "title",
+        right: "dayGridMonth,timeGridWeek,timeGridDay",
+      }}
       height="100%"
-      startDayHour={0}
-      endDayHour={24}
-      showAllDayPanel={true}
-      editing={false}
-      views={VIEWS}
+      events={events}
+      eventDisplay="block"
+      eventColor="#1976d2"
+      eventTextColor="#fff"
     />
   );
 };
