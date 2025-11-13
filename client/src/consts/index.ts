@@ -111,4 +111,5 @@ export const TASK_STATUS = {
   TODO: "todo",
   COMPLETED: "completed",
 };
-  
+ 
+export const DEFAULT_WORKSPACE_IMAGE = "/images/workspace-default.jpeg";

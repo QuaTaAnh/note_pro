@@ -9,5 +9,6 @@ query GetWorkspaceName($id: uuid!) {
   workspaces_by_pk(id: $id) {
     id
     name
+    image_url
   }
 }

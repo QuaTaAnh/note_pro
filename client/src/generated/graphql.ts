@@ -765,6 +765,7 @@ export type Blocks = {
   parent_block?: Maybe<Blocks>;
   parent_id?: Maybe<Scalars['uuid']['output']>;
   position?: Maybe<Scalars['Int']['output']>;
+  search_text?: Maybe<Scalars['String']['output']>;
   /** An array relationship */
   sub_blocks: Array<Blocks>;
   /** An aggregate relationship */
@@ -1034,6 +1035,7 @@ export type BlocksBoolExp = {
   parent_block?: InputMaybe<BlocksBoolExp>;
   parent_id?: InputMaybe<UuidComparisonExp>;
   position?: InputMaybe<IntComparisonExp>;
+  search_text?: InputMaybe<StringComparisonExp>;
   sub_blocks?: InputMaybe<BlocksBoolExp>;
   sub_blocks_aggregate?: InputMaybe<BlocksAggregateBoolExp>;
   tasks?: InputMaybe<TasksBoolExp>;
@@ -1110,6 +1112,7 @@ export type BlocksMaxFields = {
   page_id?: Maybe<Scalars['uuid']['output']>;
   parent_id?: Maybe<Scalars['uuid']['output']>;
   position?: Maybe<Scalars['Int']['output']>;
+  search_text?: Maybe<Scalars['String']['output']>;
   type?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   user_id?: Maybe<Scalars['uuid']['output']>;
@@ -1125,6 +1128,7 @@ export type BlocksMaxOrderBy = {
   page_id?: InputMaybe<OrderBy>;
   parent_id?: InputMaybe<OrderBy>;
   position?: InputMaybe<OrderBy>;
+  search_text?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
   updated_at?: InputMaybe<OrderBy>;
   user_id?: InputMaybe<OrderBy>;
@@ -1141,6 +1145,7 @@ export type BlocksMinFields = {
   page_id?: Maybe<Scalars['uuid']['output']>;
   parent_id?: Maybe<Scalars['uuid']['output']>;
   position?: Maybe<Scalars['Int']['output']>;
+  search_text?: Maybe<Scalars['String']['output']>;
   type?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   user_id?: Maybe<Scalars['uuid']['output']>;
@@ -1156,6 +1161,7 @@ export type BlocksMinOrderBy = {
   page_id?: InputMaybe<OrderBy>;
   parent_id?: InputMaybe<OrderBy>;
   position?: InputMaybe<OrderBy>;
+  search_text?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
   updated_at?: InputMaybe<OrderBy>;
   user_id?: InputMaybe<OrderBy>;
@@ -1203,6 +1209,7 @@ export type BlocksOrderBy = {
   parent_block?: InputMaybe<BlocksOrderBy>;
   parent_id?: InputMaybe<OrderBy>;
   position?: InputMaybe<OrderBy>;
+  search_text?: InputMaybe<OrderBy>;
   sub_blocks_aggregate?: InputMaybe<BlocksAggregateOrderBy>;
   tasks_aggregate?: InputMaybe<TasksAggregateOrderBy>;
   type?: InputMaybe<OrderBy>;
@@ -1241,6 +1248,8 @@ export enum BlocksSelectColumn {
   ParentId = 'parent_id',
   /** column name */
   Position = 'position',
+  /** column name */
+  SearchText = 'search_text',
   /** column name */
   Type = 'type',
   /** column name */
@@ -1318,6 +1327,7 @@ export type BlocksStreamCursorValueInput = {
   page_id?: InputMaybe<Scalars['uuid']['input']>;
   parent_id?: InputMaybe<Scalars['uuid']['input']>;
   position?: InputMaybe<Scalars['Int']['input']>;
+  search_text?: InputMaybe<Scalars['String']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   user_id?: InputMaybe<Scalars['uuid']['input']>;
@@ -4577,6 +4587,7 @@ export type Workspaces = {
   /** An aggregate relationship */
   folders_aggregate: FoldersAggregate;
   id: Scalars['uuid']['output'];
+  image_url?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   /** An object relationship */
   user?: Maybe<Users>;
@@ -4681,6 +4692,7 @@ export type WorkspacesBoolExp = {
   folders?: InputMaybe<FoldersBoolExp>;
   folders_aggregate?: InputMaybe<FoldersAggregateBoolExp>;
   id?: InputMaybe<UuidComparisonExp>;
+  image_url?: InputMaybe<StringComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
   user?: InputMaybe<UsersBoolExp>;
 };
@@ -4700,6 +4712,7 @@ export type WorkspacesInsertInput = {
   created_by?: InputMaybe<Scalars['uuid']['input']>;
   folders?: InputMaybe<FoldersArrRelInsertInput>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  image_url?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   user?: InputMaybe<UsersObjRelInsertInput>;
 };
@@ -4710,6 +4723,7 @@ export type WorkspacesMaxFields = {
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   created_by?: Maybe<Scalars['uuid']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
+  image_url?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
 };
 
@@ -4718,6 +4732,7 @@ export type WorkspacesMaxOrderBy = {
   created_at?: InputMaybe<OrderBy>;
   created_by?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  image_url?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
 };
 
@@ -4727,6 +4742,7 @@ export type WorkspacesMinFields = {
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   created_by?: Maybe<Scalars['uuid']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
+  image_url?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
 };
 
@@ -4735,6 +4751,7 @@ export type WorkspacesMinOrderBy = {
   created_at?: InputMaybe<OrderBy>;
   created_by?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
+  image_url?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
 };
 
@@ -4768,6 +4785,7 @@ export type WorkspacesOrderBy = {
   created_by?: InputMaybe<OrderBy>;
   folders_aggregate?: InputMaybe<FoldersAggregateOrderBy>;
   id?: InputMaybe<OrderBy>;
+  image_url?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   user?: InputMaybe<UsersOrderBy>;
 };
@@ -4786,6 +4804,8 @@ export enum WorkspacesSelectColumn {
   /** column name */
   Id = 'id',
   /** column name */
+  ImageUrl = 'image_url',
+  /** column name */
   Name = 'name'
 }
 
@@ -4794,6 +4814,7 @@ export type WorkspacesSetInput = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   created_by?: InputMaybe<Scalars['uuid']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  image_url?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -4810,6 +4831,7 @@ export type WorkspacesStreamCursorValueInput = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   created_by?: InputMaybe<Scalars['uuid']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  image_url?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -4821,6 +4843,8 @@ export enum WorkspacesUpdateColumn {
   CreatedBy = 'created_by',
   /** column name */
   Id = 'id',
+  /** column name */
+  ImageUrl = 'image_url',
   /** column name */
   Name = 'name'
 }
