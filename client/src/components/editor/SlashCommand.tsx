@@ -1,6 +1,6 @@
 "use client";
 
-import { Smile } from "lucide-react";
+import { FileUp, Smile } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -19,6 +19,11 @@ interface Command {
 }
 
 const COMMANDS: Command[] = [
+  {
+    id: "upload-file",
+    name: "Upload file",
+    icon: FileUp,
+  },
   {
     id: "emojis",
     name: "Emojis",

@@ -2,15 +2,166 @@
 
 import { EditorView } from "@tiptap/pm/view";
 import type { Editor } from "@tiptap/react";
-import { useCallback, useMemo, useState } from "react";
+import { ChangeEvent, useCallback, useMemo, useRef, useState } from "react";
+import { toast } from "@/hooks";
+import { uploadFileToCloudinary } from "@/lib/cloudinary";
 import { EmojiPicker } from "./EmojiPicker";
 import { SlashCommand } from "./SlashCommand";
+
+const MAX_FILE_SIZE = 25 * 1024 * 1024; // 25MB
+const ACCEPTED_FILE_TYPES = [
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/vnd.ms-excel",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "application/vnd.ms-powerpoint",
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  "application/zip",
+  "application/x-zip-compressed",
+  "text/plain",
+  "image/*",
+].join(",");
+
+const formatFileSize = (bytes: number) => {
+  if (!bytes) return "0 B";
+  const units = ["B", "KB", "MB", "GB", "TB"];
+  const exponent = Math.min(
+    Math.floor(Math.log(bytes) / Math.log(1024)),
+    units.length - 1
+  );
+  const value = bytes / Math.pow(1024, exponent);
+  return `${value.toFixed(value >= 10 || exponent === 0 ? 0 : 1)} ${units[exponent]}`;
+};
+
+const escapeHtml = (value: string) =>
+  value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+const getFileExtension = (name: string) =>
+  name.split(".").pop()?.toUpperCase() || "FILE";
+
+const buildFilePreviewHtml = ({
+  name,
+  url,
+  extension,
+  sizeLabel,
+}: {
+  name: string;
+  url: string;
+  extension: string;
+  sizeLabel: string;
+}) => {
+  const safeName = escapeHtml(name);
+  const safeExtension = escapeHtml(extension);
+  const safeInfo = escapeHtml(`${extension} • ${sizeLabel}`);
+  const safeUrl = encodeURI(url);
+
+  return `
+    <div class="np-file-block" data-file-url="${safeUrl}" data-file-name="${safeName}">
+      <div class="np-file-icon">${safeExtension}</div>
+      <div class="np-file-meta">
+        <p class="np-file-name">${safeName}</p>
+        <p class="np-file-info">${safeInfo}</p>
+      </div>
+      <a class="np-file-link" href="${safeUrl}" target="_blank" rel="noopener noreferrer">Open</a>
+    </div>
+  `.trim();
+};
 
 export const useSlashCommand = (editor: Editor | null) => {
   const [showSlash, setShowSlash] = useState(false);
   const [showEmoji, setShowEmoji] = useState(false);
   const [slashPos, setSlashPos] = useState({ top: 0, left: 0 });
   const [emojiPos, setEmojiPos] = useState({ top: 0, left: 0 });
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const handleFileUpload = useCallback(
+    async (file: File) => {
+      if (!editor) return;
+
+      if (file.size > MAX_FILE_SIZE) {
+        toast({
+          title: "File is too large",
+          description: "Maximum upload size is 25MB",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      setIsUploading(true);
+      const uploadingToast = toast({
+        title: "Uploading file...",
+        description: file.name,
+      });
+
+      try {
+        const uploadResponse = await uploadFileToCloudinary(file, {
+          folder: "note_pro/files",
+        });
+        const url = uploadResponse.secure_url || uploadResponse.url;
+        const extension = getFileExtension(file.name);
+        const html = buildFilePreviewHtml({
+          name: file.name,
+          url,
+          extension,
+          sizeLabel: formatFileSize(file.size),
+        });
+
+        editor.chain().focus().insertContent(html).run();
+
+        uploadingToast.dismiss();
+        toast({
+          title: "File uploaded",
+          description: file.name,
+        });
+      } catch (error) {
+        console.error("Error uploading file:", error);
+        uploadingToast.dismiss();
+        toast({
+          title: "Upload failed",
+          description:
+            error instanceof Error
+              ? error.message
+              : "Please try again in a moment.",
+          variant: "destructive",
+        });
+      } finally {
+        setIsUploading(false);
+      }
+    },
+    [editor]
+  );
+
+  const handleFileInputChange = useCallback(
+    async (event: ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (file) {
+        await handleFileUpload(file);
+      }
+      event.target.value = "";
+    },
+    [handleFileUpload]
+  );
+
+  const handleFileSelection = useCallback(() => {
+    if (isUploading) {
+      toast({
+        title: "Upload in progress",
+        description: "Please wait for the current upload to finish.",
+      });
+      return;
+    }
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+      fileInputRef.current.click();
+    }
+  }, [isUploading]);
 
   const onCommandSelect = useCallback(
     (cmd: string) => {
@@ -26,10 +177,14 @@ export const useSlashCommand = (editor: Editor | null) => {
           setShowEmoji(true);
           break;
         }
+        case "upload-file": {
+          handleFileSelection();
+          break;
+        }
       }
       setShowSlash(false);
     },
-    [editor]
+    [editor, handleFileSelection]
   );
 
   const onEmojiSelect = useCallback(
@@ -70,6 +225,13 @@ export const useSlashCommand = (editor: Editor | null) => {
   const menus = useMemo(
     () => (
       <>
+        <input
+          ref={fileInputRef}
+          type="file"
+          className="hidden"
+          accept={ACCEPTED_FILE_TYPES}
+          onChange={handleFileInputChange}
+        />
         {showSlash && (
           <SlashCommand
             show={showSlash}
@@ -92,7 +254,15 @@ export const useSlashCommand = (editor: Editor | null) => {
         )}
       </>
     ),
-    [showSlash, showEmoji, slashPos, emojiPos, onCommandSelect, onEmojiSelect]
+    [
+      showSlash,
+      showEmoji,
+      slashPos,
+      emojiPos,
+      onCommandSelect,
+      onEmojiSelect,
+      handleFileInputChange,
+    ]
   );
 
   return { handleKeyDown, menus };

@@ -203,6 +203,61 @@
   text-decoration: underline;
 }
 
+.ProseMirror .np-file-block {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  margin: 0.75rem 0;
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.85rem;
+  background-color: hsl(var(--muted) / 0.5);
+}
+
+.ProseMirror .np-file-icon {
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  border-radius: 0.75rem;
+  background-color: hsl(var(--primary) / 0.08);
+  color: hsl(var(--primary));
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+}
+
+.ProseMirror .np-file-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.ProseMirror .np-file-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin: 0;
+  color: hsl(var(--foreground));
+  word-break: break-word;
+}
+
+.ProseMirror .np-file-info {
+  font-size: 0.8rem;
+  color: hsl(var(--muted-foreground));
+  margin: 0.1rem 0 0;
+}
+
+.ProseMirror .np-file-link {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: hsl(var(--primary));
+  text-decoration: none;
+}
+
+.ProseMirror .np-file-link:hover {
+  text-decoration: underline;
+}
+
 /* Dark mode styles */
 .dark .ProseMirror {
   color: #e5e7eb;
