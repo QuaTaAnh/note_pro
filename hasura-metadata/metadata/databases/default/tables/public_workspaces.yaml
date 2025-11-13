@@ -27,6 +27,7 @@ select_permissions:
         - created_at
         - created_by
         - id
+        - image_url
         - name
       filter:
         created_by:
@@ -36,6 +37,7 @@ update_permissions:
   - role: user
     permission:
       columns:
+        - image_url
         - name
       filter:
         created_by:

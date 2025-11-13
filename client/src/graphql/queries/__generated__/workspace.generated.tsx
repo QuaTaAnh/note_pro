@@ -15,7 +15,7 @@ export type GetWorkspaceNameQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetWorkspaceNameQuery = { __typename?: 'query_root', workspaces_by_pk?: { __typename?: 'workspaces', id: string, name?: string | null } | null };
+export type GetWorkspaceNameQuery = { __typename?: 'query_root', workspaces_by_pk?: { __typename?: 'workspaces', id: string, name?: string | null, image_url?: string | null } | null };
 
 
 export const GetWorkspaceByUserIdDocument = gql`
@@ -64,6 +64,7 @@ export const GetWorkspaceNameDocument = gql`
   workspaces_by_pk(id: $id) {
     id
     name
+    image_url
   }
 }
     `;

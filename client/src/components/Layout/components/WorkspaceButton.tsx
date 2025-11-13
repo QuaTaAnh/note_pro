@@ -3,102 +3,97 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { InputField } from "@/components/ui/input-field";
-import { useRenameWorkspaceMutation } from "@/graphql/mutations/__generated__/workspace.generated";
-import {
-  GetWorkspaceByUserIdDocument,
-  GetWorkspaceByUserIdQuery,
-  useGetWorkspaceNameQuery,
-} from "@/graphql/queries/__generated__/workspace.generated";
-import { useUserId } from "@/hooks/use-auth";
+import { DEFAULT_WORKSPACE_IMAGE } from "@/consts";
+import { useUpdateWorkspaceMutation } from "@/graphql/mutations/__generated__/workspace.generated";
+import { useGetWorkspaceNameQuery } from "@/graphql/queries/__generated__/workspace.generated";
+import { useImageUpload } from "@/hooks/use-image-upload";
 import { toast } from "@/hooks/use-toast";
 import { useWorkspace } from "@/hooks/use-workspace";
-import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
+import { Camera, X } from "lucide-react";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import { CiSettings } from "react-icons/ci";
 import { WorkspaceNameWithTooltip } from "./WorkspaceNameWithTooltip";
 
 export const WorkspaceButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [tempName, setTempName] = useState("");
-  const [renameWorkspace] = useRenameWorkspaceMutation();
-  const userId = useUserId();
+  const [tempImageUrl, setTempImageUrl] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isHovering, setIsHovering] = useState(false);
+
+  const [updateWorkspace] = useUpdateWorkspaceMutation();
   const { workspace } = useWorkspace();
 
-  const { data, loading } = useGetWorkspaceNameQuery({
+  const { data, refetch } = useGetWorkspaceNameQuery({
     variables: { id: workspace?.id || "" },
     skip: !workspace?.id,
   });
 
+  const { uploadImage, isUploading } = useImageUpload({
+    tags: ["workspace", workspace?.id || ""],
+    onSuccess: (imageUrl) => {
+      setTempImageUrl(imageUrl);
+    },
+  });
+
   useEffect(() => {
-    if (isOpen && data?.workspaces_by_pk?.name) {
-      setTempName(data.workspaces_by_pk.name);
+    if (isOpen && data?.workspaces_by_pk) {
+      setTempName(data.workspaces_by_pk.name || "");
+      setTempImageUrl(data.workspaces_by_pk.image_url || null);
     }
   }, [isOpen, data]);
 
+  const handleFileSelect = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      await uploadImage(file);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setTempImageUrl(null);
+  };
+
   const handleSave = async () => {
     try {
-      if (!tempName.trim() || tempName === data?.workspaces_by_pk?.name) {
+      const nameChanged =
+        tempName.trim() && tempName !== data?.workspaces_by_pk?.name;
+      const imageChanged = tempImageUrl !== data?.workspaces_by_pk?.image_url;
+
+      if (!nameChanged && !imageChanged) {
+        setIsOpen(false);
         return;
       }
 
-      await renameWorkspace({
+      await updateWorkspace({
         variables: {
-          id: workspace?.id || "",
-          name: tempName,
-        },
-        update(cache, { data: mutationData }) {
-          const updated = mutationData?.update_workspaces_by_pk;
-          if (!updated) {
-            return;
-          }
-          cache.modify({
-            id: cache.identify({
-              __typename: "workspaces",
-              id: workspace?.id || "",
-            }),
-            fields: {
-              name() {
-                return updated.name;
-              },
-            },
-          });
-          if (userId) {
-            try {
-              const existingData = cache.readQuery<GetWorkspaceByUserIdQuery>({
-                query: GetWorkspaceByUserIdDocument,
-                variables: { userId },
-              });
-
-              if (existingData?.workspaces) {
-                cache.writeQuery({
-                  query: GetWorkspaceByUserIdDocument,
-                  variables: { userId },
-                  data: {
-                    ...existingData,
-                    workspaces: existingData.workspaces.map((workspace) =>
-                      workspace.id === workspace?.id
-                        ? { ...workspace, name: updated.name }
-                        : workspace
-                    ),
-                  },
-                });
-              }
-            } catch (error) {
-              console.log("Cache update failed:", error);
-            }
-          }
+          workspaceId: workspace?.id || "",
+          name: nameChanged ? tempName.trim() : data?.workspaces_by_pk?.name,
+          imageUrl: imageChanged
+            ? tempImageUrl
+            : data?.workspaces_by_pk?.image_url,
         },
       });
 
+      await refetch();
       setIsOpen(false);
+      toast({
+        title: "Success",
+        description: "Workspace updated successfully",
+      });
     } catch (error) {
       toast({
-        title: "Error renaming workspace",
+        title: "Error updating workspace",
         description: error instanceof Error ? error.message : "Unknown error",
       });
     }
@@ -110,40 +105,131 @@ export const WorkspaceButton = () => {
         <DialogTrigger asChild>
           <Button
             variant="ghost"
-            className="px-2 py-1 h-auto cursor-pointer justify-start"
+            className="px-2 py-1 h-auto cursor-pointer justify-start gap-2"
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
           >
-            {loading ? (
-              <span className="text-xs text-muted-foreground animate-pulse">
-                Loading...
-              </span>
-            ) : (
-              <WorkspaceNameWithTooltip
-                name={data?.workspaces_by_pk?.name || ""}
-              />
-            )}
+            <div className="relative w-6 h-6 rounded overflow-hidden flex-shrink-0 flex items-center justify-center">
+              {isHovering ? (
+                <CiSettings className="w-6 h-6 text-foreground" />
+              ) : (
+                <Image
+                  src={
+                    data?.workspaces_by_pk?.image_url || DEFAULT_WORKSPACE_IMAGE
+                  }
+                  alt="Workspace"
+                  fill
+                  className="object-cover"
+                  sizes="24px"
+                />
+              )}
+            </div>
+
+            <WorkspaceNameWithTooltip
+              name={data?.workspaces_by_pk?.name || ""}
+            />
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[400px]">
+        <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Rename Workspace</DialogTitle>
-            <DialogDescription>
-              Enter a new name for your workspace.
-            </DialogDescription>
+            <DialogTitle>Space Settings</DialogTitle>
           </DialogHeader>
-          <InputField
-            value={tempName}
-            onChange={(e) => setTempName(e.target.value)}
-            placeholder="Workspace name"
-          />
+
+          <div className="space-y-6 py-4">
+            <div className="space-y-3">
+              <div className="flex items-center justify-center">
+                <div className="relative group">
+                  <div
+                    className={cn(
+                      "relative overflow-hidden transition-all cursor-pointer",
+                      "w-24 h-24 rounded-[20px]",
+                      tempImageUrl ? "bg-muted" : "bg-muted/50"
+                    )}
+                    onClick={() =>
+                      !isUploading && fileInputRef.current?.click()
+                    }
+                  >
+                    <>
+                      <Image
+                        src={
+                          tempImageUrl ? tempImageUrl : DEFAULT_WORKSPACE_IMAGE
+                        }
+                        alt="Workspace"
+                        fill
+                        className="object-cover"
+                        sizes="96px"
+                      />
+
+                      {isUploading && (
+                        <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                          <div className="text-white text-xs font-medium">
+                            Uploading...
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      fileInputRef.current?.click();
+                    }}
+                    disabled={isUploading}
+                    className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-background border-2 border-background shadow-md hover:shadow-lg flex items-center justify-center transition-all disabled:opacity-50"
+                    title={tempImageUrl ? "Change image" : "Upload image"}
+                  >
+                    <Camera className="w-3.5 h-3.5 text-foreground" />
+                  </button>
+
+                  {tempImageUrl && !isUploading && (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRemoveImage();
+                      }}
+                      className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-destructive text-destructive-foreground hover:bg-destructive/90 flex items-center justify-center shadow-md transition-all opacity-0 group-hover:opacity-100"
+                      title="Remove image"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  )}
+                </div>
+              </div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+                onChange={handleFileSelect}
+                className="hidden"
+                disabled={isUploading}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Workspace Name</label>
+              <InputField
+                value={tempName}
+                onChange={(e) => setTempName(e.target.value)}
+                placeholder="My Workspace"
+              />
+            </div>
+          </div>
+
           <DialogFooter>
             <Button
               onClick={handleSave}
               className="w-full h-9 bg-primary-button rounded-xl hover:bg-primary-buttonHover font-medium"
               disabled={
-                !tempName.trim() || tempName === data?.workspaces_by_pk?.name
+                isUploading ||
+                !tempName.trim() ||
+                (tempName === data?.workspaces_by_pk?.name &&
+                  tempImageUrl === data?.workspaces_by_pk?.image_url)
               }
             >
-              Save
+              {isUploading ? "Uploading..." : "Save Changes"}
             </Button>
           </DialogFooter>
         </DialogContent>

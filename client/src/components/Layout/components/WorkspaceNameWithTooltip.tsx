@@ -15,10 +15,7 @@ export function WorkspaceNameWithTooltip({ name }: { name: string }) {
   }, [name]);
 
   const content = (
-    <div className="flex items-center gap-1 max-w-[200px] overflow-hidden">
-      <div className="w-5 h-5 flex items-center justify-center shrink-0">
-        <CiSettings className="w-5 h-5" />
-      </div>
+    <div className="max-w-[200px] overflow-hidden">
       <span
         ref={textRef}
         className="block truncate text-xs font-bold text-ellipsis overflow-hidden whitespace-nowrap"
