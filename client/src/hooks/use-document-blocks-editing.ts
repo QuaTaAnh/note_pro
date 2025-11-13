@@ -32,14 +32,54 @@ export function useDocumentBlocksEditing({
   }, [initialRootBlock]);
 
   const handleAddBlock = useCallback(
-    async (position: number, type: BlockType = BlockType.PARAGRAPH, content?: string) => {
-      flush(); 
+    async (
+      position: number,
+      type: BlockType = BlockType.PARAGRAPH,
+      content?: string
+    ) => {
+      flush();
+
+      const tempId = `temp-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      const optimisticBlock: Block = {
+        id: tempId,
+        position,
+        type,
+        content: content ? { text: content } : { text: "" },
+        parent_id: rootBlock?.id || undefined,
+        page_id: pageId,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        tasks: [],
+        __typename: "blocks",
+      };
+
+      setBlocks((prev) => {
+        const insertIndex = prev.findIndex(
+          (block) => (block.position ?? 0) >= position
+        );
+        const nextBlocks = [...prev];
+        if (insertIndex === -1) {
+          nextBlocks.push(optimisticBlock);
+        } else {
+          nextBlocks.splice(insertIndex, 0, optimisticBlock);
+        }
+        return nextBlocks;
+      });
+
+      setFocusedBlock(tempId);
+
       const newBlock = await createBlockWithPositionUpdate(pageId, position, type);
-      if (newBlock) {
-        setFocusedBlock(newBlock.id);
+      if (!newBlock) {
+        setBlocks((prev) => prev.filter((block) => block.id !== tempId));
+        return;
       }
+
+      setBlocks((prev) =>
+        prev.map((block) => (block.id === tempId ? newBlock : block))
+      );
+      setFocusedBlock(newBlock.id);
     },
-    [createBlockWithPositionUpdate, pageId, flush]
+    [createBlockWithPositionUpdate, pageId, flush, rootBlock]
   );
 
   const handleUpdateBlockContent = useCallback(
