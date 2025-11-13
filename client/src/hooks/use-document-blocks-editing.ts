@@ -4,6 +4,18 @@ import { Block, useBlocks, useDebounce } from "@/hooks";
 import { BlockType } from "@/types/types";
 import { useCallback, useEffect, useState } from "react";
 
+const generateTempBlockId = () => {
+  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+    return crypto.randomUUID();
+  }
+
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (char) => {
+    const rand = (Math.random() * 16) | 0;
+    const value = char === "x" ? rand : (rand & 0x3) | 0x8;
+    return value.toString(16);
+  });
+};
+
 interface UseDocumentBlocksEditingParams {
   initialBlocks: Block[];
   initialRootBlock: Block | null;
@@ -39,7 +51,7 @@ export function useDocumentBlocksEditing({
     ) => {
       flush();
 
-      const tempId = `temp-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      const tempId = generateTempBlockId();
       const optimisticBlock: Block = {
         id: tempId,
         position,
