@@ -11,7 +11,7 @@ import {
 import { InputField } from "@/components/ui/input-field";
 import { DEFAULT_WORKSPACE_IMAGE } from "@/consts";
 import { useUpdateWorkspaceMutation } from "@/graphql/mutations/__generated__/workspace.generated";
-import { useGetWorkspaceNameQuery } from "@/graphql/queries/__generated__/workspace.generated";
+import { useGetWorkspaceByIdQuery } from "@/graphql/queries/__generated__/workspace.generated";
 import { useImageUpload } from "@/hooks/use-image-upload";
 import { toast } from "@/hooks/use-toast";
 import { useWorkspace } from "@/hooks/use-workspace";
@@ -32,7 +32,7 @@ export const WorkspaceButton = () => {
   const [updateWorkspace] = useUpdateWorkspaceMutation();
   const { workspace } = useWorkspace();
 
-  const { data, refetch } = useGetWorkspaceNameQuery({
+  const { data, refetch } = useGetWorkspaceByIdQuery({
     variables: { id: workspace?.id || "" },
     skip: !workspace?.id,
   });

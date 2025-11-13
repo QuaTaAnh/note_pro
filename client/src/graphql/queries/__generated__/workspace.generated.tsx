@@ -10,12 +10,12 @@ export type GetWorkspaceByUserIdQueryVariables = Types.Exact<{
 
 export type GetWorkspaceByUserIdQuery = { __typename?: 'query_root', workspaces: Array<{ __typename?: 'workspaces', id: string, name?: string | null }> };
 
-export type GetWorkspaceNameQueryVariables = Types.Exact<{
+export type GetWorkspaceByIdQueryVariables = Types.Exact<{
   id: Types.Scalars['uuid']['input'];
 }>;
 
 
-export type GetWorkspaceNameQuery = { __typename?: 'query_root', workspaces_by_pk?: { __typename?: 'workspaces', id: string, name?: string | null, image_url?: string | null } | null };
+export type GetWorkspaceByIdQuery = { __typename?: 'query_root', workspaces_by_pk?: { __typename?: 'workspaces', id: string, name?: string | null, image_url?: string | null } | null };
 
 
 export const GetWorkspaceByUserIdDocument = gql`
@@ -59,8 +59,8 @@ export type GetWorkspaceByUserIdQueryHookResult = ReturnType<typeof useGetWorksp
 export type GetWorkspaceByUserIdLazyQueryHookResult = ReturnType<typeof useGetWorkspaceByUserIdLazyQuery>;
 export type GetWorkspaceByUserIdSuspenseQueryHookResult = ReturnType<typeof useGetWorkspaceByUserIdSuspenseQuery>;
 export type GetWorkspaceByUserIdQueryResult = Apollo.QueryResult<GetWorkspaceByUserIdQuery, GetWorkspaceByUserIdQueryVariables>;
-export const GetWorkspaceNameDocument = gql`
-    query GetWorkspaceName($id: uuid!) {
+export const GetWorkspaceByIdDocument = gql`
+    query GetWorkspaceById($id: uuid!) {
   workspaces_by_pk(id: $id) {
     id
     name
@@ -70,34 +70,34 @@ export const GetWorkspaceNameDocument = gql`
     `;
 
 /**
- * __useGetWorkspaceNameQuery__
+ * __useGetWorkspaceByIdQuery__
  *
- * To run a query within a React component, call `useGetWorkspaceNameQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetWorkspaceNameQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetWorkspaceByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetWorkspaceByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetWorkspaceNameQuery({
+ * const { data, loading, error } = useGetWorkspaceByIdQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useGetWorkspaceNameQuery(baseOptions: Apollo.QueryHookOptions<GetWorkspaceNameQuery, GetWorkspaceNameQueryVariables> & ({ variables: GetWorkspaceNameQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useGetWorkspaceByIdQuery(baseOptions: Apollo.QueryHookOptions<GetWorkspaceByIdQuery, GetWorkspaceByIdQueryVariables> & ({ variables: GetWorkspaceByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetWorkspaceNameQuery, GetWorkspaceNameQueryVariables>(GetWorkspaceNameDocument, options);
+        return Apollo.useQuery<GetWorkspaceByIdQuery, GetWorkspaceByIdQueryVariables>(GetWorkspaceByIdDocument, options);
       }
-export function useGetWorkspaceNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetWorkspaceNameQuery, GetWorkspaceNameQueryVariables>) {
+export function useGetWorkspaceByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetWorkspaceByIdQuery, GetWorkspaceByIdQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetWorkspaceNameQuery, GetWorkspaceNameQueryVariables>(GetWorkspaceNameDocument, options);
+          return Apollo.useLazyQuery<GetWorkspaceByIdQuery, GetWorkspaceByIdQueryVariables>(GetWorkspaceByIdDocument, options);
         }
-export function useGetWorkspaceNameSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetWorkspaceNameQuery, GetWorkspaceNameQueryVariables>) {
+export function useGetWorkspaceByIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetWorkspaceByIdQuery, GetWorkspaceByIdQueryVariables>) {
           const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetWorkspaceNameQuery, GetWorkspaceNameQueryVariables>(GetWorkspaceNameDocument, options);
+          return Apollo.useSuspenseQuery<GetWorkspaceByIdQuery, GetWorkspaceByIdQueryVariables>(GetWorkspaceByIdDocument, options);
         }
-export type GetWorkspaceNameQueryHookResult = ReturnType<typeof useGetWorkspaceNameQuery>;
-export type GetWorkspaceNameLazyQueryHookResult = ReturnType<typeof useGetWorkspaceNameLazyQuery>;
-export type GetWorkspaceNameSuspenseQueryHookResult = ReturnType<typeof useGetWorkspaceNameSuspenseQuery>;
-export type GetWorkspaceNameQueryResult = Apollo.QueryResult<GetWorkspaceNameQuery, GetWorkspaceNameQueryVariables>;
+export type GetWorkspaceByIdQueryHookResult = ReturnType<typeof useGetWorkspaceByIdQuery>;
+export type GetWorkspaceByIdLazyQueryHookResult = ReturnType<typeof useGetWorkspaceByIdLazyQuery>;
+export type GetWorkspaceByIdSuspenseQueryHookResult = ReturnType<typeof useGetWorkspaceByIdSuspenseQuery>;
+export type GetWorkspaceByIdQueryResult = Apollo.QueryResult<GetWorkspaceByIdQuery, GetWorkspaceByIdQueryVariables>;
