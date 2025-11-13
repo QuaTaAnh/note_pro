@@ -16,7 +16,6 @@ interface SidebarButtonProps {
   className?: string;
   variant?: SidebarButtonVariant;
   isActive?: boolean;
-  prefetch?: boolean;
   count?: number;
   action?: React.ReactNode;
 }
@@ -32,7 +31,6 @@ export function SidebarButton({
   className,
   variant = "default",
   isActive = false,
-  prefetch = false,
   count,
   action,
 }: SidebarButtonProps) {
@@ -93,11 +91,7 @@ export function SidebarButton({
   if (href && !onClick) {
     return (
       <div className={cn(baseClasses, "group")}>
-        <Link
-          href={href}
-          className="flex items-center justify-between w-full"
-          prefetch={prefetch}
-        >
+        <Link href={href} className="flex items-center justify-between w-full">
           {left}
         </Link>
         {(count !== undefined || action) && (
