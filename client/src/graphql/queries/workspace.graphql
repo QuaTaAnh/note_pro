@@ -5,7 +5,7 @@ query GetWorkspaceByUserId($userId: uuid!) {
   }
 }
 
-query GetWorkspaceName($id: uuid!) {
+query GetWorkspaceById($id: uuid!) {
   workspaces_by_pk(id: $id) {
     id
     name
