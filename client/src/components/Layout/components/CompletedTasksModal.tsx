@@ -57,7 +57,9 @@ export const CompletedTasksModal = ({
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[80vh] overflow-hidden flex flex-col">
+      <DialogContent
+        className="w-full max-w-3xl h-[80vh] overflow-hidden flex flex-col"
+      >
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <CheckCircle className="w-5 h-5 text-green-500" />
@@ -68,7 +70,7 @@ export const CompletedTasksModal = ({
           </DialogTitle>
         </DialogHeader>
 
-        <div className="overflow-y-auto overflow-x-hidden">
+        <div className="flex-1 overflow-y-auto overflow-x-hidden pr-1">
           {loading ? (
             <div className="flex flex-col items-center justify-center py-12 text-center">
               <Spinner className="w-8 h-8 mb-3" />
