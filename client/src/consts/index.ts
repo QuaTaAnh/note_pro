@@ -3,7 +3,7 @@ import { HexColor } from "@/types/types";
 import { createElement } from "react";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { FiFileText, FiPlus } from "react-icons/fi";
-import { LuBookOpenText, LuCalendarRange } from "react-icons/lu";
+import { LuCalendarRange } from "react-icons/lu";
 
 // Authentication constants
 export const AUTHENTICATED = "authenticated";
@@ -57,11 +57,6 @@ export const MENU_ITEMS = (workspaceSlug: string, counts: { allDocs: number | un
     icon: LuCalendarRange,
     label: "Calendar",
     href: ROUTES.WORKSPACE_CALENDAR(workspaceSlug),
-  },
-  {
-    icon: LuBookOpenText,
-    label: "My Templates",
-    href: ROUTES.WORKSPACE_TEMPLATES(workspaceSlug),
   },
 ];
 

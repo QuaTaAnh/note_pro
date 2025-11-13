@@ -8,7 +8,6 @@ export const ROUTES = {
     ALL_DOCS: (workspaceSlug: string) => `/workspace/${workspaceSlug}/documents`,
     TASKS: (workspaceSlug: string) => `/workspace/${workspaceSlug}/tasks`,
     CALENDAR: (workspaceSlug: string) => `/workspace/${workspaceSlug}/calendar`,
-    TEMPLATES: (workspaceSlug: string) => `/workspace/${workspaceSlug}/templates`,
     FOLDER: (workspaceSlug: string, folderId: string) => `/workspace/${workspaceSlug}/folders/${folderId}`,
   },
   
@@ -26,7 +25,6 @@ export const ROUTES = {
   WORKSPACE_TASKS_TODAY: (workspaceSlug: string) => `/s/${workspaceSlug}/tasks/today`,
   WORKSPACE_TASKS_ALL: (workspaceSlug: string) => `/s/${workspaceSlug}/tasks/all`,
   WORKSPACE_CALENDAR: (workspaceSlug: string) => `/s/${workspaceSlug}/calendar`,
-  WORKSPACE_TEMPLATES: (workspaceSlug: string) => `/s/${workspaceSlug}/templates`,
   WORKSPACE_DOCUMENT: (workspaceSlug: string, documentId: string) =>
     `/editor/d/${workspaceSlug}/${documentId}`,
   WORKSPACE_DOCUMENT_FOLDER: (workspaceSlug: string, folderId: string, documentId: string) =>

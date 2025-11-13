@@ -20,7 +20,6 @@ const DEFAULT_TITLE_CONFIGS: TitleConfig[] = [
   { pathname: "/all", title: "All Docs" },
   { pathname: "/tasks", title: "Tasks" },
   { pathname: "/calendar", title: "Calendar" },
-  { pathname: "/templates", title: "My Templates" },
 ];
 
 function getTitleFromPath(
