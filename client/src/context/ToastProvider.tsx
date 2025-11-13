@@ -1,6 +1,6 @@
 "use client";
 
-import { useTheme } from "next-themes";
+import { useTheme } from "@/context/ThemeProvider";
 import { Toaster } from "sonner";
 
 export function ToastProvider({ children }: { children: React.ReactNode }) {
@@ -10,7 +10,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     <>
       {children}
       <Toaster
-        theme={theme as "light" | "dark"}
+        theme={theme}
         position="top-right"
         expand={true}
         richColors

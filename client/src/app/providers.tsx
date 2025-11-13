@@ -1,6 +1,6 @@
 "use client";
 
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider } from "@/context/ThemeProvider";
 import { MainLayout } from "@/components/Layout";
 import AuthWrapper from "@/components/auth/AuthWrapper";
 import { NextAuthProvider } from "@/context/AuthContext";
@@ -12,14 +12,9 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ErrorBoundary>
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="dark"
-        enableSystem={false}
-        disableTransitionOnChange={true}
-      >
-        <ApolloClientProvider>
-          <NextAuthProvider>
+      <ApolloClientProvider>
+        <NextAuthProvider>
+          <ThemeProvider>
             <ToastProvider>
               <DocumentAccessProvider>
                 <AuthWrapper>
@@ -27,9 +22,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
                 </AuthWrapper>
               </DocumentAccessProvider>
             </ToastProvider>
-          </NextAuthProvider>
-        </ApolloClientProvider>
-      </ThemeProvider>
+          </ThemeProvider>
+        </NextAuthProvider>
+      </ApolloClientProvider>
     </ErrorBoundary>
   );
 }
