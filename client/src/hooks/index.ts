@@ -1,4 +1,8 @@
 export { useAuth, useUserId, useIsAuthenticated, useToken } from './use-auth';
+export { useCurrentUser } from './use-current-user';
+export {
+  useCurrentUserLocalStorage,
+} from './use-current-user-local-storage';
 export { useLogout } from './use-logout';
 export { useBlocks } from './use-blocks';
 export { useWorkspace } from './use-workspace';

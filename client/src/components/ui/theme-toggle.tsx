@@ -2,19 +2,14 @@
 
 import { Button } from "@/components/ui/button";
 import { Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
 import { SimpleTooltip } from "../page/SimpleTooltip";
+import { useTheme } from "@/context/ThemeProvider";
+
+type ThemePreference = "light" | "dark";
 
 export function ThemeToggle() {
-  const [mounted, setMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, mounted } = useTheme();
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Prevent hydration mismatch by not rendering theme-dependent content until mounted
   if (!mounted) {
     return (
       <Button variant="ghost" size="icon" className="w-6 h-6">
@@ -24,11 +19,8 @@ export function ThemeToggle() {
   }
 
   const toggleTheme = () => {
-    if (theme === "light") {
-      setTheme("dark");
-    } else {
-      setTheme("light");
-    }
+    const nextTheme: ThemePreference = theme === "light" ? "dark" : "light";
+    setTheme(nextTheme);
   };
 
   const getIcon = () => {

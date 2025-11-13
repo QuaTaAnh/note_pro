@@ -1,0 +1,27 @@
+"use client";
+
+import { useMemo } from "react";
+import { useSession } from "next-auth/react";
+import { useAuth } from "./use-auth";
+
+export interface CurrentUser {
+  id: string | null;
+  name: string | null;
+  email: string | null;
+  image: string | null;
+}
+
+export function useCurrentUser(): CurrentUser {
+  const { data: session } = useSession();
+  const { userId } = useAuth();
+
+  return useMemo(
+    () => ({
+      id: userId ?? null,
+      name: session?.user?.name ?? null,
+      email: session?.user?.email ?? null,
+      image: session?.user?.image ?? null,
+    }),
+    [session?.user?.email, session?.user?.image, session?.user?.name, userId]
+  );
+}
