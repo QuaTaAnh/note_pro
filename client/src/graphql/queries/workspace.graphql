@@ -2,6 +2,7 @@ query GetWorkspaceByUserId($userId: uuid!) {
   workspaces(where: { created_by: { _eq: $userId } }) {
     id
     name
+    image_url
   }
 }
 

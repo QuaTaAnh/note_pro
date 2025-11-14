@@ -13,6 +13,7 @@ export type GetWorkspaceByUserIdQuery = {
     __typename?: "workspaces";
     id: string;
     name?: string | null;
+    image_url?: string | null;
   }>;
 };
 
@@ -35,6 +36,7 @@ export const GetWorkspaceByUserIdDocument = gql`
     workspaces(where: { created_by: { _eq: $userId } }) {
       id
       name
+      image_url
     }
   }
 `;
