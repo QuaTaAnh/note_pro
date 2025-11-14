@@ -114,7 +114,7 @@ function SortableBlockItem({
   );
 
   return (
-    <div ref={setNodeRef} style={style}>
+    <div ref={setNodeRef} style={style} data-block-id={block.id}>
       {block.type === BlockType.FILE ? (
         <FileBlockCard
           block={block}
