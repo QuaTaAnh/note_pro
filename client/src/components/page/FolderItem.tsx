@@ -5,7 +5,6 @@ import { useState } from "react";
 import { FiChevronDown, FiChevronRight } from "react-icons/fi";
 import { SidebarButton } from "../Layout/components/SidebarButton";
 import { Button } from "../ui/button";
-import { HexColor } from "@/types/types";
 import { usePathname } from "next/navigation";
 
 export const FolderItem: React.FC<{
@@ -58,11 +57,7 @@ export const FolderItem: React.FC<{
             <Icon
               className="w-4 h-4"
               style={{
-                color: folder.color ?? HexColor.WHITE,
-                filter:
-                  folder.color === HexColor.WHITE
-                    ? "drop-shadow(0 0 1px rgba(0,0,0,0.9))"
-                    : "none",
+                color: folder.color,
               }}
             />
           }

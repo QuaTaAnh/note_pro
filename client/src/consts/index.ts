@@ -89,19 +89,12 @@ const VIBRANT_COLORS = [
   { name: "Emerald", color: "#30d158", value: "#30d158" },
   { name: "Lime", color: "#87e05f", value: "#87e05f" },
   { name: "Grape", color: "#af52de", value: "#af52de" },
-  { name: "Violet", color: "#bf5af2", value: "#bf5af2" },
   { name: "Fuchsia", color: "#ff2d55", value: "#ff2d55" },
-  { name: "Pink", color: "#ff5e7b", value: "#ff5e7b" },
-  { name: "Red", color: "#ff3b30", value: "#ff3b30" },
-  { name: "Coral", color: "#ff453a", value: "#ff453a" },
   { name: "Tangerine", color: "#ff9500", value: "#ff9500" },
-  { name: "Amber", color: "#ff9f0a", value: "#ff9f0a" },
   { name: "Gold", color: "#ffcc00", value: "#ffcc00" },
-  { name: "Lemon", color: "#ffd60a", value: "#ffd60a" },
 ];
 
 export const FOLDER_COLORS = [
-  { name: "White", color: HexColor.WHITE, value: HexColor.WHITE },
   ...VIBRANT_COLORS,
 ];
 

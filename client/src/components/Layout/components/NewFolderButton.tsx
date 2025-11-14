@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { IconPicker, getIconComponent } from "@/components/ui/icon-picker";
+import { IconPicker } from "@/components/ui/icon-picker";
 import { InputField } from "@/components/ui/input-field";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
@@ -17,9 +17,8 @@ import { useInsertFolderMutation } from "@/graphql/mutations/__generated__/folde
 import { useUserId } from "@/hooks/use-auth";
 import { useWorkspace } from "@/hooks/use-workspace";
 import showToast from "@/lib/toast";
-import { cn } from "@/lib/utils";
 import { HexColor } from "@/types/types";
-import React, { useMemo, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { FiPlus } from "react-icons/fi";
 
 interface FolderData {
@@ -37,24 +36,14 @@ export const NewFolderButton = () => {
   const [folderData, setFolderData] = useState<FolderData>({
     name: "",
     description: "",
-    color: HexColor.WHITE,
+    color: HexColor.BLACK,
     icon: "folder",
   });
   const dialogContentRef = useRef<HTMLDivElement | null>(null);
-  const SelectedIcon = useMemo(
-    () => getIconComponent(folderData.icon),
-    [folderData.icon],
-  );
-
-  const previewIconClass = useMemo(() => {
-    return folderData.color === HexColor.WHITE
-      ? "text-muted-foreground"
-      : "text-white";
-  }, [folderData.color]);
 
   const handleInputChange = (
     field: keyof FolderData,
-    value: string | React.ComponentType<unknown>,
+    value: string | React.ComponentType<unknown>
   ) => {
     setFolderData((prev) => ({
       ...prev,
@@ -93,7 +82,7 @@ export const NewFolderButton = () => {
       setFolderData({
         name: "",
         description: "",
-        color: HexColor.WHITE,
+        color: HexColor.BLACK,
         icon: "folder",
       });
     } catch {
@@ -117,23 +106,6 @@ export const NewFolderButton = () => {
         </DialogHeader>
         <Separator />
         <div className="space-y-4">
-          <div className="flex items-center gap-4 p-4 rounded-2xl border bg-accent/30">
-            <div
-              className="w-12 h-12 rounded-2xl flex items-center justify-center border"
-              style={{ backgroundColor: folderData.color }}
-            >
-              <SelectedIcon className={cn("w-6 h-6", previewIconClass)} />
-            </div>
-            <div>
-              <p className="text-xs uppercase tracking-wide text-muted-foreground">
-                Folder preview
-              </p>
-              <p className="text-base font-semibold text-foreground">
-                {folderData.name || "New Folder"}
-              </p>
-            </div>
-          </div>
-
           <div className="space-y-2">
             <Label htmlFor="title" className="text-sm font-medium">
               Name <span className="text-destructive">*</span>

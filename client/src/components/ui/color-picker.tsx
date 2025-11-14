@@ -14,7 +14,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
 }) => {
   useEffect(() => {
     if (!selectedColor || selectedColor.trim() === "") {
-      onColorChange(HexColor.WHITE);
+      onColorChange(HexColor.BLACK);
     }
   }, [selectedColor, onColorChange]);
 
@@ -22,8 +22,6 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
     <div className="grid grid-cols-6 gap-3">
       {FOLDER_COLORS.map((color) => {
         const isSelected = selectedColor === color.value;
-        const isWhite = color.value === HexColor.WHITE;
-
         return (
           <button
             key={color.name}
@@ -31,7 +29,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
             onClick={() => onColorChange(color.value)}
             className={cn(
               "relative flex h-9 w-9 items-center justify-center rounded-full transition-transform duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60",
-              isSelected ? "scale-105" : "hover:scale-105",
+              isSelected ? "scale-105" : "hover:scale-105"
             )}
             title={color.name}
           >
@@ -40,7 +38,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
               className="block h-6 w-6 rounded-full border"
               style={{
                 backgroundColor: color.color,
-                borderColor: isWhite ? "rgba(120,120,120,0.6)" : "transparent",
+                borderColor: "transparent",
               }}
             />
             {isSelected && (

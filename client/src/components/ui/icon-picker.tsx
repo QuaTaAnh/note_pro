@@ -123,8 +123,7 @@ export const IconPicker: React.FC<IconPickerProps> = ({
 
   const iconPreviewStyles = previewColor
     ? {
-        backgroundColor: previewColor,
-        color: previewColor === HexColor.WHITE ? "#1f2937" : "#ffffff",
+        color: previewColor,
       }
     : undefined;
 
@@ -140,7 +139,7 @@ export const IconPicker: React.FC<IconPickerProps> = ({
             <span
               className={cn(
                 "w-8 h-8 rounded-full border flex items-center justify-center",
-                previewColor ? "border-transparent" : "border-border",
+                previewColor ? "border-transparent" : "border-border"
               )}
               style={iconPreviewStyles}
             >
@@ -173,7 +172,7 @@ export const IconPicker: React.FC<IconPickerProps> = ({
                         size="sm"
                         className={cn(
                           "w-7 h-7 p-0 hover:bg-primary/10 relative z-10 pointer-events-auto",
-                          isSelected && "bg-primary/20 text-primary",
+                          isSelected && "bg-primary/20 text-primary"
                         )}
                         onClick={() => handleIconSelect(iconItem.key)}
                         title={iconItem.name}

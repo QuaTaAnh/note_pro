@@ -5,6 +5,7 @@ export type IconComponent =
   | React.ComponentType<{ className?: string }>;
 
 export enum HexColor {
+  BLACK = "#1c1c1e",
   WHITE = "#ffffff",
   YELLOW = "#fef08a",
   GREEN = "#bbf7d0",
