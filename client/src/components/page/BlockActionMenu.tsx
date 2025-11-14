@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { Download, MoreVertical, Trash2 } from "lucide-react";
+import { useCallback } from "react";
 
 interface BlockActionMenuProps {
   onDelete?: () => void;
@@ -23,6 +24,32 @@ export function BlockActionMenu({
   className,
 }: BlockActionMenuProps) {
   const hasActions = Boolean(onDelete) || Boolean(downloadUrl);
+  const handleDownload = useCallback(async () => {
+    if (!downloadUrl) return;
+
+    const inferredFileName =
+      downloadFileName ||
+      downloadUrl.split("/").pop()?.split("?")[0] ||
+      "download";
+
+    try {
+      const response = await fetch(downloadUrl);
+      if (!response.ok) throw new Error("Failed to download file");
+
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = inferredFileName;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error("Error downloading file", error);
+      window.open(downloadUrl, "_blank", "noopener,noreferrer");
+    }
+  }, [downloadFileName, downloadUrl]);
 
   if (!hasActions) return null;
 
@@ -46,18 +73,11 @@ export function BlockActionMenu({
             <Button
               variant="ghost"
               size="sm"
-              asChild
               className="justify-start px-2 py-1.5 text-sm"
+              onClick={handleDownload}
             >
-              <a
-                href={downloadUrl}
-                download={downloadFileName || undefined}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Download className="h-4 w-4" />
-                Download
-              </a>
+              <Download className="h-4 w-4" />
+              Download
             </Button>
           )}
           {onDelete && (
