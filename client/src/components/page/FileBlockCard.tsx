@@ -1,12 +1,12 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { IMAGE_EXTENSIONS } from "@/consts";
 import { Block } from "@/hooks";
 import { cn } from "@/lib/utils";
-import { ExternalLink, FileText, Trash2 } from "lucide-react";
+import { ExternalLink, FileText } from "lucide-react";
 import Image from "next/image";
 import { ReactNode, useCallback, useMemo } from "react";
+import { BlockActionMenu } from "./BlockActionMenu";
 
 type FileContent = {
   fileUrl?: string;
@@ -47,74 +47,51 @@ export function FileBlockCard({
   }, [fileType, fileUrl]);
 
   return (
-    <div className="group relative flex items-start gap-3 px-2 rounded-md hover:bg-accent/30 transition-colors my-1">
-      {editable && <div className="pt-1">{dragHandle}</div>}
-      {isImageFile ? (
-        <button
-          type="button"
-          onClick={handleOpen}
-          className={cn(
-            "flex-1 min-w-0 overflow-hidden rounded-lg border bg-muted/40",
-            !fileUrl && "cursor-not-allowed opacity-70"
-          )}
-          disabled={!fileUrl}
-        >
-          {fileUrl && (
-            <div className="relative w-full bg-background">
-              <Image
-                src={fileUrl}
-                alt={fileName}
-                width={1200}
-                height={675}
-                className="h-auto w-full object-contain"
-              />
-            </div>
-          )}
-          <div className="flex items-center justify-between gap-3 border-t px-4 py-2 text-left">
-            <div className="min-w-0">
-              <p className="truncate text-sm font-medium">{fileName}</p>
-              <p className="truncate text-xs text-muted-foreground">
-                {fileType}
-                {fileSize ? ` · ${fileSize}` : ""}
-              </p>
-            </div>
-            <ExternalLink className="h-4 w-4 text-muted-foreground" />
+    <div className="group relative flex items-start gap-3 py-1">
+      {editable && <div className="pt-2 text-muted-foreground">{dragHandle}</div>}
+      <button
+        type="button"
+        onClick={handleOpen}
+        className={cn(
+          "flex-1 min-w-0 rounded-2xl border border-border/60 bg-card px-4 py-4 text-left shadow-sm transition-all duration-200 hover:shadow-md focus-visible:outline-none",
+          !fileUrl && "cursor-not-allowed opacity-70"
+        )}
+        disabled={!fileUrl}
+      >
+        <div className="flex items-center gap-4">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+            <FileText className="h-6 w-6" />
           </div>
-        </button>
-      ) : (
-        <button
-          type="button"
-          onClick={handleOpen}
-          className={cn(
-            "flex-1 min-w-0 border rounded-lg px-4 py-3 text-left bg-muted/40 hover:bg-muted/60 transition-colors",
-            !fileUrl && "cursor-not-allowed opacity-70"
-          )}
-          disabled={!fileUrl}
-        >
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-md bg-primary/10 text-primary flex items-center justify-center">
-              <FileText className="w-6 h-6" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate">{fileName}</p>
-              <p className="text-xs text-muted-foreground truncate">
-                {fileType}
-                {fileSize ? ` · ${fileSize}` : ""}
-              </p>
-            </div>
-            <ExternalLink className="w-4 h-4 text-muted-foreground" />
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-semibold truncate">{fileName}</p>
+            <p className="text-xs text-muted-foreground truncate">
+              {fileType}
+              {fileSize ? ` · ${fileSize}` : ""}
+            </p>
           </div>
-        </button>
-      )}
-      {onDeleteBlock && editable && (
-        <Button
-          variant="ghost"
-          size="icon"
-          className="w-6 h-6 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-100 dark:hover:bg-red-900/20 rounded text-gray-400 hover:text-red-600 dark:hover:text-red-400 mt-0.5"
-          onClick={onDeleteBlock}
-        >
-          <Trash2 size={14} />
-        </Button>
+          <ExternalLink className="h-4 w-4 text-muted-foreground" />
+        </div>
+
+        {isImageFile && fileUrl && (
+          <div className="mt-4 overflow-hidden rounded-2xl border border-dashed border-muted bg-muted/30">
+            <Image
+              src={fileUrl}
+              alt={fileName}
+              width={1200}
+              height={675}
+              className="h-auto w-full object-contain"
+            />
+          </div>
+        )}
+      </button>
+      {editable && (
+        <div className="ml-1 flex-shrink-0 opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100">
+          <BlockActionMenu
+            onDelete={onDeleteBlock}
+            downloadUrl={fileUrl}
+            downloadFileName={fileName}
+          />
+        </div>
       )}
     </div>
   );
