@@ -1,6 +1,6 @@
 "use client";
 
-import { Paperclip, Smile } from "lucide-react";
+import type { ComponentType, SVGProps } from "react";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -9,33 +9,22 @@ interface SlashCommandProps {
   onSelect: (command: string) => void;
   close: () => void;
   position: { top: number; left: number };
+  commands: Command[];
 }
 
-interface Command {
+export interface Command {
   id: string;
   name: string;
-  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  icon: ComponentType<SVGProps<SVGSVGElement>>;
   preview?: string;
 }
-
-const COMMANDS: Command[] = [
-  {
-    id: "upload-file",
-    name: "Upload file",
-    icon: Paperclip,
-  },
-  {
-    id: "emojis",
-    name: "Emojis",
-    icon: Smile,
-  },
-];
 
 export const SlashCommand = ({
   show,
   onSelect,
   close,
   position,
+  commands,
 }: SlashCommandProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -58,17 +47,17 @@ export const SlashCommand = ({
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowDown") {
         e.preventDefault();
-        setSelectedIndex((i) => (i + 1) % Math.max(COMMANDS.length, 1));
+        setSelectedIndex((i) => (i + 1) % Math.max(commands.length, 1));
       } else if (e.key === "ArrowUp") {
         e.preventDefault();
         setSelectedIndex(
           (i) =>
-            (i - 1 + Math.max(COMMANDS.length, 1)) %
-            Math.max(COMMANDS.length, 1)
+            (i - 1 + Math.max(commands.length, 1)) %
+            Math.max(commands.length, 1)
         );
       } else if (e.key === "Enter") {
         e.preventDefault();
-        const cmd = COMMANDS[selectedIndex];
+        const cmd = commands[selectedIndex];
         if (cmd) {
           onSelect(cmd.id);
           close();
@@ -80,9 +69,9 @@ export const SlashCommand = ({
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [show, COMMANDS, selectedIndex, onSelect, close]);
+  }, [show, commands, selectedIndex, onSelect, close]);
 
-  if (!show) return null;
+  if (!show || commands.length === 0) return null;
 
   return (
     <div
@@ -90,10 +79,10 @@ export const SlashCommand = ({
       className="fixed bg-popover text-popover-foreground border border-border rounded-xl shadow-lg p-2 z-50 w-80 max-h-96 overflow-hidden"
       style={{ top: position.top, left: position.left }}
       role="listbox"
-      aria-activedescendant={COMMANDS[selectedIndex]?.id}
+      aria-activedescendant={commands[selectedIndex]?.id}
     >
       <div className="max-h-80 overflow-y-auto">
-        {COMMANDS.map((cmd, idx) => {
+        {commands.map((cmd, idx) => {
           const Icon = cmd.icon;
           const isActive = idx === selectedIndex;
           return (

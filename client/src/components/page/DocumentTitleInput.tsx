@@ -36,6 +36,7 @@ export function DocumentTitleInput({
       isTitle={true}
       showBubbleMenu={true}
       editable={editable}
+      enableFileUploads={false}
     />
   );
 }

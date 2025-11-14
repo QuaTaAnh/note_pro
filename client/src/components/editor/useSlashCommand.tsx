@@ -8,6 +8,7 @@ import { BlockType } from "@/types/types";
 import { toast } from "sonner";
 import { EmojiPicker } from "./EmojiPicker";
 import { SlashCommand } from "./SlashCommand";
+import { Paperclip, Smile } from "lucide-react";
 
 interface SlashCommandOptions {
   position?: number;
@@ -17,13 +18,19 @@ interface SlashCommandOptions {
     content?: Record<string, unknown>
   ) => Promise<void> | void;
   onToggleUploading?: (isUploading: boolean) => void;
+  allowFileUploads?: boolean;
 }
 
 const MAX_FILE_SIZE_BYTES = 25 * 1024 * 1024;
 
 export const useSlashCommand = (
   editor: Editor | null,
-  { position, onAddBlock, onToggleUploading }: SlashCommandOptions = {}
+  {
+    position,
+    onAddBlock,
+    onToggleUploading,
+    allowFileUploads = true,
+  }: SlashCommandOptions = {}
 ) => {
   const [showSlash, setShowSlash] = useState(false);
   const [showEmoji, setShowEmoji] = useState(false);
@@ -85,10 +92,31 @@ export const useSlashCommand = (
   );
 
   const triggerFilePicker = useCallback(() => {
+    if (!allowFileUploads) return;
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
-  }, []);
+  }, [allowFileUploads]);
+
+  const availableCommands = useMemo(() => {
+    const commands = [
+      {
+        id: "emojis",
+        name: "Emojis",
+        icon: Smile,
+      },
+    ];
+
+    if (allowFileUploads) {
+      commands.unshift({
+        id: "upload-file",
+        name: "Upload file",
+        icon: Paperclip,
+      });
+    }
+
+    return commands;
+  }, [allowFileUploads]);
 
   const onCommandSelect = useCallback(
     (cmd: string) => {
@@ -105,6 +133,10 @@ export const useSlashCommand = (
           break;
         }
         case "upload-file": {
+          if (!allowFileUploads) {
+            toast.error("File uploads are disabled here.");
+            break;
+          }
           if (!onAddBlock) {
             toast.error("You don't have permission to upload files.");
             break;
@@ -115,7 +147,7 @@ export const useSlashCommand = (
       }
       setShowSlash(false);
     },
-    [editor, onAddBlock, triggerFilePicker]
+    [editor, onAddBlock, triggerFilePicker, allowFileUploads]
   );
 
   const onEmojiSelect = useCallback(
@@ -129,6 +161,9 @@ export const useSlashCommand = (
   const handleKeyDown = useCallback(
     (view: EditorView, event: KeyboardEvent) => {
       if (event.key === "/" && !event.shiftKey) {
+        if (availableCommands.length === 0) {
+          return false;
+        }
         const { state } = view;
         const { selection } = state;
         const { $from } = selection;
@@ -150,24 +185,37 @@ export const useSlashCommand = (
       }
       return false;
     },
-    [showSlash, showEmoji]
+    [showSlash, showEmoji, availableCommands.length]
   );
+
+  useEffect(() => {
+    if (!showSlash) {
+      setSelectedIndex(0);
+    } else if (availableCommands.length > 0) {
+      setSelectedIndex((prev) =>
+        Math.min(prev, Math.max(availableCommands.length - 1, 0))
+      );
+    }
+  }, [showSlash, availableCommands.length]);
 
   const menus = useMemo(
     () => (
       <>
-        <input
-          ref={fileInputRef}
-          type="file"
-          className="hidden"
-          onChange={handleFileChange}
-        />
-        {showSlash && (
+        {allowFileUploads && (
+          <input
+            ref={fileInputRef}
+            type="file"
+            className="hidden"
+            onChange={handleFileChange}
+          />
+        )}
+        {showSlash && availableCommands.length > 0 && (
           <SlashCommand
             show={showSlash}
             onSelect={onCommandSelect}
             close={() => setShowSlash(false)}
             position={slashPos}
+            commands={availableCommands}
           />
         )}
         {showEmoji && (
@@ -192,6 +240,8 @@ export const useSlashCommand = (
       onCommandSelect,
       onEmojiSelect,
       handleFileChange,
+      availableCommands,
+      allowFileUploads,
     ]
   );
 

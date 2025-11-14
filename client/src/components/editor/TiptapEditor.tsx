@@ -44,6 +44,7 @@ interface TiptapEditorProps {
   task?: Task | null;
   editable?: boolean;
   onToggleUploading?: (isUploading: boolean) => void;
+  enableFileUploads?: boolean;
 }
 
 export const TiptapEditor = ({
@@ -67,6 +68,7 @@ export const TiptapEditor = ({
   dragHandle,
   editable = true,
   onToggleUploading,
+  enableFileUploads = true,
 }: TiptapEditorProps & { dragHandle?: React.ReactNode }) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const isCompleted = task?.status === TASK_STATUS.COMPLETED;
@@ -113,6 +115,7 @@ export const TiptapEditor = ({
     position,
     onAddBlock,
     onToggleUploading,
+    allowFileUploads: enableFileUploads,
   });
 
   useEffect(() => {

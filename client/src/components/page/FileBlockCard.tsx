@@ -5,6 +5,7 @@ import { Block } from "@/hooks";
 import { cn } from "@/lib/utils";
 import { ExternalLink, FileText } from "lucide-react";
 import Image from "next/image";
+import type { ComponentType, SVGProps } from "react";
 import { ReactNode, useCallback, useMemo } from "react";
 import { BlockActionMenu } from "./BlockActionMenu";
 
@@ -33,6 +34,15 @@ export function FileBlockCard({
   const fileName = content.fileName || content.fileUrl || "Untitled file";
   const fileType = content.fileType || "Unknown type";
   const fileSize = content.fileSize ? formatFileSize(content.fileSize) : null;
+  const fileExtension = useMemo(
+    () => getFileExtension(fileName, content.fileType),
+    [fileName, content.fileType]
+  );
+  const fileBadge = useMemo(
+    () => getFileBadge(fileExtension),
+    [fileExtension]
+  );
+  const BadgeIcon = fileBadge.icon;
 
   const handleOpen = useCallback(() => {
     if (!fileUrl) return;
@@ -60,8 +70,20 @@ export function FileBlockCard({
       >
         {!isImageFile && (
           <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
-              <FileText className="h-6 w-6" />
+            <div
+              className={cn(
+                "flex h-12 w-12 items-center justify-center rounded-xl text-xs font-semibold uppercase",
+                fileBadge.bgClass,
+                fileBadge.textClass
+              )}
+            >
+              {BadgeIcon ? (
+                <BadgeIcon className="h-6 w-6" />
+              ) : fileBadge.label ? (
+                <span className="text-sm font-semibold">{fileBadge.label}</span>
+              ) : (
+                <FileText className="h-6 w-6" />
+              )}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold truncate">{fileName}</p>
@@ -108,4 +130,55 @@ function formatFileSize(bytes: number) {
   );
   const value = bytes / Math.pow(1024, i);
   return `${value.toFixed(value >= 10 || i === 0 ? 0 : 1)} ${units[i]}`;
+}
+
+type FileBadge = {
+  label: string;
+  bgClass: string;
+  textClass: string;
+  icon?: ComponentType<SVGProps<SVGSVGElement>>;
+};
+
+const FILE_BADGES: Record<string, FileBadge> = {
+  pdf: { label: "PDF", bgClass: "bg-red-100", textClass: "text-red-700" },
+  doc: { label: "WORD", bgClass: "bg-blue-100", textClass: "text-blue-700" },
+  docx: { label: "WORD", bgClass: "bg-blue-100", textClass: "text-blue-700" },
+  xls: { label: "XLS", bgClass: "bg-green-100", textClass: "text-green-700" },
+  xlsx: { label: "XLS", bgClass: "bg-green-100", textClass: "text-green-700" },
+  ppt: { label: "PPT", bgClass: "bg-orange-100", textClass: "text-orange-700" },
+  pptx: { label: "PPT", bgClass: "bg-orange-100", textClass: "text-orange-700" },
+  txt: { label: "TXT", bgClass: "bg-slate-100", textClass: "text-slate-700" },
+  csv: { label: "CSV", bgClass: "bg-emerald-100", textClass: "text-emerald-700" },
+  zip: { label: "ZIP", bgClass: "bg-amber-100", textClass: "text-amber-700" },
+  rar: { label: "RAR", bgClass: "bg-amber-100", textClass: "text-amber-700" },
+  default: {
+    label: "FILE",
+    bgClass: "bg-primary/10",
+    textClass: "text-primary",
+    icon: FileText,
+  },
+};
+
+function getFileBadge(extension?: string | null): FileBadge {
+  if (!extension) return FILE_BADGES.default;
+  return FILE_BADGES[extension] || {
+    ...FILE_BADGES.default,
+    label: extension.toUpperCase(),
+  };
+}
+
+function getFileExtension(fileName: string, fileType?: string | null) {
+  const fromName = fileName?.split("?")[0]?.split(".").pop()?.toLowerCase();
+  if (fromName) return fromName;
+  if (!fileType) return null;
+  const normalizedType = fileType.toLowerCase();
+  if (normalizedType.includes("pdf")) return "pdf";
+  if (normalizedType.includes("word")) return "docx";
+  if (normalizedType.includes("excel") || normalizedType.includes("spreadsheet"))
+    return "xlsx";
+  if (normalizedType.includes("powerpoint")) return "pptx";
+  if (normalizedType.includes("text")) return "txt";
+  if (normalizedType.includes("zip")) return "zip";
+  if (normalizedType.includes("rar")) return "rar";
+  return null;
 }
