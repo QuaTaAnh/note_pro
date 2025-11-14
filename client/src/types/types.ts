@@ -25,6 +25,7 @@ export enum BlockType {
   PARAGRAPH = "paragraph",
   PAGE = "page",
   TASK = "task",
+  FILE = "file",
 }
 
 export enum AccessRequestStatus {

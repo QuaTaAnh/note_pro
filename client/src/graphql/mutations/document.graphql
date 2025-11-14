@@ -35,6 +35,7 @@ mutation InsertBlockAndUpdatePosition(
   $type: String!
   $workspaceId: uuid!
   $userId: uuid!
+  $content: jsonb!
 ) {
   update_blocks(
     where: { page_id: { _eq: $pageId }, position: { _gte: $position } }
@@ -50,7 +51,7 @@ mutation InsertBlockAndUpdatePosition(
       type: $type
       workspace_id: $workspaceId
       user_id: $userId
-      content: { text: "" }
+      content: $content
     }
   ) {
     id

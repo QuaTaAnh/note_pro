@@ -16,6 +16,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { TiptapBlockItem } from "@/components/editor/TiptapBlockItem";
+import { FileBlockCard } from "@/components/page/FileBlockCard";
 import { BlockType } from "@/types/types";
 import { Block } from "@/hooks";
 import { GripVertical } from "lucide-react";
@@ -28,11 +29,16 @@ interface Props {
   onFocus: (blockId: string) => void;
   onBlur: () => void;
   onChange: (blockId: string, value: string) => void;
-  onAddBlock: (position: number, type: BlockType) => void;
+  onAddBlock: (
+    position: number,
+    type: BlockType,
+    content?: Record<string, unknown>
+  ) => Promise<void> | void;
   onSaveImmediate: () => void;
   onDeleteBlock?: (blockId: string) => void;
   onReorder?: (newBlocks: Block[]) => void;
   editable?: boolean;
+  onToggleUploading?: (isUploading: boolean) => void;
 }
 
 function SortableBlockItem({
@@ -44,10 +50,15 @@ function SortableBlockItem({
   onFocus: (blockId: string) => void;
   onBlur: () => void;
   onChange: (blockId: string, value: string) => void;
-  onAddBlock: (position: number, type: BlockType) => void;
+  onAddBlock: (
+    position: number,
+    type: BlockType,
+    content?: Record<string, unknown>
+  ) => Promise<void> | void;
   onSaveImmediate: () => void;
   onDeleteBlock?: (blockId: string) => void;
   editable?: boolean;
+  onToggleUploading?: (isUploading: boolean) => void;
 }) {
   const {
     attributes,
@@ -91,36 +102,52 @@ function SortableBlockItem({
     boxShadow: isDragging ? "0 4px 12px rgba(0, 0, 0, 0.1)" : "none",
   };
 
+  const dragHandle = (
+    <span
+      {...attributes}
+      {...listeners}
+      tabIndex={-1}
+      className="opacity-0 group-hover:opacity-100 transition-opacity cursor-grab"
+    >
+      <GripVertical size={16} />
+    </span>
+  );
+
   return (
     <div ref={setNodeRef} style={style}>
-      <TiptapBlockItem
-        value={block.content?.text || ""}
-        position={block.position || 0}
-        isFocused={props.focusedBlockId === block.id}
-        onFocus={() => props.onFocus(block.id)}
-        onBlur={props.onBlur}
-        onChange={(value: string) => props.onChange(block.id, value)}
-        onAddBlock={props.onAddBlock}
-        onSaveImmediate={props.onSaveImmediate}
-        onDeleteBlock={
-          props.onDeleteBlock
-            ? () => props.onDeleteBlock && props.onDeleteBlock(block.id)
-            : undefined
-        }
-        blockType={block.type}
-        task={task}
-        editable={props.editable}
-        dragHandle={
-          <span
-            {...attributes}
-            {...listeners}
-            tabIndex={-1}
-            className="opacity-0 group-hover:opacity-100 transition-opacity cursor-grab"
-          >
-            <GripVertical size={16} />
-          </span>
-        }
-      />
+      {block.type === BlockType.FILE ? (
+        <FileBlockCard
+          block={block}
+          dragHandle={dragHandle}
+          editable={props.editable}
+          onDeleteBlock={
+            props.onDeleteBlock
+              ? () => props.onDeleteBlock && props.onDeleteBlock(block.id)
+              : undefined
+          }
+        />
+      ) : (
+        <TiptapBlockItem
+          value={block.content?.text || ""}
+          position={block.position || 0}
+          isFocused={props.focusedBlockId === block.id}
+          onFocus={() => props.onFocus(block.id)}
+          onBlur={props.onBlur}
+          onChange={(value: string) => props.onChange(block.id, value)}
+          onAddBlock={props.onAddBlock}
+          onSaveImmediate={props.onSaveImmediate}
+          onDeleteBlock={
+            props.onDeleteBlock
+              ? () => props.onDeleteBlock && props.onDeleteBlock(block.id)
+              : undefined
+          }
+          blockType={block.type}
+          task={task}
+          editable={props.editable}
+          dragHandle={dragHandle}
+          onToggleUploading={props.onToggleUploading}
+        />
+      )}
     </div>
   );
 }
@@ -136,6 +163,7 @@ export function BlockList({
   onDeleteBlock,
   onReorder,
   editable = true,
+  onToggleUploading,
 }: Props) {
   const sensors = useSensors(useSensor(PointerSensor));
 
@@ -174,6 +202,7 @@ export function BlockList({
               onSaveImmediate={onSaveImmediate}
               onDeleteBlock={onDeleteBlock}
               editable={editable}
+              onToggleUploading={onToggleUploading}
             />
           ))}
 

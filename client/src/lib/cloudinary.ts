@@ -106,6 +106,50 @@ export async function uploadImageToCloudinary(
   }
 }
 
+export async function uploadFileToCloudinary(
+  file: File,
+  options?: {
+    folder?: string;
+    tags?: string[];
+    resourceType?: "auto" | "raw" | "image" | "video";
+  }
+): Promise<CloudinaryUploadResponse> {
+  const config = getCloudinaryConfig();
+  const formData = new FormData();
+
+  formData.append("file", file);
+  formData.append("upload_preset", config.uploadPreset);
+
+  if (options?.folder || config.folder) {
+    formData.append("folder", options?.folder || config.folder || "");
+  }
+
+  if (options?.tags && options.tags.length > 0) {
+    formData.append("tags", options.tags.join(","));
+  }
+
+  const resourceType = options?.resourceType || "auto";
+  const url = `https://api.cloudinary.com/v1_1/${config.cloudName}/${resourceType}/upload`;
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error?.message || "Failed to upload file");
+    }
+
+    const data: CloudinaryUploadResponse = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error uploading file to Cloudinary:", error);
+    throw error;
+  }
+}
+
 /**
  * Delete an image from Cloudinary (requires backend with admin credentials)
  * Note: This needs to be done on the backend for security reasons
