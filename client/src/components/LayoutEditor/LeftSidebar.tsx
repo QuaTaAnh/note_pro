@@ -1,12 +1,6 @@
 import { useMemo, useState, useCallback, type ReactNode } from "react";
 import Image from "next/image";
-import {
-  CheckCircle,
-  Menu,
-  Paperclip,
-  Search,
-  FileText,
-} from "lucide-react";
+import { CheckCircle, Menu, Paperclip, FileText } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import { getPlainText } from "../page/CardDocument";
 import { useDocumentBlocksData } from "@/hooks";
@@ -20,7 +14,8 @@ import {
   type SectionItem,
   type SidebarTask,
   type SidebarAttachment,
-} from "./SidebarTabs";
+} from "./sidebar-tabs";
+import { formatFileSize } from "@/lib/file-utils";
 
 interface Props {
   pageId: string;
@@ -101,16 +96,21 @@ export const LeftSidebar = ({ pageId }: Props) => {
   const attachments = useMemo<SidebarAttachment[]>(() => {
     return attachmentBlocks.map((block) => {
       const content = (block.content as AttachmentContent) || {};
-      const sizeLabel = content.fileSize
-        ? formatFileSize(content.fileSize)
-        : null;
+      const sizeLabel = formatFileSize(content.fileSize);
+      const uploadedAt =
+        (content as { fileUpdatedAt?: string | null })?.fileUpdatedAt ||
+        (content as { fileUploadedAt?: string | null })?.fileUploadedAt ||
+        (content as { uploadedAt?: string | null })?.uploadedAt ||
+        block.created_at ||
+        null;
+
       return {
         id: block.id,
         name: content.fileName || content.fileUrl || "Untitled file",
         type: content.fileType || "Unknown type",
         size: sizeLabel,
         url: content.fileUrl || null,
-        updatedAt: block.updated_at || block.created_at || null,
+        uploadedAt,
       };
     });
   }, [attachmentBlocks]);
@@ -271,10 +271,3 @@ const StatCard = ({ label, value, description, icon }: StatCardProps) => {
   );
 };
 
-function formatFileSize(bytes: number) {
-  if (!bytes || bytes <= 0) return null;
-  const units = ["B", "KB", "MB", "GB"];
-  const i = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
-  const value = bytes / Math.pow(1024, i);
-  return `${value.toFixed(value >= 10 || i === 0 ? 0 : 1)} ${units[i]}`;
-}
