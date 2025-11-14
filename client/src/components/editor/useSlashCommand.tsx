@@ -65,8 +65,8 @@ const buildFilePreviewHtml = ({
 }) => {
   const safeName = escapeHtml(name);
   const safeExtension = escapeHtml(extension);
-  const safeInfo = escapeHtml(`${extension} Document • ${sizeLabel}`);
   const safeUrl = encodeURI(url);
+  const safeMeta = escapeHtml(`${extension} Document • ${sizeLabel}`);
 
   return `
     <div
@@ -78,13 +78,14 @@ const buildFilePreviewHtml = ({
       contenteditable="false"
     >
       <div class="np-file-icon" aria-hidden="true">
-        <span>${safeExtension}</span>
+        <span class="np-file-icon-ext">${safeExtension}</span>
+        <span class="np-file-icon-label">File</span>
       </div>
-      <div class="np-file-meta">
+      <div class="np-file-body">
         <p class="np-file-name">${safeName}</p>
-        <p class="np-file-info">${safeInfo}</p>
+        <p class="np-file-info">${safeMeta}</p>
       </div>
-      <div class="np-file-open" aria-hidden="true">↗</div>
+      <div class="np-file-open" aria-hidden="true">Open ↗</div>
     </div>
   `.trim();
 };
