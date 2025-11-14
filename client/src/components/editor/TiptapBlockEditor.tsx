@@ -42,10 +42,10 @@ export default function TiptapBlockEditor({ pageId, className = "" }: Props) {
           <PageLoading text="Uploading file..." />
         </div>
       )}
-      <div className={`mx-auto max-w-6xl px-4 md:px-6 lg:px-10 ${className}`}>
-        <div className="mx-auto max-w-4xl rounded-[32px] border border-border/60 bg-card shadow-xl">
-          <div className="h-[calc(100vh-100px)] overflow-y-auto rounded-[32px]">
-            <div className="mx-auto max-w-2xl py-16 px-6 sm:px-10 lg:px-12">
+      <div className={`max-w-full mx-auto px-4 md:px-6 lg:px-10 ${className}`}>
+        <div className="mx-auto max-w-full rounded-xl border border-border/60 bg-card shadow-xl">
+          <div className="h-[calc(100vh-100px)] overflow-y-auto rounded-xl">
+            <div className="mx-auto max-w-2xl py-16">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex-1">
                   <DocumentTitleInput

@@ -1,7 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { Download, MoreVertical, Trash2 } from "lucide-react";
 
@@ -52,7 +56,7 @@ export function BlockActionMenu({
                 rel="noopener noreferrer"
               >
                 <Download className="h-4 w-4" />
-                Download file
+                Download
               </a>
             </Button>
           )}
@@ -64,7 +68,7 @@ export function BlockActionMenu({
               onClick={onDelete}
             >
               <Trash2 className="h-4 w-4" />
-              Delete block
+              Delete
             </Button>
           )}
         </div>

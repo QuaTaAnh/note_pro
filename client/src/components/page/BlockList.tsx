@@ -189,7 +189,7 @@ export function BlockList({
         items={blocks.map((b) => b.id)}
         strategy={verticalListSortingStrategy}
       >
-        <div className="space-y-4">
+        <div className="space-y-1">
           {blocks.map((block) => (
             <SortableBlockItem
               key={block.id}

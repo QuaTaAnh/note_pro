@@ -47,33 +47,35 @@ export function FileBlockCard({
   }, [fileType, fileUrl]);
 
   return (
-    <div className="group relative flex items-start gap-3 py-1">
-      {editable && <div className="pt-2 text-muted-foreground">{dragHandle}</div>}
+    <div className="group relative flex items-start gap-2 py-1">
+      {editable && <div className="text-muted-foreground">{dragHandle}</div>}
       <button
         type="button"
         onClick={handleOpen}
         className={cn(
-          "flex-1 min-w-0 rounded-2xl border border-border/60 bg-card px-4 py-4 text-left shadow-sm transition-all duration-200 hover:shadow-md focus-visible:outline-none",
+          "flex-1 min-w-0 rounded border border-gray-300 px-24 py-1.5 text-left transition-all duration-200 hover:shadow-md",
           !fileUrl && "cursor-not-allowed opacity-70"
         )}
         disabled={!fileUrl}
       >
-        <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
-            <FileText className="h-6 w-6" />
+        {!isImageFile && (
+          <div className="flex items-center gap-4">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <FileText className="h-6 w-6" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold truncate">{fileName}</p>
+              <p className="text-xs text-muted-foreground truncate">
+                {fileType}
+                {fileSize ? ` · ${fileSize}` : ""}
+              </p>
+            </div>
+            <ExternalLink className="h-4 w-4 text-muted-foreground" />
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold truncate">{fileName}</p>
-            <p className="text-xs text-muted-foreground truncate">
-              {fileType}
-              {fileSize ? ` · ${fileSize}` : ""}
-            </p>
-          </div>
-          <ExternalLink className="h-4 w-4 text-muted-foreground" />
-        </div>
+        )}
 
         {isImageFile && fileUrl && (
-          <div className="mt-4 overflow-hidden rounded-2xl border border-dashed border-muted bg-muted/30">
+          <div className="overflow-hidden border border-dashed border-muted bg-muted/30">
             <Image
               src={fileUrl}
               alt={fileName}

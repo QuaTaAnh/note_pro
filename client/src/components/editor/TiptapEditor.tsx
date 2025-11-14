@@ -219,9 +219,11 @@ export const TiptapEditor = ({
   }
 
   return (
-    <div className="group relative flex items-start gap-3 py-1">
-      {editable && <div className="pt-2 text-muted-foreground">{dragHandle}</div>}
-      <div className="flex flex-1 items-start gap-3 rounded-2xl border border-border/60 bg-card px-4 py-3 shadow-sm transition-all duration-200 hover:shadow-md focus-within:border-primary">
+    <div className="group relative flex items-start gap-2">
+      {editable && (
+        <div className="pt-2 text-muted-foreground">{dragHandle}</div>
+      )}
+      <div className="flex flex-1 items-start gap-3 p-1 rounded hover:border border-gray-300 transition-all duration-200 hover:shadow-md">
         <CheckTask
           editable={editable}
           task={task as Task}
@@ -232,7 +234,9 @@ export const TiptapEditor = ({
         />
 
         <div className="flex-1 min-w-0 overflow-hidden">
-          <div className={cn(isTask && isCompleted && "line-through opacity-60")}>
+          <div
+            className={cn(isTask && isCompleted && "line-through opacity-60")}
+          >
             {showBubbleMenu && <EditorBubbleMenu editor={editor} />}
             <EditorContent editor={editor} className={editorClassName} />
             {menus}
