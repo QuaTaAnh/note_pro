@@ -2,7 +2,14 @@
 
 import { EditorView } from "@tiptap/pm/view";
 import type { Editor } from "@tiptap/react";
-import { ChangeEvent, useCallback, useMemo, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { toast } from "@/hooks";
 import { uploadFileToCloudinary } from "@/lib/cloudinary";
 import { EmojiPicker } from "./EmojiPicker";
@@ -58,17 +65,26 @@ const buildFilePreviewHtml = ({
 }) => {
   const safeName = escapeHtml(name);
   const safeExtension = escapeHtml(extension);
-  const safeInfo = escapeHtml(`${extension} • ${sizeLabel}`);
+  const safeInfo = escapeHtml(`${extension} Document • ${sizeLabel}`);
   const safeUrl = encodeURI(url);
 
   return `
-    <div class="np-file-block" data-file-url="${safeUrl}" data-file-name="${safeName}">
-      <div class="np-file-icon">${safeExtension}</div>
+    <div
+      class="np-file-block"
+      data-file-url="${safeUrl}"
+      data-file-name="${safeName}"
+      role="button"
+      tabindex="0"
+      contenteditable="false"
+    >
+      <div class="np-file-icon" aria-hidden="true">
+        <span>${safeExtension}</span>
+      </div>
       <div class="np-file-meta">
         <p class="np-file-name">${safeName}</p>
         <p class="np-file-info">${safeInfo}</p>
       </div>
-      <a class="np-file-link" href="${safeUrl}" target="_blank" rel="noopener noreferrer">Open</a>
+      <div class="np-file-open" aria-hidden="true">↗</div>
     </div>
   `.trim();
 };
@@ -221,6 +237,44 @@ export const useSlashCommand = (editor: Editor | null) => {
     },
     [showSlash, showEmoji]
   );
+
+  useEffect(() => {
+    if (!editor) return;
+
+    const openPreview = (source: HTMLElement | null) => {
+      if (!source) return;
+      const block = source.closest<HTMLDivElement>(".np-file-block");
+      if (!block) return;
+      const fileUrl = block.dataset.fileUrl;
+      if (!fileUrl) return;
+      window.open(fileUrl, "_blank", "noopener,noreferrer");
+    };
+
+    const handleDoubleClick = (event: MouseEvent) => {
+      openPreview(event.target as HTMLElement | null);
+    };
+
+    const handleKeyDownOnBlock = (event: KeyboardEvent) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      const target = event.target as HTMLElement | null;
+      if (!target) return;
+
+      const block = target.closest<HTMLDivElement>(".np-file-block");
+      if (!block) return;
+
+      event.preventDefault();
+      openPreview(block);
+    };
+
+    const dom = editor.view.dom;
+    dom.addEventListener("dblclick", handleDoubleClick);
+    dom.addEventListener("keydown", handleKeyDownOnBlock);
+
+    return () => {
+      dom.removeEventListener("dblclick", handleDoubleClick);
+      dom.removeEventListener("keydown", handleKeyDownOnBlock);
+    };
+  }, [editor]);
 
   const menus = useMemo(
     () => (
