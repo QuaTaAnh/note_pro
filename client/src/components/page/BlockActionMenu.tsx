@@ -52,8 +52,6 @@ export function BlockActionMenu({
               <a
                 href={downloadUrl}
                 download={downloadFileName || undefined}
-                target="_blank"
-                rel="noopener noreferrer"
               >
                 <Download className="h-4 w-4" />
                 Download
