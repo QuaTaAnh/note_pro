@@ -18,7 +18,7 @@ export function Spinner({ size = "md", className }: SpinnerProps) {
       className={cn(
         "animate-spin text-muted-foreground",
         sizeVariants[size],
-        className
+        className,
       )}
     />
   );

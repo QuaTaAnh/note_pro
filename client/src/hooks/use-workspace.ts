@@ -15,8 +15,8 @@ export function useWorkspace() {
 
   const workspace = data?.workspaces?.[0];
   const workspaceSlug = workspace
-  ? `${slugify(workspace.name ?? "", { strict: true })}--${workspace.id}`
-  : null;
+    ? `${slugify(workspace.name ?? "", { strict: true })}--${workspace.id}`
+    : null;
 
   return {
     workspace,
@@ -24,4 +24,4 @@ export function useWorkspace() {
     loading: authLoading || loading,
     hasWorkspace: !!workspace,
   };
-} 
+}

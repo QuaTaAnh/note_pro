@@ -18,27 +18,27 @@ export function useDocumentBlocksData(pageId: string) {
     const allBlocks = data.blocks as Block[];
     const root =
       allBlocks.find(
-        (block) => block.id === pageId && block.type === BlockType.PAGE
+        (block) => block.id === pageId && block.type === BlockType.PAGE,
       ) || null;
 
     const childBlocksRaw = allBlocks
       .filter(
-        (block) => block.page_id === pageId && block.type !== BlockType.PAGE
+        (block) => block.page_id === pageId && block.type !== BlockType.PAGE,
       )
       .sort((a, b) => {
         const positionA = a.position || 0;
         const positionB = b.position || 0;
-        
+
         if (positionA !== positionB) {
           return positionA - positionB;
         }
-        
+
         const isTaskA = a.type === BlockType.TASK;
         const isTaskB = b.type === BlockType.TASK;
-        
+
         if (isTaskA && !isTaskB) return -1;
         if (!isTaskA && isTaskB) return 1;
-        
+
         return 0;
       });
 
@@ -53,4 +53,4 @@ export function useDocumentBlocksData(pageId: string) {
   }, [data?.blocks, pageId]);
 
   return { loading, processedBlocks, processedRootBlock };
-} 
+}

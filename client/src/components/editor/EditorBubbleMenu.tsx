@@ -42,7 +42,7 @@ export const EditorBubbleMenu = ({ editor }: Props) => {
       if (!editor) return false;
       return editor.isActive(type);
     },
-    [editor, editorState]
+    [editor, editorState],
   );
 
   const getCurrentHighlightColor = useCallback(() => {

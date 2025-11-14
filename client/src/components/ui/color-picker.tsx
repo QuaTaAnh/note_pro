@@ -34,7 +34,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
               "relative w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all duration-200",
               isSelected
                 ? "border-primary ring-2 ring-primary scale-110 shadow-md"
-                : "border-muted hover:scale-105 hover:shadow"
+                : "border-muted hover:scale-105 hover:shadow",
             )}
             style={{
               backgroundColor: color.color,
@@ -46,7 +46,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
               <Check
                 className={cn(
                   "w-4 h-4 drop-shadow",
-                  isWhite ? "text-gray-800 dark:text-gray-900" : "text-primary"
+                  isWhite ? "text-gray-800 dark:text-gray-900" : "text-primary",
                 )}
               />
             )}

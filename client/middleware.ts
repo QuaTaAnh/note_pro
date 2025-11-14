@@ -1,6 +1,6 @@
-import { ROUTES } from '@/lib/routes';
-import { withAuth } from 'next-auth/middleware';
-import { NextResponse } from 'next/server';
+import { ROUTES } from "@/lib/routes";
+import { withAuth } from "next-auth/middleware";
+import { NextResponse } from "next/server";
 
 export default withAuth(
   function middleware(req) {
@@ -24,7 +24,7 @@ export default withAuth(
         return !!token || isLoginPage;
       },
     },
-  }
+  },
 );
 
 export const config = {
@@ -37,6 +37,6 @@ export const config = {
      * - favicon.ico (favicon file)
      * - images and other static assets
      */
-    '/((?!api|_next/static|_next/image|favicon.ico|.*\\.png$|.*\\.svg$|.*\\.jpg$|.*\\.jpeg$|.*\\.gif$|.*\\.webp$).*)',
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\.png$|.*\\.svg$|.*\\.jpg$|.*\\.jpeg$|.*\\.gif$|.*\\.webp$).*)",
   ],
 };

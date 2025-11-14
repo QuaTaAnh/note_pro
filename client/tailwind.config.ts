@@ -53,7 +53,6 @@ const config: Config = {
           muted: "hsl(var(--modal-muted))",
           border: "hsl(var(--modal-border))",
         },
-
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -64,4 +63,4 @@ const config: Config = {
   },
   plugins: [tailwindcssAnimate],
 };
-export default config; 
+export default config;

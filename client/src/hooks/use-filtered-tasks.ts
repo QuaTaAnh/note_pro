@@ -14,15 +14,15 @@ export function useFilteredTasks(tasks: Task[] = []): FilteredTasksResult {
   const { settings } = useTaskSettings();
 
   const result = useMemo(() => {
-    const scheduledTasks = tasks.filter(task => 
-      task.schedule_date && task.schedule_date.trim() !== ""
+    const scheduledTasks = tasks.filter(
+      (task) => task.schedule_date && task.schedule_date.trim() !== "",
     );
-    const unscheduledTasks = tasks.filter(task => 
-      !task.schedule_date || task.schedule_date.trim() === ""
+    const unscheduledTasks = tasks.filter(
+      (task) => !task.schedule_date || task.schedule_date.trim() === "",
     );
 
     let filteredTasks = tasks;
-    
+
     if (!settings.showScheduledTasks) {
       filteredTasks = unscheduledTasks;
     }
@@ -39,7 +39,7 @@ export function useFilteredTasks(tasks: Task[] = []): FilteredTasksResult {
 
 export function taskToDisplayFormat(task: Task) {
   const title = task.block?.content?.text || task.block?.content?.title;
-  
+
   return {
     id: task.id,
     title,
@@ -47,4 +47,4 @@ export function taskToDisplayFormat(task: Task) {
     scheduleDate: task.schedule_date || undefined,
     deadlineDate: task.deadline_date || undefined,
   };
-} 
+}

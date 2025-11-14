@@ -29,7 +29,7 @@ export default function Sidebar({ workspaceSlug, workspaceId }: Props) {
 
   const renderModalWrapper = (
     modalType: ModalType,
-    action: React.ReactElement
+    action: React.ReactElement,
   ) => {
     switch (modalType) {
       case ModalType.TASK:
@@ -43,7 +43,7 @@ export default function Sidebar({ workspaceSlug, workspaceId }: Props) {
     <aside
       className={cn(
         "transition-all duration-300 ease-in-out bg-background text-foreground fixed top-12 left-0 z-40 h-[calc(100vh-48px)]",
-        isOpen ? "" : "w-0 overflow-hidden"
+        isOpen ? "" : "w-0 overflow-hidden",
       )}
       style={{ width: isOpen ? SIDEBAR_WIDTH : 0 }}
     >

@@ -17,7 +17,7 @@ export function SearchResults({ results, onResultClick }: Props) {
   const totalResults = useMemo(
     () =>
       folders.length + documents.length + tasks.length + sharedDocuments.length,
-    [folders.length, documents.length, tasks.length, sharedDocuments.length]
+    [folders.length, documents.length, tasks.length, sharedDocuments.length],
   );
 
   if (isLoading) {

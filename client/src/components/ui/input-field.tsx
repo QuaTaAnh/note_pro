@@ -28,7 +28,7 @@ const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
       onBlur,
       ...props
     },
-    ref
+    ref,
   ) => {
     const [open, setOpen] = React.useState(false);
     const inputRef = React.useRef<HTMLInputElement>(null);
@@ -114,7 +114,7 @@ const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
               icon && iconPosition === "left" && "pl-9",
               icon && iconPosition === "right" && "pr-9",
               triggerClassName,
-              className
+              className,
             )}
             onFocus={handleInputFocus}
             onClick={handleInputClick}
@@ -132,7 +132,7 @@ const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
             ref={dropdownRef}
             className={cn(
               "absolute z-50 mt-1 w-full rounded-md border border-border bg-popover dark:bg-card dark:border-border/60 text-popover-foreground shadow-md dark:shadow-xl animate-in fade-in-0 zoom-in-95",
-              popoverClassName
+              popoverClassName,
             )}
             style={
               popoverHeight === "auto"
@@ -152,7 +152,7 @@ const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
         )}
       </div>
     );
-  }
+  },
 );
 
 InputField.displayName = "InputField";

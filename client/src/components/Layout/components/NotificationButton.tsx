@@ -25,7 +25,7 @@ import { FiCheck, FiX } from "react-icons/fi";
 export const NotificationButton = () => {
   const userId = useUserId();
   const [processingRequestId, setProcessingRequestId] = useState<string | null>(
-    null
+    null,
   );
 
   const { data: notificationsData, loading } =
@@ -47,12 +47,12 @@ export const NotificationButton = () => {
 
   const notifications = useMemo(
     () => notificationsData?.notifications || [],
-    [notificationsData]
+    [notificationsData],
   );
 
   const unreadCountValue = useMemo(() => {
     const count = notifications.filter(
-      (notification) => !notification.is_read
+      (notification) => !notification.is_read,
     ).length;
     return count;
   }, [notifications]);
@@ -265,7 +265,7 @@ export const NotificationButton = () => {
                               new Date(notification.created_at),
                               {
                                 addSuffix: true,
-                              }
+                              },
                             )}
                         </p>
                       </div>

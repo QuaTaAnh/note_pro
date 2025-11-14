@@ -1,6 +1,6 @@
 /**
  * Cloudinary Configuration and Upload Utilities
- * 
+ *
  * This module provides functions to upload images directly to Cloudinary
  * from the browser without requiring a backend server.
  */
@@ -40,20 +40,20 @@ export function getCloudinaryConfig(folder?: string): CloudinaryConfig {
 
   if (!cloudName || !uploadPreset) {
     throw new Error(
-      'Cloudinary configuration is missing. Please set NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME and NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET in your environment variables.'
+      "Cloudinary configuration is missing. Please set NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME and NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET in your environment variables.",
     );
   }
 
   return {
     cloudName,
     uploadPreset,
-    folder: folder || 'note_pro',
+    folder: folder || "note_pro",
   };
 }
 
 /**
  * Upload an image to Cloudinary
- * 
+ *
  * @param file - The file to upload
  * @param options - Additional upload options
  * @returns Promise with the upload response
@@ -64,44 +64,44 @@ export async function uploadImageToCloudinary(
     folder?: string;
     transformation?: string;
     tags?: string[];
-  }
+  },
 ): Promise<CloudinaryUploadResponse> {
   const config = getCloudinaryConfig();
   const formData = new FormData();
 
-  formData.append('file', file);
-  formData.append('upload_preset', config.uploadPreset);
-  
+  formData.append("file", file);
+  formData.append("upload_preset", config.uploadPreset);
+
   if (options?.folder || config.folder) {
-    formData.append('folder', options?.folder || config.folder || '');
+    formData.append("folder", options?.folder || config.folder || "");
   }
 
   if (options?.tags && options.tags.length > 0) {
-    formData.append('tags', options.tags.join(','));
+    formData.append("tags", options.tags.join(","));
   }
 
   // Add transformation for workspace images (resize, optimize)
   if (options?.transformation) {
-    formData.append('transformation', options.transformation);
+    formData.append("transformation", options.transformation);
   }
 
   const url = `${process.env.NEXT_PUBLIC_CLOUDINARY_URL}/${config.cloudName}/image/upload`;
 
   try {
     const response = await fetch(url, {
-      method: 'POST',
+      method: "POST",
       body: formData,
     });
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.error?.message || 'Failed to upload image');
+      throw new Error(error.error?.message || "Failed to upload image");
     }
 
     const data: CloudinaryUploadResponse = await response.json();
     return data;
   } catch (error) {
-    console.error('Error uploading to Cloudinary:', error);
+    console.error("Error uploading to Cloudinary:", error);
     throw error;
   }
 }
@@ -112,7 +112,7 @@ export async function uploadFileToCloudinary(
     folder?: string;
     tags?: string[];
     resourceType?: "auto" | "raw" | "image" | "video";
-  }
+  },
 ): Promise<CloudinaryUploadResponse> {
   const config = getCloudinaryConfig();
   const formData = new FormData();
@@ -153,7 +153,7 @@ export async function uploadFileToCloudinary(
 /**
  * Delete an image from Cloudinary (requires backend with admin credentials)
  * Note: This needs to be done on the backend for security reasons
- * 
+ *
  * @param publicId - The public_id of the image to delete
  */
 export function extractPublicIdFromUrl(imageUrl: string): string | null {
@@ -164,7 +164,7 @@ export function extractPublicIdFromUrl(imageUrl: string): string | null {
     const matches = imageUrl.match(/\/v\d+\/(.+)\.\w+$/);
     return matches ? matches[1] : null;
   } catch (error) {
-    console.error('Error extracting public_id:', error);
+    console.error("Error extracting public_id:", error);
     return null;
   }
 }
@@ -172,13 +172,22 @@ export function extractPublicIdFromUrl(imageUrl: string): string | null {
 /**
  * Validate file before upload
  */
-export function validateImageFile(file: File): { valid: boolean; error?: string } {
+export function validateImageFile(file: File): {
+  valid: boolean;
+  error?: string;
+} {
   // Check file type
-  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'];
+  const allowedTypes = [
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+    "image/webp",
+    "image/gif",
+  ];
   if (!allowedTypes.includes(file.type)) {
     return {
       valid: false,
-      error: 'Invalid file type. Only JPEG, PNG, WEBP, and GIF are allowed.',
+      error: "Invalid file type. Only JPEG, PNG, WEBP, and GIF are allowed.",
     };
   }
 
@@ -187,7 +196,7 @@ export function validateImageFile(file: File): { valid: boolean; error?: string 
   if (file.size > maxSize) {
     return {
       valid: false,
-      error: 'File size exceeds 5MB limit.',
+      error: "File size exceeds 5MB limit.",
     };
   }
 
@@ -196,7 +205,7 @@ export function validateImageFile(file: File): { valid: boolean; error?: string 
 
 /**
  * Get optimized image URL from Cloudinary
- * 
+ *
  * @param url - Original Cloudinary URL
  * @param transformations - Cloudinary transformation parameters
  */
@@ -205,16 +214,16 @@ export function getOptimizedImageUrl(
   transformations?: {
     width?: number;
     height?: number;
-    crop?: 'fill' | 'fit' | 'scale' | 'limit';
-    quality?: 'auto' | number;
-    format?: 'auto' | 'webp' | 'jpg' | 'png';
-  }
+    crop?: "fill" | "fit" | "scale" | "limit";
+    quality?: "auto" | number;
+    format?: "auto" | "webp" | "jpg" | "png";
+  },
 ): string {
-  if (!url || !url.includes('cloudinary.com')) {
+  if (!url || !url.includes("cloudinary.com")) {
     return url;
   }
 
-  const parts = url.split('/upload/');
+  const parts = url.split("/upload/");
   if (parts.length !== 2) {
     return url;
   }
@@ -245,6 +254,5 @@ export function getOptimizedImageUrl(
     return url;
   }
 
-  return `${parts[0]}/upload/${transforms.join(',')}/${parts[1]}`;
+  return `${parts[0]}/upload/${transforms.join(",")}/${parts[1]}`;
 }
-

@@ -97,7 +97,7 @@ export default function MainLayout({
 
   const isEditorPage = useMemo(
     () => pathname.startsWith("/editor/"),
-    [pathname]
+    [pathname],
   );
 
   const { documentTitle, hasDocument } = useDocumentTitle({

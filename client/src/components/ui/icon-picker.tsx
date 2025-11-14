@@ -148,7 +148,7 @@ export const IconPicker: React.FC<IconPickerProps> = ({
                         size="sm"
                         className={cn(
                           "w-7 h-7 p-0 hover:bg-primary/10 relative z-10 pointer-events-auto",
-                          isSelected && "bg-primary/20 text-primary"
+                          isSelected && "bg-primary/20 text-primary",
                         )}
                         onClick={() => handleIconSelect(iconItem.key)}
                         title={iconItem.name}

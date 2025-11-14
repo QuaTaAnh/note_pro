@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef } from "react";
 
 export const useDebounce = (delay: number) => {
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
@@ -28,4 +28,4 @@ export const useDebounce = (delay: number) => {
   };
 
   return { debounced, flush };
-}; 
+};

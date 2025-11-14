@@ -117,8 +117,8 @@ export function RequestAccessView({ documentId }: RequestAccessViewProps) {
               requestStatus === AccessRequestStatus.PENDING
                 ? "bg-yellow-100 dark:bg-yellow-900/20"
                 : requestStatus === AccessRequestStatus.REJECTED
-                ? "bg-red-100 dark:bg-red-900/20"
-                : "bg-gray-100 dark:bg-gray-800"
+                  ? "bg-red-100 dark:bg-red-900/20"
+                  : "bg-gray-100 dark:bg-gray-800"
             }`}
           >
             {requestStatus === AccessRequestStatus.PENDING ? (
@@ -135,16 +135,16 @@ export function RequestAccessView({ documentId }: RequestAccessViewProps) {
           {requestStatus === AccessRequestStatus.PENDING
             ? "Access request pending"
             : requestStatus === AccessRequestStatus.REJECTED
-            ? "Access request denied"
-            : "Request access to this document"}
+              ? "Access request denied"
+              : "Request access to this document"}
         </h1>
 
         <p className="text-muted-foreground">
           {requestStatus === AccessRequestStatus.PENDING
             ? "Your request is waiting for approval. You'll be notified once it's reviewed."
             : requestStatus === AccessRequestStatus.REJECTED
-            ? "Your access request was denied by the document owner."
-            : "You can view this document once your request is approved."}
+              ? "Your access request was denied by the document owner."
+              : "You can view this document once your request is approved."}
         </p>
 
         {!requestStatus && (

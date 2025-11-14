@@ -26,7 +26,7 @@ export const Calendar = ({ appointments }: Props) => {
           deadlineDate: a.deadlineDate,
         },
       })),
-    [appointments]
+    [appointments],
   );
 
   return (

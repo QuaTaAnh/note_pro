@@ -4,7 +4,7 @@ import { useAuth as useAuthContext } from "@/context/AuthContext";
 
 export const useAuth = () => {
   const auth = useAuthContext();
-  
+
   return {
     ...auth,
     isLoggedIn: auth.isAuthenticated,
@@ -26,4 +26,4 @@ export const useIsAuthenticated = () => {
 export const useToken = () => {
   const { token } = useAuthContext();
   return token;
-}; 
+};

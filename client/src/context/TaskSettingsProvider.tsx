@@ -17,7 +17,7 @@ interface TaskSettingsContextType {
 }
 
 const TaskSettingsContext = createContext<TaskSettingsContextType | undefined>(
-  undefined
+  undefined,
 );
 
 export function TaskSettingsProvider({
@@ -55,7 +55,7 @@ export function useTaskSettings() {
   const context = useContext(TaskSettingsContext);
   if (context === undefined) {
     throw new Error(
-      "useTaskSettings must be used within a TaskSettingsProvider"
+      "useTaskSettings must be used within a TaskSettingsProvider",
     );
   }
   return context;

@@ -107,7 +107,7 @@ export const TiptapEditor = ({
         onChange(content);
       },
     }),
-    [value, onFocus, onBlur, onChange, onSaveImmediate, placeholder, editable]
+    [value, onFocus, onBlur, onChange, onSaveImmediate, placeholder, editable],
   );
 
   const editor = useEditor(editorConfig as UseEditorOptions);
@@ -226,7 +226,13 @@ export const TiptapEditor = ({
       {editable && (
         <div className="pt-2 text-muted-foreground">{dragHandle}</div>
       )}
-      <div className="flex flex-1 items-start gap-3 p-1 rounded hover:border border-gray-300 transition-all duration-200 hover:shadow-md">
+      <div
+        className="flex flex-1 items-start gap-3 p-1 rounded 
+border border-transparent
+    hover:border-gray-300
+    focus-within:border-gray-300
+    transition-all duration-200 hover:shadow-md"
+      >
         <CheckTask
           editable={editable}
           task={task as Task}

@@ -1,6 +1,6 @@
 import {
   SearchAllQuery,
-  useSearchAllLazyQuery
+  useSearchAllLazyQuery,
 } from "@/graphql/queries/__generated__/search.generated";
 import { useCallback, useEffect, useState } from "react";
 import { useDebounce as useDebounceValue } from "use-debounce";
@@ -9,9 +9,9 @@ import { useAuth } from "./use-auth";
 
 export interface SearchResult {
   folders: SearchAllQuery["folders"];
-  documents: SearchAllQuery["documents"]; 
+  documents: SearchAllQuery["documents"];
   sharedDocuments: SearchAllQuery["sharedDocuments"];
-  tasks: SearchAllQuery["tasks"]; 
+  tasks: SearchAllQuery["tasks"];
   isLoading: boolean;
 }
 
@@ -40,27 +40,21 @@ export function useSearch() {
         fetchPolicy: "network-only",
       });
     },
-    [
-      workspace?.id,
-      searchAll,
-      userId,
-    ]
+    [workspace?.id, searchAll, userId],
   );
 
   useEffect(() => {
     if (debouncedSearchTerm) {
       executeSearch(debouncedSearchTerm);
-    } 
+    }
   }, [debouncedSearchTerm, executeSearch, setSearchTerm]);
 
   const results: SearchResult = {
     folders: allData?.folders || [],
-    documents:
-      allData?.documents || [],
+    documents: allData?.documents || [],
     sharedDocuments: allData?.sharedDocuments || [],
     tasks: allData?.tasks || [],
-    isLoading:
-      allLoading,
+    isLoading: allLoading,
   };
 
   return {

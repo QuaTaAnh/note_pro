@@ -1,9 +1,9 @@
 import {
   CloudinaryUploadResponse,
-  uploadImageToCloudinary
-} from '@/lib/cloudinary';
-import { useState } from 'react';
-import { toast } from 'sonner';
+  uploadImageToCloudinary,
+} from "@/lib/cloudinary";
+import { useState } from "react";
+import { toast } from "sonner";
 
 interface UseImageUploadOptions {
   tags?: string[];
@@ -18,7 +18,13 @@ export function useImageUpload({
   onSuccess,
   onError,
   maxSizeMB = 5,
-  allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'],
+  allowedTypes = [
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+    "image/webp",
+    "image/gif",
+  ],
 }: UseImageUploadOptions = {}) {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
@@ -26,7 +32,7 @@ export function useImageUpload({
   const uploadImage = async (file: File): Promise<string | null> => {
     if (!allowedTypes.includes(file.type)) {
       const error = new Error(
-        `Invalid file type. Only ${allowedTypes.map(t => t.split('/')[1].toUpperCase()).join(', ')} are allowed.`
+        `Invalid file type. Only ${allowedTypes.map((t) => t.split("/")[1].toUpperCase()).join(", ")} are allowed.`,
       );
       toast.error(error.message);
       onError?.(error);
@@ -45,20 +51,22 @@ export function useImageUpload({
 
     try {
       const uploadResult = await uploadImageToCloudinary(file, {
-        folder: 'note_pro/images',
+        folder: "note_pro/images",
         tags,
       });
       setUploadedUrl(uploadResult.secure_url);
-      toast.success('Image uploaded successfully');
+      toast.success("Image uploaded successfully");
       onSuccess?.(uploadResult.secure_url, uploadResult);
 
       return uploadResult.secure_url;
     } catch (error) {
-      console.error('Error uploading image:', error);
+      console.error("Error uploading image:", error);
       const errorMessage =
-        error instanceof Error ? error.message : 'Failed to upload image. Please try again.';
+        error instanceof Error
+          ? error.message
+          : "Failed to upload image. Please try again.";
       toast.error(errorMessage);
-      onError?.(error instanceof Error ? error : new Error('Upload failed'));
+      onError?.(error instanceof Error ? error : new Error("Upload failed"));
       return null;
     } finally {
       setIsUploading(false);
@@ -76,4 +84,3 @@ export function useImageUpload({
     uploadedUrl,
   };
 }
-

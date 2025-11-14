@@ -11,30 +11,28 @@ export function useDocumentPermission(documentId: string) {
   const userId = useUserId();
   const { workspace } = useWorkspace();
 
-  const { data: documentData, loading: documentLoading } = useGetDocumentBlocksQuery({
-    variables: { pageId: documentId },
-    skip: !documentId,
-    errorPolicy: "all",
-  });
+  const { data: documentData, loading: documentLoading } =
+    useGetDocumentBlocksQuery({
+      variables: { pageId: documentId },
+      skip: !documentId,
+      errorPolicy: "all",
+    });
 
   const rootBlock = useMemo(() => {
     return documentData?.blocks?.find(
-      (block) => block.id === documentId && block.type === BlockType.PAGE
+      (block) => block.id === documentId && block.type === BlockType.PAGE,
     );
   }, [documentData?.blocks, documentId]);
 
   const isOwnDocument = rootBlock?.workspace_id === workspace?.id;
 
-  const shouldFetchAccessRequests = 
-    !documentLoading && 
-    documentData?.blocks && 
-    rootBlock && 
-    !isOwnDocument;
+  const shouldFetchAccessRequests =
+    !documentLoading && documentData?.blocks && rootBlock && !isOwnDocument;
 
   const { data: accessRequestData } = useGetAccessRequestByDocumentQuery({
-    variables: { 
+    variables: {
       documentId: documentId || "",
-      requesterId: userId || ""
+      requesterId: userId || "",
     },
     skip: !documentId || !userId || !shouldFetchAccessRequests,
     fetchPolicy: "cache-first",
@@ -50,35 +48,39 @@ export function useDocumentPermission(documentId: string) {
     }
 
     if (isOwnDocument) {
-      return { canView: true, canEdit: true, permissionType: PermissionType.OWNER };
+      return {
+        canView: true,
+        canEdit: true,
+        permissionType: PermissionType.OWNER,
+      };
     }
 
     const accessRequests = accessRequestData?.access_requests || [];
-    
+
     const approvedRequest = accessRequests.find(
-      (req) => req.status === AccessRequestStatus.APPROVED
+      (req) => req.status === AccessRequestStatus.APPROVED,
     );
-    
+
     const hasPendingWriteRequest = accessRequests.some(
-      (req) => 
-        req.status === AccessRequestStatus.PENDING && 
-        req.permission_type === PermissionType.WRITE
+      (req) =>
+        req.status === AccessRequestStatus.PENDING &&
+        req.permission_type === PermissionType.WRITE,
     );
-    
+
     if (approvedRequest) {
       const canEdit = approvedRequest.permission_type === PermissionType.WRITE;
-      return { 
-        canView: true, 
-        canEdit, 
-        permissionType: approvedRequest.permission_type 
+      return {
+        canView: true,
+        canEdit,
+        permissionType: approvedRequest.permission_type,
       };
     }
-    
+
     if (hasPendingWriteRequest) {
       return {
         canView: true,
         canEdit: false,
-        permissionType: PermissionType.READ
+        permissionType: PermissionType.READ,
       };
     }
 
@@ -94,4 +96,4 @@ export function useDocumentPermission(documentId: string) {
   ]);
 
   return permission;
-} 
+}

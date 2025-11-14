@@ -38,7 +38,7 @@ export const SearchSection = ({
         // Get workspace ID for this specific item
         const itemWorkspaceId = getWorkspaceId
           ? getWorkspaceId(item)
-          : workspaceId ?? "";
+          : (workspaceId ?? "");
 
         if (type === "document" || type === "sharedDocument") {
           href = `/editor/d/${itemWorkspaceId}/${item.id}`;

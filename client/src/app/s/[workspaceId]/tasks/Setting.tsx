@@ -34,7 +34,7 @@ export const Setting = () => {
   const [updateTask] = useUpdateTaskMutation();
 
   const completedTasksForDisplay = (completedTasksData?.tasks || []).map(
-    taskToDisplayFormat
+    taskToDisplayFormat,
   );
 
   const handleModalOpen = useCallback(() => {

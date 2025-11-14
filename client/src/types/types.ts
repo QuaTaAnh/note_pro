@@ -1,6 +1,8 @@
 import { IconType } from "react-icons";
 
-export type IconComponent = IconType | React.ComponentType<{ className?: string }>;
+export type IconComponent =
+  | IconType
+  | React.ComponentType<{ className?: string }>;
 
 export enum HexColor {
   WHITE = "#ffffff",

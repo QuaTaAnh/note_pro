@@ -15,7 +15,12 @@ export function useDocumentBlocksEditing({
   initialRootBlock,
   pageId,
 }: UseDocumentBlocksEditingParams) {
-  const { createBlockWithPositionUpdate, updateBlockContent, updateBlocksPositionsBatch, removeBlock } = useBlocks();
+  const {
+    createBlockWithPositionUpdate,
+    updateBlockContent,
+    updateBlocksPositionsBatch,
+    removeBlock,
+  } = useBlocks();
   const { debounced, flush } = useDebounce(500);
 
   const [blocks, setBlocks] = useState<Block[]>(initialBlocks);
@@ -35,20 +40,20 @@ export function useDocumentBlocksEditing({
     async (
       position: number,
       type: BlockType = BlockType.PARAGRAPH,
-      content: Record<string, unknown> = { text: "" }
+      content: Record<string, unknown> = { text: "" },
     ) => {
       flush();
       const newBlock = await createBlockWithPositionUpdate(
         pageId,
         position,
         type,
-        content
+        content,
       );
       if (newBlock) {
         setFocusedBlock(newBlock.id);
       }
     },
-    [createBlockWithPositionUpdate, pageId, flush]
+    [createBlockWithPositionUpdate, pageId, flush],
   );
 
   const handleUpdateBlockContent = useCallback(
@@ -57,27 +62,31 @@ export function useDocumentBlocksEditing({
       if (block && block.type !== BlockType.PAGE) {
         setBlocks((prev) =>
           prev.map((b) =>
-            b.id === blockId ? { ...b, content: { ...b.content, text: content } } : b
-          )
+            b.id === blockId
+              ? { ...b, content: { ...b.content, text: content } }
+              : b,
+          ),
         );
         debounced(async () => {
           await updateBlockContent(blockId, { text: content });
         });
       }
     },
-    [blocks, debounced, updateBlockContent]
+    [blocks, debounced, updateBlockContent],
   );
 
   const handleUpdateTitle = useCallback(
     (title: string) => {
       if (rootBlock) {
-        setRootBlock((prev) => (prev ? { ...prev, content: { ...prev.content, title } } : null));
+        setRootBlock((prev) =>
+          prev ? { ...prev, content: { ...prev.content, title } } : null,
+        );
         debounced(async () => {
           await updateBlockContent(rootBlock.id, { title });
         });
       }
     },
-    [rootBlock, debounced, updateBlockContent]
+    [rootBlock, debounced, updateBlockContent],
   );
 
   const handleBlockFocus = useCallback((blockId: string) => {
@@ -99,7 +108,7 @@ export function useDocumentBlocksEditing({
         setBlocks((prev) => prev.filter((b) => b.id !== blockId));
       }
     },
-    [removeBlock]
+    [removeBlock],
   );
 
   const handleReorderBlocks = useCallback(
@@ -107,12 +116,16 @@ export function useDocumentBlocksEditing({
       setBlocks(newBlocks);
       const updates = newBlocks
         .map((block, idx) => ({ id: block.id, position: idx }))
-        .filter((block, idx) => block.position !== (blocks[idx]?.position ?? -1) || block.id !== (blocks[idx]?.id ?? ""));
+        .filter(
+          (block, idx) =>
+            block.position !== (blocks[idx]?.position ?? -1) ||
+            block.id !== (blocks[idx]?.id ?? ""),
+        );
       if (updates.length > 0) {
         await updateBlocksPositionsBatch(updates);
       }
     },
-    [updateBlocksPositionsBatch, blocks]
+    [updateBlocksPositionsBatch, blocks],
   );
 
   return {

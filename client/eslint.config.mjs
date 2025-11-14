@@ -20,10 +20,7 @@ const eslintConfig = [
     },
   },
   {
-    files: [
-      "src/generated/**/*",
-      "src/graphql/**/__generated__/**/*",
-    ],
+    files: ["src/generated/**/*", "src/graphql/**/__generated__/**/*"],
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-unused-vars": "off",
