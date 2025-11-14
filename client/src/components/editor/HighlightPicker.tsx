@@ -60,7 +60,7 @@ export const HighlightPicker = ({
       </button>
 
       {show && (
-        <div className="absolute top-full left-0 mt-1 z-50 rounded-xl border border-border bg-popover p-3 shadow-lg">
+        <div className="absolute top-full left-0 mt-1 z-50 w-max rounded-xl border border-border bg-popover p-3 shadow-lg">
           <div className="grid grid-cols-6 gap-3">
             {HIGHLIGHT_COLORS.map((colorOption, i) => {
               const isSelected = currentColor === colorOption.value;
@@ -76,7 +76,10 @@ export const HighlightPicker = ({
               return (
                 <button
                   key={i}
-                  onClick={() => onSelect(colorOption.value)}
+                  onClick={() => {
+                    onSelect(colorOption.value);
+                    close();
+                  }}
                   className={`relative flex h-8 w-8 items-center justify-center rounded-full transition-transform duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${
                     isSelected ? "scale-105" : "hover:scale-105"
                   }`}

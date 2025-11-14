@@ -54,7 +54,7 @@ export const EditorBubbleMenu = ({ editor }: Props) => {
   return !editor ? null : (
     <BubbleMenu
       editor={editor}
-      options={{ placement: "top", offset: 8, flip: true }}
+      options={{ placement: "top-start", offset: 8, flip: true }}
     >
       <div
         ref={bubbleMenuRef}
