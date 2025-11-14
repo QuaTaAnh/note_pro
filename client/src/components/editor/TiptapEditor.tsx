@@ -19,8 +19,7 @@ import {
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { FiTrash } from "react-icons/fi";
-import { Button } from "../ui/button";
+import { BlockActionMenu } from "@/components/page/BlockActionMenu";
 import { CheckTask } from "./CheckTask";
 import { EditorBubbleMenu } from "./EditorBubbleMenu";
 import { useSlashCommand } from "./useSlashCommand";
@@ -220,37 +219,34 @@ export const TiptapEditor = ({
   }
 
   return (
-    <div
-      className={`group relative flex items-start gap-3 px-2 rounded-md hover:bg-accent/30 transition-colors my-1`}
-      style={{ boxShadow: undefined }}
-    >
-      {editable && <div className="pt-1">{dragHandle}</div>}
+    <div className="group relative flex items-start gap-2">
+      {editable && (
+        <div className="pt-2 text-muted-foreground">{dragHandle}</div>
+      )}
+      <div className="flex flex-1 items-start gap-3 p-1 rounded hover:border border-gray-300 transition-all duration-200 hover:shadow-md">
+        <CheckTask
+          editable={editable}
+          task={task as Task}
+          isTask={isTask}
+          isCompleted={isCompleted}
+          isUpdating={isUpdating}
+          setIsUpdating={setIsUpdating}
+        />
 
-      <CheckTask
-        editable={editable}
-        task={task as Task}
-        isTask={isTask}
-        isCompleted={isCompleted}
-        isUpdating={isUpdating}
-        setIsUpdating={setIsUpdating}
-      />
-
-      <div className="flex-1 min-w-0 overflow-hidden">
-        <div className={cn(isTask && isCompleted && "line-through opacity-60")}>
-          {showBubbleMenu && <EditorBubbleMenu editor={editor} />}
-          <EditorContent editor={editor} className={editorClassName} />
-          {menus}
+        <div className="flex-1 min-w-0 overflow-hidden">
+          <div
+            className={cn(isTask && isCompleted && "line-through opacity-60")}
+          >
+            {showBubbleMenu && <EditorBubbleMenu editor={editor} />}
+            <EditorContent editor={editor} className={editorClassName} />
+            {menus}
+          </div>
         </div>
       </div>
       {onDeleteBlock && editable && (
-        <Button
-          variant="ghost"
-          size="icon"
-          className="w-6 h-6 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-100 dark:hover:bg-red-900/20 rounded text-gray-400 hover:text-red-600 dark:hover:text-red-400 mt-0.5"
-          onClick={handleDelete}
-        >
-          <FiTrash size={14} />
-        </Button>
+        <div className="ml-1 flex-shrink-0 opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100">
+          <BlockActionMenu onDelete={handleDelete} />
+        </div>
       )}
     </div>
   );
