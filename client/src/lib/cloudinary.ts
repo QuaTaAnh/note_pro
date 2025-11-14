@@ -85,7 +85,7 @@ export async function uploadImageToCloudinary(
     formData.append('transformation', options.transformation);
   }
 
-  const url = `https://api.cloudinary.com/v1_1/${config.cloudName}/image/upload`;
+  const url = `${process.env.NEXT_PUBLIC_CLOUDINARY_URL}/${config.cloudName}/image/upload`;
 
   try {
     const response = await fetch(url, {
@@ -129,7 +129,7 @@ export async function uploadFileToCloudinary(
   }
 
   const resourceType = options?.resourceType || "auto";
-  const url = `https://api.cloudinary.com/v1_1/${config.cloudName}/${resourceType}/upload`;
+  const url = `${process.env.NEXT_PUBLIC_CLOUDINARY_URL}/${config.cloudName}/${resourceType}/upload`;
 
   try {
     const response = await fetch(url, {

@@ -39,7 +39,7 @@ export default function TiptapBlockEditor({ pageId, className = "" }: Props) {
     <div className="relative">
       {isUploadingFile && (
         <div className="fixed inset-0 z-[1000] bg-background/80 backdrop-blur-sm">
-          <PageLoading />
+          <PageLoading text="Uploading file..." />
         </div>
       )}
       <div className={`max-w-full mx-auto px-2 md:px-4 lg:px-6 ${className}`}>
