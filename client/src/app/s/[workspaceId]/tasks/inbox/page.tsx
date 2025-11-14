@@ -71,7 +71,7 @@ export default function InboxPage() {
       return allTasks;
     } else {
       return allTasks.filter(
-        (task) => !task.schedule_date || task.schedule_date.trim() === ""
+        (task) => !task.schedule_date || task.schedule_date.trim() === "",
       );
     }
   }, [data?.tasks, settings.showScheduledTasks]);
@@ -86,7 +86,7 @@ export default function InboxPage() {
         ? TASK_ITEM_HEIGHT_WITH_DATE
         : TASK_ITEM_HEIGHT_WITHOUT_DATE;
     },
-    [tasks]
+    [tasks],
   );
 
   const handleToggleComplete = useCallback(
@@ -107,7 +107,7 @@ export default function InboxPage() {
         showToast.error("Failed to update task");
       }
     },
-    [updateTask]
+    [updateTask],
   );
 
   const handleMoreClick = useCallback((taskId: string) => {
@@ -120,7 +120,7 @@ export default function InboxPage() {
       onToggleComplete: handleToggleComplete,
       onMoreClick: handleMoreClick,
     }),
-    [tasks, handleToggleComplete, handleMoreClick]
+    [tasks, handleToggleComplete, handleMoreClick],
   );
 
   return loading && tasks.length === 0 ? (

@@ -15,7 +15,7 @@ interface SlashCommandOptions {
   onAddBlock?: (
     position: number,
     type: BlockType,
-    content?: Record<string, unknown>
+    content?: Record<string, unknown>,
   ) => Promise<void> | void;
   onToggleUploading?: (isUploading: boolean) => void;
   allowFileUploads?: boolean;
@@ -30,7 +30,7 @@ export const useSlashCommand = (
     onAddBlock,
     onToggleUploading,
     allowFileUploads = true,
-  }: SlashCommandOptions = {}
+  }: SlashCommandOptions = {},
 ) => {
   const [showSlash, setShowSlash] = useState(false);
   const [showEmoji, setShowEmoji] = useState(false);
@@ -78,7 +78,7 @@ export const useSlashCommand = (
         onToggleUploading?.(false);
       }
     },
-    [onAddBlock, onToggleUploading, position]
+    [onAddBlock, onToggleUploading, position],
   );
 
   const handleFileChange = useCallback(
@@ -88,7 +88,7 @@ export const useSlashCommand = (
       if (!file) return;
       await handleFileUpload(file);
     },
-    [handleFileUpload]
+    [handleFileUpload],
   );
 
   const triggerFilePicker = useCallback(() => {
@@ -147,7 +147,7 @@ export const useSlashCommand = (
       }
       setShowSlash(false);
     },
-    [editor, onAddBlock, triggerFilePicker, allowFileUploads]
+    [editor, onAddBlock, triggerFilePicker, allowFileUploads],
   );
 
   const onEmojiSelect = useCallback(
@@ -155,7 +155,7 @@ export const useSlashCommand = (
       if (editor) editor.commands.insertContent(emoji);
       setShowEmoji(false);
     },
-    [editor]
+    [editor],
   );
 
   const handleKeyDown = useCallback(
@@ -185,7 +185,7 @@ export const useSlashCommand = (
       }
       return false;
     },
-    [showSlash, showEmoji, availableCommands.length]
+    [showSlash, showEmoji, availableCommands.length],
   );
 
   const menus = useMemo(
@@ -232,7 +232,7 @@ export const useSlashCommand = (
       handleFileChange,
       availableCommands,
       allowFileUploads,
-    ]
+    ],
   );
 
   return { handleKeyDown, menus };

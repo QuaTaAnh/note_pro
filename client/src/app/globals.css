@@ -17,8 +17,8 @@
     --modal-border: 214.3 31.8% 91.4%;
     --primary: 222.2 47.4% 11.2%;
     --primary-foreground: 210 40% 98%;
-    --button-primary:  217.2 91.2% 59.8%; 
-    --button-primary-hover:  217.2 91.2% 50.8%; 
+    --button-primary: 217.2 91.2% 59.8%;
+    --button-primary-hover: 217.2 91.2% 50.8%;
     --secondary: 210 40% 96%;
     --secondary-foreground: 222.2 84% 4.9%;
     --muted: 210 40% 96%;
@@ -55,8 +55,8 @@
     --modal-border: 217.2 32.6% 17.5%;
     --primary: 210 40% 98%;
     --primary-foreground: 222.2 47.4% 11.2%;
-    --button-primary:  217.2 91.2% 59.8%; 
-    --button-primary-hover:  217.2 91.2% 50.8%; 
+    --button-primary: 217.2 91.2% 59.8%;
+    --button-primary-hover: 217.2 91.2% 50.8%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;
@@ -81,15 +81,15 @@
 
 @layer utilities {
   .shadow-y {
-    box-shadow: 
-      0 -4px 6px -1px rgba(0,0,0,0.1), 
-      0 4px 6px -1px rgba(0,0,0,0.1); 
+    box-shadow:
+      0 -4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 4px 6px -1px rgba(0, 0, 0, 0.1);
   }
 
   .dark .shadow-y {
-    box-shadow: 
-      0 -4px 6px -1px rgba(255,255,255,0.1),
-      0 4px 6px -1px rgba(255,255,255,0.1);
+    box-shadow:
+      0 -4px 6px -1px rgba(255, 255, 255, 0.1),
+      0 4px 6px -1px rgba(255, 255, 255, 0.1);
   }
 }
 
@@ -192,7 +192,9 @@
   background-color: #f3f4f6;
   padding: 0.125em 0.25em;
   border-radius: 0.25em;
-  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+  font-family:
+    ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo,
+    monospace;
   font-size: 0.875em;
 }
 
@@ -314,17 +316,17 @@ a {
   .toast-success [data-icon] {
     color: hsl(142 76% 36%) !important; /* Green for light mode */
   }
-  
+
   /* Error Toast */
   .toast-error [data-icon] {
     color: hsl(346 87% 43%) !important; /* Red for light mode */
   }
-  
+
   /* Warning Toast */
   .toast-warning [data-icon] {
     color: hsl(38 92% 50%) !important; /* Yellow/Orange for light mode */
   }
-  
+
   /* Info Toast */
   .toast-info [data-icon] {
     color: hsl(217 91% 60%) !important; /* Blue for light mode */
@@ -337,17 +339,17 @@ a {
   .toast-success [data-icon] {
     color: hsl(142 72% 29%) !important; /* Green for dark mode */
   }
-  
+
   /* Error Toast */
   .toast-error [data-icon] {
     color: hsl(346 84% 61%) !important; /* Red for dark mode */
   }
-  
+
   /* Warning Toast */
   .toast-warning [data-icon] {
     color: hsl(48 96% 53%) !important; /* Yellow for dark mode */
   }
-  
+
   /* Info Toast */
   .toast-info [data-icon] {
     color: hsl(217 91% 60%) !important; /* Blue for dark mode */

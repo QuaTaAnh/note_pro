@@ -39,7 +39,8 @@ mutation InsertBlockAndUpdatePosition(
 ) {
   update_blocks(
     where: { page_id: { _eq: $pageId }, position: { _gte: $position } }
-    _inc: { position: 1 }, _set: { updated_at: "now()" }
+    _inc: { position: 1 }
+    _set: { updated_at: "now()" }
   ) {
     affected_rows
   }

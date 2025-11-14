@@ -14,7 +14,7 @@ export const BubbleButton = ({ isActive, onClick, children }: Props) => {
       onClick={onClick}
       className={cn(
         "p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors",
-        isActive && "text-blue-600"
+        isActive && "text-blue-600",
       )}
     >
       {children}

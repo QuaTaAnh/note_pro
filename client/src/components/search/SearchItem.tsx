@@ -45,7 +45,7 @@ export function SearchItem({
       href={href}
       className={cn(
         "flex items-center gap-3 py-1 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer",
-        className
+        className,
       )}
       onClick={onClick}
     >

@@ -61,7 +61,7 @@ export function BlockActionMenu({
           size="icon"
           className={cn(
             "h-8 w-8 rounded-full text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-offset-0",
-            className
+            className,
           )}
         >
           <MoreVertical className="h-4 w-4" />

@@ -71,7 +71,7 @@ export function LoadingDots({ size = "md", className }: LoadingDotsProps) {
           key={i}
           className={cn(
             "bg-current rounded-full animate-bounce",
-            sizeClasses[size]
+            sizeClasses[size],
           )}
           style={{
             animationDelay: `${i * 0.1}s`,

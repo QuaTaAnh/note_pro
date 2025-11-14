@@ -22,6 +22,6 @@ export function useCurrentUser(): CurrentUser {
       email: session?.user?.email ?? null,
       image: session?.user?.image ?? null,
     }),
-    [session?.user?.email, session?.user?.image, session?.user?.name, userId]
+    [session?.user?.email, session?.user?.image, session?.user?.name, userId],
   );
 }

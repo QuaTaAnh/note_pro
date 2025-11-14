@@ -1,33 +1,48 @@
-import * as Types from 'generated/graphql';
+import * as Types from "generated/graphql";
 
-import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
-const defaultOptions = {"ignoreResults":true} as const;
+import { gql } from "@apollo/client";
+import * as Apollo from "@apollo/client";
+const defaultOptions = { ignoreResults: true } as const;
 export type UpdateWorkspaceMutationVariables = Types.Exact<{
-  workspaceId: Types.Scalars['uuid']['input'];
-  name?: Types.InputMaybe<Types.Scalars['String']['input']>;
-  imageUrl?: Types.InputMaybe<Types.Scalars['String']['input']>;
+  workspaceId: Types.Scalars["uuid"]["input"];
+  name?: Types.InputMaybe<Types.Scalars["String"]["input"]>;
+  imageUrl?: Types.InputMaybe<Types.Scalars["String"]["input"]>;
 }>;
 
-
-export type UpdateWorkspaceMutation = { __typename?: 'mutation_root', update_workspaces_by_pk?: { __typename?: 'workspaces', id: string, name?: string | null, image_url?: string | null, created_at?: string | null, created_by?: string | null } | null };
-
+export type UpdateWorkspaceMutation = {
+  __typename?: "mutation_root";
+  update_workspaces_by_pk?: {
+    __typename?: "workspaces";
+    id: string;
+    name?: string | null;
+    image_url?: string | null;
+    created_at?: string | null;
+    created_by?: string | null;
+  } | null;
+};
 
 export const UpdateWorkspaceDocument = gql`
-    mutation UpdateWorkspace($workspaceId: uuid!, $name: String, $imageUrl: String) {
-  update_workspaces_by_pk(
-    pk_columns: {id: $workspaceId}
-    _set: {name: $name, image_url: $imageUrl}
+  mutation UpdateWorkspace(
+    $workspaceId: uuid!
+    $name: String
+    $imageUrl: String
   ) {
-    id
-    name
-    image_url
-    created_at
-    created_by
+    update_workspaces_by_pk(
+      pk_columns: { id: $workspaceId }
+      _set: { name: $name, image_url: $imageUrl }
+    ) {
+      id
+      name
+      image_url
+      created_at
+      created_by
+    }
   }
-}
-    `;
-export type UpdateWorkspaceMutationFn = Apollo.MutationFunction<UpdateWorkspaceMutation, UpdateWorkspaceMutationVariables>;
+`;
+export type UpdateWorkspaceMutationFn = Apollo.MutationFunction<
+  UpdateWorkspaceMutation,
+  UpdateWorkspaceMutationVariables
+>;
 
 /**
  * __useUpdateWorkspaceMutation__
@@ -48,10 +63,24 @@ export type UpdateWorkspaceMutationFn = Apollo.MutationFunction<UpdateWorkspaceM
  *   },
  * });
  */
-export function useUpdateWorkspaceMutation(baseOptions?: Apollo.MutationHookOptions<UpdateWorkspaceMutation, UpdateWorkspaceMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateWorkspaceMutation, UpdateWorkspaceMutationVariables>(UpdateWorkspaceDocument, options);
-      }
-export type UpdateWorkspaceMutationHookResult = ReturnType<typeof useUpdateWorkspaceMutation>;
-export type UpdateWorkspaceMutationResult = Apollo.MutationResult<UpdateWorkspaceMutation>;
-export type UpdateWorkspaceMutationOptions = Apollo.BaseMutationOptions<UpdateWorkspaceMutation, UpdateWorkspaceMutationVariables>;
+export function useUpdateWorkspaceMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateWorkspaceMutation,
+    UpdateWorkspaceMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdateWorkspaceMutation,
+    UpdateWorkspaceMutationVariables
+  >(UpdateWorkspaceDocument, options);
+}
+export type UpdateWorkspaceMutationHookResult = ReturnType<
+  typeof useUpdateWorkspaceMutation
+>;
+export type UpdateWorkspaceMutationResult =
+  Apollo.MutationResult<UpdateWorkspaceMutation>;
+export type UpdateWorkspaceMutationOptions = Apollo.BaseMutationOptions<
+  UpdateWorkspaceMutation,
+  UpdateWorkspaceMutationVariables
+>;

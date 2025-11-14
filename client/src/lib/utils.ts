@@ -1,9 +1,9 @@
 import { format, formatDistanceToNow } from "date-fns";
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 /**
@@ -11,14 +11,15 @@ export function cn(...inputs: ClassValue[]) {
  */
 export function getUserIdFromToken(token: string): string | null {
   try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    return payload['https://hasura.io/jwt/claims']?.['x-hasura-user-id'] || null;
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    return (
+      payload["https://hasura.io/jwt/claims"]?.["x-hasura-user-id"] || null
+    );
   } catch (error) {
-    console.error('Error decoding token:', error);
+    console.error("Error decoding token:", error);
     return null;
   }
 }
-
 
 /**
  * @param date string | Date
@@ -27,7 +28,7 @@ export function getUserIdFromToken(token: string): string | null {
  */
 export function formatDate(
   date: string | Date = "Unknown",
-  options: { relative?: boolean } = {}
+  options: { relative?: boolean } = {},
 ) {
   if (!date || date === "Unknown") return "Unknown";
 
@@ -35,10 +36,8 @@ export function formatDate(
   const parsed = typeof date === "string" ? new Date(date) : date;
 
   if (options.relative) {
-    return formatDistanceToNow(parsed, { addSuffix: true }); 
+    return formatDistanceToNow(parsed, { addSuffix: true });
   }
 
-  return format(parsed, "MMM d, yyyy"); 
+  return format(parsed, "MMM d, yyyy");
 }
-
-

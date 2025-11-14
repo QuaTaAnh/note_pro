@@ -84,7 +84,7 @@ export default function TodayPage() {
         ? TASK_ITEM_HEIGHT_WITH_DATE
         : TASK_ITEM_HEIGHT_WITHOUT_DATE;
     },
-    [tasks]
+    [tasks],
   );
 
   const handleToggleComplete = useCallback(
@@ -113,7 +113,7 @@ export default function TodayPage() {
         showToast.error("Failed to update task");
       }
     },
-    [updateTask, workspace?.id, today]
+    [updateTask, workspace?.id, today],
   );
 
   const handleMoreClick = useCallback((taskId: string) => {
@@ -126,7 +126,7 @@ export default function TodayPage() {
       onToggleComplete: handleToggleComplete,
       onMoreClick: handleMoreClick,
     }),
-    [tasks, handleToggleComplete, handleMoreClick]
+    [tasks, handleToggleComplete, handleMoreClick],
   );
 
   return loading && tasks.length === 0 ? (

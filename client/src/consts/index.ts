@@ -34,12 +34,15 @@ export const PAGE_TITLES: Record<string, string> = {
 // Modal types for sidebar actions
 export enum ModalType {
   TASK = "task",
-  DOCUMENT = "document", 
-  FOLDER = "folder"
+  DOCUMENT = "document",
+  FOLDER = "folder",
 }
 
 // Navigation menu items
-export const MENU_ITEMS = (workspaceSlug: string, counts: { allDocs: number | undefined }) => [
+export const MENU_ITEMS = (
+  workspaceSlug: string,
+  counts: { allDocs: number | undefined },
+) => [
   {
     icon: FiFileText,
     label: "All Docs",
@@ -76,7 +79,8 @@ export const MIN_PASSWORD_LENGTH = 8;
 export const MAX_TITLE_LENGTH = 100;
 export const MAX_DESCRIPTION_LENGTH = 500;
 
-const COLORS = [{ name: "Yellow", color: HexColor.YELLOW, value: HexColor.YELLOW },
+const COLORS = [
+  { name: "Yellow", color: HexColor.YELLOW, value: HexColor.YELLOW },
   { name: "Green", color: HexColor.GREEN, value: HexColor.GREEN },
   { name: "Sky", color: HexColor.SKY, value: HexColor.SKY },
   { name: "Blue", color: HexColor.BLUE, value: HexColor.BLUE },
@@ -85,28 +89,36 @@ const COLORS = [{ name: "Yellow", color: HexColor.YELLOW, value: HexColor.YELLOW
   { name: "Rose", color: HexColor.ROSE, value: HexColor.ROSE },
   { name: "Orange", color: HexColor.ORANGE, value: HexColor.ORANGE },
   { name: "Gray", color: HexColor.GRAY, value: HexColor.GRAY },
-  { name: "Dark Blue", color: HexColor.DARK_BLUE, value:  HexColor.DARK_BLUE },
-  { name: "Dark Purple", color: HexColor.DARK_PURPLE, value: HexColor.DARK_PURPLE },
+  { name: "Dark Blue", color: HexColor.DARK_BLUE, value: HexColor.DARK_BLUE },
+  {
+    name: "Dark Purple",
+    color: HexColor.DARK_PURPLE,
+    value: HexColor.DARK_PURPLE,
+  },
   { name: "Dark Pink", color: HexColor.DARK_PINK, value: HexColor.DARK_PINK },
-  { name: "Dark Orange", color: HexColor.DARK_ORANGE, value:  HexColor.DARK_ORANGE },
-  { name: "Brown", color: HexColor.BROWN, value: HexColor.BROWN }
-]
+  {
+    name: "Dark Orange",
+    color: HexColor.DARK_ORANGE,
+    value: HexColor.DARK_ORANGE,
+  },
+  { name: "Brown", color: HexColor.BROWN, value: HexColor.BROWN },
+];
 
 export const FOLDER_COLORS = [
   { name: "White", color: HexColor.WHITE, value: HexColor.WHITE },
-  ...COLORS
-]
+  ...COLORS,
+];
 
 export const HIGHLIGHT_COLORS = [
   { name: "None", color: HexColor.TRANSPARENT, value: null },
-  ...COLORS
+  ...COLORS,
 ];
 
 export const TASK_STATUS = {
   TODO: "todo",
   COMPLETED: "completed",
 };
- 
+
 export const DEFAULT_WORKSPACE_IMAGE = "/images/workspace-default.jpeg";
 export const IMAGE_EXTENSIONS = new Set([
   "jpg",

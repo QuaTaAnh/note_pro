@@ -1,7 +1,15 @@
 "use client";
 
-import { useDeleteBlockMutation, useInsertBlockAndUpdatePositionMutation, useUpdateBlockMutation, useUpdateBlocksPositionsMutation } from "@/graphql/mutations/__generated__/document.generated";
-import { GetDocumentBlocksDocument, GetDocumentBlocksQuery } from "@/graphql/queries/__generated__/document.generated";
+import {
+  useDeleteBlockMutation,
+  useInsertBlockAndUpdatePositionMutation,
+  useUpdateBlockMutation,
+  useUpdateBlocksPositionsMutation,
+} from "@/graphql/mutations/__generated__/document.generated";
+import {
+  GetDocumentBlocksDocument,
+  GetDocumentBlocksQuery,
+} from "@/graphql/queries/__generated__/document.generated";
 import { useUserId } from "@/hooks/use-auth";
 import { useWorkspace } from "@/hooks/use-workspace";
 import { useState } from "react";
@@ -17,7 +25,8 @@ export interface CreateBlockInput {
 }
 
 export function useBlocks() {
-  const [insertBlockAndUpdatePosition] = useInsertBlockAndUpdatePositionMutation();
+  const [insertBlockAndUpdatePosition] =
+    useInsertBlockAndUpdatePositionMutation();
   const [updateBlock] = useUpdateBlockMutation();
   const [deleteBlock] = useDeleteBlockMutation();
   const [updateBlocksPositions] = useUpdateBlocksPositionsMutation();
@@ -25,7 +34,10 @@ export function useBlocks() {
   const { workspace } = useWorkspace();
   const [isLoading, setIsLoading] = useState(false);
 
-  const updateBlockContent = async (id: string, content: Record<string, unknown>): Promise<Block | null> => {
+  const updateBlockContent = async (
+    id: string,
+    content: Record<string, unknown>,
+  ): Promise<Block | null> => {
     try {
       setIsLoading(true);
       const res = await updateBlock({
@@ -41,11 +53,11 @@ export function useBlocks() {
           if (!updatedBlock) return;
 
           cache.modify({
-            id: cache.identify({ __typename: 'blocks', id }),
+            id: cache.identify({ __typename: "blocks", id }),
             fields: {
               content: () => updatedBlock.content,
               updated_at: () => updatedBlock.updated_at,
-            }
+            },
           });
 
           cache.modify({
@@ -61,15 +73,15 @@ export function useBlocks() {
                   }
                   return block;
                 });
-              }
-            }
+              },
+            },
           });
-        }
+        },
       });
 
       const result = res.data?.update_blocks_by_pk;
       if (!result) return null;
-      
+
       return {
         id: result.id,
         content: result.content || {},
@@ -96,17 +108,19 @@ export function useBlocks() {
         variables: { id },
         update: (cache) => {
           // Remove the entity itself
-          cache.evict({ id: cache.identify({ __typename: 'blocks', id }) });
+          cache.evict({ id: cache.identify({ __typename: "blocks", id }) });
           // Also remove from any cached lists named 'blocks'
           cache.modify({
             fields: {
               blocks(existingRefs = [], { readField }) {
-                return existingRefs.filter((ref: any) => readField('id', ref) !== id);
-              }
-            }
+                return existingRefs.filter(
+                  (ref: any) => readField("id", ref) !== id,
+                );
+              },
+            },
           });
           cache.gc();
-        }
+        },
       });
       return true;
     } catch (error) {
@@ -121,7 +135,7 @@ export function useBlocks() {
     pageId: string,
     position: number,
     type: string,
-    content: Record<string, unknown> = { text: "" }
+    content: Record<string, unknown> = { text: "" },
   ): Promise<Block | null> => {
     if (!workspace?.id || !userId) return null;
 
@@ -144,7 +158,7 @@ export function useBlocks() {
 
       const result = res.data?.insert_blocks_one;
       if (!result) return null;
-      
+
       return {
         id: result.id,
         content: result.content || {},
@@ -164,7 +178,9 @@ export function useBlocks() {
     }
   };
 
-  const updateBlocksPositionsBatch = async (updates: { id: string; position: number }[]) => {
+  const updateBlocksPositionsBatch = async (
+    updates: { id: string; position: number }[],
+  ) => {
     if (!updates.length) return;
     setIsLoading(true);
     try {

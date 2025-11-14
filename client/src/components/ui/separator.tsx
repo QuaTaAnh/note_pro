@@ -25,7 +25,7 @@ const Separator = React.forwardRef<
       color = "default",
       ...props
     },
-    ref
+    ref,
   ) => {
     const thicknessClasses = {
       thin: orientation === "horizontal" ? "h-[1px]" : "w-[1px]",
@@ -54,12 +54,12 @@ const Separator = React.forwardRef<
           thicknessClasses[thickness],
           orientationClasses[orientation],
           colorClasses[color],
-          className
+          className,
         )}
         {...props}
       />
     );
-  }
+  },
 );
 Separator.displayName = SeparatorPrimitive.Root.displayName;
 

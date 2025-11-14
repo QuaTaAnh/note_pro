@@ -33,7 +33,7 @@ export function DocumentAccessGuard({
 
   const rootBlock = useMemo(() => {
     return data?.blocks?.find(
-      (block) => block.id === documentId && block.type === BlockType.PAGE
+      (block) => block.id === documentId && block.type === BlockType.PAGE,
     );
   }, [data?.blocks, documentId]);
 
@@ -72,13 +72,13 @@ export function DocumentAccessGuard({
     const accessRequests = accessRequestData?.access_requests || [];
 
     const hasApprovedAccess = accessRequests.some(
-      (req) => req.status === AccessRequestStatus.APPROVED
+      (req) => req.status === AccessRequestStatus.APPROVED,
     );
 
     const hasPendingWriteRequest = accessRequests.some(
       (req) =>
         req.status === AccessRequestStatus.PENDING &&
-        req.permission_type === PermissionType.WRITE
+        req.permission_type === PermissionType.WRITE,
     );
 
     if (hasApprovedAccess || hasPendingWriteRequest) {

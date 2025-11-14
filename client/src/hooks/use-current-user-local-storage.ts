@@ -27,15 +27,15 @@ type Options<T> =
 export function useCurrentUserLocalStorage<T>(
   key: string,
   initialValue?: T,
-  options?: Options<T>
+  options?: Options<T>,
 ): [T | undefined, Dispatch<SetStateAction<T | undefined>>, () => void] {
   const { id } = useCurrentUser();
   const storageKey = useMemo(
     () => (id ? `user_#${id}_${key}` : null),
-    [id, key]
+    [id, key],
   );
 
-  const serialize = useCallback<Serializer<T | undefined>>( 
+  const serialize = useCallback<Serializer<T | undefined>>(
     (value) => {
       if (value === undefined) {
         return "";
@@ -49,10 +49,10 @@ export function useCurrentUserLocalStorage<T>(
         options?.serializer ?? ((item) => JSON.stringify(item));
       return serializer(value);
     },
-    [options]
+    [options],
   );
 
-  const deserialize = useCallback<Deserializer<T | undefined>>( 
+  const deserialize = useCallback<Deserializer<T | undefined>>(
     (value) => {
       if (options?.raw) {
         return value as unknown as T;
@@ -62,7 +62,7 @@ export function useCurrentUserLocalStorage<T>(
         options?.deserializer ?? ((item) => JSON.parse(item));
       return deserializer(value);
     },
-    [options]
+    [options],
   );
 
   const readValue = useCallback(() => {
@@ -88,7 +88,7 @@ export function useCurrentUserLocalStorage<T>(
     } catch (error) {
       console.warn(
         `Failed to read localStorage key "${storageKey}" for current user:`,
-        error
+        error,
       );
       return initialValue;
     }
@@ -98,7 +98,9 @@ export function useCurrentUserLocalStorage<T>(
   useEffect(() => {
     initialValueRef.current = initialValue;
   }, [initialValue]);
-  const [storedValue, setStoredValue] = useState<T | undefined>(() => readValue());
+  const [storedValue, setStoredValue] = useState<T | undefined>(() =>
+    readValue(),
+  );
 
   useEffect(() => {
     const nextValue = readValue();
@@ -111,7 +113,7 @@ export function useCurrentUserLocalStorage<T>(
         setStoredValue((prev) =>
           typeof value === "function"
             ? (value as (previous: T | undefined) => T | undefined)(prev)
-            : value
+            : value,
         );
         return;
       }
@@ -135,14 +137,14 @@ export function useCurrentUserLocalStorage<T>(
         } catch (error) {
           console.warn(
             `Failed to write localStorage key "${storageKey}" for current user:`,
-            error
+            error,
           );
         }
 
         return newValue;
       });
     },
-    [serialize, storageKey]
+    [serialize, storageKey],
   );
 
   const remove = useCallback(() => {

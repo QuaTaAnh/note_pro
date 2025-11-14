@@ -56,7 +56,7 @@ export const CheckTask = ({
             isCompleted
               ? "bg-green-500 border-green-500 text-white"
               : "border-gray-300 hover:border-gray-400",
-            isUpdating && "opacity-50 cursor-not-allowed"
+            isUpdating && "opacity-50 cursor-not-allowed",
           )}
         >
           {isCompleted && <Check className="w-3 h-3" />}

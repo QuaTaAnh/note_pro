@@ -69,7 +69,7 @@ export const TaskItem = ({
       className={cn(
         "flex items-center gap-3 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md group transition-colors",
         variant === "compact" ? "px-2 py-1" : "px-3 py-2",
-        className
+        className,
       )}
     >
       <button
@@ -80,7 +80,7 @@ export const TaskItem = ({
           tempCompleted
             ? "bg-green-500 border-green-500 text-white"
             : "border-gray-300 hover:border-gray-400",
-          isAnimating && "cursor-not-allowed"
+          isAnimating && "cursor-not-allowed",
         )}
       >
         {tempCompleted && <Check className="w-3 h-3" />}
@@ -99,7 +99,7 @@ export const TaskItem = ({
             className={cn(
               variant === "compact" ? "text-xs" : "text-sm",
               "font-medium truncate transition-all duration-200 flex-1 min-w-0",
-              tempCompleted && "line-through text-muted-foreground"
+              tempCompleted && "line-through text-muted-foreground",
             )}
           >
             {title}

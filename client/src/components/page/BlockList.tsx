@@ -32,7 +32,7 @@ interface Props {
   onAddBlock: (
     position: number,
     type: BlockType,
-    content?: Record<string, unknown>
+    content?: Record<string, unknown>,
   ) => Promise<void> | void;
   onSaveImmediate: () => void;
   onDeleteBlock?: (blockId: string) => void;
@@ -53,7 +53,7 @@ function SortableBlockItem({
   onAddBlock: (
     position: number,
     type: BlockType,
-    content?: Record<string, unknown>
+    content?: Record<string, unknown>,
   ) => Promise<void> | void;
   onSaveImmediate: () => void;
   onDeleteBlock?: (blockId: string) => void;
@@ -92,7 +92,7 @@ function SortableBlockItem({
         x: 0,
         scaleX: 1,
         scaleY: 1,
-      }
+      },
     ),
     transition,
     opacity: isDragging ? 0.8 : 1,

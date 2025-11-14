@@ -6,7 +6,8 @@ import { useDocumentBlocksData } from "@/hooks/use-document-blocks-data";
 import { useDocumentBlocksEditing } from "@/hooks/use-document-blocks-editing";
 
 export function useDocumentBlocks(pageId: string) {
-  const { loading, processedBlocks, processedRootBlock } = useDocumentBlocksData(pageId);
+  const { loading, processedBlocks, processedRootBlock } =
+    useDocumentBlocksData(pageId);
 
   const [initialBlocks, setInitialBlocks] = useState<Block[]>([]);
   const [initialRootBlock, setInitialRootBlock] = useState<Block | null>(null);
