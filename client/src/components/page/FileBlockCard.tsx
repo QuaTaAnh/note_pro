@@ -74,14 +74,15 @@ export function FileBlockCard({
                 height={60}
                 className="pointer-events-none select-none object-contain"
               />
-              <div
-                className={cn(
-                  "absolute inset-x-1 bottom-1 rounded-md px-1 py-0.5 text-[10px] font-semibold uppercase leading-none text-center shadow-sm",
-                  fileBadge.bgClass,
-                  fileBadge.textClass,
-                )}
-              >
-                {badgeLabel}
+              <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                <span
+                  className={cn(
+                    "text-[11px] font-semibold uppercase tracking-[0.08em]",
+                    fileBadge.textClass,
+                  )}
+                >
+                  {badgeLabel}
+                </span>
               </div>
             </div>
             <div className="flex-1 min-w-0">
@@ -133,33 +134,29 @@ function formatFileSize(bytes: number) {
 
 type FileBadge = {
   label: string;
-  bgClass: string;
   textClass: string;
 };
 
 const FILE_BADGES: Record<string, FileBadge> = {
-  pdf: { label: "PDF", bgClass: "bg-red-100", textClass: "text-red-700" },
-  doc: { label: "WORD", bgClass: "bg-blue-100", textClass: "text-blue-700" },
-  docx: { label: "WORD", bgClass: "bg-blue-100", textClass: "text-blue-700" },
-  xls: { label: "XLS", bgClass: "bg-green-100", textClass: "text-green-700" },
-  xlsx: { label: "XLS", bgClass: "bg-green-100", textClass: "text-green-700" },
-  ppt: { label: "PPT", bgClass: "bg-orange-100", textClass: "text-orange-700" },
+  pdf: { label: "PDF", textClass: "text-red-600" },
+  doc: { label: "WORD", textClass: "text-blue-600" },
+  docx: { label: "WORD", textClass: "text-blue-600" },
+  xls: { label: "XLS", textClass: "text-green-600" },
+  xlsx: { label: "XLS", textClass: "text-green-600" },
+  ppt: { label: "PPT", textClass: "text-orange-600" },
   pptx: {
     label: "PPT",
-    bgClass: "bg-orange-100",
-    textClass: "text-orange-700",
+    textClass: "text-orange-600",
   },
-  txt: { label: "TXT", bgClass: "bg-slate-100", textClass: "text-slate-700" },
+  txt: { label: "TXT", textClass: "text-slate-600" },
   csv: {
     label: "CSV",
-    bgClass: "bg-emerald-100",
-    textClass: "text-emerald-700",
+    textClass: "text-emerald-600",
   },
-  zip: { label: "ZIP", bgClass: "bg-amber-100", textClass: "text-amber-700" },
-  rar: { label: "RAR", bgClass: "bg-amber-100", textClass: "text-amber-700" },
+  zip: { label: "ZIP", textClass: "text-amber-600" },
+  rar: { label: "RAR", textClass: "text-amber-600" },
   default: {
     label: "FILE",
-    bgClass: "bg-primary/10",
     textClass: "text-primary",
   },
 };
