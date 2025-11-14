@@ -118,9 +118,10 @@ export function useBlocks() {
   };
 
   const createBlockWithPositionUpdate = async (
-    pageId: string, 
-    position: number, 
-    type: string
+    pageId: string,
+    position: number,
+    type: string,
+    content: Record<string, unknown> = { text: "" }
   ): Promise<Block | null> => {
     if (!workspace?.id || !userId) return null;
 
@@ -133,6 +134,7 @@ export function useBlocks() {
           type,
           workspaceId: workspace.id,
           userId: userId,
+          content,
         },
         refetchQueries: [
           { query: GetDocumentBlocksDocument, variables: { pageId } },

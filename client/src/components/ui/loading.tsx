@@ -83,10 +83,10 @@ export function LoadingDots({ size = "md", className }: LoadingDotsProps) {
   );
 }
 
-export function PageLoading() {
+export function PageLoading({ text = "Loading..." }: { text?: string }) {
   return (
     <div className="flex items-center justify-center h-screen">
-      <Loading variant="spinner" size="lg" text="Loading..." />
+      <Loading variant="spinner" size="lg" text={text} />
     </div>
   );
 }

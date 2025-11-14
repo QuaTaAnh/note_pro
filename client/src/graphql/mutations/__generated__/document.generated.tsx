@@ -38,6 +38,7 @@ export type InsertBlockAndUpdatePositionMutationVariables = Types.Exact<{
   type: Types.Scalars['String']['input'];
   workspaceId: Types.Scalars['uuid']['input'];
   userId: Types.Scalars['uuid']['input'];
+  content: Types.Scalars['jsonb']['input'];
 }>;
 
 
@@ -192,7 +193,7 @@ export type DeleteBlockMutationHookResult = ReturnType<typeof useDeleteBlockMuta
 export type DeleteBlockMutationResult = Apollo.MutationResult<DeleteBlockMutation>;
 export type DeleteBlockMutationOptions = Apollo.BaseMutationOptions<DeleteBlockMutation, DeleteBlockMutationVariables>;
 export const InsertBlockAndUpdatePositionDocument = gql`
-    mutation InsertBlockAndUpdatePosition($pageId: uuid!, $position: Int!, $type: String!, $workspaceId: uuid!, $userId: uuid!) {
+    mutation InsertBlockAndUpdatePosition($pageId: uuid!, $position: Int!, $type: String!, $workspaceId: uuid!, $userId: uuid!, $content: jsonb!) {
   update_blocks(
     where: {page_id: {_eq: $pageId}, position: {_gte: $position}}
     _inc: {position: 1}
@@ -201,7 +202,7 @@ export const InsertBlockAndUpdatePositionDocument = gql`
     affected_rows
   }
   insert_blocks_one(
-    object: {page_id: $pageId, position: $position, type: $type, workspace_id: $workspaceId, user_id: $userId, content: {text: ""}}
+    object: {page_id: $pageId, position: $position, type: $type, workspace_id: $workspaceId, user_id: $userId, content: $content}
   ) {
     id
     content

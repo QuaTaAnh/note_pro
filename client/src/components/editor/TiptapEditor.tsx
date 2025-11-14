@@ -44,6 +44,7 @@ interface TiptapEditorProps {
   isTask?: boolean;
   task?: Task | null;
   editable?: boolean;
+  onToggleUploading?: (isUploading: boolean) => void;
 }
 
 export const TiptapEditor = ({
@@ -66,6 +67,7 @@ export const TiptapEditor = ({
   task,
   dragHandle,
   editable = true,
+  onToggleUploading,
 }: TiptapEditorProps & { dragHandle?: React.ReactNode }) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const isCompleted = task?.status === TASK_STATUS.COMPLETED;
@@ -108,7 +110,11 @@ export const TiptapEditor = ({
   );
 
   const editor = useEditor(editorConfig as UseEditorOptions);
-  const { handleKeyDown, menus } = useSlashCommand(editor);
+  const { handleKeyDown, menus } = useSlashCommand(editor, {
+    position,
+    onAddBlock,
+    onToggleUploading,
+  });
 
   useEffect(() => {
     if (editor && value !== editor.getHTML()) {

@@ -108,3 +108,15 @@ export const TASK_STATUS = {
 };
  
 export const DEFAULT_WORKSPACE_IMAGE = "/images/workspace-default.jpeg";
+export const IMAGE_EXTENSIONS = new Set([
+  "jpg",
+  "jpeg",
+  "png",
+  "gif",
+  "webp",
+  "avif",
+  "heif",
+  "heic",
+  "bmp",
+  "svg",
+]);

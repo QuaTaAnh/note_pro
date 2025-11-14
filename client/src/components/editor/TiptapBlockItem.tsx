@@ -10,7 +10,11 @@ interface Props {
   onFocus: () => void;
   onBlur: () => void;
   onChange: (value: string) => void;
-  onAddBlock: (position: number, type: BlockType) => void;
+  onAddBlock: (
+    position: number,
+    type: BlockType,
+    content?: Record<string, unknown>
+  ) => Promise<void> | void;
   onSaveImmediate: () => void;
   onDeleteBlock?: () => void;
   dragHandle?: React.ReactNode;
@@ -21,6 +25,7 @@ interface Props {
     block_id: string;
   } | null;
   editable?: boolean;
+  onToggleUploading?: (isUploading: boolean) => void;
 }
 
 export const TiptapBlockItem = ({
@@ -37,6 +42,7 @@ export const TiptapBlockItem = ({
   blockType,
   task,
   editable = true,
+  onToggleUploading,
 }: Props) => {
   return (
     <TiptapEditor
@@ -56,6 +62,7 @@ export const TiptapBlockItem = ({
       isTask={blockType === BlockType.TASK}
       task={task}
       editable={editable}
+      onToggleUploading={onToggleUploading}
     />
   );
 };
