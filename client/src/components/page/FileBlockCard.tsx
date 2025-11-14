@@ -3,9 +3,8 @@
 import { IMAGE_EXTENSIONS } from "@/consts";
 import { Block } from "@/hooks";
 import { cn } from "@/lib/utils";
-import { ExternalLink, FileText } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import Image from "next/image";
-import type { ComponentType, SVGProps } from "react";
 import { ReactNode, useCallback, useMemo } from "react";
 import { BlockActionMenu } from "./BlockActionMenu";
 
@@ -36,10 +35,10 @@ export function FileBlockCard({
   const fileSize = content.fileSize ? formatFileSize(content.fileSize) : null;
   const fileExtension = useMemo(
     () => getFileExtension(fileName, content.fileType),
-    [fileName, content.fileType],
+    [fileName, content.fileType]
   );
   const fileBadge = useMemo(() => getFileBadge(fileExtension), [fileExtension]);
-  const BadgeIcon = fileBadge.icon;
+  const badgeLabel = fileBadge.label;
 
   const handleOpen = useCallback(() => {
     if (!fileUrl) return;
@@ -61,26 +60,30 @@ export function FileBlockCard({
         onClick={handleOpen}
         className={cn(
           "flex-1 min-w-0 rounded border border-gray-300 p-1.5 text-left transition-all duration-200 hover:shadow-md",
-          !fileUrl && "cursor-not-allowed opacity-70",
+          !fileUrl && "cursor-not-allowed opacity-70"
         )}
         disabled={!fileUrl}
       >
         {!isImageFile && (
           <div className="flex items-center gap-4">
-            <div
-              className={cn(
-                "flex h-12 w-12 items-center justify-center rounded-xl text-xs font-semibold uppercase",
-                fileBadge.bgClass,
-                fileBadge.textClass,
-              )}
-            >
-              {BadgeIcon ? (
-                <BadgeIcon className="h-6 w-6" />
-              ) : fileBadge.label ? (
-                <span className="text-sm font-semibold">{fileBadge.label}</span>
-              ) : (
-                <FileText className="h-6 w-6" />
-              )}
+            <div className="relative flex h-14 w-12 items-center justify-center">
+              <Image
+                src="/images/file-badge-base.png"
+                alt="File badge"
+                width={48}
+                height={60}
+                className="pointer-events-none select-none object-contain"
+              />
+              <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                <span
+                  className={cn(
+                    "text-[11px] font-semibold uppercase tracking-[0.08em]",
+                    fileBadge.textClass
+                  )}
+                >
+                  {badgeLabel}
+                </span>
+              </div>
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold truncate">{fileName}</p>
@@ -123,7 +126,7 @@ function formatFileSize(bytes: number) {
   const units = ["B", "KB", "MB", "GB"];
   const i = Math.min(
     Math.floor(Math.log(bytes) / Math.log(1024)),
-    units.length - 1,
+    units.length - 1
   );
   const value = bytes / Math.pow(1024, i);
   return `${value.toFixed(value >= 10 || i === 0 ? 0 : 1)} ${units[i]}`;
@@ -131,36 +134,30 @@ function formatFileSize(bytes: number) {
 
 type FileBadge = {
   label: string;
-  bgClass: string;
   textClass: string;
-  icon?: ComponentType<SVGProps<SVGSVGElement>>;
 };
 
 const FILE_BADGES: Record<string, FileBadge> = {
-  pdf: { label: "PDF", bgClass: "bg-red-100", textClass: "text-red-700" },
-  doc: { label: "WORD", bgClass: "bg-blue-100", textClass: "text-blue-700" },
-  docx: { label: "WORD", bgClass: "bg-blue-100", textClass: "text-blue-700" },
-  xls: { label: "XLS", bgClass: "bg-green-100", textClass: "text-green-700" },
-  xlsx: { label: "XLS", bgClass: "bg-green-100", textClass: "text-green-700" },
-  ppt: { label: "PPT", bgClass: "bg-orange-100", textClass: "text-orange-700" },
+  pdf: { label: "PDF", textClass: "text-red-600" },
+  doc: { label: "WORD", textClass: "text-blue-600" },
+  docx: { label: "WORD", textClass: "text-blue-600" },
+  xls: { label: "XLS", textClass: "text-green-600" },
+  xlsx: { label: "XLS", textClass: "text-green-600" },
+  ppt: { label: "PPT", textClass: "text-orange-600" },
   pptx: {
     label: "PPT",
-    bgClass: "bg-orange-100",
-    textClass: "text-orange-700",
+    textClass: "text-orange-600",
   },
-  txt: { label: "TXT", bgClass: "bg-slate-100", textClass: "text-slate-700" },
+  txt: { label: "TXT", textClass: "text-slate-600" },
   csv: {
     label: "CSV",
-    bgClass: "bg-emerald-100",
-    textClass: "text-emerald-700",
+    textClass: "text-emerald-600",
   },
-  zip: { label: "ZIP", bgClass: "bg-amber-100", textClass: "text-amber-700" },
-  rar: { label: "RAR", bgClass: "bg-amber-100", textClass: "text-amber-700" },
+  zip: { label: "ZIP", textClass: "text-amber-600" },
+  rar: { label: "RAR", textClass: "text-amber-600" },
   default: {
     label: "FILE",
-    bgClass: "bg-primary/10",
     textClass: "text-primary",
-    icon: FileText,
   },
 };
 
