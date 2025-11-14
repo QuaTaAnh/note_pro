@@ -5,7 +5,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { IconComponent } from "@/types/types";
+import { HexColor, IconComponent } from "@/types/types";
 import {
   Briefcase,
   Coffee,
@@ -88,16 +88,29 @@ const iconSets: Record<
   ],
 };
 
+const iconMap = Object.values(iconSets)
+  .flat()
+  .reduce<Record<string, IconComponent>>((acc, icon) => {
+    acc[icon.key] = icon.icon;
+    return acc;
+  }, {});
+
+export const getIconComponent = (iconKey: string): IconComponent => {
+  return iconMap[iconKey] || FiFolder;
+};
+
 interface IconPickerProps {
   selectedIcon: string;
   onIconChange: (iconKey: string) => void;
   portalContainer?: HTMLElement;
+  previewColor?: string;
 }
 
 export const IconPicker: React.FC<IconPickerProps> = ({
   selectedIcon,
   onIconChange,
   portalContainer,
+  previewColor,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -106,10 +119,14 @@ export const IconPicker: React.FC<IconPickerProps> = ({
     setIsOpen(false);
   };
 
-  const SelectedIconComponent =
-    Object.values(iconSets)
-      .flat()
-      .find((i) => i.key === selectedIcon)?.icon || FiFolder;
+  const SelectedIconComponent = getIconComponent(selectedIcon);
+
+  const iconPreviewStyles = previewColor
+    ? {
+        backgroundColor: previewColor,
+        color: previewColor === HexColor.WHITE ? "#1f2937" : "#ffffff",
+      }
+    : undefined;
 
   return (
     <div>
@@ -120,7 +137,15 @@ export const IconPicker: React.FC<IconPickerProps> = ({
             variant="outline"
             className="w-full justify-start gap-3 p-3 bg-background border-border text-foreground hover:bg-accent"
           >
-            <SelectedIconComponent className="w-4 h-4" />
+            <span
+              className={cn(
+                "w-8 h-8 rounded-full border flex items-center justify-center",
+                previewColor ? "border-transparent" : "border-border",
+              )}
+              style={iconPreviewStyles}
+            >
+              <SelectedIconComponent className="w-4 h-4" />
+            </span>
             <span className="text-sm text-muted-foreground">Choose Icon</span>
           </Button>
         </PopoverTrigger>
