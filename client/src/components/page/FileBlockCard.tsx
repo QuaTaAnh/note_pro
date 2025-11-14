@@ -3,9 +3,8 @@
 import { IMAGE_EXTENSIONS } from "@/consts";
 import { Block } from "@/hooks";
 import { cn } from "@/lib/utils";
-import { ExternalLink, FileText } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import Image from "next/image";
-import type { ComponentType, SVGProps } from "react";
 import { ReactNode, useCallback, useMemo } from "react";
 import { BlockActionMenu } from "./BlockActionMenu";
 
@@ -39,7 +38,7 @@ export function FileBlockCard({
     [fileName, content.fileType],
   );
   const fileBadge = useMemo(() => getFileBadge(fileExtension), [fileExtension]);
-  const BadgeIcon = fileBadge.icon;
+  const badgeLabel = fileBadge.label;
 
   const handleOpen = useCallback(() => {
     if (!fileUrl) return;
@@ -67,20 +66,23 @@ export function FileBlockCard({
       >
         {!isImageFile && (
           <div className="flex items-center gap-4">
-            <div
-              className={cn(
-                "flex h-12 w-12 items-center justify-center rounded-xl text-xs font-semibold uppercase",
-                fileBadge.bgClass,
-                fileBadge.textClass,
-              )}
-            >
-              {BadgeIcon ? (
-                <BadgeIcon className="h-6 w-6" />
-              ) : fileBadge.label ? (
-                <span className="text-sm font-semibold">{fileBadge.label}</span>
-              ) : (
-                <FileText className="h-6 w-6" />
-              )}
+            <div className="relative flex h-14 w-12 items-center justify-center">
+              <Image
+                src="/images/file-badge-base.svg"
+                alt="File badge"
+                width={48}
+                height={60}
+                className="pointer-events-none select-none object-contain"
+              />
+              <div
+                className={cn(
+                  "absolute inset-x-1 bottom-1 rounded-md px-1 py-0.5 text-[10px] font-semibold uppercase leading-none text-center shadow-sm",
+                  fileBadge.bgClass,
+                  fileBadge.textClass,
+                )}
+              >
+                {badgeLabel}
+              </div>
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold truncate">{fileName}</p>
@@ -133,7 +135,6 @@ type FileBadge = {
   label: string;
   bgClass: string;
   textClass: string;
-  icon?: ComponentType<SVGProps<SVGSVGElement>>;
 };
 
 const FILE_BADGES: Record<string, FileBadge> = {
@@ -160,7 +161,6 @@ const FILE_BADGES: Record<string, FileBadge> = {
     label: "FILE",
     bgClass: "bg-primary/10",
     textClass: "text-primary",
-    icon: FileText,
   },
 };
 
