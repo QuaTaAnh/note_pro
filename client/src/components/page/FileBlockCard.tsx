@@ -59,7 +59,7 @@ export function FileBlockCard({
         type="button"
         onClick={handleOpen}
         className={cn(
-          "flex-1 min-w-0 rounded border border-gray-300 p-1.5 text-left transition-all duration-200 hover:shadow-md",
+          "flex-1 min-w-0 rounded p-1.5 text-left transition-all duration-200 hover:shadow-md bg-muted/30",
           !fileUrl && "cursor-not-allowed opacity-70"
         )}
         disabled={!fileUrl}
@@ -97,7 +97,7 @@ export function FileBlockCard({
         )}
 
         {isImageFile && fileUrl && (
-          <div className="overflow-hidden border border-dashed border-muted bg-muted/30 px-24">
+          <div className="overflow-hidden px-24">
             <Image
               src={fileUrl}
               alt={fileName}
