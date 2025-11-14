@@ -38,10 +38,7 @@ export function FileBlockCard({
     () => getFileExtension(fileName, content.fileType),
     [fileName, content.fileType]
   );
-  const fileBadge = useMemo(
-    () => getFileBadge(fileExtension),
-    [fileExtension]
-  );
+  const fileBadge = useMemo(() => getFileBadge(fileExtension), [fileExtension]);
   const BadgeIcon = fileBadge.icon;
 
   const handleOpen = useCallback(() => {
@@ -63,7 +60,7 @@ export function FileBlockCard({
         type="button"
         onClick={handleOpen}
         className={cn(
-          "flex-1 min-w-0 rounded border border-gray-300 px-24 py-1.5 text-left transition-all duration-200 hover:shadow-md",
+          "flex-1 min-w-0 rounded border border-gray-300 p-1.5 text-left transition-all duration-200 hover:shadow-md",
           !fileUrl && "cursor-not-allowed opacity-70"
         )}
         disabled={!fileUrl}
@@ -97,7 +94,7 @@ export function FileBlockCard({
         )}
 
         {isImageFile && fileUrl && (
-          <div className="overflow-hidden border border-dashed border-muted bg-muted/30">
+          <div className="overflow-hidden border border-dashed border-muted bg-muted/30 px-24">
             <Image
               src={fileUrl}
               alt={fileName}
@@ -146,9 +143,17 @@ const FILE_BADGES: Record<string, FileBadge> = {
   xls: { label: "XLS", bgClass: "bg-green-100", textClass: "text-green-700" },
   xlsx: { label: "XLS", bgClass: "bg-green-100", textClass: "text-green-700" },
   ppt: { label: "PPT", bgClass: "bg-orange-100", textClass: "text-orange-700" },
-  pptx: { label: "PPT", bgClass: "bg-orange-100", textClass: "text-orange-700" },
+  pptx: {
+    label: "PPT",
+    bgClass: "bg-orange-100",
+    textClass: "text-orange-700",
+  },
   txt: { label: "TXT", bgClass: "bg-slate-100", textClass: "text-slate-700" },
-  csv: { label: "CSV", bgClass: "bg-emerald-100", textClass: "text-emerald-700" },
+  csv: {
+    label: "CSV",
+    bgClass: "bg-emerald-100",
+    textClass: "text-emerald-700",
+  },
   zip: { label: "ZIP", bgClass: "bg-amber-100", textClass: "text-amber-700" },
   rar: { label: "RAR", bgClass: "bg-amber-100", textClass: "text-amber-700" },
   default: {
@@ -161,10 +166,12 @@ const FILE_BADGES: Record<string, FileBadge> = {
 
 function getFileBadge(extension?: string | null): FileBadge {
   if (!extension) return FILE_BADGES.default;
-  return FILE_BADGES[extension] || {
-    ...FILE_BADGES.default,
-    label: extension.toUpperCase(),
-  };
+  return (
+    FILE_BADGES[extension] || {
+      ...FILE_BADGES.default,
+      label: extension.toUpperCase(),
+    }
+  );
 }
 
 function getFileExtension(fileName: string, fileType?: string | null) {
@@ -174,7 +181,10 @@ function getFileExtension(fileName: string, fileType?: string | null) {
   const normalizedType = fileType.toLowerCase();
   if (normalizedType.includes("pdf")) return "pdf";
   if (normalizedType.includes("word")) return "docx";
-  if (normalizedType.includes("excel") || normalizedType.includes("spreadsheet"))
+  if (
+    normalizedType.includes("excel") ||
+    normalizedType.includes("spreadsheet")
+  )
     return "xlsx";
   if (normalizedType.includes("powerpoint")) return "pptx";
   if (normalizedType.includes("text")) return "txt";
