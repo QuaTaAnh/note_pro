@@ -1,21 +1,22 @@
-import { useMemo, useState, useCallback, type ReactNode } from "react";
-import Image from "next/image";
-import { CheckCircle, Menu, Paperclip, FileText } from "lucide-react";
-import { formatDate } from "@/lib/utils";
-import { getPlainText } from "../page/CardDocument";
-import { useDocumentBlocksData } from "@/hooks";
-import { BlockType } from "@/types/types";
 import { TASK_STATUS } from "@/consts";
-import { showToast } from "@/lib/toast";
 import { useUpdateTaskMutation } from "@/graphql/mutations/__generated__/task.generated";
 import { GetDocumentBlocksDocument } from "@/graphql/queries/__generated__/document.generated";
+import { useDocumentBlocksData } from "@/hooks";
+import { formatFileSize } from "@/lib/file-utils";
+import { showToast } from "@/lib/toast";
+import { formatDate } from "@/lib/utils";
+import { BlockType } from "@/types/types";
+import { CheckCircle, Menu, Paperclip } from "lucide-react";
+import Image from "next/image";
+import { useCallback, useMemo, useState, type ReactNode } from "react";
+import { getPlainText } from "../page/CardDocument";
 import {
   SidebarTabs,
   type SectionItem,
-  type SidebarTask,
   type SidebarAttachment,
+  type SidebarTask,
 } from "./sidebar-tabs";
-import { formatFileSize } from "@/lib/file-utils";
+import { Loading } from "../ui/loading";
 
 interface Props {
   pageId: string;
@@ -29,42 +30,32 @@ type AttachmentContent = {
 };
 
 export const LeftSidebar = ({ pageId }: Props) => {
-  const { processedRootBlock: rootBlock, processedBlocks: blocks, loading } =
-    useDocumentBlocksData(pageId);
+  const {
+    processedRootBlock: rootBlock,
+    processedBlocks: blocks,
+    loading,
+  } = useDocumentBlocksData(pageId);
   const [pendingTaskIds, setPendingTaskIds] = useState<Set<string>>(
-    () => new Set(),
+    () => new Set()
   );
   const [updateTask] = useUpdateTaskMutation();
 
   const textBlocks = useMemo(
-    () =>
-      (blocks || []).filter((block) => block.type === BlockType.PARAGRAPH),
-    [blocks],
+    () => (blocks || []).filter((block) => block.type === BlockType.PARAGRAPH),
+    [blocks]
   );
 
   const taskBlocks = useMemo(
     () =>
       (blocks || []).filter(
-        (block) => block.type === BlockType.TASK && block.tasks?.length,
+        (block) => block.type === BlockType.TASK && block.tasks?.length
       ),
-    [blocks],
+    [blocks]
   );
 
   const attachmentBlocks = useMemo(
-    () =>
-      (blocks || []).filter((block) => block.type === BlockType.FILE),
-    [blocks],
-  );
-
-  const wordCount = useMemo(
-    () =>
-      textBlocks.reduce((total, block) => {
-        const text = getPlainText(block.content?.text);
-        if (!text) return total;
-        const words = text.trim().split(/\s+/).filter(Boolean).length;
-        return total + words;
-      }, 0),
-    [textBlocks],
+    () => (blocks || []).filter((block) => block.type === BlockType.FILE),
+    [blocks]
   );
 
   const sectionItems = useMemo<SectionItem[]>(() => {
@@ -118,7 +109,7 @@ export const LeftSidebar = ({ pageId }: Props) => {
   const handleScrollToBlock = useCallback((blockId: string) => {
     if (typeof window === "undefined") return;
     const el = document.querySelector<HTMLElement>(
-      `[data-block-id="${blockId}"]`,
+      `[data-block-id="${blockId}"]`
     );
     if (!el) return;
     el.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -155,9 +146,7 @@ export const LeftSidebar = ({ pageId }: Props) => {
           ],
           awaitRefetchQueries: true,
         });
-        showToast.success(
-          completed ? "Marked task complete" : "Task reopened",
-        );
+        showToast.success(completed ? "Marked task complete" : "Task reopened");
       } catch (error) {
         console.error("Failed to update task status", error);
         showToast.error("Unable to update task");
@@ -169,11 +158,11 @@ export const LeftSidebar = ({ pageId }: Props) => {
         });
       }
     },
-    [updateTask, pageId],
+    [updateTask, pageId]
   );
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col mt-4">
       <div className="p-2 h-full flex flex-col">
         <div className="flex flex-row items-center gap-2 mb-3">
           <Image
@@ -187,12 +176,7 @@ export const LeftSidebar = ({ pageId }: Props) => {
           <div className="flex flex-col flex-1 min-w-0">
             {loading ? (
               <>
-                <span className="text-sm font-medium truncate animate-pulse">
-                  Loading...
-                </span>
-                <span className="text-xs text-muted-foreground truncate animate-pulse">
-                  ...
-                </span>
+                <Loading />
               </>
             ) : (
               <>
@@ -216,20 +200,16 @@ export const LeftSidebar = ({ pageId }: Props) => {
           <StatCard
             label="Tasks"
             value={tasks.length}
-            description={`${tasks.filter((t) =>
-              t.task?.status === TASK_STATUS.COMPLETED,
-            ).length} done`}
+            description={`${
+              tasks.filter((t) => t.task?.status === TASK_STATUS.COMPLETED)
+                .length
+            } done`}
             icon={<CheckCircle className="h-3.5 w-3.5" />}
           />
           <StatCard
             label="Attachments"
             value={attachments.length}
             icon={<Paperclip className="h-3.5 w-3.5" />}
-          />
-          <StatCard
-            label="Words"
-            value={wordCount}
-            icon={<FileText className="h-3.5 w-3.5" />}
           />
         </div>
 
@@ -261,13 +241,10 @@ const StatCard = ({ label, value, description, icon }: StatCardProps) => {
         {icon}
         <span>{label}</span>
       </div>
-      <div className="text-base font-semibold leading-tight">
-        {value}
-      </div>
+      <div className="text-base font-semibold leading-tight">{value}</div>
       {description && (
         <p className="text-[10px] text-muted-foreground">{description}</p>
       )}
     </div>
   );
 };
-

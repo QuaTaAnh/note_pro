@@ -45,7 +45,9 @@ function AttachmentRow({ file }: { file: SidebarAttachment }) {
           height={40}
           className="pointer-events-none select-none object-contain"
         />
-        <span className={`pointer-events-none absolute text-[10px] font-semibold uppercase tracking-[0.08em] ${badge.textClass}`}>
+        <span
+          className={`pointer-events-none absolute text-[10px] font-semibold uppercase tracking-[0.08em] ${badge.textClass}`}
+        >
           {badge.label}
         </span>
       </div>
@@ -63,7 +65,12 @@ function AttachmentRow({ file }: { file: SidebarAttachment }) {
       )}
       {file.url && (
         <Button variant="ghost" size="icon" asChild>
-          <a href={file.url} target="_blank" rel="noreferrer noopener" className="text-muted-foreground">
+          <a
+            href={file.url}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="text-muted-foreground"
+          >
             <ExternalLink className="h-4 w-4" />
           </a>
         </Button>
