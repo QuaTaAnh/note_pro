@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { Check } from "lucide-react";
 import { FOLDER_COLORS } from "@/consts";
 import { HexColor } from "@/types/types";
 
@@ -20,7 +19,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
   }, [selectedColor, onColorChange]);
 
   return (
-    <div className="flex gap-2 flex-wrap">
+    <div className="grid grid-cols-6 gap-3">
       {FOLDER_COLORS.map((color) => {
         const isSelected = selectedColor === color.value;
         const isWhite = color.value === HexColor.WHITE;
@@ -31,24 +30,21 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
             type="button"
             onClick={() => onColorChange(color.value)}
             className={cn(
-              "relative w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all duration-200",
-              isSelected
-                ? "border-primary ring-2 ring-primary scale-110 shadow-md"
-                : "border-muted hover:scale-105 hover:shadow",
+              "relative flex h-9 w-9 items-center justify-center rounded-full transition-transform duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60",
+              isSelected ? "scale-105" : "hover:scale-105",
             )}
-            style={{
-              backgroundColor: color.color,
-              borderColor: isWhite ? "rgba(120,120,120,0.6)" : undefined,
-            }}
             title={color.name}
           >
+            <span className="sr-only">{color.name}</span>
+            <span
+              className="block h-6 w-6 rounded-full border"
+              style={{
+                backgroundColor: color.color,
+                borderColor: isWhite ? "rgba(120,120,120,0.6)" : "transparent",
+              }}
+            />
             {isSelected && (
-              <Check
-                className={cn(
-                  "w-4 h-4 drop-shadow",
-                  isWhite ? "text-gray-800 dark:text-gray-900" : "text-primary",
-                )}
-              />
+              <span className="pointer-events-none absolute inset-0 rounded-full border-[2.5px] border-foreground/80" />
             )}
           </button>
         );
