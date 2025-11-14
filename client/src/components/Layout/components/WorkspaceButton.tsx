@@ -38,6 +38,10 @@ export const WorkspaceButton = () => {
     skip: !workspace?.id,
   });
 
+  const displayWorkspace = data?.workspaces_by_pk ?? workspace;
+  const workspaceImage = displayWorkspace?.image_url || DEFAULT_WORKSPACE_IMAGE;
+  const workspaceName = displayWorkspace?.name || "";
+
   const { uploadImage, isUploading } = useImageUpload({
     tags: ["workspace", workspace?.id || ""],
     onSuccess: (imageUrl) => {
@@ -119,9 +123,7 @@ export const WorkspaceButton = () => {
                 <CiSettings className="w-6 h-6 text-foreground" />
               ) : (
                 <Image
-                  src={
-                    data?.workspaces_by_pk?.image_url || DEFAULT_WORKSPACE_IMAGE
-                  }
+                  src={workspaceImage}
                   alt="Workspace"
                   fill
                   className="object-cover"
@@ -131,7 +133,7 @@ export const WorkspaceButton = () => {
             </div>
 
             <WorkspaceNameWithTooltip
-              name={data?.workspaces_by_pk?.name || ""}
+              name={workspaceName}
             />
           </Button>
         </DialogTrigger>
