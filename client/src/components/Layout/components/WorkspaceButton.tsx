@@ -21,6 +21,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { CiSettings } from "react-icons/ci";
 import { WorkspaceNameWithTooltip } from "./WorkspaceNameWithTooltip";
+import { PageLoading } from "@/components/ui/loading";
 
 export const WorkspaceButton = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -52,7 +53,7 @@ export const WorkspaceButton = () => {
   }, [isOpen, data]);
 
   const handleFileSelect = async (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -99,7 +100,11 @@ export const WorkspaceButton = () => {
     }
   };
 
-  return (
+  return isUploading ? (
+    <div className="fixed inset-0 z-[1000] bg-background/80 backdrop-blur-sm">
+      <PageLoading text="Uploading..." />
+    </div>
+  ) : (
     <div className="flex items-center">
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
@@ -143,31 +148,21 @@ export const WorkspaceButton = () => {
                     className={cn(
                       "relative overflow-hidden transition-all cursor-pointer",
                       "w-24 h-24 rounded-[20px]",
-                      tempImageUrl ? "bg-muted" : "bg-muted/50",
+                      tempImageUrl ? "bg-muted" : "bg-muted/50"
                     )}
                     onClick={() =>
                       !isUploading && fileInputRef.current?.click()
                     }
                   >
-                    <>
-                      <Image
-                        src={
-                          tempImageUrl ? tempImageUrl : DEFAULT_WORKSPACE_IMAGE
-                        }
-                        alt="Workspace"
-                        fill
-                        className="object-cover"
-                        sizes="96px"
-                      />
-
-                      {isUploading && (
-                        <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                          <div className="text-white text-xs font-medium">
-                            Uploading...
-                          </div>
-                        </div>
-                      )}
-                    </>
+                    <Image
+                      src={
+                        tempImageUrl ? tempImageUrl : DEFAULT_WORKSPACE_IMAGE
+                      }
+                      alt="Workspace"
+                      fill
+                      className="object-cover"
+                      sizes="96px"
+                    />
                   </div>
 
                   <button
