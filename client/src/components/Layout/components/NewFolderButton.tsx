@@ -36,14 +36,14 @@ export const NewFolderButton = () => {
   const [folderData, setFolderData] = useState<FolderData>({
     name: "",
     description: "",
-    color: HexColor.WHITE,
+    color: HexColor.BLACK,
     icon: "folder",
   });
   const dialogContentRef = useRef<HTMLDivElement | null>(null);
 
   const handleInputChange = (
     field: keyof FolderData,
-    value: string | React.ComponentType<unknown>,
+    value: string | React.ComponentType<unknown>
   ) => {
     setFolderData((prev) => ({
       ...prev,
@@ -82,7 +82,7 @@ export const NewFolderButton = () => {
       setFolderData({
         name: "",
         description: "",
-        color: HexColor.WHITE,
+        color: HexColor.BLACK,
         icon: "folder",
       });
     } catch {
@@ -138,6 +138,7 @@ export const NewFolderButton = () => {
               selectedIcon={folderData.icon}
               onIconChange={(icon) => handleInputChange("icon", icon)}
               portalContainer={dialogContentRef.current ?? undefined}
+              previewColor={folderData.color}
             />
           </div>
 

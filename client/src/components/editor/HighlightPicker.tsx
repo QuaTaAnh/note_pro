@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, CSSProperties } from "react";
 import { ChevronDown } from "lucide-react";
 import { FaHighlighter } from "react-icons/fa";
 import { HIGHLIGHT_COLORS } from "@/consts";
@@ -60,33 +60,43 @@ export const HighlightPicker = ({
       </button>
 
       {show && (
-        <div className="absolute top-full left-0 mt-1 bg-popover border border-border rounded-xl shadow-lg p-2 z-50 whitespace-nowrap">
-          <div className="flex items-center gap-1">
-            {HIGHLIGHT_COLORS.map((colorOption, i) => (
-              <button
-                key={i}
-                onClick={() => onSelect(colorOption.value)}
-                className={`w-6 h-6 rounded border-2 hover:scale-110 transition-transform flex-shrink-0 ${
-                  currentColor === colorOption.value
-                    ? "border-primary"
-                    : "border-border"
-                }`}
-                style={{
-                  backgroundColor: colorOption.color,
-                  backgroundImage:
-                    colorOption.value === null
-                      ? "linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%)"
-                      : undefined,
-                  backgroundSize:
-                    colorOption.value === null ? "4px 4px" : undefined,
-                  backgroundPosition:
-                    colorOption.value === null
-                      ? "0 0, 0 2px, 2px -2px, -2px 0px"
-                      : undefined,
-                }}
-                title={colorOption.name}
-              />
-            ))}
+        <div className="absolute top-full left-0 mt-1 z-50 rounded-xl border border-border bg-popover p-3 shadow-lg">
+          <div className="grid grid-cols-6 gap-3">
+            {HIGHLIGHT_COLORS.map((colorOption, i) => {
+              const isSelected = currentColor === colorOption.value;
+              const isTransparent = colorOption.value === null;
+              const transparentStyle: CSSProperties = {
+                backgroundColor: "#f3f4f6",
+                backgroundImage:
+                  "linear-gradient(45deg, #cbd5f5 25%, transparent 25%), linear-gradient(-45deg, #cbd5f5 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #cbd5f5 75%), linear-gradient(-45deg, transparent 75%, #cbd5f5 75%)",
+                backgroundSize: "8px 8px",
+                backgroundPosition: "0 0, 0 4px, 4px -4px, -4px 0",
+              };
+
+              return (
+                <button
+                  key={i}
+                  onClick={() => onSelect(colorOption.value)}
+                  className={`relative flex h-8 w-8 items-center justify-center rounded-full transition-transform duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${
+                    isSelected ? "scale-105" : "hover:scale-105"
+                  }`}
+                  title={colorOption.name}
+                >
+                  <span className="sr-only">{colorOption.name}</span>
+                  <span
+                    className="block h-5 w-5 rounded-full border border-black/10"
+                    style={
+                      isTransparent
+                        ? transparentStyle
+                        : { backgroundColor: colorOption.color }
+                    }
+                  />
+                  {isSelected && (
+                    <span className="pointer-events-none absolute inset-0 rounded-full border-[2.5px] border-foreground/80" />
+                  )}
+                </button>
+              );
+            })}
           </div>
         </div>
       )}
