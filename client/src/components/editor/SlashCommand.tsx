@@ -30,6 +30,17 @@ export const SlashCommand = ({
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   useEffect(() => {
+    if (!show) {
+      setSelectedIndex(0);
+      return;
+    }
+
+    setSelectedIndex((prev) =>
+      Math.min(prev, Math.max(commands.length - 1, 0))
+    );
+  }, [show, commands.length]);
+
+  useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) {
         close();

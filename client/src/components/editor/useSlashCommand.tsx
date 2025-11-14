@@ -188,16 +188,6 @@ export const useSlashCommand = (
     [showSlash, showEmoji, availableCommands.length]
   );
 
-  useEffect(() => {
-    if (!showSlash) {
-      setSelectedIndex(0);
-    } else if (availableCommands.length > 0) {
-      setSelectedIndex((prev) =>
-        Math.min(prev, Math.max(availableCommands.length - 1, 0))
-      );
-    }
-  }, [showSlash, availableCommands.length]);
-
   const menus = useMemo(
     () => (
       <>
