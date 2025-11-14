@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { IMAGE_EXTENSIONS } from "@/consts";
 import { Block } from "@/hooks";
 import { cn } from "@/lib/utils";
 import { ExternalLink, FileText, Trash2 } from "lucide-react";
@@ -129,16 +130,3 @@ function formatFileSize(bytes: number) {
   const value = bytes / Math.pow(1024, i);
   return `${value.toFixed(value >= 10 || i === 0 ? 0 : 1)} ${units[i]}`;
 }
-
-const IMAGE_EXTENSIONS = new Set([
-  "jpg",
-  "jpeg",
-  "png",
-  "gif",
-  "webp",
-  "avif",
-  "heif",
-  "heic",
-  "bmp",
-  "svg",
-]);
