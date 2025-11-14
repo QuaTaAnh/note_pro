@@ -35,7 +35,7 @@ export function FileBlockCard({
   const fileSize = content.fileSize ? formatFileSize(content.fileSize) : null;
   const fileExtension = useMemo(
     () => getFileExtension(fileName, content.fileType),
-    [fileName, content.fileType],
+    [fileName, content.fileType]
   );
   const fileBadge = useMemo(() => getFileBadge(fileExtension), [fileExtension]);
   const badgeLabel = fileBadge.label;
@@ -60,7 +60,7 @@ export function FileBlockCard({
         onClick={handleOpen}
         className={cn(
           "flex-1 min-w-0 rounded border border-gray-300 p-1.5 text-left transition-all duration-200 hover:shadow-md",
-          !fileUrl && "cursor-not-allowed opacity-70",
+          !fileUrl && "cursor-not-allowed opacity-70"
         )}
         disabled={!fileUrl}
       >
@@ -68,7 +68,7 @@ export function FileBlockCard({
           <div className="flex items-center gap-4">
             <div className="relative flex h-14 w-12 items-center justify-center">
               <Image
-                src="/images/file-badge-base.svg"
+                src="/images/file-badge-base.png"
                 alt="File badge"
                 width={48}
                 height={60}
@@ -78,7 +78,7 @@ export function FileBlockCard({
                 <span
                   className={cn(
                     "text-[11px] font-semibold uppercase tracking-[0.08em]",
-                    fileBadge.textClass,
+                    fileBadge.textClass
                   )}
                 >
                   {badgeLabel}
@@ -126,7 +126,7 @@ function formatFileSize(bytes: number) {
   const units = ["B", "KB", "MB", "GB"];
   const i = Math.min(
     Math.floor(Math.log(bytes) / Math.log(1024)),
-    units.length - 1,
+    units.length - 1
   );
   const value = bytes / Math.pow(1024, i);
   return `${value.toFixed(value >= 10 || i === 0 ? 0 : 1)} ${units[i]}`;
