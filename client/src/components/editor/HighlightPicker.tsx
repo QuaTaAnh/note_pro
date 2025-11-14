@@ -76,7 +76,10 @@ export const HighlightPicker = ({
               return (
                 <button
                   key={i}
-                  onClick={() => onSelect(colorOption.value)}
+                  onClick={() => {
+                    onSelect(colorOption.value);
+                    close();
+                  }}
                   className={`relative flex h-8 w-8 items-center justify-center rounded-full transition-transform duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${
                     isSelected ? "scale-105" : "hover:scale-105"
                   }`}
