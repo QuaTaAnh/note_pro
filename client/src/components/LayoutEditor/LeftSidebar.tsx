@@ -8,7 +8,7 @@ import { formatDate } from "@/lib/utils";
 import { BlockType } from "@/types/types";
 import { CheckCircle, Menu, Paperclip } from "lucide-react";
 import Image from "next/image";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { getPlainText } from "../page/CardDocument";
 import { Loading } from "../ui/loading";
 import {
@@ -40,6 +40,7 @@ export const LeftSidebar = ({ pageId }: Props) => {
     () => new Set()
   );
   const [updateTask] = useUpdateTaskMutation();
+  const cleanupHighlightRef = useRef<(() => void) | null>(null);
 
   const textBlocks = useMemo(
     () => (blocks || []).filter((block) => block.type === BlockType.PARAGRAPH),
@@ -108,13 +109,56 @@ export const LeftSidebar = ({ pageId }: Props) => {
   }, [attachmentBlocks]);
 
   const handleScrollToBlock = useCallback((blockId: string) => {
+    if (cleanupHighlightRef.current) {
+      cleanupHighlightRef.current();
+      cleanupHighlightRef.current = null;
+    }
+
     const el = document.querySelector<HTMLElement>(
       `[data-block-id="${blockId}"]`
     );
     if (!el) return;
-    el.scrollIntoView({ behavior: "smooth", block: "center" });
-    const highlightClasses = ["border-primary", "bg-primary/5", "transition"];
-    el.classList.add(...highlightClasses);
+
+    const container = el.querySelector<HTMLElement>("[data-editor-container]");
+    if (!container) return;
+
+    const rect = el.getBoundingClientRect();
+    const isInViewport =
+      rect.top >= 0 &&
+      rect.bottom <=
+        (window.innerHeight || document.documentElement.clientHeight);
+
+    if (!isInViewport) {
+      el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    container.classList.add(
+      "!border-[hsl(var(--button-primary))]",
+      "!bg-[hsl(var(--button-primary))]/10"
+    );
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!el.contains(event.target as Node)) {
+        container.classList.remove(
+          "!border-[hsl(var(--button-primary))]",
+          "!bg-[hsl(var(--button-primary))]/10"
+        );
+        document.removeEventListener("click", handleClickOutside);
+        cleanupHighlightRef.current = null;
+      }
+    };
+
+    cleanupHighlightRef.current = () => {
+      container.classList.remove(
+        "!border-[hsl(var(--button-primary))]",
+        "!bg-[hsl(var(--button-primary))]/10"
+      );
+      document.removeEventListener("click", handleClickOutside);
+    };
+
+    setTimeout(() => {
+      document.addEventListener("click", handleClickOutside);
+    }, 100);
   }, []);
 
   const handleToggleTask = useCallback(
@@ -154,8 +198,8 @@ export const LeftSidebar = ({ pageId }: Props) => {
   );
 
   return (
-    <div className="h-screen flex flex-col mt-4 overflow-hidden">
-      <div className="p-2 h-full flex flex-col overflow-hidden">
+    <div className="h-screen flex flex-col overflow-hidden">
+      <div className="py-4 px-2 h-full flex flex-col overflow-hidden">
         <div className="flex flex-row items-center gap-2 mb-3 shrink-0">
           <Image
             src="/images/document-icon.png"

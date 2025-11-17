@@ -7,11 +7,13 @@ import { EmptyState } from "./EmptyState";
 interface ContentsTabProps {
   sections: SectionItem[];
   onScrollToBlock: (blockId: string) => void;
+  activeBlockId?: string;
 }
 
 export const ContentsTab = ({
   sections,
   onScrollToBlock,
+  activeBlockId,
 }: ContentsTabProps) => {
   const [filter, setFilter] = useState("");
 
@@ -39,25 +41,32 @@ export const ContentsTab = ({
             description="Add text blocks to build an outline"
           />
         ) : (
-          filteredSections.map((section) => (
-            <button
-              key={section.id}
-              onClick={() => onScrollToBlock(section.id)}
-              className="w-full rounded-lg border border-transparent px-2 py-1 text-left transition-colors hover:border-border hover:bg-muted/60"
-            >
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-medium text-muted-foreground">
-                  {String(section.index).padStart(2, "0")}
-                </span>
-                <span className="text-xs font-semibold truncate">
-                  {section.title}
-                </span>
-              </div>
-              <p className="mt-0.5 line-clamp-2 text-[11px] text-muted-foreground">
-                {section.preview}
-              </p>
-            </button>
-          ))
+          filteredSections.map((section) => {
+            const isActive = section.id === activeBlockId;
+            return (
+              <button
+                key={section.id}
+                onClick={() => onScrollToBlock(section.id)}
+                className={`w-full rounded-lg border px-2 py-1 text-left transition-colors ${
+                  isActive
+                    ? "border-border bg-muted/60"
+                    : "border-transparent hover:border-border hover:bg-muted/60"
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-medium text-muted-foreground">
+                    {String(section.index).padStart(2, "0")}
+                  </span>
+                  <span className="text-xs font-semibold truncate">
+                    {section.title}
+                  </span>
+                </div>
+                <p className="mt-0.5 line-clamp-2 text-[11px] text-muted-foreground">
+                  {section.preview}
+                </p>
+              </button>
+            );
+          })
         )}
       </div>
     </div>

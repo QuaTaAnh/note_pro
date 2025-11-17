@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CheckCircle, Menu, Paperclip, Search } from "lucide-react";
 import { Block } from "@/hooks";
@@ -26,6 +27,13 @@ export function SidebarTabs({
   onScrollToBlock,
   onToggleTask,
 }: SidebarTabsProps) {
+  const [activeBlockId, setActiveBlockId] = useState<string>();
+
+  const handleScrollToBlock = (blockId: string) => {
+    setActiveBlockId(blockId);
+    onScrollToBlock(blockId);
+  };
+
   return (
     <Tabs
       defaultValue="contents"
@@ -45,9 +53,13 @@ export function SidebarTabs({
           <Search className="h-4 w-4" />
         </TabsTrigger>
       </TabsList>
-      <div className="flex-1 overflow-y-auto mt-2 mb-16 min-h-0">
+      <div className="flex-1 overflow-y-auto mt-2 mb-20 min-h-0">
         <TabsContent value="contents">
-          <ContentsTab sections={sections} onScrollToBlock={onScrollToBlock} />
+          <ContentsTab
+            sections={sections}
+            onScrollToBlock={handleScrollToBlock}
+            activeBlockId={activeBlockId}
+          />
         </TabsContent>
         <TabsContent value="tasks">
           <TasksTab
