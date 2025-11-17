@@ -111,8 +111,6 @@ export const LeftSidebar = ({ pageId }: Props) => {
     const el = document.querySelector<HTMLElement>(
       `[data-block-id="${blockId}"]`
     );
-    console.log(el);
-
     if (!el) return;
     el.scrollIntoView({ behavior: "smooth", block: "center" });
     const highlightClasses = ["border-primary", "bg-primary/5", "transition"];
