@@ -16,17 +16,13 @@ export const TasksTab = ({
   pendingTaskIds,
   onToggleTask,
 }: TasksTabProps) => {
-  if (tasks.length === 0) {
-    return (
-      <EmptyState
-        icon={<ListChecks className="h-4 w-4" />}
-        title="No tasks"
-        description="Convert blocks to tasks to track progress"
-      />
-    );
-  }
-
-  return (
+  return tasks.length === 0 ? (
+    <EmptyState
+      icon={<ListChecks className="h-4 w-4" />}
+      title="No tasks"
+      description="Convert blocks to tasks to track progress"
+    />
+  ) : (
     <div className="space-y-2">
       {tasks.map(({ blockId, task, title }) => (
         <TaskItem
