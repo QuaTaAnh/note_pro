@@ -94,9 +94,7 @@ const VIBRANT_COLORS = [
   { name: "Gold", color: "#ffcc00", value: "#ffcc00" },
 ];
 
-export const FOLDER_COLORS = [
-  ...VIBRANT_COLORS,
-];
+export const FOLDER_COLORS = [...VIBRANT_COLORS];
 
 export const HIGHLIGHT_COLORS = [
   { name: "None", color: HexColor.TRANSPARENT, value: null },

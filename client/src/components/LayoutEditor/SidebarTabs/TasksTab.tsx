@@ -35,7 +35,7 @@ export const TasksTab = ({
           }
           className={cn(
             "rounded-lg border",
-            task && pendingTaskIds.has(task.id) && "opacity-70"
+            task && pendingTaskIds.has(task.id) && "opacity-70",
           )}
           variant="compact"
           scheduleDate={task?.schedule_date || undefined}

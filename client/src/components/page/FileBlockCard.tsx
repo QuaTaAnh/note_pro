@@ -13,13 +13,6 @@ import {
   getFileExtension,
 } from "@/lib/file-utils";
 
-type FileContent = {
-  fileUrl?: string;
-  fileName?: string;
-  fileType?: string;
-  fileSize?: number;
-};
-
 interface FileBlockCardProps {
   block: Block;
   dragHandle?: ReactNode;
@@ -27,26 +20,28 @@ interface FileBlockCardProps {
   onDeleteBlock?: () => void;
 }
 
-export function FileBlockCard({
+export const FileBlockCard = ({
   block,
   dragHandle,
   editable = true,
   onDeleteBlock,
-}: FileBlockCardProps) {
-  const content = (block.content as FileContent) || {};
-  const fileUrl = content.fileUrl || "";
-  const fileName = content.fileName || content.fileUrl || "Untitled file";
-  const fileType = content.fileType || "Unknown type";
+}: FileBlockCardProps) => {
+  const content = block.content;
+  const fileUrl = content.fileUrl;
+  const fileName = content.fileName;
+  const fileType = content.fileType;
   const fileSize = content.fileSize ? formatFileSize(content.fileSize) : null;
   const fileExtension = useMemo(
     () => getFileExtension(fileName, content.fileType),
-    [fileName, content.fileType]
+    [fileName, content.fileType],
   );
   const fileBadge = useMemo(() => getFileBadge(fileExtension), [fileExtension]);
   const badgeLabel = fileBadge.label;
 
   const handleOpen = useCallback(() => {
-    if (!fileUrl) return;
+    if (!fileUrl) {
+      return;
+    }
     window.open(fileUrl, "_blank", "noopener,noreferrer");
   }, [fileUrl]);
 
@@ -65,7 +60,7 @@ export function FileBlockCard({
         onClick={handleOpen}
         className={cn(
           "flex-1 min-w-0 rounded p-1.5 text-left transition-all duration-200 hover:shadow-md bg-muted/30",
-          !fileUrl && "cursor-not-allowed opacity-70"
+          !fileUrl && "cursor-not-allowed opacity-70",
         )}
         disabled={!fileUrl}
         data-editor-container
@@ -84,7 +79,7 @@ export function FileBlockCard({
                 <span
                   className={cn(
                     "text-[11px] font-semibold uppercase tracking-[0.08em]",
-                    fileBadge.textClass
+                    fileBadge.textClass,
                   )}
                 >
                   {badgeLabel}
@@ -98,7 +93,6 @@ export function FileBlockCard({
                 {fileSize ? ` · ${fileSize}` : ""}
               </p>
             </div>
-            <ExternalLink className="h-4 w-4 text-muted-foreground" />
           </div>
         )}
 
@@ -125,4 +119,4 @@ export function FileBlockCard({
       )}
     </div>
   );
-}
+};

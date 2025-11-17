@@ -77,7 +77,7 @@ export const SearchTab = ({ blocks, onScrollToBlock }: SearchTabProps) => {
                 "h-6 rounded-full border px-2 text-[11px]",
                 searchFilter === filter.value
                   ? "border-primary bg-primary/10 text-primary"
-                  : "border-transparent bg-muted/60 text-muted-foreground"
+                  : "border-transparent bg-muted/60 text-muted-foreground",
               )}
             >
               {filter.label}

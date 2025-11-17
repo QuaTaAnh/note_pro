@@ -47,7 +47,7 @@ export const CheckTask = ({
 
   return (
     isTask && (
-      <div className="flex items-center pt-1.5">
+      <div className="flex items-center pt-0.5">
         <button
           onClick={handleToggleComplete}
           disabled={isUpdating || !editable}
