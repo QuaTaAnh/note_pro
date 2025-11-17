@@ -29,7 +29,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
             onClick={() => onColorChange(color.value)}
             className={cn(
               "relative flex h-9 w-9 items-center justify-center rounded-full transition-transform duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60",
-              isSelected ? "scale-105" : "hover:scale-105"
+              isSelected ? "scale-105" : "hover:scale-105",
             )}
             title={color.name}
           >
