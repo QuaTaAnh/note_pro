@@ -11,7 +11,7 @@ interface AttachmentsTabProps {
   attachments: SidebarAttachment[];
 }
 
-export function AttachmentsTab({ attachments }: AttachmentsTabProps) {
+export const AttachmentsTab = ({ attachments }: AttachmentsTabProps) => {
   if (attachments.length === 0) {
     return (
       <EmptyState
@@ -29,7 +29,7 @@ export function AttachmentsTab({ attachments }: AttachmentsTabProps) {
       ))}
     </div>
   );
-}
+};
 
 function AttachmentRow({ file }: { file: SidebarAttachment }) {
   const extension = getFileExtension(file.name, file.type);

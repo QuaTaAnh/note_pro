@@ -42,7 +42,7 @@ export default function TiptapBlockEditor({ pageId, className = "" }: Props) {
           <PageLoading text="Uploading file..." />
         </div>
       )}
-      <div className={`max-w-full mx-auto px-4 md:px-6 lg:px-10 ${className}`}>
+      <div className={`max-w-full mx-auto ${className}`}>
         <div className="mx-auto max-w-full rounded-xl border border-border/60 bg-card shadow-xl">
           <div className="h-[calc(100vh-100px)] overflow-y-auto rounded-xl">
             <div className="mx-auto max-w-2xl py-16">

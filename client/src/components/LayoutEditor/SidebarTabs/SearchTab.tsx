@@ -28,9 +28,10 @@ const searchFilters = [
   { label: "Files", value: "attachment" as const },
 ];
 
-export function SearchTab({ blocks, onScrollToBlock }: SearchTabProps) {
+export const SearchTab = ({ blocks, onScrollToBlock }: SearchTabProps) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchFilter, setSearchFilter] = useState<(typeof searchFilters)[number]["value"]>("all");
+  const [searchFilter, setSearchFilter] =
+    useState<(typeof searchFilters)[number]["value"]>("all");
 
   const searchResults = useMemo(() => {
     if (!searchQuery.trim()) return [] as SearchResult[];
@@ -113,7 +114,9 @@ export function SearchTab({ blocks, onScrollToBlock }: SearchTabProps) {
                 <Badge variant="outline" className="text-[10px] capitalize">
                   {result.type}
                 </Badge>
-                <span className="text-xs font-medium truncate">{result.text.slice(0, 60)}</span>
+                <span className="text-xs font-medium truncate">
+                  {result.text.slice(0, 60)}
+                </span>
               </div>
               <p className="mt-0.5 line-clamp-2 text-[11px] text-muted-foreground">
                 <Highlighted text={result.snippet} query={searchQuery} />
@@ -124,7 +127,7 @@ export function SearchTab({ blocks, onScrollToBlock }: SearchTabProps) {
       )}
     </div>
   );
-}
+};
 
 function getBlockSearchValue(block: Block) {
   if (block.type === BlockType.FILE) {

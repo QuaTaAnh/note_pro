@@ -28,7 +28,7 @@ export function SidebarTabs({
 }: SidebarTabsProps) {
   return (
     <Tabs defaultValue="contents" className="flex h-full flex-1 flex-col">
-      <TabsList className="grid grid-cols-4 gap-1">
+      <TabsList className="grid grid-cols-4 gap-1 rounded-lg">
         <TabsTrigger value="contents">
           <Menu className="h-4 w-4" />
         </TabsTrigger>

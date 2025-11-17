@@ -9,13 +9,18 @@ interface ContentsTabProps {
   onScrollToBlock: (blockId: string) => void;
 }
 
-export function ContentsTab({ sections, onScrollToBlock }: ContentsTabProps) {
+export const ContentsTab = ({
+  sections,
+  onScrollToBlock,
+}: ContentsTabProps) => {
   const [filter, setFilter] = useState("");
 
   const filteredSections = useMemo(() => {
     if (!filter.trim()) return sections;
     const query = filter.toLowerCase();
-    return sections.filter((section) => section.title.toLowerCase().includes(query));
+    return sections.filter((section) =>
+      section.title.toLowerCase().includes(query)
+    );
   }, [filter, sections]);
 
   return (
@@ -44,7 +49,9 @@ export function ContentsTab({ sections, onScrollToBlock }: ContentsTabProps) {
                 <span className="text-[10px] font-medium text-muted-foreground">
                   {String(section.index).padStart(2, "0")}
                 </span>
-                <span className="text-xs font-semibold truncate">{section.title}</span>
+                <span className="text-xs font-semibold truncate">
+                  {section.title}
+                </span>
               </div>
               <p className="mt-0.5 line-clamp-2 text-[11px] text-muted-foreground">
                 {section.preview}
@@ -55,4 +62,4 @@ export function ContentsTab({ sections, onScrollToBlock }: ContentsTabProps) {
       </div>
     </div>
   );
-}
+};

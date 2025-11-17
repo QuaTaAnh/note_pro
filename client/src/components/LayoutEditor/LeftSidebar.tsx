@@ -8,15 +8,16 @@ import { formatDate } from "@/lib/utils";
 import { BlockType } from "@/types/types";
 import { CheckCircle, Menu, Paperclip } from "lucide-react";
 import Image from "next/image";
-import { useCallback, useMemo, useState, type ReactNode } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { getPlainText } from "../page/CardDocument";
-import {
-  SidebarTabs,
-  type SectionItem,
-  type SidebarAttachment,
-  type SidebarTask,
-} from "./sidebar-tabs";
 import { Loading } from "../ui/loading";
+import {
+  SectionItem,
+  SidebarAttachment,
+  SidebarTabs,
+  SidebarTask,
+} from "./SidebarTabs";
+import { StatCard } from "./SidebarTabs/StatCard";
 
 interface Props {
   pageId: string;
@@ -107,22 +108,15 @@ export const LeftSidebar = ({ pageId }: Props) => {
   }, [attachmentBlocks]);
 
   const handleScrollToBlock = useCallback((blockId: string) => {
-    if (typeof window === "undefined") return;
     const el = document.querySelector<HTMLElement>(
       `[data-block-id="${blockId}"]`
     );
+    console.log(el);
+
     if (!el) return;
     el.scrollIntoView({ behavior: "smooth", block: "center" });
-    const highlightClasses = [
-      "ring-2",
-      "ring-primary/50",
-      "bg-primary/5",
-      "transition",
-    ];
+    const highlightClasses = ["border-primary", "bg-primary/5", "transition"];
     el.classList.add(...highlightClasses);
-    window.setTimeout(() => {
-      el.classList.remove(...highlightClasses);
-    }, 1200);
   }, []);
 
   const handleToggleTask = useCallback(
@@ -162,7 +156,7 @@ export const LeftSidebar = ({ pageId }: Props) => {
   );
 
   return (
-    <div className="h-full flex flex-col mt-4">
+    <div className="h-screen flex flex-col mt-4">
       <div className="p-2 h-full flex flex-col">
         <div className="flex flex-row items-center gap-2 mb-3">
           <Image
@@ -198,6 +192,11 @@ export const LeftSidebar = ({ pageId }: Props) => {
             icon={<Menu className="h-3.5 w-3.5" />}
           />
           <StatCard
+            label="Attachments"
+            value={attachments.length}
+            icon={<Paperclip className="h-3.5 w-3.5" />}
+          />
+          <StatCard
             label="Tasks"
             value={tasks.length}
             description={`${
@@ -205,11 +204,6 @@ export const LeftSidebar = ({ pageId }: Props) => {
                 .length
             } done`}
             icon={<CheckCircle className="h-3.5 w-3.5" />}
-          />
-          <StatCard
-            label="Attachments"
-            value={attachments.length}
-            icon={<Paperclip className="h-3.5 w-3.5" />}
           />
         </div>
 
@@ -223,28 +217,6 @@ export const LeftSidebar = ({ pageId }: Props) => {
           onScrollToBlock={handleScrollToBlock}
         />
       </div>
-    </div>
-  );
-};
-
-interface StatCardProps {
-  label: string;
-  value: number;
-  description?: string;
-  icon: ReactNode;
-}
-
-const StatCard = ({ label, value, description, icon }: StatCardProps) => {
-  return (
-    <div className="rounded-lg border px-2 py-2 text-left">
-      <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
-        {icon}
-        <span>{label}</span>
-      </div>
-      <div className="text-base font-semibold leading-tight">{value}</div>
-      {description && (
-        <p className="text-[10px] text-muted-foreground">{description}</p>
-      )}
     </div>
   );
 };

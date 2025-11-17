@@ -11,7 +11,11 @@ interface TasksTabProps {
   onToggleTask: (taskId: string, completed: boolean) => void;
 }
 
-export function TasksTab({ tasks, pendingTaskIds, onToggleTask }: TasksTabProps) {
+export const TasksTab = ({
+  tasks,
+  pendingTaskIds,
+  onToggleTask,
+}: TasksTabProps) => {
   if (tasks.length === 0) {
     return (
       <EmptyState
@@ -30,7 +34,9 @@ export function TasksTab({ tasks, pendingTaskIds, onToggleTask }: TasksTabProps)
           id={task?.id || blockId}
           title={title}
           completed={task?.status === TASK_STATUS.COMPLETED}
-          onToggleComplete={(taskId, completed) => onToggleTask(taskId, completed)}
+          onToggleComplete={(taskId, completed) =>
+            onToggleTask(taskId, completed)
+          }
           className={cn(
             "rounded-lg border",
             task && pendingTaskIds.has(task.id) && "opacity-70"
@@ -42,4 +48,4 @@ export function TasksTab({ tasks, pendingTaskIds, onToggleTask }: TasksTabProps)
       ))}
     </div>
   );
-}
+};
