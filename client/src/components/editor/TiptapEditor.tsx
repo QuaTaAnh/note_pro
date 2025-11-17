@@ -2,6 +2,7 @@
 
 import { TASK_STATUS } from "@/consts";
 import { CustomCode } from "@/lib/customCodeTiptap";
+import { EnterHandler } from "@/lib/enterHandler";
 import { PasteHandler } from "@/lib/pasteHandler";
 import { cn } from "@/lib/utils";
 import { Task } from "@/types/app";
@@ -10,7 +11,6 @@ import Highlight from "@tiptap/extension-highlight";
 import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
 import Underline from "@tiptap/extension-underline";
-import { EditorView } from "@tiptap/pm/view";
 import {
   Editor,
   EditorContent,
@@ -78,6 +78,14 @@ export const TiptapEditor = ({
       extensions: [
         StarterKit.configure({
           code: false,
+          bulletList: {
+            keepMarks: true,
+            keepAttributes: false,
+          },
+          orderedList: {
+            keepMarks: true,
+            keepAttributes: false,
+          },
         }),
         CustomCode,
         Underline,
@@ -91,6 +99,10 @@ export const TiptapEditor = ({
         }),
         Placeholder.configure({
           placeholder,
+        }),
+        EnterHandler.configure({
+          onAddBlock,
+          position,
         }),
         PasteHandler,
       ],
@@ -107,7 +119,17 @@ export const TiptapEditor = ({
         onChange(content);
       },
     }),
-    [value, onFocus, onBlur, onChange, onSaveImmediate, placeholder, editable]
+    [
+      value,
+      onFocus,
+      onBlur,
+      onChange,
+      onSaveImmediate,
+      placeholder,
+      editable,
+      onAddBlock,
+      position,
+    ]
   );
 
   const editor = useEditor(editorConfig as UseEditorOptions);
@@ -157,32 +179,6 @@ export const TiptapEditor = ({
       editor.view.dom.removeEventListener("keydown", handleEditorKeyDown);
     };
   }, [editor, handleKeyDown, onKeyDown]);
-
-  useEffect(() => {
-    if (!editor) return;
-
-    const handleKey = (view: EditorView, event: KeyboardEvent) => {
-      if (event.key === "Enter" && !event.shiftKey) {
-        if (onAddBlock) {
-          const { empty } = view.state.selection;
-          const { $from } = view.state.selection;
-          const currentPos = $from.pos;
-          const currentNodeSize = $from.node().nodeSize;
-
-          if (empty && currentPos >= currentNodeSize - 1) {
-            event.preventDefault();
-            onAddBlock(position + 1, BlockType.PARAGRAPH);
-            return true;
-          }
-        }
-      }
-      return false;
-    };
-
-    editor.view.setProps({
-      handleKeyDown: handleKey,
-    });
-  }, [editor, onAddBlock, position]);
 
   useEffect(() => {
     if (!editor) return;

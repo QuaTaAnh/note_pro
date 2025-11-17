@@ -2,7 +2,7 @@
 
 import { Editor } from "@tiptap/react";
 import { BubbleMenu } from "@tiptap/react/menus";
-import { Code, Italic } from "lucide-react";
+import { Code, Italic, List, ListOrdered } from "lucide-react";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { HiBold, HiStrikethrough, HiLinkSlash } from "react-icons/hi2";
 import { BubbleButton } from "./BubbleButton";
@@ -42,7 +42,7 @@ export const EditorBubbleMenu = ({ editor }: Props) => {
       if (!editor) return false;
       return editor.isActive(type);
     },
-    [editor, editorState],
+    [editor, editorState]
   );
 
   const getCurrentHighlightColor = useCallback(() => {
@@ -86,6 +86,20 @@ export const EditorBubbleMenu = ({ editor }: Props) => {
           isActive={isMarkActive("code")}
         >
           <Code className="w-4 h-4" />
+        </BubbleButton>
+
+        <BubbleButton
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
+          isActive={isMarkActive("bulletList")}
+        >
+          <List className="w-4 h-4" />
+        </BubbleButton>
+
+        <BubbleButton
+          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          isActive={isMarkActive("orderedList")}
+        >
+          <ListOrdered className="w-4 h-4" />
         </BubbleButton>
 
         <HighlightPicker
