@@ -107,7 +107,7 @@ export const TiptapEditor = ({
         onChange(content);
       },
     }),
-    [value, onFocus, onBlur, onChange, onSaveImmediate, placeholder, editable],
+    [value, onFocus, onBlur, onChange, onSaveImmediate, placeholder, editable]
   );
 
   const editor = useEditor(editorConfig as UseEditorOptions);
@@ -227,6 +227,7 @@ export const TiptapEditor = ({
         <div className="pt-2 text-muted-foreground">{dragHandle}</div>
       )}
       <div
+        data-editor-container
         className="flex flex-1 items-start gap-3 p-1 rounded 
 border border-transparent
     hover:border-gray-300

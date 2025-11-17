@@ -2,30 +2,30 @@
 
 import { Button } from "@/components/ui/button";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import { Download, MoreVertical, Trash2 } from "lucide-react";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { MoreVertical } from "lucide-react";
 import { useCallback } from "react";
-
+import { FiDownload, FiTrash } from "react-icons/fi";
 interface BlockActionMenuProps {
   onDelete?: () => void;
   downloadUrl?: string | null;
   downloadFileName?: string | null;
-  className?: string;
 }
 
 export function BlockActionMenu({
   onDelete,
   downloadUrl,
   downloadFileName,
-  className,
 }: BlockActionMenuProps) {
   const hasActions = Boolean(onDelete) || Boolean(downloadUrl);
   const handleDownload = useCallback(async () => {
-    if (!downloadUrl) return;
+    if (!downloadUrl) {
+      return;
+    }
 
     const inferredFileName =
       downloadFileName ||
@@ -54,45 +54,35 @@ export function BlockActionMenu({
   if (!hasActions) return null;
 
   return (
-    <Popover>
-      <PopoverTrigger asChild>
+    <DropdownMenu modal={false}>
+      <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
           size="icon"
-          className={cn(
-            "h-8 w-8 rounded-full text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-offset-0",
-            className,
-          )}
+          className="w-6 h-6 group-hover:opacity-100 opacity-0 transition-opacity"
+          onClick={(e) => e.stopPropagation()}
         >
-          <MoreVertical className="h-4 w-4" />
+          <MoreVertical size={18} />
         </Button>
-      </PopoverTrigger>
-      <PopoverContent align="end" className="w-44 p-2">
-        <div className="flex flex-col gap-1">
-          {downloadUrl && (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="justify-start px-2 py-1.5 text-sm"
-              onClick={handleDownload}
-            >
-              <Download className="h-4 w-4" />
-              Download
-            </Button>
-          )}
-          {onDelete && (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="justify-start px-2 py-1.5 text-sm text-destructive hover:text-destructive"
-              onClick={onDelete}
-            >
-              <Trash2 className="h-4 w-4" />
-              Delete
-            </Button>
-          )}
-        </div>
-      </PopoverContent>
-    </Popover>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56 p-2" align="start">
+        <DropdownMenuItem
+          className="flex items-center gap-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-950 focus:bg-red-100 dark:focus:bg-red-900 focus:text-red-700 dark:focus:text-red-300"
+          onClick={onDelete}
+        >
+          <FiTrash size={16} />
+          Delete
+        </DropdownMenuItem>
+        {downloadUrl && (
+          <DropdownMenuItem
+            className="flex items-center gap-2"
+            onClick={handleDownload}
+          >
+            <FiDownload size={16} />
+            Download
+          </DropdownMenuItem>
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

@@ -11,18 +11,18 @@ interface TasksTabProps {
   onToggleTask: (taskId: string, completed: boolean) => void;
 }
 
-export function TasksTab({ tasks, pendingTaskIds, onToggleTask }: TasksTabProps) {
-  if (tasks.length === 0) {
-    return (
-      <EmptyState
-        icon={<ListChecks className="h-4 w-4" />}
-        title="No tasks"
-        description="Convert blocks to tasks to track progress"
-      />
-    );
-  }
-
-  return (
+export const TasksTab = ({
+  tasks,
+  pendingTaskIds,
+  onToggleTask,
+}: TasksTabProps) => {
+  return tasks.length === 0 ? (
+    <EmptyState
+      icon={<ListChecks className="h-4 w-4" />}
+      title="No tasks"
+      description="Convert blocks to tasks to track progress"
+    />
+  ) : (
     <div className="space-y-2">
       {tasks.map(({ blockId, task, title }) => (
         <TaskItem
@@ -30,7 +30,9 @@ export function TasksTab({ tasks, pendingTaskIds, onToggleTask }: TasksTabProps)
           id={task?.id || blockId}
           title={title}
           completed={task?.status === TASK_STATUS.COMPLETED}
-          onToggleComplete={(taskId, completed) => onToggleTask(taskId, completed)}
+          onToggleComplete={(taskId, completed) =>
+            onToggleTask(taskId, completed)
+          }
           className={cn(
             "rounded-lg border",
             task && pendingTaskIds.has(task.id) && "opacity-70"
@@ -42,4 +44,4 @@ export function TasksTab({ tasks, pendingTaskIds, onToggleTask }: TasksTabProps)
       ))}
     </div>
   );
-}
+};

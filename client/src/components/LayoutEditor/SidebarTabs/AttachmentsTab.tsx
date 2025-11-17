@@ -1,35 +1,28 @@
-import Image from "next/image";
-import { ExternalLink, Paperclip } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { formatDate } from "@/lib/utils";
-import { SidebarAttachment } from "./types";
-import { EmptyState } from "./EmptyState";
 import { getFileBadge, getFileExtension } from "@/lib/file-utils";
+import { Paperclip } from "lucide-react";
+import Image from "next/image";
+import { EmptyState } from "./EmptyState";
+import { SidebarAttachment } from "./types";
 
 interface AttachmentsTabProps {
   attachments: SidebarAttachment[];
 }
 
-export function AttachmentsTab({ attachments }: AttachmentsTabProps) {
-  if (attachments.length === 0) {
-    return (
-      <EmptyState
-        icon={<Paperclip className="h-4 w-4" />}
-        title="No attachments"
-        description="Upload files right from the editor"
-      />
-    );
-  }
-
-  return (
+export const AttachmentsTab = ({ attachments }: AttachmentsTabProps) => {
+  return attachments.length === 0 ? (
+    <EmptyState
+      icon={<Paperclip className="h-4 w-4" />}
+      title="No attachments"
+      description="Upload files right from the editor"
+    />
+  ) : (
     <div className="space-y-2">
       {attachments.map((file) => (
         <AttachmentRow key={file.id} file={file} />
       ))}
     </div>
   );
-}
+};
 
 function AttachmentRow({ file }: { file: SidebarAttachment }) {
   const extension = getFileExtension(file.name, file.type);
@@ -58,23 +51,6 @@ function AttachmentRow({ file }: { file: SidebarAttachment }) {
           {file.size ? ` · ${file.size}` : ""}
         </p>
       </div>
-      {file.uploadedAt && (
-        <Badge variant="secondary" className="text-[10px]">
-          {formatDate(file.uploadedAt, { relative: true })}
-        </Badge>
-      )}
-      {file.url && (
-        <Button variant="ghost" size="icon" asChild>
-          <a
-            href={file.url}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="text-muted-foreground"
-          >
-            <ExternalLink className="h-4 w-4" />
-          </a>
-        </Button>
-      )}
     </div>
   );
 }

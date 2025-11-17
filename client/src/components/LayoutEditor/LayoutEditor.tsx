@@ -18,14 +18,14 @@ export const LayoutEditor: React.FC<LayoutEditorProps> = ({
   return (
     <div className="w-full h-screen flex flex-row">
       <div
-        className="px-2 transition-all duration-300 flex-shrink-0 overflow-hidden"
+        className="transition-all duration-300 flex-shrink-0 overflow-hidden"
         style={{ width: isOpen ? SIDEBAR_WIDTH : 0 }}
       >
         {isOpen ? left : null}
       </div>
-      <div className="flex-1 py-4">{children}</div>
+      <div className="flex-1 py-4 px-2">{children}</div>
       <div
-        className="px-2 transition-all duration-300 flex-shrink-0 overflow-hidden"
+        className="transition-all duration-300 flex-shrink-0 overflow-hidden"
         style={{ width: isRightOpen ? SIDEBAR_WIDTH : 0 }}
       >
         {isRightOpen ? right : null}
