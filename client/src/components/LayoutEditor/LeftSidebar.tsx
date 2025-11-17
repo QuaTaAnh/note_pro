@@ -154,9 +154,9 @@ export const LeftSidebar = ({ pageId }: Props) => {
   );
 
   return (
-    <div className="h-screen flex flex-col mt-4">
-      <div className="p-2 h-full flex flex-col">
-        <div className="flex flex-row items-center gap-2 mb-3">
+    <div className="h-screen flex flex-col mt-4 overflow-hidden">
+      <div className="p-2 h-full flex flex-col overflow-hidden">
+        <div className="flex flex-row items-center gap-2 mb-3 shrink-0">
           <Image
             src="/images/document-icon.png"
             alt="Document"
@@ -183,7 +183,7 @@ export const LeftSidebar = ({ pageId }: Props) => {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-2 mb-3">
+        <div className="grid grid-cols-2 gap-2 mb-3 shrink-0">
           <StatCard
             label="Sections"
             value={textBlocks.length}
