@@ -68,6 +68,7 @@ export function FileBlockCard({
           !fileUrl && "cursor-not-allowed opacity-70"
         )}
         disabled={!fileUrl}
+        data-editor-container
       >
         {!isImageFile && (
           <div className="flex items-center gap-4">
@@ -125,4 +126,3 @@ export function FileBlockCard({
     </div>
   );
 }
-

@@ -69,7 +69,11 @@ export function SidebarTabs({
           />
         </TabsContent>
         <TabsContent value="attachments">
-          <AttachmentsTab attachments={attachments} />
+          <AttachmentsTab
+            attachments={attachments}
+            onScrollToBlock={handleScrollToBlock}
+            activeBlockId={activeBlockId}
+          />
         </TabsContent>
         <TabsContent value="find">
           <SearchTab blocks={blocks} onScrollToBlock={onScrollToBlock} />

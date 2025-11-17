@@ -15,6 +15,7 @@ export type SidebarTask = {
 
 export type SidebarAttachment = {
   id: string;
+  blockId: string;
   name: string;
   type: string;
   size: string | null;

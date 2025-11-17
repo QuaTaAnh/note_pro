@@ -99,6 +99,7 @@ export const LeftSidebar = ({ pageId }: Props) => {
 
       return {
         id: block.id,
+        blockId: block.id,
         name: content.fileName || content.fileUrl || "Untitled file",
         type: content.fileType || "Unknown type",
         size: sizeLabel,
