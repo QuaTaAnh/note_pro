@@ -23,13 +23,6 @@ interface Props {
   pageId: string;
 }
 
-type AttachmentContent = {
-  fileUrl?: string;
-  fileName?: string;
-  fileType?: string;
-  fileSize?: number;
-};
-
 export const LeftSidebar = ({ pageId }: Props) => {
   const {
     processedRootBlock: rootBlock,
@@ -37,27 +30,27 @@ export const LeftSidebar = ({ pageId }: Props) => {
     loading,
   } = useDocumentBlocksData(pageId);
   const [pendingTaskIds, setPendingTaskIds] = useState<Set<string>>(
-    () => new Set()
+    () => new Set(),
   );
   const [updateTask] = useUpdateTaskMutation();
   const cleanupHighlightRef = useRef<(() => void) | null>(null);
 
   const textBlocks = useMemo(
     () => (blocks || []).filter((block) => block.type === BlockType.PARAGRAPH),
-    [blocks]
+    [blocks],
   );
 
   const taskBlocks = useMemo(
     () =>
       (blocks || []).filter(
-        (block) => block.type === BlockType.TASK && block.tasks?.length
+        (block) => block.type === BlockType.TASK && block.tasks?.length,
       ),
-    [blocks]
+    [blocks],
   );
 
   const attachmentBlocks = useMemo(
     () => (blocks || []).filter((block) => block.type === BlockType.FILE),
-    [blocks]
+    [blocks],
   );
 
   const sectionItems = useMemo<SectionItem[]>(() => {
@@ -88,22 +81,17 @@ export const LeftSidebar = ({ pageId }: Props) => {
 
   const attachments = useMemo<SidebarAttachment[]>(() => {
     return attachmentBlocks.map((block) => {
-      const content = (block.content as AttachmentContent) || {};
+      const content = block.content;
       const sizeLabel = formatFileSize(content.fileSize);
-      const uploadedAt =
-        (content as { fileUpdatedAt?: string | null })?.fileUpdatedAt ||
-        (content as { fileUploadedAt?: string | null })?.fileUploadedAt ||
-        (content as { uploadedAt?: string | null })?.uploadedAt ||
-        block.created_at ||
-        null;
+      const uploadedAt = block.created_at || null;
 
       return {
         id: block.id,
         blockId: block.id,
-        name: content.fileName || content.fileUrl || "Untitled file",
-        type: content.fileType || "Unknown type",
+        name: content.fileName,
+        type: content.fileType,
         size: sizeLabel,
-        url: content.fileUrl || null,
+        url: content.fileUrl,
         uploadedAt,
       };
     });
@@ -116,9 +104,11 @@ export const LeftSidebar = ({ pageId }: Props) => {
     }
 
     const el = document.querySelector<HTMLElement>(
-      `[data-block-id="${blockId}"]`
+      `[data-block-id="${blockId}"]`,
     );
-    if (!el) return;
+    if (!el) {
+      return;
+    }
 
     const container = el.querySelector<HTMLElement>("[data-editor-container]");
     if (!container) return;
@@ -135,14 +125,14 @@ export const LeftSidebar = ({ pageId }: Props) => {
 
     container.classList.add(
       "!border-[hsl(var(--button-primary))]",
-      "!bg-[hsl(var(--button-primary))]/10"
+      "!bg-[hsl(var(--button-primary))]/10",
     );
 
     const handleClickOutside = (event: MouseEvent) => {
       if (!el.contains(event.target as Node)) {
         container.classList.remove(
           "!border-[hsl(var(--button-primary))]",
-          "!bg-[hsl(var(--button-primary))]/10"
+          "!bg-[hsl(var(--button-primary))]/10",
         );
         document.removeEventListener("click", handleClickOutside);
         cleanupHighlightRef.current = null;
@@ -152,7 +142,7 @@ export const LeftSidebar = ({ pageId }: Props) => {
     cleanupHighlightRef.current = () => {
       container.classList.remove(
         "!border-[hsl(var(--button-primary))]",
-        "!bg-[hsl(var(--button-primary))]/10"
+        "!bg-[hsl(var(--button-primary))]/10",
       );
       document.removeEventListener("click", handleClickOutside);
     };
@@ -164,7 +154,9 @@ export const LeftSidebar = ({ pageId }: Props) => {
 
   const handleToggleTask = useCallback(
     async (taskId: string, completed: boolean) => {
-      if (!taskId) return;
+      if (!taskId) {
+        return;
+      }
       setPendingTaskIds((prev) => {
         const next = new Set(prev);
         next.add(taskId);
@@ -185,7 +177,6 @@ export const LeftSidebar = ({ pageId }: Props) => {
         });
         showToast.success(completed ? "Marked task complete" : "Task reopened");
       } catch (error) {
-        console.error("Failed to update task status", error);
         showToast.error("Unable to update task");
       } finally {
         setPendingTaskIds((prev) => {
@@ -195,7 +186,7 @@ export const LeftSidebar = ({ pageId }: Props) => {
         });
       }
     },
-    [updateTask, pageId]
+    [updateTask, pageId],
   );
 
   return (

@@ -107,7 +107,7 @@ export const TiptapEditor = ({
         onChange(content);
       },
     }),
-    [value, onFocus, onBlur, onChange, onSaveImmediate, placeholder, editable]
+    [value, onFocus, onBlur, onChange, onSaveImmediate, placeholder, editable],
   );
 
   const editor = useEditor(editorConfig as UseEditorOptions);

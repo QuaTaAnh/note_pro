@@ -21,7 +21,7 @@ export const ContentsTab = ({
     if (!filter.trim()) return sections;
     const query = filter.toLowerCase();
     return sections.filter((section) =>
-      section.title.toLowerCase().includes(query)
+      section.title.toLowerCase().includes(query),
     );
   }, [filter, sections]);
 
