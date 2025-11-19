@@ -57,3 +57,58 @@ export function getFileExtension(fileName: string, fileType?: string | null) {
   if (normalizedType.includes("rar")) return "rar";
   return null;
 }
+
+/**
+ * Determines if a file can be previewed in the browser
+ * Files that can be previewed: PDF, images, text, video, audio
+ */
+export function canPreviewInBrowser(
+  fileType?: string | null,
+  fileExtension?: string | null,
+): boolean {
+  if (!fileType && !fileExtension) return false;
+
+  const normalizedType = fileType?.toLowerCase() || "";
+  const normalizedExt = fileExtension?.toLowerCase() || "";
+
+  // Images
+  if (
+    normalizedType.startsWith("image/") ||
+    ["jpg", "jpeg", "png", "gif", "webp", "avif", "svg", "bmp"].includes(
+      normalizedExt,
+    )
+  ) {
+    return true;
+  }
+
+  // PDFs
+  if (normalizedType === "application/pdf" || normalizedExt === "pdf") {
+    return true;
+  }
+
+  // Text files
+  if (
+    normalizedType.startsWith("text/") ||
+    ["txt", "md", "json", "xml", "csv"].includes(normalizedExt)
+  ) {
+    return true;
+  }
+
+  // Video files
+  if (
+    normalizedType.startsWith("video/") ||
+    ["mp4", "webm", "ogg"].includes(normalizedExt)
+  ) {
+    return true;
+  }
+
+  // Audio files
+  if (
+    normalizedType.startsWith("audio/") ||
+    ["mp3", "wav", "ogg"].includes(normalizedExt)
+  ) {
+    return true;
+  }
+
+  return false;
+}
