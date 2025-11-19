@@ -28,8 +28,8 @@ export const EnterHandler = Extension.create<EnterHandlerOptions>({
       },
       Enter: () => {
         const { state } = this.editor;
-        const { selection, doc } = state;
-        const { $from, empty } = selection;
+        const { selection } = state;
+        const { $from } = selection;
 
         if (this.editor.isActive("bulletList") || this.editor.isActive("orderedList")) {
           const currentNode = $from.node($from.depth);
@@ -46,17 +46,8 @@ export const EnterHandler = Extension.create<EnterHandlerOptions>({
         }
 
         if (this.options.onAddBlock) {
-          const currentPos = $from.pos;
-          const currentNodeSize = $from.node().nodeSize;
-          
-          if (empty && currentPos >= currentNodeSize - 1) {
-            const textContent = $from.node().textContent.trim();
-            
-            if (textContent === "") {
-              this.options.onAddBlock(this.options.position + 1, BlockType.PARAGRAPH);
-              return true;
-            }
-          }
+          this.options.onAddBlock(this.options.position + 1, BlockType.PARAGRAPH);
+          return true;
         }
 
         return this.editor.commands.splitBlock();

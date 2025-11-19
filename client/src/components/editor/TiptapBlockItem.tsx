@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { BlockType } from "@/types/types";
 import { TiptapEditor } from "./TiptapEditor";
 
@@ -13,7 +14,7 @@ interface Props {
   onAddBlock: (
     position: number,
     type: BlockType,
-    content?: Record<string, unknown>,
+    content?: Record<string, unknown>
   ) => Promise<void> | void;
   onSaveImmediate: () => void;
   onDeleteBlock?: () => void;
@@ -28,41 +29,54 @@ interface Props {
   onToggleUploading?: (isUploading: boolean) => void;
 }
 
-export const TiptapBlockItem = ({
-  value,
-  isFocused,
-  position,
-  onFocus,
-  onBlur,
-  onChange,
-  onAddBlock,
-  onSaveImmediate,
-  onDeleteBlock,
-  dragHandle,
-  blockType,
-  task,
-  editable = true,
-  onToggleUploading,
-}: Props) => {
-  return (
-    <TiptapEditor
-      value={value}
-      onChange={onChange}
-      onFocus={onFocus}
-      onBlur={onBlur}
-      onAddBlock={onAddBlock}
-      onSaveImmediate={onSaveImmediate}
-      onDeleteBlock={onDeleteBlock}
-      isFocused={isFocused}
-      position={position}
-      placeholder='Type "/" for commands'
-      editorClassName="prose prose-sm max-w-none focus:outline-none text-base break-words text-sm leading-relaxed"
-      showBubbleMenu={true}
-      dragHandle={dragHandle}
-      isTask={blockType === BlockType.TASK}
-      task={task}
-      editable={editable}
-      onToggleUploading={onToggleUploading}
-    />
-  );
-};
+export const TiptapBlockItem = memo(
+  function TiptapBlockItem({
+    value,
+    isFocused,
+    position,
+    onFocus,
+    onBlur,
+    onChange,
+    onAddBlock,
+    onSaveImmediate,
+    onDeleteBlock,
+    dragHandle,
+    blockType,
+    task,
+    editable = true,
+    onToggleUploading,
+  }: Props) {
+    return (
+      <TiptapEditor
+        value={value}
+        onChange={onChange}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        onAddBlock={onAddBlock}
+        onSaveImmediate={onSaveImmediate}
+        onDeleteBlock={onDeleteBlock}
+        isFocused={isFocused}
+        position={position}
+        placeholder='Type "/" for commands'
+        editorClassName="prose prose-sm max-w-none focus:outline-none text-base break-words text-sm leading-relaxed"
+        showBubbleMenu={true}
+        dragHandle={dragHandle}
+        isTask={blockType === BlockType.TASK}
+        task={task}
+        editable={editable}
+        onToggleUploading={onToggleUploading}
+      />
+    );
+  },
+  (prevProps, nextProps) => {
+    return (
+      prevProps.value === nextProps.value &&
+      prevProps.isFocused === nextProps.isFocused &&
+      prevProps.position === nextProps.position &&
+      prevProps.editable === nextProps.editable &&
+      prevProps.blockType === nextProps.blockType &&
+      prevProps.task?.id === nextProps.task?.id &&
+      prevProps.task?.status === nextProps.task?.status
+    );
+  }
+);

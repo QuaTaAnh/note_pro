@@ -10,6 +10,7 @@ export function useDocumentBlocksData(pageId: string) {
     variables: { pageId },
     skip: !pageId,
     fetchPolicy: "cache-first",
+    nextFetchPolicy: "cache-first",
   });
 
   const { processedBlocks, processedRootBlock } = useMemo(() => {

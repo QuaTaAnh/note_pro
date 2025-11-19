@@ -58,21 +58,22 @@ export function useDocumentBlocksEditing({
 
   const handleUpdateBlockContent = useCallback(
     (blockId: string, content: string) => {
-      const block = blocks.find((b) => b.id === blockId);
-      if (block && block.type !== BlockType.PAGE) {
-        setBlocks((prev) =>
-          prev.map((b) =>
-            b.id === blockId
-              ? { ...b, content: { ...b.content, text: content } }
-              : b,
-          ),
+      setBlocks((prev) => {
+        const block = prev.find((b) => b.id === blockId);
+        if (!block || block.type === BlockType.PAGE) return prev;
+        
+        return prev.map((b) =>
+          b.id === blockId
+            ? { ...b, content: { ...b.content, text: content } }
+            : b,
         );
-        debounced(async () => {
-          await updateBlockContent(blockId, { text: content });
-        });
-      }
+      });
+      
+      debounced(async () => {
+        await updateBlockContent(blockId, { text: content });
+      });
     },
-    [blocks, debounced, updateBlockContent],
+    [debounced, updateBlockContent],
   );
 
   const handleUpdateTitle = useCallback(
@@ -113,19 +114,23 @@ export function useDocumentBlocksEditing({
 
   const handleReorderBlocks = useCallback(
     async (newBlocks: Block[]) => {
-      setBlocks(newBlocks);
-      const updates = newBlocks
-        .map((block, idx) => ({ id: block.id, position: idx }))
-        .filter(
-          (block, idx) =>
-            block.position !== (blocks[idx]?.position ?? -1) ||
-            block.id !== (blocks[idx]?.id ?? ""),
-        );
-      if (updates.length > 0) {
-        await updateBlocksPositionsBatch(updates);
-      }
+      setBlocks((prevBlocks) => {
+        const updates = newBlocks
+          .map((block, idx) => ({ id: block.id, position: idx }))
+          .filter(
+            (block, idx) =>
+              block.position !== (prevBlocks[idx]?.position ?? -1) ||
+              block.id !== (prevBlocks[idx]?.id ?? ""),
+          );
+        
+        if (updates.length > 0) {
+          updateBlocksPositionsBatch(updates);
+        }
+        
+        return newBlocks;
+      });
     },
-    [updateBlocksPositionsBatch, blocks],
+    [updateBlocksPositionsBatch],
   );
 
   return {

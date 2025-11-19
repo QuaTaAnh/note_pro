@@ -198,9 +198,43 @@
   line-height: 1.5;
 }
 
+/* Prose list overrides to remove blank space */
+.prose ul,
+.prose ol,
+.ProseMirror ul,
+.ProseMirror ol {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-left: 1.5em;
+  line-height: 1.5;
+}
+
+.prose li,
+.ProseMirror li {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding: 0 !important;
+  line-height: 1.5;
+}
+
+.prose li > p,
 .ProseMirror li p {
-  margin: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding: 0 !important;
   display: inline;
+  line-height: inherit;
+}
+
+/* Remove empty paragraph spacing after lists */
+.ProseMirror ul + p:empty,
+.ProseMirror ol + p:empty,
+.ProseMirror ul + p.is-empty,
+.ProseMirror ol + p.is-empty {
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .ProseMirror li p.is-empty::before {
@@ -208,12 +242,51 @@
   display: none !important;
 }
 
-.ProseMirror ul ul {
+/* Nested lists */
+.ProseMirror ul ul,
+.ProseMirror ol ul {
   list-style-type: circle;
+  margin-top: 0 !important;
 }
 
-.ProseMirror ul ul ul {
+.ProseMirror ul ul ul,
+.ProseMirror ol ul ul {
   list-style-type: square;
+}
+
+/* Remove spacing between list items */
+.ProseMirror li + li {
+  margin-top: 0 !important;
+}
+
+/* Remove extra space from ProseMirror container */
+.ProseMirror {
+  line-height: 1.5;
+  min-height: 0;
+}
+
+.ProseMirror > * {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* Override prose spacing for all elements */
+.prose .ProseMirror > *,
+.ProseMirror.prose > * {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* Specifically target the editor content wrapper */
+[data-editor-container] .ProseMirror {
+  padding: 0;
+  margin: 0;
+}
+
+[data-editor-container] .ProseMirror > * {
+  margin: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 .ProseMirror blockquote {
