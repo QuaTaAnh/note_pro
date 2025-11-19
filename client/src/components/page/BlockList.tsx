@@ -128,6 +128,12 @@ const SortableBlockItem = memo(
                 ? () => props.onDeleteBlock && props.onDeleteBlock(block.id)
                 : undefined
             }
+            onInsertAbove={() =>
+              props.onAddBlock(block.position || 0, BlockType.PARAGRAPH)
+            }
+            onInsertBelow={() =>
+              props.onAddBlock((block.position || 0) + 1, BlockType.PARAGRAPH)
+            }
           />
         ) : (
           <TiptapBlockItem
@@ -143,6 +149,12 @@ const SortableBlockItem = memo(
               props.onDeleteBlock && (props.totalBlocks ?? 0) > 1
                 ? () => props.onDeleteBlock && props.onDeleteBlock(block.id)
                 : undefined
+            }
+            onInsertAbove={() =>
+              props.onAddBlock(block.position || 0, BlockType.PARAGRAPH)
+            }
+            onInsertBelow={() =>
+              props.onAddBlock((block.position || 0) + 1, BlockType.PARAGRAPH)
             }
             blockType={block.type}
             task={task}

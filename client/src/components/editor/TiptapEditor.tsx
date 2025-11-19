@@ -25,6 +25,8 @@ interface TiptapEditorProps {
   onAddBlock?: (position: number, type: BlockType) => void;
   onSaveImmediate?: () => void;
   onDeleteBlock?: () => void;
+  onInsertAbove?: () => void;
+  onInsertBelow?: () => void;
   isTitle?: boolean;
   isTask?: boolean;
   task?: Task | null;
@@ -40,22 +42,24 @@ export const TiptapEditor = memo(
     onFocus,
     onBlur,
     onKeyDown,
-    placeholder = 'Type "/" for commands',
+    placeholder = "",
     className = "",
-    editorClassName,
-    showBubbleMenu = true,
+    editorClassName = "",
+    showBubbleMenu = false,
     isFocused = false,
     position = 0,
     onAddBlock,
     onSaveImmediate,
     onDeleteBlock,
+    onInsertAbove,
+    onInsertBelow,
     isTitle = false,
     isTask = false,
-    task,
-    dragHandle,
+    task = null,
     editable = true,
     onToggleUploading,
     enableFileUploads = true,
+    dragHandle,
   }: TiptapEditorProps & { dragHandle?: React.ReactNode }) {
     const [isUpdating, setIsUpdating] = useState(false);
     const prevValueRef = useRef(value);
@@ -182,6 +186,8 @@ export const TiptapEditor = memo(
         isUpdating={isUpdating}
         setIsUpdating={setIsUpdating}
         onDeleteBlock={onDeleteBlock ? handleDelete : undefined}
+        onInsertAbove={onInsertAbove}
+        onInsertBelow={onInsertBelow}
       >
         {showBubbleMenu && <EditorBubbleMenu editor={editor} />}
         <EditorContent editor={editor} className={editorClassName} />
