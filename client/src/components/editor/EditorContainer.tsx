@@ -13,6 +13,8 @@ interface EditorContainerProps {
   isUpdating: boolean;
   setIsUpdating: (value: boolean) => void;
   onDeleteBlock?: () => void;
+  onInsertAbove?: () => void;
+  onInsertBelow?: () => void;
   children: ReactNode;
 }
 
@@ -24,6 +26,8 @@ export const EditorContainer = memo(function EditorContainer({
   isUpdating,
   setIsUpdating,
   onDeleteBlock,
+  onInsertAbove,
+  onInsertBelow,
   children,
 }: EditorContainerProps) {
   const isCompleted = task?.status === TASK_STATUS.COMPLETED;
@@ -60,7 +64,11 @@ border border-transparent
       </div>
       {onDeleteBlock && editable && (
         <div className="ml-1 flex-shrink-0 opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100">
-          <BlockActionMenu onDelete={onDeleteBlock} />
+          <BlockActionMenu
+            onDelete={onDeleteBlock}
+            onInsertAbove={onInsertAbove}
+            onInsertBelow={onInsertBelow}
+          />
         </div>
       )}
     </div>

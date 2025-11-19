@@ -19,6 +19,8 @@ interface FileBlockCardProps {
   dragHandle?: ReactNode;
   editable?: boolean;
   onDeleteBlock?: () => void;
+  onInsertAbove?: () => void;
+  onInsertBelow?: () => void;
 }
 
 export const FileBlockCard = ({
@@ -26,6 +28,8 @@ export const FileBlockCard = ({
   dragHandle,
   editable = true,
   onDeleteBlock,
+  onInsertAbove,
+  onInsertBelow,
 }: FileBlockCardProps) => {
   const content = block.content;
   const fileUrl = content.fileUrl;
@@ -146,6 +150,8 @@ export const FileBlockCard = ({
               onDelete={onDeleteBlock}
               downloadUrl={fileUrl}
               downloadFileName={fileName}
+              onInsertAbove={onInsertAbove}
+              onInsertBelow={onInsertBelow}
             />
           </div>
         )}

@@ -18,6 +18,8 @@ interface Props {
   ) => Promise<void> | void;
   onSaveImmediate: () => void;
   onDeleteBlock?: () => void;
+  onInsertAbove?: () => void;
+  onInsertBelow?: () => void;
   dragHandle?: React.ReactNode;
   blockType?: string;
   task?: {
@@ -40,6 +42,8 @@ export const TiptapBlockItem = memo(
     onAddBlock,
     onSaveImmediate,
     onDeleteBlock,
+    onInsertAbove,
+    onInsertBelow,
     dragHandle,
     blockType,
     task,
@@ -55,6 +59,8 @@ export const TiptapBlockItem = memo(
         onAddBlock={onAddBlock}
         onSaveImmediate={onSaveImmediate}
         onDeleteBlock={onDeleteBlock}
+        onInsertAbove={onInsertAbove}
+        onInsertBelow={onInsertBelow}
         isFocused={isFocused}
         position={position}
         placeholder='Type "/" for commands'

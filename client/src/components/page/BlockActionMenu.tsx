@@ -9,19 +9,31 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreVertical } from "lucide-react";
 import { useCallback } from "react";
-import { FiDownload, FiTrash } from "react-icons/fi";
+import { FiDownload } from "react-icons/fi";
+import { DeleteIcon } from "../icons/DeleteIcon";
+import { InsertBlockAboveIcon } from "../icons/InsertBlockAboveIcon";
+import { InsertBlockBelowIcon } from "../icons/InsertBlockBelowIcon";
+
 interface BlockActionMenuProps {
   onDelete?: () => void;
   downloadUrl?: string | null;
   downloadFileName?: string | null;
+  onInsertAbove?: () => void;
+  onInsertBelow?: () => void;
 }
 
 export function BlockActionMenu({
   onDelete,
   downloadUrl,
   downloadFileName,
+  onInsertAbove,
+  onInsertBelow,
 }: BlockActionMenuProps) {
-  const hasActions = Boolean(onDelete) || Boolean(downloadUrl);
+  const hasActions =
+    Boolean(onDelete) ||
+    Boolean(downloadUrl) ||
+    Boolean(onInsertAbove) ||
+    Boolean(onInsertBelow);
   const handleDownload = useCallback(async () => {
     if (!downloadUrl) {
       return;
@@ -66,13 +78,33 @@ export function BlockActionMenu({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 p-2" align="start">
-        <DropdownMenuItem
-          className="flex items-center gap-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-950 focus:bg-red-100 dark:focus:bg-red-900 focus:text-red-700 dark:focus:text-red-300"
-          onClick={onDelete}
-        >
-          <FiTrash size={16} />
-          Delete
-        </DropdownMenuItem>
+        {onInsertAbove && (
+          <DropdownMenuItem
+            className="flex items-center gap-2"
+            onClick={onInsertAbove}
+          >
+            <InsertBlockAboveIcon />
+            Insert Block Above
+          </DropdownMenuItem>
+        )}
+        {onInsertBelow && (
+          <DropdownMenuItem
+            className="flex items-center gap-2"
+            onClick={onInsertBelow}
+          >
+            <InsertBlockBelowIcon />
+            Insert Block Below
+          </DropdownMenuItem>
+        )}
+        {onDelete && (
+          <DropdownMenuItem
+            className="flex items-center gap-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-950 focus:bg-red-100 dark:focus:bg-red-900 focus:text-red-700 dark:focus:text-red-300"
+            onClick={onDelete}
+          >
+            <DeleteIcon />
+            Delete
+          </DropdownMenuItem>
+        )}
         {downloadUrl && (
           <DropdownMenuItem
             className="flex items-center gap-2"
