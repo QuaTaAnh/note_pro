@@ -3,13 +3,10 @@
 import { CellDocument } from "@/components/page/CellDocument";
 import { Button } from "@/components/ui/button";
 import { PageLoading } from "@/components/ui/loading";
-import { useCreateUntitledPageMutation } from "@/graphql/mutations/__generated__/document.generated";
 import { useGetAllDocsQuery } from "@/graphql/queries/__generated__/document.generated";
-import { useUserId } from "@/hooks/use-auth";
-import { useWorkspace } from "@/hooks/use-workspace";
+import { useCreateDocument, useWorkspace } from "@/hooks";
 import { Document } from "@/types/app";
-import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { FiFilePlus } from "react-icons/fi";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeGrid as Grid } from "react-window";
@@ -21,43 +18,7 @@ const rowHeight = CARD_HEIGHT + GUTTER;
 
 export default function AllDocsPage() {
   const { workspace } = useWorkspace();
-  const router = useRouter();
-  const userId = useUserId();
-  const [createDocument] = useCreateUntitledPageMutation();
-  const [isCreating, setIsCreating] = useState(false);
-
-  const handleClick = async () => {
-    if (isCreating || !workspace?.id) return;
-
-    try {
-      setIsCreating(true);
-      const res = await createDocument({
-        variables: {
-          input: {
-            type: "page",
-            workspace_id: workspace.id,
-            user_id: userId || "",
-            folder_id: null,
-            content: {
-              title: "Untitled Page",
-            },
-            position: 0,
-            parent_id: null,
-            page_id: null,
-          },
-        },
-      });
-
-      const docId = res.data?.insert_blocks_one?.id;
-      if (docId) {
-        router.push(`/editor/d/${workspace.id}/${docId}`);
-      }
-    } catch (err) {
-      console.error("Failed to create document:", err);
-    } finally {
-      setIsCreating(false);
-    }
-  };
+  const { createNewDocument, isCreating, canCreate } = useCreateDocument();
 
   const { loading, data } = useGetAllDocsQuery({
     variables: { workspaceId: workspace?.id || "" },
@@ -78,8 +39,8 @@ export default function AllDocsPage() {
             variant="outline"
             size="sm"
             className="gap-2 text-sm rounded-xl"
-            onClick={handleClick}
-            disabled={isCreating}
+            onClick={createNewDocument}
+            disabled={!canCreate || isCreating}
           >
             <FiFilePlus className="w-4 h-4" />
             New Doc
@@ -98,12 +59,12 @@ export default function AllDocsPage() {
 
                 const columnCount = Math.max(
                   1,
-                  Math.floor((width + GUTTER) / (MIN_CARD_WIDTH + GUTTER)),
+                  Math.floor((width + GUTTER) / (MIN_CARD_WIDTH + GUTTER))
                 );
 
                 const totalGutters = (columnCount - 1) * GUTTER;
                 const columnWidth = Math.floor(
-                  (width - totalGutters) / columnCount,
+                  (width - totalGutters) / columnCount
                 );
 
                 const rowCount = Math.ceil(allDocs.length / columnCount);

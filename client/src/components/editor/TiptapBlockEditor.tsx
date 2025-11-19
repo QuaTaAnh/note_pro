@@ -71,6 +71,7 @@ export default function TiptapBlockEditor({ pageId, className = "" }: Props) {
                   onReorder={handleReorderBlocks}
                   editable={canEdit}
                   onToggleUploading={setIsUploadingFile}
+                  totalBlocks={blocks.length}
                 />
               </TiptapWrapper>
               <div className="h-[50vh]" />

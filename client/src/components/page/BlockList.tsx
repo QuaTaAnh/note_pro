@@ -39,6 +39,7 @@ interface Props {
   onReorder?: (newBlocks: Block[]) => void;
   editable?: boolean;
   onToggleUploading?: (isUploading: boolean) => void;
+  totalBlocks?: number;
 }
 
 const SortableBlockItem = memo(
@@ -60,6 +61,7 @@ const SortableBlockItem = memo(
     onDeleteBlock?: (blockId: string) => void;
     editable?: boolean;
     onToggleUploading?: (isUploading: boolean) => void;
+    totalBlocks?: number;
   }) {
     const {
       attributes,
@@ -122,7 +124,7 @@ const SortableBlockItem = memo(
             dragHandle={dragHandle}
             editable={props.editable}
             onDeleteBlock={
-              props.onDeleteBlock
+              props.onDeleteBlock && (props.totalBlocks ?? 0) > 1
                 ? () => props.onDeleteBlock && props.onDeleteBlock(block.id)
                 : undefined
             }
@@ -138,7 +140,7 @@ const SortableBlockItem = memo(
             onAddBlock={props.onAddBlock}
             onSaveImmediate={props.onSaveImmediate}
             onDeleteBlock={
-              props.onDeleteBlock
+              props.onDeleteBlock && (props.totalBlocks ?? 0) > 1
                 ? () => props.onDeleteBlock && props.onDeleteBlock(block.id)
                 : undefined
             }
@@ -160,6 +162,7 @@ const SortableBlockItem = memo(
       prevProps.block.type === nextProps.block.type &&
       prevProps.focusedBlockId === nextProps.focusedBlockId &&
       prevProps.editable === nextProps.editable &&
+      prevProps.totalBlocks === nextProps.totalBlocks &&
       prevProps.block.tasks?.[0]?.status === nextProps.block.tasks?.[0]?.status
     );
   }
@@ -177,7 +180,9 @@ export function BlockList({
   onReorder,
   editable = true,
   onToggleUploading,
+  totalBlocks,
 }: Props) {
+  const blocksCount = totalBlocks ?? blocks.length;
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -224,6 +229,7 @@ export function BlockList({
               onDeleteBlock={onDeleteBlock}
               editable={editable}
               onToggleUploading={onToggleUploading}
+              totalBlocks={blocksCount}
             />
           ))}
 
