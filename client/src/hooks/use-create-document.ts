@@ -68,7 +68,7 @@ export function useCreateDocument(options: CreateDocumentOptions = {}) {
       const route = folderId
         ? ROUTES.WORKSPACE_DOCUMENT_FOLDER(workspace.id, folderId, docId)
         : ROUTES.WORKSPACE_DOCUMENT(workspace.id, docId);
-      
+
       router.push(route);
     } catch (err) {
       console.error("Failed to create document:", err);

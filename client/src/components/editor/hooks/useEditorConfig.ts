@@ -18,7 +18,9 @@ interface UseEditorConfigProps {
   onFocusRef: MutableRefObject<(() => void) | undefined>;
   onBlurRef: MutableRefObject<(() => void) | undefined>;
   onSaveImmediateRef: MutableRefObject<(() => void) | undefined>;
-  onAddBlockRef: MutableRefObject<((position: number, type: BlockType) => void) | undefined>;
+  onAddBlockRef: MutableRefObject<
+    ((position: number, type: BlockType) => void) | undefined
+  >;
   prevValueRef: MutableRefObject<string>;
 }
 
@@ -81,6 +83,16 @@ export function useEditorConfig({
         }
       },
     }),
-    [placeholder, editable, position, onChangeRef, onFocusRef, onBlurRef, onSaveImmediateRef, onAddBlockRef, prevValueRef]
+    [
+      placeholder,
+      editable,
+      position,
+      onChangeRef,
+      onFocusRef,
+      onBlurRef,
+      onSaveImmediateRef,
+      onAddBlockRef,
+      prevValueRef,
+    ],
   );
 }

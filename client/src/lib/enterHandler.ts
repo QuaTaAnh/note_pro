@@ -31,13 +31,16 @@ export const EnterHandler = Extension.create<EnterHandlerOptions>({
         const { selection } = state;
         const { $from } = selection;
 
-        if (this.editor.isActive("bulletList") || this.editor.isActive("orderedList")) {
+        if (
+          this.editor.isActive("bulletList") ||
+          this.editor.isActive("orderedList")
+        ) {
           const currentNode = $from.node($from.depth);
-          
+
           if (currentNode.textContent === "") {
             return this.editor.commands.liftListItem("listItem");
           }
-          
+
           return this.editor.commands.splitListItem("listItem");
         }
 
@@ -46,7 +49,10 @@ export const EnterHandler = Extension.create<EnterHandlerOptions>({
         }
 
         if (this.options.onAddBlock) {
-          this.options.onAddBlock(this.options.position + 1, BlockType.PARAGRAPH);
+          this.options.onAddBlock(
+            this.options.position + 1,
+            BlockType.PARAGRAPH,
+          );
           return true;
         }
 
@@ -61,14 +67,14 @@ export const EnterHandler = Extension.create<EnterHandlerOptions>({
         if (empty && $from.parentOffset === 0) {
           if (this.editor.isActive("listItem")) {
             const currentNode = $from.node($from.depth);
-            
+
             if (currentNode.textContent === "") {
               return this.editor.commands.liftListItem("listItem");
             }
           }
         }
 
-        return false; 
+        return false;
       },
     };
   },

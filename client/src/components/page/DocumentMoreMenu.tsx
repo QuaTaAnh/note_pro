@@ -37,7 +37,7 @@ export const DocumentMoreMenu = ({ documentId }: Props) => {
             fields: {
               blocks(existingRefs: readonly Reference[] = [], { readField }) {
                 return existingRefs.filter(
-                  (ref) => readField("id", ref) !== documentId
+                  (ref) => readField("id", ref) !== documentId,
                 );
               },
               blocks_aggregate(existingAgg) {

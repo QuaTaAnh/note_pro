@@ -2,6 +2,7 @@ import { TASK_STATUS } from "@/consts";
 import { useUpdateTaskMutation } from "@/graphql/mutations/__generated__/task.generated";
 import { GetDocumentBlocksDocument } from "@/graphql/queries/__generated__/document.generated";
 import { useDocumentBlocksData } from "@/hooks";
+import { highlightBlock } from "@/lib/block-highlight";
 import { formatFileSize } from "@/lib/file-utils";
 import { showToast } from "@/lib/toast";
 import { formatDate } from "@/lib/utils";
@@ -103,53 +104,10 @@ export const LeftSidebar = ({ pageId }: Props) => {
       cleanupHighlightRef.current = null;
     }
 
-    const el = document.querySelector<HTMLElement>(
-      `[data-block-id="${blockId}"]`,
-    );
-    if (!el) {
-      return;
+    const cleanup = highlightBlock(blockId);
+    if (cleanup) {
+      cleanupHighlightRef.current = cleanup;
     }
-
-    const container = el.querySelector<HTMLElement>("[data-editor-container]");
-    if (!container) return;
-
-    const rect = el.getBoundingClientRect();
-    const isInViewport =
-      rect.top >= 0 &&
-      rect.bottom <=
-        (window.innerHeight || document.documentElement.clientHeight);
-
-    if (!isInViewport) {
-      el.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    }
-
-    container.classList.add(
-      "!border-[hsl(var(--button-primary))]",
-      "!bg-[hsl(var(--button-primary))]/10",
-    );
-
-    const handleClickOutside = (event: MouseEvent) => {
-      if (!el.contains(event.target as Node)) {
-        container.classList.remove(
-          "!border-[hsl(var(--button-primary))]",
-          "!bg-[hsl(var(--button-primary))]/10",
-        );
-        document.removeEventListener("click", handleClickOutside);
-        cleanupHighlightRef.current = null;
-      }
-    };
-
-    cleanupHighlightRef.current = () => {
-      container.classList.remove(
-        "!border-[hsl(var(--button-primary))]",
-        "!bg-[hsl(var(--button-primary))]/10",
-      );
-      document.removeEventListener("click", handleClickOutside);
-    };
-
-    setTimeout(() => {
-      document.addEventListener("click", handleClickOutside);
-    }, 100);
   }, []);
 
   const handleToggleTask = useCallback(
@@ -176,7 +134,7 @@ export const LeftSidebar = ({ pageId }: Props) => {
           awaitRefetchQueries: true,
         });
         showToast.success(completed ? "Marked task complete" : "Task reopened");
-      } catch (error) {
+      } catch {
         showToast.error("Unable to update task");
       } finally {
         setPendingTaskIds((prev) => {

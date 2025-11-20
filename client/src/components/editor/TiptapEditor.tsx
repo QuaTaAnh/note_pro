@@ -11,6 +11,7 @@ import { useEditorConfig } from "./hooks/useEditorConfig";
 import { EditorContainer } from "./EditorContainer";
 
 interface TiptapEditorProps {
+  blockId?: string;
   value: string;
   onChange: (value: string) => void;
   onFocus?: () => void;
@@ -37,6 +38,7 @@ interface TiptapEditorProps {
 
 export const TiptapEditor = memo(
   function TiptapEditor({
+    blockId,
     value,
     onChange,
     onFocus,
@@ -64,7 +66,6 @@ export const TiptapEditor = memo(
     const [isUpdating, setIsUpdating] = useState(false);
     const prevValueRef = useRef(value);
 
-    // Use stable refs for callbacks
     const refs = useEditorRefs({
       onChange,
       onFocus,
@@ -73,7 +74,6 @@ export const TiptapEditor = memo(
       onAddBlock,
     });
 
-    // Create editor config with minimal dependencies
     const editorConfig = useEditorConfig({
       placeholder,
       editable,
@@ -97,7 +97,6 @@ export const TiptapEditor = memo(
     useEffect(() => {
       if (editor && value !== prevValueRef.current) {
         const editorHTML = editor.getHTML();
-        // Only update if the values are actually different
         if (value !== editorHTML) {
           editor.commands.setContent(value, { emitUpdate: false });
           prevValueRef.current = value;
@@ -179,6 +178,7 @@ export const TiptapEditor = memo(
     // Block editor (full layout with task, drag handle, etc.)
     return (
       <EditorContainer
+        blockId={blockId || ""}
         editable={editable}
         dragHandle={dragHandle}
         isTask={isTask}
@@ -205,5 +205,5 @@ export const TiptapEditor = memo(
       prevProps.task?.status === nextProps.task?.status &&
       prevProps.task?.id === nextProps.task?.id
     );
-  }
+  },
 );

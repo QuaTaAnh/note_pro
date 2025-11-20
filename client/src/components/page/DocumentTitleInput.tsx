@@ -48,5 +48,5 @@ export const DocumentTitleInput = memo(
       prevProps.editable === nextProps.editable &&
       prevProps.placeholder === nextProps.placeholder
     );
-  }
+  },
 );
