@@ -6,6 +6,7 @@ import { CheckTask } from "./CheckTask";
 import { BlockActionMenu } from "@/components/page/BlockActionMenu";
 
 interface EditorContainerProps {
+  blockId: string;
   editable: boolean;
   dragHandle?: ReactNode;
   isTask: boolean;
@@ -19,6 +20,7 @@ interface EditorContainerProps {
 }
 
 export const EditorContainer = memo(function EditorContainer({
+  blockId,
   editable,
   dragHandle,
   isTask,
@@ -65,6 +67,7 @@ border border-transparent
       {onDeleteBlock && editable && (
         <div className="ml-1 flex-shrink-0 opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100">
           <BlockActionMenu
+            blockId={blockId}
             onDelete={onDeleteBlock}
             onInsertAbove={onInsertAbove}
             onInsertBelow={onInsertBelow}

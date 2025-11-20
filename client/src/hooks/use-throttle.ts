@@ -16,16 +16,13 @@ export const useThrottle = (delay: number) => {
         if (timeoutRef.current) {
           clearTimeout(timeoutRef.current);
         }
-        timeoutRef.current = setTimeout(
-          () => {
-            callback();
-            lastRunRef.current = Date.now();
-          },
-          delay - timeSinceLastRun
-        );
+        timeoutRef.current = setTimeout(() => {
+          callback();
+          lastRunRef.current = Date.now();
+        }, delay - timeSinceLastRun);
       }
     },
-    [delay]
+    [delay],
   );
 
   return { throttled };

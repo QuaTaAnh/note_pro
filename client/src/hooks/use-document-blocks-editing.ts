@@ -61,14 +61,14 @@ export function useDocumentBlocksEditing({
       setBlocks((prev) => {
         const block = prev.find((b) => b.id === blockId);
         if (!block || block.type === BlockType.PAGE) return prev;
-        
+
         return prev.map((b) =>
           b.id === blockId
             ? { ...b, content: { ...b.content, text: content } }
             : b,
         );
       });
-      
+
       debounced(async () => {
         await updateBlockContent(blockId, { text: content });
       });
@@ -122,11 +122,11 @@ export function useDocumentBlocksEditing({
               block.position !== (prevBlocks[idx]?.position ?? -1) ||
               block.id !== (prevBlocks[idx]?.id ?? ""),
           );
-        
+
         if (updates.length > 0) {
           updateBlocksPositionsBatch(updates);
         }
-        
+
         return newBlocks;
       });
     },

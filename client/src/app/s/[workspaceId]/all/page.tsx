@@ -59,12 +59,12 @@ export default function AllDocsPage() {
 
                 const columnCount = Math.max(
                   1,
-                  Math.floor((width + GUTTER) / (MIN_CARD_WIDTH + GUTTER))
+                  Math.floor((width + GUTTER) / (MIN_CARD_WIDTH + GUTTER)),
                 );
 
                 const totalGutters = (columnCount - 1) * GUTTER;
                 const columnWidth = Math.floor(
-                  (width - totalGutters) / columnCount
+                  (width - totalGutters) / columnCount,
                 );
 
                 const rowCount = Math.ceil(allDocs.length / columnCount);

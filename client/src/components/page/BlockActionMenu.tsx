@@ -7,14 +7,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { highlightBlock } from "@/lib/block-highlight";
 import { MoreVertical } from "lucide-react";
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import { FiDownload } from "react-icons/fi";
 import { DeleteIcon } from "../icons/DeleteIcon";
 import { InsertBlockAboveIcon } from "../icons/InsertBlockAboveIcon";
 import { InsertBlockBelowIcon } from "../icons/InsertBlockBelowIcon";
 
 interface BlockActionMenuProps {
+  blockId?: string;
   onDelete?: () => void;
   downloadUrl?: string | null;
   downloadFileName?: string | null;
@@ -23,17 +25,40 @@ interface BlockActionMenuProps {
 }
 
 export function BlockActionMenu({
+  blockId,
   onDelete,
   downloadUrl,
   downloadFileName,
   onInsertAbove,
   onInsertBelow,
 }: BlockActionMenuProps) {
+  const cleanupHighlightRef = useRef<(() => void) | null>(null);
+
   const hasActions =
     Boolean(onDelete) ||
     Boolean(downloadUrl) ||
     Boolean(onInsertAbove) ||
     Boolean(onInsertBelow);
+
+  const handleButtonClick = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+
+      if (cleanupHighlightRef.current) {
+        cleanupHighlightRef.current();
+        cleanupHighlightRef.current = null;
+      }
+
+      if (blockId) {
+        const cleanup = highlightBlock(blockId);
+        if (cleanup) {
+          cleanupHighlightRef.current = cleanup;
+        }
+      }
+    },
+    [blockId],
+  );
+
   const handleDownload = useCallback(async () => {
     if (!downloadUrl) {
       return;
@@ -72,7 +97,7 @@ export function BlockActionMenu({
           variant="ghost"
           size="icon"
           className="w-6 h-6 group-hover:opacity-100 opacity-0 transition-opacity"
-          onClick={(e) => e.stopPropagation()}
+          onClick={handleButtonClick}
         >
           <MoreVertical size={18} />
         </Button>

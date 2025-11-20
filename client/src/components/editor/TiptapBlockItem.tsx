@@ -5,6 +5,7 @@ import { BlockType } from "@/types/types";
 import { TiptapEditor } from "./TiptapEditor";
 
 interface Props {
+  blockId: string;
   value: string;
   isFocused: boolean;
   position: number;
@@ -14,7 +15,7 @@ interface Props {
   onAddBlock: (
     position: number,
     type: BlockType,
-    content?: Record<string, unknown>
+    content?: Record<string, unknown>,
   ) => Promise<void> | void;
   onSaveImmediate: () => void;
   onDeleteBlock?: () => void;
@@ -33,6 +34,7 @@ interface Props {
 
 export const TiptapBlockItem = memo(
   function TiptapBlockItem({
+    blockId,
     value,
     isFocused,
     position,
@@ -52,6 +54,7 @@ export const TiptapBlockItem = memo(
   }: Props) {
     return (
       <TiptapEditor
+        blockId={blockId}
         value={value}
         onChange={onChange}
         onFocus={onFocus}
@@ -84,5 +87,5 @@ export const TiptapBlockItem = memo(
       prevProps.task?.id === nextProps.task?.id &&
       prevProps.task?.status === nextProps.task?.status
     );
-  }
+  },
 );
