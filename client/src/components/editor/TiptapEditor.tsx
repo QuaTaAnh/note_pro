@@ -36,6 +36,7 @@ interface TiptapEditorProps {
   task?: Task | null;
   editable?: boolean;
   onToggleUploading?: (isUploading: boolean) => void;
+  onConvertToTask?: (blockId: string) => void;
   enableFileUploads?: boolean;
 }
 
@@ -62,6 +63,7 @@ export const TiptapEditor = memo(
     task = null,
     editable = true,
     onToggleUploading,
+    onConvertToTask,
     enableFileUploads = true,
     dragHandle,
   }: TiptapEditorProps & { dragHandle?: React.ReactNode }) {
@@ -90,8 +92,10 @@ export const TiptapEditor = memo(
 
     const { handleKeyDown, menus } = useSlashCommand(editor, {
       position,
+      blockId,
       onAddBlock,
       onToggleUploading,
+      onConvertToTask,
       allowFileUploads: enableFileUploads,
     });
 

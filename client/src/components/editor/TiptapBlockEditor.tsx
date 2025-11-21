@@ -28,6 +28,7 @@ export default function TiptapBlockEditor({ pageId, className = "" }: Props) {
     handleSaveImmediate,
     handleDeleteBlock,
     handleReorderBlocks,
+    handleConvertToTask,
   } = useDocumentBlocks(pageId);
 
   const { canEdit } = useDocumentPermission(pageId);
@@ -70,6 +71,7 @@ export default function TiptapBlockEditor({ pageId, className = "" }: Props) {
                   onReorder={handleReorderBlocks}
                   editable={canEdit}
                   onToggleUploading={setIsUploadingFile}
+                  onConvertToTask={handleConvertToTask}
                   totalBlocks={blocks.length}
                 />
               </TiptapWrapper>
