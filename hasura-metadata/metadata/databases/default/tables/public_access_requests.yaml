@@ -34,8 +34,11 @@ insert_permissions:
   - role: user
     permission:
       check:
-        requester_id:
-          _eq: X-Hasura-User-Id
+        _or:
+          - requester_id:
+              _eq: X-Hasura-User-Id
+          - owner_id:
+              _eq: X-Hasura-User-Id
       columns:
         - document_id
         - requester_id
