@@ -199,10 +199,60 @@ export function useBlocks() {
     }
   };
 
+  const updateBlockType = async (
+    id: string,
+    type: string,
+  ): Promise<Block | null> => {
+    try {
+      setIsLoading(true);
+      const res = await updateBlock({
+        variables: {
+          id,
+          input: {
+            type,
+            updated_at: new Date().toISOString(),
+          },
+        },
+        update: (cache, { data }) => {
+          const updatedBlock = data?.update_blocks_by_pk;
+          if (!updatedBlock) return;
+
+          cache.modify({
+            id: cache.identify({ __typename: "blocks", id }),
+            fields: {
+              type: () => updatedBlock.type,
+              updated_at: () => updatedBlock.updated_at,
+            },
+          });
+        },
+      });
+
+      const result = res.data?.update_blocks_by_pk;
+      if (!result) return null;
+
+      return {
+        id: result.id,
+        content: result.content || {},
+        position: result.position || 0,
+        parent_id: result.parent_id || undefined,
+        page_id: result.page_id || undefined,
+        type: result.type,
+        created_at: result.created_at || new Date().toISOString(),
+        updated_at: result.updated_at || new Date().toISOString(),
+        tasks: [],
+      };
+    } catch (error) {
+      return null;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return {
     createBlockWithPositionUpdate,
     updateBlockContent,
     updateBlocksPositionsBatch,
+    updateBlockType,
     removeBlock,
     isLoading,
   };

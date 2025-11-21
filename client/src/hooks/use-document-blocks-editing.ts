@@ -3,6 +3,11 @@
 import { Block, useBlocks, useDebounce } from "@/hooks";
 import { BlockType } from "@/types/types";
 import { useCallback, useEffect, useState } from "react";
+import { useCreateTaskMutation } from "@/graphql/mutations/__generated__/task.generated";
+import { TASK_STATUS } from "@/consts";
+import { useUserId } from "@/hooks/use-auth";
+import showToast from "@/lib/toast";
+import { gql } from "@apollo/client";
 
 interface UseDocumentBlocksEditingParams {
   initialBlocks: Block[];
@@ -19,15 +24,17 @@ export function useDocumentBlocksEditing({
     createBlockWithPositionUpdate,
     updateBlockContent,
     updateBlocksPositionsBatch,
+    updateBlockType,
     removeBlock,
   } = useBlocks();
   const { debounced, flush } = useDebounce(500);
+  const [createTask] = useCreateTaskMutation();
+  const userId = useUserId();
 
   const [blocks, setBlocks] = useState<Block[]>(initialBlocks);
   const [rootBlock, setRootBlock] = useState<Block | null>(initialRootBlock);
   const [focusedBlock, setFocusedBlock] = useState<string | null>(null);
 
-  // Sync incoming data from server when it changes
   useEffect(() => {
     setBlocks(initialBlocks);
   }, [initialBlocks]);
@@ -133,6 +140,80 @@ export function useDocumentBlocksEditing({
     [updateBlocksPositionsBatch],
   );
 
+  const handleConvertToTask = useCallback(
+    async (blockId: string) => {
+      if (!userId) {
+        return;
+      }
+
+      flush();
+
+      try {
+        const updatedBlock = await updateBlockType(blockId, BlockType.TASK);
+        if (!updatedBlock) {
+          return;
+        }
+
+        const taskResult = await createTask({
+          variables: {
+            input: {
+              block_id: blockId,
+              user_id: userId,
+              status: TASK_STATUS.TODO,
+            },
+          },
+          update: (cache, { data }) => {
+            if (!data?.insert_tasks_one) return;
+
+            // Update the block in cache to include the new task
+            cache.modify({
+              id: cache.identify({ __typename: "blocks", id: blockId }),
+              fields: {
+                tasks(existingTasks = []) {
+                  const newTaskRef = cache.writeFragment({
+                    data: data.insert_tasks_one,
+                    fragment: gql`
+                      fragment NewTask on tasks {
+                        id
+                        status
+                        deadline_date
+                        schedule_date
+                        priority
+                        user_id
+                        block_id
+                      }
+                    `,
+                  });
+                  return [...existingTasks, newTaskRef];
+                },
+                type() {
+                  return BlockType.TASK;
+                },
+              },
+            });
+          },
+        });
+
+        if (taskResult.data?.insert_tasks_one) {
+          setBlocks((prev) =>
+            prev.map((b) =>
+              b.id === blockId
+                ? {
+                    ...b,
+                    type: BlockType.TASK,
+                    tasks: [taskResult.data!.insert_tasks_one!],
+                  }
+                : b,
+            ),
+          );
+        } 
+      } catch (error) {
+        console.error("Failed to convert block to task:", error);
+      }
+    },
+    [updateBlockType, createTask, userId, flush],
+  );
+
   return {
     blocks,
     rootBlock,
@@ -145,5 +226,6 @@ export function useDocumentBlocksEditing({
     handleSaveImmediate,
     handleDeleteBlock,
     handleReorderBlocks,
+    handleConvertToTask,
   };
 }
