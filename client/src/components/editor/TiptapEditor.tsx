@@ -17,13 +17,16 @@ interface TiptapEditorProps {
   onFocus?: () => void;
   onBlur?: () => void;
   onKeyDown?: (e: React.KeyboardEvent) => void;
-  placeholder?: string;
   className?: string;
   editorClassName?: string;
   showBubbleMenu?: boolean;
   isFocused?: boolean;
   position?: number;
-  onAddBlock?: (position: number, type: BlockType) => void;
+  onAddBlock?: (
+    position: number,
+    type: BlockType,
+    content?: Record<string, unknown>
+  ) => void;
   onSaveImmediate?: () => void;
   onDeleteBlock?: () => void;
   onInsertAbove?: () => void;
@@ -44,7 +47,6 @@ export const TiptapEditor = memo(
     onFocus,
     onBlur,
     onKeyDown,
-    placeholder = "",
     className = "",
     editorClassName = "",
     showBubbleMenu = false,
@@ -75,7 +77,6 @@ export const TiptapEditor = memo(
     });
 
     const editorConfig = useEditorConfig({
-      placeholder,
       editable,
       position,
       ...refs,
@@ -175,7 +176,6 @@ export const TiptapEditor = memo(
       );
     }
 
-    // Block editor (full layout with task, drag handle, etc.)
     return (
       <EditorContainer
         blockId={blockId || ""}
@@ -205,5 +205,5 @@ export const TiptapEditor = memo(
       prevProps.task?.status === nextProps.task?.status &&
       prevProps.task?.id === nextProps.task?.id
     );
-  },
+  }
 );

@@ -10,7 +10,7 @@ import showToast from "@/lib/toast";
 import type { Reference } from "@apollo/client";
 import React from "react";
 import { CgMoreO } from "react-icons/cg";
-import { DeleteIcon } from "../icons/DeleteIcon";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 interface Props {
   documentId: string;
@@ -37,7 +37,7 @@ export const DocumentMoreMenu = ({ documentId }: Props) => {
             fields: {
               blocks(existingRefs: readonly Reference[] = [], { readField }) {
                 return existingRefs.filter(
-                  (ref) => readField("id", ref) !== documentId,
+                  (ref) => readField("id", ref) !== documentId
                 );
               },
               blocks_aggregate(existingAgg) {
@@ -84,7 +84,7 @@ export const DocumentMoreMenu = ({ documentId }: Props) => {
           className="flex items-center gap-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-950 focus:bg-red-100 dark:focus:bg-red-900 focus:text-red-700 dark:focus:text-red-300"
           onClick={handleDeleteDocument}
         >
-          <DeleteIcon />
+          <RiDeleteBin6Line size={16} />
           Delete
         </DropdownMenuItem>
       </DropdownMenuContent>

@@ -11,9 +11,9 @@ import { highlightBlock } from "@/lib/block-highlight";
 import { MoreVertical } from "lucide-react";
 import { useCallback, useRef } from "react";
 import { FiDownload } from "react-icons/fi";
-import { DeleteIcon } from "../icons/DeleteIcon";
 import { InsertBlockAboveIcon } from "../icons/InsertBlockAboveIcon";
 import { InsertBlockBelowIcon } from "../icons/InsertBlockBelowIcon";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 interface BlockActionMenuProps {
   blockId?: string;
@@ -56,7 +56,7 @@ export function BlockActionMenu({
         }
       }
     },
-    [blockId],
+    [blockId]
   );
 
   const handleDownload = useCallback(async () => {
@@ -126,7 +126,7 @@ export function BlockActionMenu({
             className="flex items-center gap-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-950 focus:bg-red-100 dark:focus:bg-red-900 focus:text-red-700 dark:focus:text-red-300"
             onClick={onDelete}
           >
-            <DeleteIcon />
+            <RiDeleteBin6Line size={16} />
             Delete
           </DropdownMenuItem>
         )}

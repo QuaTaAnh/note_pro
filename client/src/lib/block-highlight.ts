@@ -11,7 +11,9 @@ export const highlightBlock = (blockId: string): (() => void) | null => {
   }
 
   const container = el.querySelector<HTMLElement>("[data-editor-container]");
-  if (!container) return null;
+  if (!container) {
+    return null;
+  } 
 
   const rect = el.getBoundingClientRect();
   const isInViewport =
@@ -23,22 +25,24 @@ export const highlightBlock = (blockId: string): (() => void) | null => {
     el.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }
 
-  const highlightClasses = [
-    "!border-[hsl(var(--button-primary))]",
-    "!bg-[hsl(var(--button-primary))]/10",
-  ];
-  container.classList.add(...highlightClasses);
+  const originalBorder = container.style.border;
+    const originalBackground = container.style.background;
+    
+    container.style.border = "1px solid hsl(var(--button-primary))";
+    container.style.background = "hsl(var(--button-primary) / 0.1)";
 
-  const handleClickOutside = (event: MouseEvent) => {
-    if (!el.contains(event.target as Node)) {
-      cleanup();
-    }
-  };
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!el.contains(event.target as Node)) {
+        cleanup();
+      }
+    };
 
-  const cleanup = () => {
-    container.classList.remove(...highlightClasses);
-    document.removeEventListener("click", handleClickOutside);
-  };
+    const cleanup = () => {
+      container.style.border = originalBorder;
+      container.style.background = originalBackground;
+      document.removeEventListener("click", handleClickOutside);
+    };
+
 
   setTimeout(() => {
     document.addEventListener("click", handleClickOutside);
