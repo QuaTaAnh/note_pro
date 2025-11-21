@@ -121,7 +121,7 @@ export function ImageModal({
           <div className="flex items-center gap-2">
             <button
               onClick={handleDownload}
-              className="rounded-md border border-white/20 bg-black/50 p-2 text-white transition-colors hover:bg-black/70 hover:border-white/40 focus:outline-none focus:ring-2 focus:ring-white"
+              className="rounded-lg border border-white/20 bg-black/50 p-1 text-white transition-colors hover:bg-black/70 hover:border-white/40 focus:outline-none"
               aria-label="Download image"
               title="Download"
             >
@@ -130,7 +130,7 @@ export function ImageModal({
             <button
               onClick={handleZoomOut}
               disabled={zoom <= 0.5}
-              className="rounded-md border border-white/20 bg-black/50 p-2 text-white transition-colors hover:bg-black/70 hover:border-white/40 focus:outline-none focus:ring-2 focus:ring-white disabled:opacity-50 disabled:cursor-not-allowed"
+              className="rounded-lg border border-white/20 bg-black/50 p-1 text-white transition-colors hover:bg-black/70 hover:border-white/40 focus:outline-none  disabled:opacity-50 disabled:cursor-not-allowed"
               aria-label="Zoom out"
               title="Zoom out"
             >
@@ -138,7 +138,7 @@ export function ImageModal({
             </button>
             <button
               onClick={handleZoomReset}
-              className="rounded-md border border-white/20 bg-black/50 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-black/70 hover:border-white/40 focus:outline-none focus:ring-2 focus:ring-white"
+              className="rounded-lg border border-white/20 bg-black/50 px-2 py-1 text-sm font-medium text-white transition-colors hover:bg-black/70 hover:border-white/40 focus:outline-none "
               aria-label="Reset zoom"
               title="Reset zoom"
             >
@@ -147,7 +147,7 @@ export function ImageModal({
             <button
               onClick={handleZoomIn}
               disabled={zoom >= 3}
-              className="rounded-md border border-white/20 bg-black/50 p-2 text-white transition-colors hover:bg-black/70 hover:border-white/40 focus:outline-none focus:ring-2 focus:ring-white disabled:opacity-50 disabled:cursor-not-allowed"
+              className="rounded-lg border border-white/20 bg-black/50 p-1 text-white transition-colors hover:bg-black/70 hover:border-white/40 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
               aria-label="Zoom in"
               title="Zoom in"
             >
@@ -155,7 +155,7 @@ export function ImageModal({
             </button>
             <button
               onClick={handleFullscreen}
-              className="rounded-md border border-white/20 bg-black/50 p-2 text-white transition-colors hover:bg-black/70 hover:border-white/40 focus:outline-none focus:ring-2 focus:ring-white"
+              className="rounded-lg border border-white/20 bg-black/50 p-1 text-white transition-colors hover:bg-black/70 hover:border-white/40 focus:outline-none"
               aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
               title={isFullscreen ? "Exit fullscreen" : "Fullscreen"}
             >
@@ -165,9 +165,9 @@ export function ImageModal({
 
           <button
             onClick={onClose}
-            className="rounded-md border border-white/20 bg-black/50 p-2 text-white transition-colors hover:bg-black/70 hover:border-white/40 focus:outline-none focus:ring-2 focus:ring-white"
+            className="rounded-lg border border-white/20 bg-black/50 p-1 text-white transition-colors hover:bg-black/70 hover:border-white/40 focus:outline-none"
             aria-label="Close modal"
-            title="Close (ESC)"
+            title="Close"
           >
             <X size={24} />
           </button>

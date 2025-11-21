@@ -10,7 +10,6 @@ interface Props {
   onKeyDown?: (e: React.KeyboardEvent) => void;
   onBlur?: () => void;
   className?: string;
-  placeholder?: string;
   editable?: boolean;
 }
 
@@ -22,7 +21,6 @@ export const DocumentTitleInput = memo(
     value,
     onChange,
     className,
-    placeholder = "Untitled",
     editable = true,
   }: Props) {
     return (
@@ -33,7 +31,6 @@ export const DocumentTitleInput = memo(
         onKeyDown={onKeyDown}
         onBlur={onBlur}
         className={className}
-        placeholder={placeholder}
         editorClassName="prose prose-sm max-w-none focus:outline-none text-xl font-bold break-words"
         isTitle={true}
         showBubbleMenu={true}
@@ -45,8 +42,7 @@ export const DocumentTitleInput = memo(
   (prevProps, nextProps) => {
     return (
       prevProps.value === nextProps.value &&
-      prevProps.editable === nextProps.editable &&
-      prevProps.placeholder === nextProps.placeholder
+      prevProps.editable === nextProps.editable
     );
-  },
+  }
 );

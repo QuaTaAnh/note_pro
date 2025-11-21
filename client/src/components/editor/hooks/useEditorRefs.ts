@@ -6,7 +6,7 @@ interface UseEditorRefsProps {
   onFocus?: () => void;
   onBlur?: () => void;
   onSaveImmediate?: () => void;
-  onAddBlock?: (position: number, type: BlockType) => void;
+  onAddBlock?: (position: number, type: BlockType, content?: Record<string, unknown>) => void;
 }
 
 export function useEditorRefs({

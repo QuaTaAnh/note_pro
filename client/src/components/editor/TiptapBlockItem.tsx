@@ -15,7 +15,7 @@ interface Props {
   onAddBlock: (
     position: number,
     type: BlockType,
-    content?: Record<string, unknown>,
+    content?: Record<string, unknown>
   ) => Promise<void> | void;
   onSaveImmediate: () => void;
   onDeleteBlock?: () => void;
@@ -66,7 +66,6 @@ export const TiptapBlockItem = memo(
         onInsertBelow={onInsertBelow}
         isFocused={isFocused}
         position={position}
-        placeholder='Type "/" for commands'
         editorClassName="prose prose-sm max-w-none focus:outline-none text-base break-words text-sm leading-relaxed"
         showBubbleMenu={true}
         dragHandle={dragHandle}
@@ -87,5 +86,5 @@ export const TiptapBlockItem = memo(
       prevProps.task?.id === nextProps.task?.id &&
       prevProps.task?.status === nextProps.task?.status
     );
-  },
+  }
 );

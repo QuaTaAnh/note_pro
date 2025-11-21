@@ -46,18 +46,17 @@ export default function TiptapBlockEditor({ pageId, className = "" }: Props) {
         <div className="mx-auto max-w-full rounded-xl border border-border/60 bg-card shadow-xl">
           <div className="h-[calc(100vh-100px)] overflow-y-auto rounded-xl">
             <div className="mx-auto max-w-2xl py-16">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex-1">
+              <div className="flex items-center justify-between">
+                <div className="flex-1 px-6">
                   <DocumentTitleInput
                     value={rootBlock.content?.title || ""}
                     onChange={handleUpdateTitle}
-                    placeholder="Page Title"
                     editable={canEdit}
                   />
                 </div>
                 <RequestEditButton documentId={pageId} />
               </div>
-              <Separator className="my-6" />
+              <Separator className="my-4" />
               <TiptapWrapper>
                 <BlockList
                   blocks={blocks}
