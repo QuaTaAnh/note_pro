@@ -45,17 +45,16 @@ export function RequestEditButton({ documentId }: { documentId: string }) {
   const hasApprovedReadAccess = accessRequests.some(
     (req) =>
       req.status === AccessRequestStatus.APPROVED &&
-      req.permission_type === PermissionType.READ,
+      req.permission_type === PermissionType.READ
   );
 
   const hasWriteRequest = accessRequests.some(
     (req) =>
       req.permission_type === PermissionType.WRITE &&
       (req.status === AccessRequestStatus.PENDING ||
-        req.status === AccessRequestStatus.APPROVED),
+        req.status === AccessRequestStatus.APPROVED)
   );
 
-  // Don't show button while loading data
   if (accessRequestLoading || documentLoading) {
     return null;
   }
@@ -68,7 +67,7 @@ export function RequestEditButton({ documentId }: { documentId: string }) {
     if (!userId || !documentData?.blocks || isRequesting) return;
 
     const rootBlock = documentData.blocks.find(
-      (block) => block.id === documentId && block.type === BlockType.PAGE,
+      (block) => block.id === documentId && block.type === BlockType.PAGE
     );
 
     if (!rootBlock || !rootBlock.user_id) {
@@ -136,12 +135,11 @@ export function RequestEditButton({ documentId }: { documentId: string }) {
     <Button
       variant="outline"
       size="sm"
-      className="gap-2"
+      className="gap-2 rounded-xl"
       onClick={handleRequestEdit}
       disabled={isRequesting}
     >
-      <FiEdit className="h-4 w-4" />
-      {isRequesting ? "Requesting..." : "Request Edit Access"}
+      {isRequesting ? "Request Sent" : "Ask to Edit"}
     </Button>
   );
 }

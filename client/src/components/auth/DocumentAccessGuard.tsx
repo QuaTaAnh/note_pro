@@ -22,7 +22,7 @@ export function DocumentAccessGuard({
   const { isAuthenticated } = useAuth();
   const userId = useUserId();
   const { workspace } = useWorkspace();
-  const { setHasAccess } = useDocumentAccess();
+  const { setHasAccess, setDocumentId } = useDocumentAccess();
 
   const { data, loading, error } = useGetDocumentBlocksQuery({
     variables: { pageId: documentId },
@@ -33,7 +33,7 @@ export function DocumentAccessGuard({
 
   const rootBlock = useMemo(() => {
     return data?.blocks?.find(
-      (block) => block.id === documentId && block.type === BlockType.PAGE,
+      (block) => block.id === documentId && block.type === BlockType.PAGE
     );
   }, [data?.blocks, documentId]);
 
@@ -72,13 +72,13 @@ export function DocumentAccessGuard({
     const accessRequests = accessRequestData?.access_requests || [];
 
     const hasApprovedAccess = accessRequests.some(
-      (req) => req.status === AccessRequestStatus.APPROVED,
+      (req) => req.status === AccessRequestStatus.APPROVED
     );
 
     const hasPendingWriteRequest = accessRequests.some(
       (req) =>
         req.status === AccessRequestStatus.PENDING &&
-        req.permission_type === PermissionType.WRITE,
+        req.permission_type === PermissionType.WRITE
     );
 
     if (hasApprovedAccess || hasPendingWriteRequest) {
@@ -89,7 +89,6 @@ export function DocumentAccessGuard({
   }, [
     data?.blocks,
     workspace?.id,
-    documentId,
     isAuthenticated,
     error,
     accessRequestData,
@@ -99,7 +98,8 @@ export function DocumentAccessGuard({
 
   useEffect(() => {
     setHasAccess(hasAccess);
-  }, [hasAccess, setHasAccess]);
+    setDocumentId(documentId);
+  }, [hasAccess, setHasAccess, documentId, setDocumentId]);
 
   if (loading || accessRequestLoading) {
     return (

@@ -1,15 +1,18 @@
 "use client";
 
+import { SearchInputField } from "@/components/search";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { HEADER_HEIGHT } from "@/consts";
+import { useDocumentAccess } from "@/context/DocumentAccessContext";
 import { useSidebar } from "@/context/SidebarContext";
 import { ROUTES } from "@/lib/routes";
 import Image from "next/image";
 import Link from "next/link";
 import { MdOutlineViewSidebar } from "react-icons/md";
 import { NotificationButton } from "./components/NotificationButton";
+import { RequestEditButton } from "./components/RequestEditButton";
 import { SettingButton } from "./components/SettingButton";
-import { SearchInputField } from "@/components/search";
+import { ShareExportButton } from "./components/ShareExportButton";
 
 interface Props {
   workspaceSlug: string;
@@ -18,6 +21,7 @@ interface Props {
 
 export default function Header({ workspaceSlug, isEditorPage }: Props) {
   const { toggle, toggleRight } = useSidebar();
+  const { documentId } = useDocumentAccess();
 
   return (
     workspaceSlug && (
@@ -44,6 +48,12 @@ export default function Header({ workspaceSlug, isEditorPage }: Props) {
           <SearchInputField placeholder="Search..." className="h-8" />
         </div>
         <div className="flex items-center gap-2">
+          {isEditorPage && documentId && (
+            <>
+              <RequestEditButton documentId={documentId} />
+              <ShareExportButton documentId={documentId} />
+            </>
+          )}
           <ThemeToggle />
           <NotificationButton />
           <SettingButton />

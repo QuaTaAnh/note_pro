@@ -6,7 +6,6 @@ import { PageLoading } from "../ui/loading";
 import { DocumentTitleInput } from "@/components/page/DocumentTitleInput";
 import { BlockList } from "@/components/page/BlockList";
 import { Separator } from "../ui/separator";
-import { RequestEditButton } from "@/components/Layout/components/RequestEditButton";
 import { useState } from "react";
 
 interface Props {
@@ -55,7 +54,6 @@ export default function TiptapBlockEditor({ pageId, className = "" }: Props) {
                     editable={canEdit}
                   />
                 </div>
-                <RequestEditButton documentId={pageId} />
               </div>
               <Separator className="my-4" />
               <TiptapWrapper>

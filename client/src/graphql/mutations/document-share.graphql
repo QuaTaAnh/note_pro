@@ -1,0 +1,72 @@
+mutation ShareDocumentWithUser(
+  $documentId: uuid!
+  $userId: uuid!
+  $ownerId: uuid!
+  $permissionType: String!
+) {
+  insert_access_requests_one(
+    object: {
+      document_id: $documentId
+      requester_id: $userId
+      owner_id: $ownerId
+      status: "approved"
+      permission_type: $permissionType
+    }
+    on_conflict: {
+      constraint: access_requests_document_id_requester_id_key
+      update_columns: [permission_type, status, updated_at]
+    }
+  ) {
+    id
+    document_id
+    requester_id
+    owner_id
+    status
+    permission_type
+    created_at
+    updated_at
+  }
+}
+
+mutation RemoveDocumentAccess($documentId: uuid!, $userId: uuid!) {
+  delete_access_requests(
+    where: { document_id: { _eq: $documentId }, requester_id: { _eq: $userId } }
+  ) {
+    affected_rows
+  }
+}
+
+mutation UpdateDocumentPermission(
+  $documentId: uuid!
+  $userId: uuid!
+  $permissionType: String!
+) {
+  update_access_requests(
+    where: { document_id: { _eq: $documentId }, requester_id: { _eq: $userId } }
+    _set: { permission_type: $permissionType, updated_at: "now()" }
+  ) {
+    affected_rows
+    returning {
+      id
+      permission_type
+      updated_at
+    }
+  }
+}
+
+query GetDocumentSharedUsers($documentId: uuid!) {
+  access_requests(
+    where: { document_id: { _eq: $documentId }, status: { _eq: "approved" } }
+  ) {
+    id
+    requester_id
+    permission_type
+    created_at
+    requester {
+      id
+      email
+      name
+      avatar_url
+    }
+  }
+}

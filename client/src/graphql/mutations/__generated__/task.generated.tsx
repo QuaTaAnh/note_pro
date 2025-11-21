@@ -1,77 +1,47 @@
-import * as Types from "generated/graphql";
+import * as Types from 'generated/graphql';
 
-import { gql } from "@apollo/client";
-import * as Apollo from "@apollo/client";
-const defaultOptions = { ignoreResults: true } as const;
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
+const defaultOptions = {"ignoreResults":true} as const;
 export type CreateTaskMutationVariables = Types.Exact<{
   input: Types.TasksInsertInput;
 }>;
 
-export type CreateTaskMutation = {
-  __typename?: "mutation_root";
-  insert_tasks_one?: {
-    __typename?: "tasks";
-    id: string;
-    block_id?: string | null;
-    user_id?: string | null;
-    status?: string | null;
-    deadline_date?: string | null;
-    schedule_date?: string | null;
-    priority?: string | null;
-    created_at?: string | null;
-    updated_at?: string | null;
-  } | null;
-};
+
+export type CreateTaskMutation = { __typename?: 'mutation_root', insert_tasks_one?: { __typename?: 'tasks', id: string, block_id?: string | null, user_id?: string | null, status?: string | null, deadline_date?: string | null, schedule_date?: string | null, priority?: string | null, created_at?: string | null, updated_at?: string | null } | null };
 
 export type UpdateTaskMutationVariables = Types.Exact<{
-  id: Types.Scalars["uuid"]["input"];
+  id: Types.Scalars['uuid']['input'];
   input: Types.TasksSetInput;
 }>;
 
-export type UpdateTaskMutation = {
-  __typename?: "mutation_root";
-  update_tasks_by_pk?: {
-    __typename?: "tasks";
-    id: string;
-    block_id?: string | null;
-    user_id?: string | null;
-    status?: string | null;
-    deadline_date?: string | null;
-    schedule_date?: string | null;
-    priority?: string | null;
-    created_at?: string | null;
-    updated_at?: string | null;
-  } | null;
-};
+
+export type UpdateTaskMutation = { __typename?: 'mutation_root', update_tasks_by_pk?: { __typename?: 'tasks', id: string, block_id?: string | null, user_id?: string | null, status?: string | null, deadline_date?: string | null, schedule_date?: string | null, priority?: string | null, created_at?: string | null, updated_at?: string | null } | null };
 
 export type DeleteTaskMutationVariables = Types.Exact<{
-  id: Types.Scalars["uuid"]["input"];
+  id: Types.Scalars['uuid']['input'];
 }>;
 
-export type DeleteTaskMutation = {
-  __typename?: "mutation_root";
-  delete_tasks_by_pk?: { __typename?: "tasks"; id: string } | null;
-};
+
+export type DeleteTaskMutation = { __typename?: 'mutation_root', delete_tasks_by_pk?: { __typename?: 'tasks', id: string } | null };
+
 
 export const CreateTaskDocument = gql`
-  mutation CreateTask($input: tasks_insert_input!) {
-    insert_tasks_one(object: $input) {
-      id
-      block_id
-      user_id
-      status
-      deadline_date
-      schedule_date
-      priority
-      created_at
-      updated_at
-    }
+    mutation CreateTask($input: tasks_insert_input!) {
+  insert_tasks_one(object: $input) {
+    id
+    block_id
+    user_id
+    status
+    deadline_date
+    schedule_date
+    priority
+    created_at
+    updated_at
   }
-`;
-export type CreateTaskMutationFn = Apollo.MutationFunction<
-  CreateTaskMutation,
-  CreateTaskMutationVariables
->;
+}
+    `;
+export type CreateTaskMutationFn = Apollo.MutationFunction<CreateTaskMutation, CreateTaskMutationVariables>;
 
 /**
  * __useCreateTaskMutation__
@@ -90,46 +60,29 @@ export type CreateTaskMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useCreateTaskMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    CreateTaskMutation,
-    CreateTaskMutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<CreateTaskMutation, CreateTaskMutationVariables>(
-    CreateTaskDocument,
-    options,
-  );
-}
-export type CreateTaskMutationHookResult = ReturnType<
-  typeof useCreateTaskMutation
->;
-export type CreateTaskMutationResult =
-  Apollo.MutationResult<CreateTaskMutation>;
-export type CreateTaskMutationOptions = Apollo.BaseMutationOptions<
-  CreateTaskMutation,
-  CreateTaskMutationVariables
->;
+export function useCreateTaskMutation(baseOptions?: Apollo.MutationHookOptions<CreateTaskMutation, CreateTaskMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateTaskMutation, CreateTaskMutationVariables>(CreateTaskDocument, options);
+      }
+export type CreateTaskMutationHookResult = ReturnType<typeof useCreateTaskMutation>;
+export type CreateTaskMutationResult = Apollo.MutationResult<CreateTaskMutation>;
+export type CreateTaskMutationOptions = Apollo.BaseMutationOptions<CreateTaskMutation, CreateTaskMutationVariables>;
 export const UpdateTaskDocument = gql`
-  mutation UpdateTask($id: uuid!, $input: tasks_set_input!) {
-    update_tasks_by_pk(pk_columns: { id: $id }, _set: $input) {
-      id
-      block_id
-      user_id
-      status
-      deadline_date
-      schedule_date
-      priority
-      created_at
-      updated_at
-    }
+    mutation UpdateTask($id: uuid!, $input: tasks_set_input!) {
+  update_tasks_by_pk(pk_columns: {id: $id}, _set: $input) {
+    id
+    block_id
+    user_id
+    status
+    deadline_date
+    schedule_date
+    priority
+    created_at
+    updated_at
   }
-`;
-export type UpdateTaskMutationFn = Apollo.MutationFunction<
-  UpdateTaskMutation,
-  UpdateTaskMutationVariables
->;
+}
+    `;
+export type UpdateTaskMutationFn = Apollo.MutationFunction<UpdateTaskMutation, UpdateTaskMutationVariables>;
 
 /**
  * __useUpdateTaskMutation__
@@ -149,38 +102,21 @@ export type UpdateTaskMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useUpdateTaskMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    UpdateTaskMutation,
-    UpdateTaskMutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<UpdateTaskMutation, UpdateTaskMutationVariables>(
-    UpdateTaskDocument,
-    options,
-  );
-}
-export type UpdateTaskMutationHookResult = ReturnType<
-  typeof useUpdateTaskMutation
->;
-export type UpdateTaskMutationResult =
-  Apollo.MutationResult<UpdateTaskMutation>;
-export type UpdateTaskMutationOptions = Apollo.BaseMutationOptions<
-  UpdateTaskMutation,
-  UpdateTaskMutationVariables
->;
+export function useUpdateTaskMutation(baseOptions?: Apollo.MutationHookOptions<UpdateTaskMutation, UpdateTaskMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateTaskMutation, UpdateTaskMutationVariables>(UpdateTaskDocument, options);
+      }
+export type UpdateTaskMutationHookResult = ReturnType<typeof useUpdateTaskMutation>;
+export type UpdateTaskMutationResult = Apollo.MutationResult<UpdateTaskMutation>;
+export type UpdateTaskMutationOptions = Apollo.BaseMutationOptions<UpdateTaskMutation, UpdateTaskMutationVariables>;
 export const DeleteTaskDocument = gql`
-  mutation DeleteTask($id: uuid!) {
-    delete_tasks_by_pk(id: $id) {
-      id
-    }
+    mutation DeleteTask($id: uuid!) {
+  delete_tasks_by_pk(id: $id) {
+    id
   }
-`;
-export type DeleteTaskMutationFn = Apollo.MutationFunction<
-  DeleteTaskMutation,
-  DeleteTaskMutationVariables
->;
+}
+    `;
+export type DeleteTaskMutationFn = Apollo.MutationFunction<DeleteTaskMutation, DeleteTaskMutationVariables>;
 
 /**
  * __useDeleteTaskMutation__
@@ -199,24 +135,10 @@ export type DeleteTaskMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useDeleteTaskMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    DeleteTaskMutation,
-    DeleteTaskMutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<DeleteTaskMutation, DeleteTaskMutationVariables>(
-    DeleteTaskDocument,
-    options,
-  );
-}
-export type DeleteTaskMutationHookResult = ReturnType<
-  typeof useDeleteTaskMutation
->;
-export type DeleteTaskMutationResult =
-  Apollo.MutationResult<DeleteTaskMutation>;
-export type DeleteTaskMutationOptions = Apollo.BaseMutationOptions<
-  DeleteTaskMutation,
-  DeleteTaskMutationVariables
->;
+export function useDeleteTaskMutation(baseOptions?: Apollo.MutationHookOptions<DeleteTaskMutation, DeleteTaskMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteTaskMutation, DeleteTaskMutationVariables>(DeleteTaskDocument, options);
+      }
+export type DeleteTaskMutationHookResult = ReturnType<typeof useDeleteTaskMutation>;
+export type DeleteTaskMutationResult = Apollo.MutationResult<DeleteTaskMutation>;
+export type DeleteTaskMutationOptions = Apollo.BaseMutationOptions<DeleteTaskMutation, DeleteTaskMutationVariables>;
