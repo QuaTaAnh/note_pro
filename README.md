@@ -19,7 +19,7 @@
 
 ---
 
-## 🎥 Demo
+## 🎥 Demo (There are still a few incomplete features and some bugs. I’ll continue developing and updating them. Thanks!)
 
 <!-- Upload your demo video here -->
 
