@@ -448,8 +448,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Your Name**
 
-- GitHub: [@yourusername](https://github.com/yourusername)
-- Email: your.email@example.com
+- GitHub: [QuaTaAnh](https://github.com/QuaTaAnh)
+- Email: letrannhatanh171@gmail.com
 
 ---
 
@@ -462,6 +462,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 <div align="center">
-  <p>Made with ❤️ and ☕</p>
+  <p>Made with me</p>
   <p>⭐ Star this repo if you find it helpful!</p>
 </div>
