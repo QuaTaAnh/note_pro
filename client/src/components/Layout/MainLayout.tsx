@@ -18,7 +18,6 @@ function LayoutMain({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
 
-  // Check if it's a global route (not under /s/ or /editor/)
   const isGlobalRoute =
     !pathname.startsWith("/s/") && !pathname.startsWith("/editor/");
 
@@ -39,7 +38,6 @@ function LayoutMain({ children }: { children: React.ReactNode }) {
   ) : (
     <AuthGuard>
       <div className={`h-screen flex flex-col overflow-hidden`}>
-        {/* Only show loading for workspace-dependent routes */}
         {loading && !isGlobalRoute ? (
           <PageLoading />
         ) : (
@@ -97,7 +95,7 @@ export default function MainLayout({
 
   const isEditorPage = useMemo(
     () => pathname.startsWith("/editor/"),
-    [pathname],
+    [pathname]
   );
 
   const { documentTitle, hasDocument } = useDocumentTitle({
