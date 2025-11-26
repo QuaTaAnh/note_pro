@@ -23,15 +23,10 @@
 
 <!-- Upload your demo video here -->
 
-> **📹 Video Demo**: Coming soon...
+> **📹 Video Demo**: 
 
-https://github.com/user-attachments/assets/your-video-id
+[Demo.webm](https://github.com/user-attachments/assets/a6d77c18-41f2-4006-8660-c2460c5c1f39)
 
-<!-- You can also add screenshots here -->
-<div align="center">
-  <img src="./docs/images/screenshot-1.png" alt="Note Pro Screenshot" width="45%" />
-  <img src="./docs/images/screenshot-2.png" alt="Note Pro Screenshot" width="45%" />
-</div>
 
 ---
 
