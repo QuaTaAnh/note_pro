@@ -76,7 +76,7 @@
 - 💨 **Optimistic updates**
 - 📦 **Code splitting**
 
-      </td>
+    
 
     </tr>
   </table>
