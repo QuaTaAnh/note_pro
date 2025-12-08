@@ -1,27 +1,27 @@
 "use client";
 
+import { TiptapBlockItem } from "@/components/editor/TiptapBlockItem";
+import { FileBlockCard } from "@/components/page/FileBlockCard";
+import { TASK_STATUS } from "@/consts";
+import { Block } from "@/hooks";
+import { BlockType } from "@/types/types";
 import {
-  DndContext,
   closestCenter,
+  DndContext,
+  DragEndEvent,
   PointerSensor,
   useSensor,
   useSensors,
-  DragEndEvent,
 } from "@dnd-kit/core";
 import {
   arrayMove,
   SortableContext,
-  verticalListSortingStrategy,
   useSortable,
+  verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { TiptapBlockItem } from "@/components/editor/TiptapBlockItem";
-import { FileBlockCard } from "@/components/page/FileBlockCard";
-import { BlockType } from "@/types/types";
-import { Block } from "@/hooks";
 import { GripVertical } from "lucide-react";
-import { TASK_STATUS } from "@/consts";
-import { useMemo, memo } from "react";
+import { memo, useMemo } from "react";
 
 interface Props {
   blocks: Block[];
@@ -40,7 +40,6 @@ interface Props {
   editable?: boolean;
   onToggleUploading?: (isUploading: boolean) => void;
   onConvertToTask?: (blockId: string) => void;
-  totalBlocks?: number;
 }
 
 const SortableBlockItem = memo(
@@ -171,6 +170,10 @@ const SortableBlockItem = memo(
     );
   },
   (prevProps, nextProps) => {
+    if (prevProps.totalBlocks !== nextProps.totalBlocks) {
+      return false;
+    }
+
     return (
       prevProps.block.id === nextProps.block.id &&
       prevProps.block.content?.text === nextProps.block.content?.text &&
@@ -178,7 +181,6 @@ const SortableBlockItem = memo(
       prevProps.block.type === nextProps.block.type &&
       prevProps.focusedBlockId === nextProps.focusedBlockId &&
       prevProps.editable === nextProps.editable &&
-      prevProps.totalBlocks === nextProps.totalBlocks &&
       prevProps.block.tasks?.[0]?.status === nextProps.block.tasks?.[0]?.status
     );
   }
@@ -197,9 +199,8 @@ export function BlockList({
   editable = true,
   onToggleUploading,
   onConvertToTask,
-  totalBlocks,
 }: Props) {
-  const blocksCount = totalBlocks ?? blocks.length;
+  const blocksCount = blocks.length;
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -250,17 +251,6 @@ export function BlockList({
               totalBlocks={blocksCount}
             />
           ))}
-
-          {blocks.length === 0 && (
-            <div className="flex justify-center py-4">
-              <button
-                onClick={() => onAddBlock(0, BlockType.PARAGRAPH)}
-                className="px-4 py-2 text-sm text-gray-500 hover:text-gray-700 border border-dashed border-gray-300 rounded-md hover:border-gray-400 transition-colors"
-              >
-                + Add content
-              </button>
-            </div>
-          )}
         </div>
       </SortableContext>
     </DndContext>

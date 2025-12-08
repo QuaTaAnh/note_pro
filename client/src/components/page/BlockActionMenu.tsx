@@ -35,10 +35,7 @@ export function BlockActionMenu({
   const cleanupHighlightRef = useRef<(() => void) | null>(null);
 
   const hasActions =
-    Boolean(onDelete) ||
-    Boolean(downloadUrl) ||
-    Boolean(onInsertAbove) ||
-    Boolean(onInsertBelow);
+    Boolean(downloadUrl) || Boolean(onInsertAbove) || Boolean(onInsertBelow);
 
   const handleButtonClick = useCallback(
     (e: React.MouseEvent) => {
