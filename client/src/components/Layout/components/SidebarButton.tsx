@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { useLoading } from "@/context/LoadingContext";
 
 export type SidebarButtonVariant = "default" | "primary" | "secondary";
 
@@ -34,6 +35,8 @@ export function SidebarButton({
   count,
   action,
 }: SidebarButtonProps) {
+  const { startLoading } = useLoading();
+
   const variantClasses = {
     default: "",
     primary: "bg-primary text-primary-foreground hover:bg-primary/90",
@@ -46,8 +49,14 @@ export function SidebarButton({
     isActive && "bg-accent text-accent-foreground",
     disabled && "opacity-50 cursor-not-allowed",
     variantClasses[variant],
-    className,
+    className
   );
+
+  const handleLinkClick = () => {
+    if (href) {
+      startLoading();
+    }
+  };
 
   const left = (
     <div className="flex items-center gap-1 min-w-0 flex-1">
@@ -91,7 +100,11 @@ export function SidebarButton({
   if (href && !onClick) {
     return (
       <div className={cn(baseClasses, "group")}>
-        <Link href={href} className="flex items-center justify-between w-full">
+        <Link
+          href={href}
+          className="flex items-center justify-between w-full"
+          onClick={handleLinkClick}
+        >
           {left}
         </Link>
         {(count !== undefined || action) && (
