@@ -1,20 +1,13 @@
 "use client";
 
-import { CellDocument } from "@/components/page/CellDocument";
+import { DocumentGrid } from "@/components/page/DocumentGrid";
 import { PageLoading } from "@/components/ui/loading";
 import { useGetSharedWithMeDocsQuery } from "@/graphql/queries/__generated__/document.generated";
 import { useUserId } from "@/hooks/use-auth";
 import { Document } from "@/types/app";
 import { useMemo } from "react";
-import AutoSizer from "react-virtualized-auto-sizer";
-import { FixedSizeGrid as Grid } from "react-window";
 import { FiUsers } from "react-icons/fi";
 import { IoShareOutline } from "react-icons/io5";
-
-const MIN_CARD_WIDTH = 240;
-const GUTTER = 40;
-const CARD_HEIGHT = 304;
-const rowHeight = CARD_HEIGHT + GUTTER;
 
 export default function SharedWithMePage() {
   const userId = useUserId();
@@ -57,41 +50,7 @@ export default function SharedWithMePage() {
             </div>
           </div>
         ) : (
-          <div className="flex-1 w-full pb-4 pl-6 overflow-hidden">
-            <AutoSizer>
-              {({ width, height }) => {
-                if (width === 0 || height === 0) return null;
-
-                const columnCount = Math.max(
-                  1,
-                  Math.floor((width + GUTTER) / (MIN_CARD_WIDTH + GUTTER))
-                );
-
-                const totalGutters = (columnCount - 1) * GUTTER;
-                const columnWidth = Math.floor(
-                  (width - totalGutters) / columnCount
-                );
-
-                const rowCount = Math.ceil(sharedDocs.length / columnCount);
-
-                return (
-                  <Grid
-                    columnCount={columnCount}
-                    columnWidth={columnWidth}
-                    height={height}
-                    rowCount={rowCount}
-                    rowHeight={rowHeight}
-                    width={width}
-                    overscanRowCount={3}
-                    style={{ overflowX: "hidden" }}
-                    itemData={{ docs: sharedDocs, columnCount, columnWidth }}
-                  >
-                    {CellDocument}
-                  </Grid>
-                );
-              }}
-            </AutoSizer>
-          </div>
+          <DocumentGrid documents={sharedDocs} />
         )}
       </div>
     </div>

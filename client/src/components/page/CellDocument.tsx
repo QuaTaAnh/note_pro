@@ -21,21 +21,19 @@ export const CellDocument = React.memo(function CellDocument({
   const itemIndex = rowIndex * columnCount + columnIndex;
   if (itemIndex >= docs.length) return null;
 
-  const doc = docs[itemIndex];
+  const document = docs[itemIndex];
+  const isLastColumn = columnIndex === columnCount - 1;
 
   return (
     <div
       style={{
         ...style,
-        left: (style.left as number) + columnIndex * 40,
-        top: (style.top as number) + rowIndex * 40,
         width: columnWidth,
         height: 304,
+        paddingRight: isLastColumn ? 24 : 24,
       }}
     >
-      <div className="mr-6">
-        <CardDocument document={doc} />
-      </div>
+      <CardDocument document={document} />
     </div>
   );
 });

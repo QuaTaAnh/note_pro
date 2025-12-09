@@ -10,12 +10,14 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useWorkspace } from "@/hooks/use-workspace";
+import { useUserId } from "@/hooks/use-auth";
 import { ROUTES } from "@/lib/routes";
 import { formatDate } from "@/lib/utils";
 import { Document } from "@/types/app";
 import { Folder } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
+import { CardDocumentPreview } from "./CardDocumentPreview";
 
 export const getPlainText = (html?: string | null) => {
   if (!html) return "";
@@ -29,12 +31,15 @@ export const getPlainText = (html?: string | null) => {
 const CardDocumentComponent = ({ document }: { document: Document }) => {
   const router = useRouter();
   const { workspace } = useWorkspace();
+  const currentUserId = useUserId();
 
   const plainTitle = getPlainText(document.content?.title) || "Untitled";
 
-  // Use workspace_id from document first (important for shared documents)
-  // Fallback to workspace from context if not available
   const workspaceId = document.workspace_id || workspace?.id;
+
+  const isOwner = useMemo(() => {
+    return document.user_id === currentUserId;
+  }, [document.user_id, currentUserId]);
 
   useEffect(() => {
     if (!workspaceId) return;
@@ -42,7 +47,7 @@ const CardDocumentComponent = ({ document }: { document: Document }) => {
       ? ROUTES.WORKSPACE_DOCUMENT_FOLDER(
           workspaceId,
           document.folder.id,
-          document.id,
+          document.id
         )
       : ROUTES.WORKSPACE_DOCUMENT(workspaceId, document.id);
     router.prefetch(href);
@@ -57,8 +62,8 @@ const CardDocumentComponent = ({ document }: { document: Document }) => {
         ROUTES.WORKSPACE_DOCUMENT_FOLDER(
           workspaceId,
           document.folder.id,
-          document.id,
-        ),
+          document.id
+        )
       );
     } else {
       router.push(ROUTES.WORKSPACE_DOCUMENT(workspaceId, document.id));
@@ -68,10 +73,10 @@ const CardDocumentComponent = ({ document }: { document: Document }) => {
   return (
     <Card
       key={document.id}
-      className="group relative cursor-pointer transition-all duration-200 min-h-[340px] w-full rounded-md border-[rgb(223,228,231)] hover:border-primary dark:border-border dark:hover:border-primary"
+      className="group relative cursor-pointer transition-all duration-200 h-[304px] w-full rounded-md border-[rgb(223,228,231)] hover:border-primary dark:border-border dark:hover:border-primary flex flex-col"
       onClick={handleClick}
     >
-      <CardHeader className="flex flex-col p-4">
+      <CardHeader className="flex flex-col p-4 flex-shrink-0">
         <div className="flex justify-between items-start gap-2">
           <div className="flex-1 min-w-0">
             <CardTitle className="text-sm truncate">{plainTitle}</CardTitle>
@@ -88,16 +93,12 @@ const CardDocumentComponent = ({ document }: { document: Document }) => {
               </span>
             </CardDescription>
           </div>
-          <DocumentMoreMenu documentId={document.id} />
+          <DocumentMoreMenu documentId={document.id} isOwner={isOwner} />
         </div>
         <Separator className="mt-2" />
       </CardHeader>
-      <CardContent className="flex flex-col px-4 truncate text-xs text-muted-foreground">
-        {document.sub_blocks.map((block) => (
-          <p key={block.id} className="truncate">
-            {getPlainText(block.content?.text) || ""}
-          </p>
-        ))}
+      <CardContent className="px-4 pb-4 flex-1 overflow-hidden">
+        <CardDocumentPreview blocks={document.sub_blocks} />
       </CardContent>
     </Card>
   );

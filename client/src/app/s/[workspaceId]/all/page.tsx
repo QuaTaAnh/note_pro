@@ -1,6 +1,6 @@
 "use client";
 
-import { CellDocument } from "@/components/page/CellDocument";
+import { DocumentGrid } from "@/components/page/DocumentGrid";
 import { Button } from "@/components/ui/button";
 import { PageLoading } from "@/components/ui/loading";
 import { useGetAllDocsQuery } from "@/graphql/queries/__generated__/document.generated";
@@ -8,13 +8,6 @@ import { useCreateDocument, useWorkspace } from "@/hooks";
 import { Document } from "@/types/app";
 import { useMemo } from "react";
 import { FiFilePlus } from "react-icons/fi";
-import AutoSizer from "react-virtualized-auto-sizer";
-import { FixedSizeGrid as Grid } from "react-window";
-
-const MIN_CARD_WIDTH = 240;
-const GUTTER = 40;
-const CARD_HEIGHT = 304;
-const rowHeight = CARD_HEIGHT + GUTTER;
 
 export default function AllDocsPage() {
   const { workspace } = useWorkspace();
@@ -51,41 +44,7 @@ export default function AllDocsPage() {
             You have no documents yet
           </div>
         ) : (
-          <div className="flex-1 w-full pb-4 pl-6 overflow-hidden">
-            <AutoSizer>
-              {({ width, height }) => {
-                if (width === 0 || height === 0) return null;
-
-                const columnCount = Math.max(
-                  1,
-                  Math.floor((width + GUTTER) / (MIN_CARD_WIDTH + GUTTER))
-                );
-
-                const totalGutters = (columnCount - 1) * GUTTER;
-                const columnWidth = Math.floor(
-                  (width - totalGutters) / columnCount
-                );
-
-                const rowCount = Math.ceil(allDocs.length / columnCount);
-
-                return (
-                  <Grid
-                    columnCount={columnCount}
-                    columnWidth={columnWidth}
-                    height={height}
-                    rowCount={rowCount}
-                    rowHeight={rowHeight}
-                    width={width}
-                    overscanRowCount={3}
-                    style={{ overflowX: "hidden" }}
-                    itemData={{ docs: allDocs, columnCount, columnWidth }}
-                  >
-                    {CellDocument}
-                  </Grid>
-                );
-              }}
-            </AutoSizer>
-          </div>
+          <DocumentGrid documents={allDocs} />
         )}
       </div>
     </div>
