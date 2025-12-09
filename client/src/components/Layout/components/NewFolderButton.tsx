@@ -43,7 +43,7 @@ export const NewFolderButton = () => {
 
   const handleInputChange = (
     field: keyof FolderData,
-    value: string | React.ComponentType<unknown>
+    value: string | React.ComponentType<unknown>,
   ) => {
     setFolderData((prev) => ({
       ...prev,

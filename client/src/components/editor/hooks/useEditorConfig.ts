@@ -42,7 +42,7 @@ export function useEditorConfig({
   prevValueRef,
 }: UseEditorConfigProps) {
   const isComposingRef = useRef(false);
-  
+
   return useMemo(
     () => ({
       extensions: [
@@ -62,24 +62,24 @@ export function useEditorConfig({
           },
           blockquote: {
             HTMLAttributes: {
-              class: 'border-l-4 border-gray-300 pl-4 italic',
+              class: "border-l-4 border-gray-300 pl-4 italic",
             },
           },
           codeBlock: {
             HTMLAttributes: {
-              class: 'bg-gray-100 rounded p-2 font-mono text-sm',
+              class: "bg-gray-100 rounded p-2 font-mono text-sm",
             },
           },
         }),
         Markdown.configure({
-          html: true,                 // Allow HTML in markdown
-          tightLists: true,           // Tight list spacing
-          tightListClass: 'tight',    // Class for tight lists
-          bulletListMarker: '-',      // Bullet list marker
-          linkify: true,              // Auto-convert URLs to links
-          breaks: false,              // Don't convert \n to <br>
-          transformPastedText: true,  // Transform pasted markdown
-          transformCopiedText: true,  // Transform copied markdown
+          html: true, // Allow HTML in markdown
+          tightLists: true, // Tight list spacing
+          tightListClass: "tight", // Class for tight lists
+          bulletListMarker: "-", // Bullet list marker
+          linkify: true, // Auto-convert URLs to links
+          breaks: false, // Don't convert \n to <br>
+          transformPastedText: true, // Transform pasted markdown
+          transformCopiedText: true, // Transform copied markdown
         }),
         CustomCode,
         Underline,

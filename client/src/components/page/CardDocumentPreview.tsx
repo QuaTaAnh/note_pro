@@ -59,7 +59,7 @@ const TaskPreview = ({ block }: { block: Block }) => {
           "w-3 h-3 rounded border flex items-center justify-center flex-shrink-0",
           isCompleted
             ? "bg-green-500 border-green-500 text-white"
-            : "border-gray-300"
+            : "border-gray-300",
         )}
       >
         {isCompleted && <Check className="w-2 h-2" />}
@@ -68,7 +68,7 @@ const TaskPreview = ({ block }: { block: Block }) => {
         <span
           className={cn(
             "truncate text-muted-foreground flex-1",
-            isCompleted && "line-through opacity-60"
+            isCompleted && "line-through opacity-60",
           )}
         >
           {text}

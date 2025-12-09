@@ -67,12 +67,12 @@ export const EnterHandler = Extension.create<EnterHandlerOptions>({
             const listContent = isBulletList
               ? { text: "<ul><li><p></p></li></ul>" }
               : { text: "<ol><li><p></p></li></ol>" };
-            
+
             // Flush pending changes before creating new block
             if (this.options.onFlush) {
               this.options.onFlush();
             }
-            
+
             this.options.onAddBlock(
               this.options.position + 1,
               BlockType.PARAGRAPH,
@@ -93,7 +93,7 @@ export const EnterHandler = Extension.create<EnterHandlerOptions>({
           if (this.options.onFlush) {
             this.options.onFlush();
           }
-          
+
           this.options.onAddBlock(
             this.options.position + 1,
             BlockType.PARAGRAPH,

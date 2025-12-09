@@ -15,7 +15,7 @@ interface Props {
   onAddBlock: (
     position: number,
     type: BlockType,
-    content?: Record<string, unknown>,
+    content?: Record<string, unknown>
   ) => Promise<void> | void;
   onSaveImmediate: () => void;
   onDeleteBlock?: () => void;
@@ -29,8 +29,11 @@ interface Props {
     block_id: string;
   } | null;
   editable?: boolean;
-  onToggleUploading?: (isUploading: boolean) => void;
   onConvertToTask?: (blockId: string) => void;
+  onConvertToFile?: (
+    blockId: string,
+    fileData: Record<string, unknown>
+  ) => void;
 }
 
 export const TiptapBlockItem = memo(
@@ -51,8 +54,8 @@ export const TiptapBlockItem = memo(
     blockType,
     task,
     editable = true,
-    onToggleUploading,
     onConvertToTask,
+    onConvertToFile,
   }: Props) {
     return (
       <TiptapEditor
@@ -74,8 +77,8 @@ export const TiptapBlockItem = memo(
         isTask={blockType === BlockType.TASK}
         task={task}
         editable={editable}
-        onToggleUploading={onToggleUploading}
         onConvertToTask={onConvertToTask}
+        onConvertToFile={onConvertToFile}
       />
     );
   },
@@ -89,5 +92,5 @@ export const TiptapBlockItem = memo(
       prevProps.task?.id === nextProps.task?.id &&
       prevProps.task?.status === nextProps.task?.status
     );
-  },
+  }
 );

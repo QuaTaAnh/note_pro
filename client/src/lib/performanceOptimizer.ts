@@ -30,7 +30,7 @@ export const PerformanceOptimizer = Extension.create({
                 updateTimeout = null;
               }, 16); // ~60fps
             },
-            
+
             destroy() {
               if (updateTimeout) {
                 clearTimeout(updateTimeout);

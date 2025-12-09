@@ -18,6 +18,7 @@ export default function NewDocumentButton() {
       label="New Document"
       onClick={createNewDocument}
       disabled={!canCreate || isCreating}
+      isLoading={isCreating}
     />
   );
 }

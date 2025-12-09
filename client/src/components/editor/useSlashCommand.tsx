@@ -4,22 +4,20 @@ import { EditorView } from "@tiptap/pm/view";
 import type { Editor } from "@tiptap/react";
 import { ChangeEvent, useCallback, useMemo, useRef, useState } from "react";
 import { uploadFileToCloudinary } from "@/lib/cloudinary";
-import { BlockType } from "@/types/types";
 import { toast } from "sonner";
 import { EmojiPicker } from "./EmojiPicker";
 import { SlashCommand } from "./SlashCommand";
 import { Paperclip, Smile } from "lucide-react";
+import { useLoading } from "@/context/LoadingContext";
 
 interface SlashCommandOptions {
-  position?: number;
   blockId?: string;
-  onAddBlock?: (
-    position: number,
-    type: BlockType,
-    content?: Record<string, unknown>,
-  ) => Promise<void> | void;
   onToggleUploading?: (isUploading: boolean) => void;
   onConvertToTask?: (blockId: string) => Promise<void> | void;
+  onConvertToFile?: (
+    blockId: string,
+    fileData: Record<string, unknown>
+  ) => Promise<void> | void;
   allowFileUploads?: boolean;
 }
 
@@ -28,24 +26,24 @@ const MAX_FILE_SIZE_BYTES = 25 * 1024 * 1024;
 export const useSlashCommand = (
   editor: Editor | null,
   {
-    position,
     blockId,
-    onAddBlock,
     onToggleUploading,
     onConvertToTask,
+    onConvertToFile,
     allowFileUploads = true,
-  }: SlashCommandOptions = {},
+  }: SlashCommandOptions = {}
 ) => {
   const [showSlash, setShowSlash] = useState(false);
   const [showEmoji, setShowEmoji] = useState(false);
   const [slashPos, setSlashPos] = useState({ top: 0, left: 0 });
   const [emojiPos, setEmojiPos] = useState({ top: 0, left: 0 });
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const { startLoading, stopLoading } = useLoading();
 
   const handleFileUpload = useCallback(
     async (file: File) => {
-      if (!onAddBlock) {
-        toast.error("You don't have permission to upload files.");
+      if (!blockId || !onConvertToFile) {
+        toast.error("Cannot upload file to this block.");
         return;
       }
 
@@ -55,6 +53,7 @@ export const useSlashCommand = (
       }
 
       try {
+        startLoading();
         onToggleUploading?.(true);
         const uploadResult = await uploadFileToCloudinary(file, {
           folder: "note_pro/files",
@@ -62,7 +61,8 @@ export const useSlashCommand = (
           resourceType: "auto",
         });
 
-        await onAddBlock((position ?? 0) + 1, BlockType.FILE, {
+        // Convert current block to FILE type
+        await onConvertToFile(blockId, {
           fileUrl: uploadResult.secure_url,
           fileName: file.name,
           fileType: file.type,
@@ -79,10 +79,11 @@ export const useSlashCommand = (
             : "Failed to upload file. Please try again.";
         toast.error(message);
       } finally {
+        stopLoading();
         onToggleUploading?.(false);
       }
     },
-    [onAddBlock, onToggleUploading, position],
+    [blockId, onConvertToFile, onToggleUploading, startLoading, stopLoading]
   );
 
   const handleFileChange = useCallback(
@@ -92,7 +93,7 @@ export const useSlashCommand = (
       if (!file) return;
       await handleFileUpload(file);
     },
-    [handleFileUpload],
+    [handleFileUpload]
   );
 
   const triggerFilePicker = useCallback(() => {
@@ -148,17 +149,13 @@ export const useSlashCommand = (
             toast.error("File uploads are disabled here.");
             break;
           }
-          if (!onAddBlock) {
-            toast.error("You don't have permission to upload files.");
-            break;
-          }
           triggerFilePicker();
           break;
         }
       }
       setShowSlash(false);
     },
-    [editor, onAddBlock, triggerFilePicker, allowFileUploads],
+    [editor, triggerFilePicker, allowFileUploads]
   );
 
   const onEmojiSelect = useCallback(
@@ -166,7 +163,7 @@ export const useSlashCommand = (
       if (editor) editor.commands.insertContent(emoji);
       setShowEmoji(false);
     },
-    [editor],
+    [editor]
   );
 
   const handleKeyDown = useCallback(
@@ -228,7 +225,7 @@ export const useSlashCommand = (
       }
       return false;
     },
-    [showSlash, showEmoji, availableCommands.length, onConvertToTask, blockId],
+    [showSlash, showEmoji, availableCommands.length, onConvertToTask, blockId]
   );
 
   const menus = useMemo(
@@ -275,7 +272,7 @@ export const useSlashCommand = (
       handleFileChange,
       availableCommands,
       allowFileUploads,
-    ],
+    ]
   );
 
   return { handleKeyDown, menus };

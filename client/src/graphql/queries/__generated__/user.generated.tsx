@@ -1,26 +1,33 @@
-import * as Types from 'generated/graphql';
+import * as Types from "generated/graphql";
 
-import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
-const defaultOptions = {"ignoreResults":true} as const;
+import { gql } from "@apollo/client";
+import * as Apollo from "@apollo/client";
+const defaultOptions = { ignoreResults: true } as const;
 export type SearchUsersByEmailQueryVariables = Types.Exact<{
-  searchTerm: Types.Scalars['String']['input'];
+  searchTerm: Types.Scalars["String"]["input"];
 }>;
 
-
-export type SearchUsersByEmailQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: string, email: string, name?: string | null, avatar_url?: string | null }> };
-
+export type SearchUsersByEmailQuery = {
+  __typename?: "query_root";
+  users: Array<{
+    __typename?: "users";
+    id: string;
+    email: string;
+    name?: string | null;
+    avatar_url?: string | null;
+  }>;
+};
 
 export const SearchUsersByEmailDocument = gql`
-    query SearchUsersByEmail($searchTerm: String!) {
-  users(where: {email: {_ilike: $searchTerm}}, limit: 10) {
-    id
-    email
-    name
-    avatar_url
+  query SearchUsersByEmail($searchTerm: String!) {
+    users(where: { email: { _ilike: $searchTerm } }, limit: 10) {
+      id
+      email
+      name
+      avatar_url
+    }
   }
-}
-    `;
+`;
 
 /**
  * __useSearchUsersByEmailQuery__
@@ -38,19 +45,61 @@ export const SearchUsersByEmailDocument = gql`
  *   },
  * });
  */
-export function useSearchUsersByEmailQuery(baseOptions: Apollo.QueryHookOptions<SearchUsersByEmailQuery, SearchUsersByEmailQueryVariables> & ({ variables: SearchUsersByEmailQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<SearchUsersByEmailQuery, SearchUsersByEmailQueryVariables>(SearchUsersByEmailDocument, options);
-      }
-export function useSearchUsersByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchUsersByEmailQuery, SearchUsersByEmailQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<SearchUsersByEmailQuery, SearchUsersByEmailQueryVariables>(SearchUsersByEmailDocument, options);
-        }
-export function useSearchUsersByEmailSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<SearchUsersByEmailQuery, SearchUsersByEmailQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<SearchUsersByEmailQuery, SearchUsersByEmailQueryVariables>(SearchUsersByEmailDocument, options);
-        }
-export type SearchUsersByEmailQueryHookResult = ReturnType<typeof useSearchUsersByEmailQuery>;
-export type SearchUsersByEmailLazyQueryHookResult = ReturnType<typeof useSearchUsersByEmailLazyQuery>;
-export type SearchUsersByEmailSuspenseQueryHookResult = ReturnType<typeof useSearchUsersByEmailSuspenseQuery>;
-export type SearchUsersByEmailQueryResult = Apollo.QueryResult<SearchUsersByEmailQuery, SearchUsersByEmailQueryVariables>;
+export function useSearchUsersByEmailQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    SearchUsersByEmailQuery,
+    SearchUsersByEmailQueryVariables
+  > &
+    (
+      | { variables: SearchUsersByEmailQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    ),
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    SearchUsersByEmailQuery,
+    SearchUsersByEmailQueryVariables
+  >(SearchUsersByEmailDocument, options);
+}
+export function useSearchUsersByEmailLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    SearchUsersByEmailQuery,
+    SearchUsersByEmailQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    SearchUsersByEmailQuery,
+    SearchUsersByEmailQueryVariables
+  >(SearchUsersByEmailDocument, options);
+}
+export function useSearchUsersByEmailSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        SearchUsersByEmailQuery,
+        SearchUsersByEmailQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    SearchUsersByEmailQuery,
+    SearchUsersByEmailQueryVariables
+  >(SearchUsersByEmailDocument, options);
+}
+export type SearchUsersByEmailQueryHookResult = ReturnType<
+  typeof useSearchUsersByEmailQuery
+>;
+export type SearchUsersByEmailLazyQueryHookResult = ReturnType<
+  typeof useSearchUsersByEmailLazyQuery
+>;
+export type SearchUsersByEmailSuspenseQueryHookResult = ReturnType<
+  typeof useSearchUsersByEmailSuspenseQuery
+>;
+export type SearchUsersByEmailQueryResult = Apollo.QueryResult<
+  SearchUsersByEmailQuery,
+  SearchUsersByEmailQueryVariables
+>;

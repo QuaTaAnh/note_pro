@@ -12,6 +12,7 @@ import { HiOutlineClipboardList } from "react-icons/hi";
 import { PiSunHorizonBold } from "react-icons/pi";
 import { Setting } from "./Setting";
 import { TaskSettingsProvider } from "@/context/TaskSettingsProvider";
+import { useLoading } from "@/context/LoadingContext";
 
 interface TasksLayoutProps {
   children: React.ReactNode;
@@ -21,6 +22,7 @@ export default function TasksLayout({ children }: TasksLayoutProps) {
   const { workspaceSlug } = useWorkspace();
   const router = useRouter();
   const pathname = usePathname();
+  const { startLoading } = useLoading();
 
   const NAV_ITEMS = [
     {
@@ -47,7 +49,10 @@ export default function TasksLayout({ children }: TasksLayoutProps) {
   ];
 
   const navigateTo = (href: string) => {
-    if (workspaceSlug) router.push(href);
+    if (workspaceSlug) {
+      startLoading();
+      router.push(href);
+    }
   };
 
   return (

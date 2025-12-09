@@ -21,7 +21,6 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { CiSettings } from "react-icons/ci";
 import { WorkspaceNameWithTooltip } from "./WorkspaceNameWithTooltip";
-import { PageLoading } from "@/components/ui/loading";
 
 export const WorkspaceButton = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -104,11 +103,7 @@ export const WorkspaceButton = () => {
     }
   };
 
-  return isUploading ? (
-    <div className="fixed inset-0 z-[1000] bg-background/80 backdrop-blur-sm">
-      <PageLoading text="Uploading..." />
-    </div>
-  ) : (
+  return (
     <div className="flex items-center">
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
