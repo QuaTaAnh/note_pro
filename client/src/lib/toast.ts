@@ -11,7 +11,7 @@ export const showToast = {
   ) => {
     return toast.success(message, {
       description: options?.description,
-      duration: options?.duration ?? 4000,
+      duration: options?.duration ?? 1000,
     });
   },
 
@@ -21,7 +21,7 @@ export const showToast = {
   ) => {
     return toast.error(message, {
       description: options?.description,
-      duration: options?.duration ?? 5000,
+      duration: options?.duration ?? 1500,
     });
   },
 
@@ -31,7 +31,7 @@ export const showToast = {
   ) => {
     return toast.info(message, {
       description: options?.description,
-      duration: options?.duration ?? 4000,
+      duration: options?.duration ?? 1000,
     });
   },
 
@@ -41,7 +41,7 @@ export const showToast = {
   ) => {
     return toast.warning(message, {
       description: options?.description,
-      duration: options?.duration ?? 4000,
+      duration: options?.duration ?? 1000,
     });
   },
 

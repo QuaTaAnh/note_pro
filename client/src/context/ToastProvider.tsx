@@ -11,7 +11,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
       {children}
       <Toaster
         theme={theme}
-        position="top-right"
+        position="bottom-right"
         expand={true}
         richColors
         closeButton={false}
