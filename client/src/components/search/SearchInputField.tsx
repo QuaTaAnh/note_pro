@@ -36,7 +36,7 @@ export function SearchInputField({
       value={searchTerm}
       onChange={(e) => setSearchTerm(e.target.value)}
       placeholder={placeholder}
-      className={cn("w-full bg-white h-8")}
+      className={cn("w-full bg-card h-8")}
       icon={<Search className="h-4 w-4" />}
       iconPosition="left"
       popoverHeight="auto"

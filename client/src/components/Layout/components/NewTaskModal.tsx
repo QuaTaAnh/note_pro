@@ -213,7 +213,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
                   {taskData.selectedDocumentId
                     ? (() => {
                         const doc = docsData?.blocks.find(
-                          (item) => item.id === taskData.selectedDocumentId,
+                          (item) => item.id === taskData.selectedDocumentId
                         );
                         const title = doc?.content?.title || "Untitled";
                         return getPlainText(title);
@@ -223,7 +223,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
                 </Button>
               </PopoverTrigger>
               <PopoverContent
-                className="w-80 p-0"
+                className="w-80 p-0 bg-card"
                 container={dialogContentRef.current ?? undefined}
               >
                 <div className="p-3">
@@ -231,7 +231,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
                     placeholder="Move to..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="h-8"
+                    className="h-8 bg-card"
                     icon={<FiSearch className="w-3 h-3" />}
                   />
                 </div>
@@ -297,7 +297,8 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
             placeholder="New Task"
             value={taskData.text}
             onChange={(e) => handleInputChange("text", e.target.value)}
-            className="placeholder:text-muted-foreground !border-0 !border-none focus-visible:!border-0 focus-visible:!ring-0 focus-visible:!ring-transparent focus:!border-0 focus:!ring-0 focus:!outline-none shadow-none"
+            className="placeholder:text-muted-foreground bg-card !border-0 !border-none focus-visible:!border-0 focus-visible:!ring-0 focus-visible:!ring-transparent focus:!border-0 focus:!ring-0 focus:!outline-none shadow-none"
+            autoComplete="off"
           />
         </div>
         <div className="flex items-center justify-between gap-3">

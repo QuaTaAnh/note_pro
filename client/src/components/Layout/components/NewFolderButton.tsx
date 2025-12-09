@@ -43,7 +43,7 @@ export const NewFolderButton = () => {
 
   const handleInputChange = (
     field: keyof FolderData,
-    value: string | React.ComponentType<unknown>,
+    value: string | React.ComponentType<unknown>
   ) => {
     setFolderData((prev) => ({
       ...prev,
@@ -115,7 +115,7 @@ export const NewFolderButton = () => {
               placeholder="Folder Name"
               value={folderData.name}
               onChange={(e) => handleInputChange("name", e.target.value)}
-              className="placeholder:text-muted-foreground focus:ring-0"
+              className="placeholder:text-muted-foreground focus:ring-0 bg-card"
             />
           </div>
 
@@ -128,7 +128,7 @@ export const NewFolderButton = () => {
               placeholder="Enter folder description..."
               value={folderData.description}
               onChange={(e) => handleInputChange("description", e.target.value)}
-              className="placeholder:text-muted-foreground focus:ring-0 resize-none h-20"
+              className="placeholder:text-muted-foreground focus:ring-0 resize-none h-20 bg-card"
             />
           </div>
 
