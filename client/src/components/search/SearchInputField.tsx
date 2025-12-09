@@ -9,13 +9,11 @@ import { cn } from "@/lib/utils";
 
 interface SearchInputFieldProps {
   placeholder?: string;
-  className?: string;
   onResultClick?: () => void;
 }
 
 export function SearchInputField({
   placeholder,
-  className,
   onResultClick,
 }: SearchInputFieldProps) {
   const { searchTerm, setSearchTerm, results } = useSearch();
@@ -38,7 +36,7 @@ export function SearchInputField({
       value={searchTerm}
       onChange={(e) => setSearchTerm(e.target.value)}
       placeholder={placeholder}
-      className={cn("w-full", className)}
+      className={cn("w-full bg-white h-8")}
       icon={<Search className="h-4 w-4" />}
       iconPosition="left"
       popoverHeight="auto"

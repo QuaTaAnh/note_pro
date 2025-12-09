@@ -36,9 +36,8 @@ export default function AllDocsPage() {
         <div className="w-full pt-4 flex items-center justify-between">
           <h1 className="text-xl font-medium">All Docs</h1>
           <Button
-            variant="outline"
             size="sm"
-            className="gap-2 text-sm rounded-xl"
+            className="gap-2 text-xs text-white rounded-lg bg-primary"
             onClick={createNewDocument}
             disabled={!canCreate || isCreating}
           >

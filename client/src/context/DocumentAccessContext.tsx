@@ -34,7 +34,7 @@ export function useDocumentAccess() {
   const context = useContext(DocumentAccessContext);
   if (context === undefined) {
     throw new Error(
-      "useDocumentAccess must be used within a DocumentAccessProvider"
+      "useDocumentAccess must be used within a DocumentAccessProvider",
     );
   }
   return context;

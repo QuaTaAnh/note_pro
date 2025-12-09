@@ -80,13 +80,13 @@ export function ShareExportButton({ documentId }: ShareExportButtonProps) {
   };
 
   const selectedOption = permissionOptions.find(
-    (opt) => opt.value === selectedPermission
+    (opt) => opt.value === selectedPermission,
   );
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" className="gap-2 rounded-xl mr-4">
+        <Button variant="outline" size="sm" className="gap-2 rounded-lg mr-4">
           <FiShare2 className="h-4 w-4" />
           Share
         </Button>

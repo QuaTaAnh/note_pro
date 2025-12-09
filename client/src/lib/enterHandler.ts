@@ -2,7 +2,11 @@ import { Extension } from "@tiptap/core";
 import { BlockType } from "@/types/types";
 
 interface EnterHandlerOptions {
-  onAddBlock?: (position: number, type: BlockType, content?: Record<string, unknown>) => void;
+  onAddBlock?: (
+    position: number,
+    type: BlockType,
+    content?: Record<string, unknown>,
+  ) => void;
   position: number;
 }
 
@@ -53,11 +57,11 @@ export const EnterHandler = Extension.create<EnterHandlerOptions>({
 
           if (this.options.onAddBlock) {
             const isBulletList = this.editor.isActive("bulletList");
-            
-            const listContent = isBulletList 
+
+            const listContent = isBulletList
               ? { text: "<ul><li><p></p></li></ul>" }
               : { text: "<ol><li><p></p></li></ol>" };
-            
+
             this.options.onAddBlock(
               this.options.position + 1,
               BlockType.PARAGRAPH,

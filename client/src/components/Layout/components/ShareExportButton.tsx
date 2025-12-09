@@ -19,12 +19,12 @@ export function ShareExportButton({ documentId }: ShareExportButtonProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" className="gap-2 rounded-xl">
+        <Button variant="outline" size="sm" className="gap-2 rounded-lg">
           <FiShare2 className="h-4 w-4" />
           Share
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-[480px] p-3 rounded-xl" align="end">
+      <DropdownMenuContent className="w-[480px] p-3 rounded-lg" align="end">
         <Tabs defaultValue="share" className="w-full">
           <TabsList className="w-full grid grid-cols-2 rounded-2xl">
             <TabsTrigger value="share" className="rounded-2xl">

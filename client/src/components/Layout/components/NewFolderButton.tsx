@@ -155,7 +155,7 @@ export const NewFolderButton = () => {
           <Button
             onClick={handleCreate}
             disabled={!folderData.name.trim()}
-            className="w-full h-9 bg-primary-button rounded-xl hover:bg-primary-buttonHover font-medium"
+            className="w-full h-9 bg-primary-button rounded-lg hover:bg-primary-buttonHover font-medium"
           >
             Create
           </Button>

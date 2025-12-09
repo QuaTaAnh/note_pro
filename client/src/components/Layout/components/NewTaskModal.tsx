@@ -324,7 +324,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
           <Button
             onClick={handleCreate}
             disabled={!taskData.text.trim() || isCreating}
-            className="px-4 h-9 bg-primary-button hover:bg-primary-buttonHover font-medium rounded-xl"
+            className="px-4 h-9 bg-primary-button hover:bg-primary-buttonHover font-medium rounded-lg"
           >
             {isCreating ? "Creating..." : "Create"}
           </Button>

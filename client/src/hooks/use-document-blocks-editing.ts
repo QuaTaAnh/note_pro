@@ -206,7 +206,7 @@ export function useDocumentBlocksEditing({
                 : b,
             ),
           );
-        } 
+        }
       } catch (error) {
         console.error("Failed to convert block to task:", error);
       }
