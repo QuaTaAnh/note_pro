@@ -134,12 +134,12 @@ export const IconPicker: React.FC<IconPickerProps> = ({
           <Button
             type="button"
             variant="outline"
-            className="w-full justify-start gap-3 p-3 bg-background border-border text-foreground hover:bg-accent"
+            className="w-full justify-start gap-3 p-3 bg-card border-border text-foreground"
           >
             <span
               className={cn(
                 "w-8 h-8 rounded-full border flex items-center justify-center",
-                previewColor ? "border-transparent" : "border-border",
+                previewColor ? "border-transparent" : "border-border"
               )}
               style={iconPreviewStyles}
             >
@@ -150,7 +150,7 @@ export const IconPicker: React.FC<IconPickerProps> = ({
         </PopoverTrigger>
         <PopoverContent
           container={portalContainer}
-          className="w-100 p-0 border-border z-[100] max-h-80 overflow-y-auto overscroll-contain pointer-events-auto"
+          className="w-100 p-0 border-border z-[100] max-h-80 overflow-y-auto overscroll-contain pointer-events-auto bg-card"
           align="start"
           sideOffset={8}
         >
@@ -172,7 +172,7 @@ export const IconPicker: React.FC<IconPickerProps> = ({
                         size="sm"
                         className={cn(
                           "w-7 h-7 p-0 hover:bg-primary/10 relative z-10 pointer-events-auto",
-                          isSelected && "bg-primary/20 text-primary",
+                          isSelected && "bg-primary/20 text-primary"
                         )}
                         onClick={() => handleIconSelect(iconItem.key)}
                         title={iconItem.name}

@@ -76,7 +76,7 @@ export function ShareTab({ documentId }: ShareTabProps) {
 
   const handleRoleChange = async (
     userId: string,
-    newRole: "viewer" | "editor"
+    newRole: "viewer" | "editor",
   ) => {
     try {
       await updatePermission({

@@ -28,44 +28,46 @@ export const SearchSection = ({
   }
 
   return (
-    <div className="mb-2">
+    <div className="mb-4">
       <SearchSectionHeader title={title} count={items.length} />
-      {items.map((item) => {
-        let href = "";
-        let itemTitle = "";
-        let subtitle = "";
+      <div className="space-y-1">
+        {items.map((item) => {
+          let href = "";
+          let itemTitle = "";
+          let subtitle = "";
 
-        // Get workspace ID for this specific item
-        const itemWorkspaceId = getWorkspaceId
-          ? getWorkspaceId(item)
-          : (workspaceId ?? "");
+          // Get workspace ID for this specific item
+          const itemWorkspaceId = getWorkspaceId
+            ? getWorkspaceId(item)
+            : (workspaceId ?? "");
 
-        if (type === "document" || type === "sharedDocument") {
-          href = `/editor/d/${itemWorkspaceId}/${item.id}`;
-          itemTitle = getPlainText(item.content.title);
-          subtitle = renderSubtitle?.(item) ?? "";
-        } else if (type === "task") {
-          href = `/s/${itemWorkspaceId}/tasks`;
-          itemTitle = item.block?.content?.text ?? "";
-        } else if (type === "folder") {
-          href = `/s/${itemWorkspaceId}/f/${item.id}`;
-          itemTitle = item.name;
-          subtitle = `In ${item.workspace?.name ?? ""}`;
-        }
+          if (type === "document" || type === "sharedDocument") {
+            href = `/editor/d/${itemWorkspaceId}/${item.id}`;
+            itemTitle = getPlainText(item.content.title);
+            subtitle = renderSubtitle?.(item) ?? "";
+          } else if (type === "task") {
+            href = `/s/${itemWorkspaceId}/tasks`;
+            itemTitle = item.block?.content?.text ?? "";
+          } else if (type === "folder") {
+            href = `/s/${itemWorkspaceId}/f/${item.id}`;
+            itemTitle = item.name;
+            subtitle = `In ${item.workspace?.name ?? ""}`;
+          }
 
-        return (
-          <SearchItem
-            key={item.id}
-            type={type}
-            id={item.id}
-            title={itemTitle}
-            subtitle={subtitle}
-            href={href}
-            onClick={onResultClick}
-            avatarUrl={item.user?.avatar_url ?? ""}
-          />
-        );
-      })}
+          return (
+            <SearchItem
+              key={item.id}
+              type={type}
+              id={item.id}
+              title={itemTitle}
+              subtitle={subtitle}
+              href={href}
+              onClick={onResultClick}
+              avatarUrl={item.user?.avatar_url ?? ""}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 };

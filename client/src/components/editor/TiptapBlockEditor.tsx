@@ -43,8 +43,8 @@ export default function TiptapBlockEditor({ pageId, className = "" }: Props) {
         </div>
       )}
       <div className={`max-w-full mx-auto ${className}`}>
-        <div className="mx-auto max-w-full rounded-xl border border-border/60 bg-card shadow-xl">
-          <div className="h-[calc(100vh-100px)] overflow-y-auto rounded-xl">
+        <div className="mx-auto max-w-full rounded-xl bg-card overflow-hidden border border-soft-border dark:border-border shadow-sm">
+          <div className="h-[calc(100vh-100px)] overflow-y-auto">
             <div className="mx-auto max-w-2xl py-16">
               <div className="flex items-center justify-between">
                 <div className="flex-1 px-6">

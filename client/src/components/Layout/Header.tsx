@@ -45,7 +45,7 @@ export default function Header({ workspaceSlug, isEditorPage }: Props) {
           />
         </div>
         <div className="min-w-[480px]">
-          <SearchInputField placeholder="Search..." className="h-8" />
+          <SearchInputField placeholder="Search..." />
         </div>
         <div className="flex items-center gap-2">
           {isEditorPage && documentId && (

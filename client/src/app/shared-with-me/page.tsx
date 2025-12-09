@@ -33,7 +33,7 @@ export default function SharedWithMePage() {
   ) : (
     <div className="p-0 w-full h-full">
       <div className="flex flex-col items-start justify-start mx-auto w-full h-full min-h-0 max-w-screen-2xl gap-6">
-        <div className="w-full pt-4 flex items-center justify-between">
+        <div className="w-full pt-4 px-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <IoShareOutline className="w-6 h-6 text-muted-foreground" />
             <h1 className="text-xl font-medium">Shared With Me</h1>
@@ -57,19 +57,19 @@ export default function SharedWithMePage() {
             </div>
           </div>
         ) : (
-          <div className="flex-1 w-full pb-4 overflow-hidden">
+          <div className="flex-1 w-full pb-4 pl-6 overflow-hidden">
             <AutoSizer>
               {({ width, height }) => {
                 if (width === 0 || height === 0) return null;
 
                 const columnCount = Math.max(
                   1,
-                  Math.floor((width + GUTTER) / (MIN_CARD_WIDTH + GUTTER)),
+                  Math.floor((width + GUTTER) / (MIN_CARD_WIDTH + GUTTER))
                 );
 
                 const totalGutters = (columnCount - 1) * GUTTER;
                 const columnWidth = Math.floor(
-                  (width - totalGutters) / columnCount,
+                  (width - totalGutters) / columnCount
                 );
 
                 const rowCount = Math.ceil(sharedDocs.length / columnCount);

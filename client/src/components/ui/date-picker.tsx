@@ -84,7 +84,7 @@ export const DatePicker = ({
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-auto p-0 shadow-lg border"
+        className="w-auto p-0 shadow-lg border bg-card"
         container={container ?? undefined}
         side="bottom"
         align="start"

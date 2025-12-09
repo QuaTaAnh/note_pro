@@ -24,7 +24,7 @@ interface UseEditorConfigProps {
     | ((
         position: number,
         type: BlockType,
-        content?: Record<string, unknown>
+        content?: Record<string, unknown>,
       ) => void)
     | undefined
   >;
@@ -156,6 +156,6 @@ export function useEditorConfig({
       onSaveImmediateRef,
       onAddBlockRef,
       prevValueRef,
-    ]
+    ],
   );
 }

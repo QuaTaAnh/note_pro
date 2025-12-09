@@ -32,7 +32,7 @@ interface Props {
   onAddBlock: (
     position: number,
     type: BlockType,
-    content?: Record<string, unknown>
+    content?: Record<string, unknown>,
   ) => Promise<void> | void;
   onSaveImmediate: () => void;
   onDeleteBlock?: (blockId: string) => void;
@@ -55,7 +55,7 @@ const SortableBlockItem = memo(
     onAddBlock: (
       position: number,
       type: BlockType,
-      content?: Record<string, unknown>
+      content?: Record<string, unknown>,
     ) => Promise<void> | void;
     onSaveImmediate: () => void;
     onDeleteBlock?: (blockId: string) => void;
@@ -96,7 +96,7 @@ const SortableBlockItem = memo(
           x: 0,
           scaleX: 1,
           scaleY: 1,
-        }
+        },
       ),
       transition,
       opacity: isDragging ? 0.8 : 1,
@@ -183,7 +183,7 @@ const SortableBlockItem = memo(
       prevProps.editable === nextProps.editable &&
       prevProps.block.tasks?.[0]?.status === nextProps.block.tasks?.[0]?.status
     );
-  }
+  },
 );
 
 export function BlockList({
@@ -206,7 +206,7 @@ export function BlockList({
       activationConstraint: {
         distance: 5,
       },
-    })
+    }),
   );
 
   const handleDragEnd = useMemo(
@@ -221,7 +221,7 @@ export function BlockList({
         }
       }
     },
-    [blocks, onReorder]
+    [blocks, onReorder],
   );
 
   const blockIds = useMemo(() => blocks.map((b) => b.id), [blocks]);

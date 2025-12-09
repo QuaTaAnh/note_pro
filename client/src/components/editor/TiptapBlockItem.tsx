@@ -15,7 +15,7 @@ interface Props {
   onAddBlock: (
     position: number,
     type: BlockType,
-    content?: Record<string, unknown>
+    content?: Record<string, unknown>,
   ) => Promise<void> | void;
   onSaveImmediate: () => void;
   onDeleteBlock?: () => void;
@@ -89,5 +89,5 @@ export const TiptapBlockItem = memo(
       prevProps.task?.id === nextProps.task?.id &&
       prevProps.task?.status === nextProps.task?.status
     );
-  }
+  },
 );

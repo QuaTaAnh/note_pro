@@ -56,10 +56,10 @@ export default function CalendarPage() {
   ) : (
     <div className="p-0 w-full h-full">
       <div className="flex flex-col items-start justify-start mx-auto w-full h-full min-h-0 max-w-screen-2xl gap-6">
-        <div className="w-full pt-4 flex items-center justify-between">
+        <div className="w-full pt-4 px-6 flex items-center justify-between">
           <h1 className="text-xl font-medium">Calendar</h1>
         </div>
-        <div className="h-[calc(100%-5rem)] w-full">
+        <div className="h-[calc(100%-5rem)] w-full px-6">
           <Calendar appointments={appointments} />
         </div>
       </div>

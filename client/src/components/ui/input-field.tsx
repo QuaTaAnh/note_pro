@@ -131,7 +131,7 @@ const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
           <div
             ref={dropdownRef}
             className={cn(
-              "absolute z-50 mt-1 w-full rounded-md border border-border bg-popover dark:bg-card dark:border-border/60 text-popover-foreground shadow-md dark:shadow-xl animate-in fade-in-0 zoom-in-95",
+              "absolute z-50 mt-2 w-full rounded-lg border bg-background shadow-lg animate-in fade-in-0 zoom-in-95",
               popoverClassName,
             )}
             style={
