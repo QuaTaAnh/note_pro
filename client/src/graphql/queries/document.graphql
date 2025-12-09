@@ -12,6 +12,7 @@ query GetAllDocs($workspaceId: uuid!) {
     created_at
     updated_at
     workspace_id
+    user_id
     folder {
       id
       name
@@ -20,6 +21,12 @@ query GetAllDocs($workspaceId: uuid!) {
       id
       type
       content
+      tasks {
+        id
+        status
+        schedule_date
+        deadline_date
+      }
     }
   }
 }
@@ -93,6 +100,13 @@ query GetSharedWithMeDocs($userId: uuid!) {
       id
       type
       content
+      position
+      tasks {
+        id
+        status
+        schedule_date
+        deadline_date
+      }
     }
     access_requests(where: { requester_id: { _eq: $userId } }) {
       permission_type
