@@ -153,7 +153,7 @@ export const LeftSidebar = ({ pageId }: Props) => {
         <div className="flex flex-row items-center gap-2 mb-3 shrink-0">
           <div
             className="border rounded-sm overflow-hidden shrink-0 relative p-2"
-            style={{ width: "24px", height: "32px" }}
+            style={{ width: 24, height: 32 }}
           >
             <div
               className="absolute inset-0.5 overflow-hidden"
@@ -165,7 +165,7 @@ export const LeftSidebar = ({ pageId }: Props) => {
               }}
             >
               <div className="text-[10px]">
-                <CardDocumentPreview blocks={blocks?.slice(0, 5) || []} />
+                <CardDocumentPreview blocks={blocks || []} />
               </div>
             </div>
           </div>
