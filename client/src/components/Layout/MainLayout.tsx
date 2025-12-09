@@ -2,6 +2,7 @@
 
 import AuthGuard from "@/components/auth/AuthGuard";
 import { PageLoading } from "@/components/ui/loading";
+import { RouteChangeHandler } from "@/components/RouteChangeHandler";
 import { SidebarProvider, useSidebar } from "@/context/SidebarContext";
 import { useDocumentAccess } from "@/context/DocumentAccessContext";
 import { useBinCraftTitle, useWorkspace, useDocumentTitle } from "@/hooks";
@@ -109,6 +110,7 @@ export default function MainLayout({
 
   return (
     <SidebarProvider>
+      <RouteChangeHandler />
       <LayoutMain>{children}</LayoutMain>
     </SidebarProvider>
   );

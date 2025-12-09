@@ -4,6 +4,7 @@ import {
 } from "@/lib/cloudinary";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useLoading } from "@/context/LoadingContext";
 
 interface UseImageUploadOptions {
   tags?: string[];
@@ -28,6 +29,7 @@ export function useImageUpload({
 }: UseImageUploadOptions = {}) {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
+  const { startLoading, stopLoading } = useLoading();
 
   const uploadImage = async (file: File): Promise<string | null> => {
     if (!allowedTypes.includes(file.type)) {
@@ -48,6 +50,7 @@ export function useImageUpload({
     }
 
     setIsUploading(true);
+    startLoading();
 
     try {
       const uploadResult = await uploadImageToCloudinary(file, {
@@ -70,6 +73,7 @@ export function useImageUpload({
       return null;
     } finally {
       setIsUploading(false);
+      stopLoading();
     }
   };
 

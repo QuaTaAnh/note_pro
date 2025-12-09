@@ -23,7 +23,7 @@ export function DocumentGrid({ documents }: DocumentGridProps) {
 
           const columnCount = Math.min(
             5,
-            Math.max(1, Math.floor(width / (MIN_CARD_WIDTH + GUTTER)))
+            Math.max(1, Math.floor(width / (MIN_CARD_WIDTH + GUTTER))),
           );
 
           const columnWidth = Math.floor(width / columnCount);

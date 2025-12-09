@@ -213,7 +213,7 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
                   {taskData.selectedDocumentId
                     ? (() => {
                         const doc = docsData?.blocks.find(
-                          (item) => item.id === taskData.selectedDocumentId
+                          (item) => item.id === taskData.selectedDocumentId,
                         );
                         const title = doc?.content?.title || "Untitled";
                         return getPlainText(title);

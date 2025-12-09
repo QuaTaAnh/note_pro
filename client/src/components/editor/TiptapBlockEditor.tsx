@@ -6,7 +6,6 @@ import { PageLoading } from "../ui/loading";
 import { DocumentTitleInput } from "@/components/page/DocumentTitleInput";
 import { BlockList } from "@/components/page/BlockList";
 import { Separator } from "../ui/separator";
-import { useState } from "react";
 
 interface Props {
   pageId: string;
@@ -28,20 +27,15 @@ export default function TiptapBlockEditor({ pageId, className = "" }: Props) {
     handleDeleteBlock,
     handleReorderBlocks,
     handleConvertToTask,
+    handleConvertToFile,
   } = useDocumentBlocks(pageId);
 
   const { canEdit } = useDocumentPermission(pageId);
-  const [isUploadingFile, setIsUploadingFile] = useState(false);
 
   return loading || !rootBlock ? (
     <PageLoading />
   ) : (
     <div className="relative">
-      {isUploadingFile && (
-        <div className="fixed inset-0 z-[1000] bg-background/80 backdrop-blur-sm">
-          <PageLoading text="Uploading file..." />
-        </div>
-      )}
       <div className={`max-w-full mx-auto ${className}`}>
         <div className="mx-auto max-w-full rounded-xl bg-card overflow-hidden border border-soft-border dark:border-border shadow-sm">
           <div className="h-[calc(100vh-100px)] overflow-y-auto">
@@ -68,8 +62,8 @@ export default function TiptapBlockEditor({ pageId, className = "" }: Props) {
                   onDeleteBlock={handleDeleteBlock}
                   onReorder={handleReorderBlocks}
                   editable={canEdit}
-                  onToggleUploading={setIsUploadingFile}
                   onConvertToTask={handleConvertToTask}
+                  onConvertToFile={handleConvertToFile}
                 />
               </TiptapWrapper>
               <div className="h-[50vh]" />

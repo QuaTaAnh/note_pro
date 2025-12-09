@@ -214,6 +214,39 @@ export function useDocumentBlocksEditing({
     [updateBlockType, createTask, userId, flush],
   );
 
+  const handleConvertToFile = useCallback(
+    async (blockId: string, fileData: Record<string, unknown>) => {
+      flush();
+
+      try {
+        // Update block type to FILE
+        const updatedBlock = await updateBlockType(blockId, BlockType.FILE);
+        if (!updatedBlock) {
+          return;
+        }
+
+        // Update block content with file data
+        await updateBlockContent(blockId, fileData);
+
+        // Update local state
+        setBlocks((prev) =>
+          prev.map((b) =>
+            b.id === blockId
+              ? {
+                  ...b,
+                  type: BlockType.FILE,
+                  content: fileData,
+                }
+              : b,
+          ),
+        );
+      } catch (error) {
+        console.error("Failed to convert block to file:", error);
+      }
+    },
+    [updateBlockType, updateBlockContent, flush],
+  );
+
   return {
     blocks,
     rootBlock,
@@ -227,5 +260,6 @@ export function useDocumentBlocksEditing({
     handleDeleteBlock,
     handleReorderBlocks,
     handleConvertToTask,
+    handleConvertToFile,
   };
 }

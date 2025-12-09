@@ -11,6 +11,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { useWorkspace } from "@/hooks/use-workspace";
 import { useUserId } from "@/hooks/use-auth";
+import { useLoading } from "@/context/LoadingContext";
 import { ROUTES } from "@/lib/routes";
 import { formatDate } from "@/lib/utils";
 import { Document } from "@/types/app";
@@ -32,6 +33,7 @@ const CardDocumentComponent = ({ document }: { document: Document }) => {
   const router = useRouter();
   const { workspace } = useWorkspace();
   const currentUserId = useUserId();
+  const { startLoading, stopLoading } = useLoading();
 
   const plainTitle = getPlainText(document.content?.title) || "Untitled";
 
@@ -47,7 +49,7 @@ const CardDocumentComponent = ({ document }: { document: Document }) => {
       ? ROUTES.WORKSPACE_DOCUMENT_FOLDER(
           workspaceId,
           document.folder.id,
-          document.id
+          document.id,
         )
       : ROUTES.WORKSPACE_DOCUMENT(workspaceId, document.id);
     router.prefetch(href);
@@ -57,13 +59,15 @@ const CardDocumentComponent = ({ document }: { document: Document }) => {
     e.stopPropagation();
     if (!workspaceId) return;
 
+    startLoading();
+
     if (document.folder?.id) {
       router.push(
         ROUTES.WORKSPACE_DOCUMENT_FOLDER(
           workspaceId,
           document.folder.id,
-          document.id
-        )
+          document.id,
+        ),
       );
     } else {
       router.push(ROUTES.WORKSPACE_DOCUMENT(workspaceId, document.id));

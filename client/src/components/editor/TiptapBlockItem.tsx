@@ -29,8 +29,11 @@ interface Props {
     block_id: string;
   } | null;
   editable?: boolean;
-  onToggleUploading?: (isUploading: boolean) => void;
   onConvertToTask?: (blockId: string) => void;
+  onConvertToFile?: (
+    blockId: string,
+    fileData: Record<string, unknown>,
+  ) => void;
 }
 
 export const TiptapBlockItem = memo(
@@ -51,8 +54,8 @@ export const TiptapBlockItem = memo(
     blockType,
     task,
     editable = true,
-    onToggleUploading,
     onConvertToTask,
+    onConvertToFile,
   }: Props) {
     return (
       <TiptapEditor
@@ -74,8 +77,8 @@ export const TiptapBlockItem = memo(
         isTask={blockType === BlockType.TASK}
         task={task}
         editable={editable}
-        onToggleUploading={onToggleUploading}
         onConvertToTask={onConvertToTask}
+        onConvertToFile={onConvertToFile}
       />
     );
   },

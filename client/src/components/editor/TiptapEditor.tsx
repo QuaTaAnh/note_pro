@@ -35,8 +35,11 @@ interface TiptapEditorProps {
   isTask?: boolean;
   task?: Task | null;
   editable?: boolean;
-  onToggleUploading?: (isUploading: boolean) => void;
   onConvertToTask?: (blockId: string) => void;
+  onConvertToFile?: (
+    blockId: string,
+    fileData: Record<string, unknown>,
+  ) => void;
   enableFileUploads?: boolean;
 }
 
@@ -62,12 +65,13 @@ export const TiptapEditor = memo(
     isTask = false,
     task = null,
     editable = true,
-    onToggleUploading,
     onConvertToTask,
+    onConvertToFile,
     enableFileUploads = true,
     dragHandle,
   }: TiptapEditorProps & { dragHandle?: React.ReactNode }) {
     const [isUpdating, setIsUpdating] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
     const prevValueRef = useRef(value);
 
     const refs = useEditorRefs({
@@ -91,14 +95,12 @@ export const TiptapEditor = memo(
     } as UseEditorOptions);
 
     const { handleKeyDown, menus } = useSlashCommand(editor, {
-      position,
       blockId,
-      onAddBlock,
-      onToggleUploading,
       onConvertToTask,
+      onConvertToFile,
+      onToggleUploading: setIsUploading,
       allowFileUploads: enableFileUploads,
     });
-
     useEffect(() => {
       if (editor && value !== prevValueRef.current) {
         const editorHTML = editor.getHTML();
@@ -187,7 +189,7 @@ export const TiptapEditor = memo(
         dragHandle={dragHandle}
         isTask={isTask}
         task={task || null}
-        isUpdating={isUpdating}
+        isUpdating={isUpdating || isUploading}
         setIsUpdating={setIsUpdating}
         onDeleteBlock={onDeleteBlock ? handleDelete : undefined}
         onInsertAbove={onInsertAbove}

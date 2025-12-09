@@ -38,8 +38,11 @@ interface Props {
   onDeleteBlock?: (blockId: string) => void;
   onReorder?: (newBlocks: Block[]) => void;
   editable?: boolean;
-  onToggleUploading?: (isUploading: boolean) => void;
   onConvertToTask?: (blockId: string) => void;
+  onConvertToFile?: (
+    blockId: string,
+    fileData: Record<string, unknown>,
+  ) => void;
 }
 
 const SortableBlockItem = memo(
@@ -60,8 +63,11 @@ const SortableBlockItem = memo(
     onSaveImmediate: () => void;
     onDeleteBlock?: (blockId: string) => void;
     editable?: boolean;
-    onToggleUploading?: (isUploading: boolean) => void;
     onConvertToTask?: (blockId: string) => void;
+    onConvertToFile?: (
+      blockId: string,
+      fileData: Record<string, unknown>,
+    ) => void;
     totalBlocks?: number;
   }) {
     const {
@@ -162,8 +168,8 @@ const SortableBlockItem = memo(
             task={task}
             editable={props.editable}
             dragHandle={dragHandle}
-            onToggleUploading={props.onToggleUploading}
             onConvertToTask={props.onConvertToTask}
+            onConvertToFile={props.onConvertToFile}
           />
         )}
       </div>
@@ -197,8 +203,8 @@ export function BlockList({
   onDeleteBlock,
   onReorder,
   editable = true,
-  onToggleUploading,
   onConvertToTask,
+  onConvertToFile,
 }: Props) {
   const blocksCount = blocks.length;
   const sensors = useSensors(
@@ -246,8 +252,8 @@ export function BlockList({
               onSaveImmediate={onSaveImmediate}
               onDeleteBlock={onDeleteBlock}
               editable={editable}
-              onToggleUploading={onToggleUploading}
               onConvertToTask={onConvertToTask}
+              onConvertToFile={onConvertToFile}
               totalBlocks={blocksCount}
             />
           ))}

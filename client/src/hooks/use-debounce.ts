@@ -11,13 +11,13 @@ export const useDebounce = (delay: number) => {
       if (key) {
         pendingChangesRef.current.set(key, callback);
       }
-      
+
       callbackRef.current = callback;
-      
+
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
-      
+
       timeoutRef.current = setTimeout(() => {
         if (!isFlushingRef.current && callbackRef.current) {
           isFlushingRef.current = true;
@@ -38,26 +38,26 @@ export const useDebounce = (delay: number) => {
 
   const flush = useCallback(() => {
     if (isFlushingRef.current) return;
-    
+
     isFlushingRef.current = true;
-    
+
     try {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
         timeoutRef.current = undefined;
       }
-      
+
       // Execute all pending changes in order
       const pendingCallbacks = Array.from(pendingChangesRef.current.values());
       pendingChangesRef.current.clear();
-      
+
       if (callbackRef.current) {
         callbackRef.current();
         callbackRef.current = undefined;
       }
-      
+
       // Execute any remaining queued callbacks
-      pendingCallbacks.forEach(cb => {
+      pendingCallbacks.forEach((cb) => {
         try {
           cb();
         } catch (error) {
