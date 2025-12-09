@@ -13,7 +13,7 @@ export const highlightBlock = (blockId: string): (() => void) | null => {
   const container = el.querySelector<HTMLElement>("[data-editor-container]");
   if (!container) {
     return null;
-  } 
+  }
 
   const rect = el.getBoundingClientRect();
   const isInViewport =
@@ -26,23 +26,22 @@ export const highlightBlock = (blockId: string): (() => void) | null => {
   }
 
   const originalBorder = container.style.border;
-    const originalBackground = container.style.background;
-    
-    container.style.border = "1px solid hsl(var(--button-primary))";
-    container.style.background = "hsl(var(--button-primary) / 0.1)";
+  const originalBackground = container.style.background;
 
-    const handleClickOutside = (event: MouseEvent) => {
-      if (!el.contains(event.target as Node)) {
-        cleanup();
-      }
-    };
+  container.style.border = "1px solid hsl(var(--button-primary))";
+  container.style.background = "hsl(var(--button-primary) / 0.1)";
 
-    const cleanup = () => {
-      container.style.border = originalBorder;
-      container.style.background = originalBackground;
-      document.removeEventListener("click", handleClickOutside);
-    };
+  const handleClickOutside = (event: MouseEvent) => {
+    if (!el.contains(event.target as Node)) {
+      cleanup();
+    }
+  };
 
+  const cleanup = () => {
+    container.style.border = originalBorder;
+    container.style.background = originalBackground;
+    document.removeEventListener("click", handleClickOutside);
+  };
 
   setTimeout(() => {
     document.addEventListener("click", handleClickOutside);

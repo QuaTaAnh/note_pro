@@ -216,7 +216,7 @@ export const WorkspaceButton = () => {
           <DialogFooter>
             <Button
               onClick={handleSave}
-              className="w-full h-9 bg-primary-button rounded-xl hover:bg-primary-buttonHover font-medium"
+              className="w-full h-9 bg-primary-button rounded-lg hover:bg-primary-buttonHover font-medium"
               disabled={
                 isUploading ||
                 !tempName.trim() ||

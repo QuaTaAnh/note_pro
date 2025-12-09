@@ -87,7 +87,7 @@ export const SlashCommand = ({
   return (
     <div
       ref={ref}
-      className="fixed bg-popover text-popover-foreground border border-border rounded-xl shadow-lg p-2 z-50 w-80 max-h-96 overflow-hidden"
+      className="fixed bg-popover text-popover-foreground border border-border rounded-lg shadow-lg p-2 z-50 w-80 max-h-96 overflow-hidden"
       style={{ top: position.top, left: position.left }}
       role="listbox"
       aria-activedescendant={commands[selectedIndex]?.id}

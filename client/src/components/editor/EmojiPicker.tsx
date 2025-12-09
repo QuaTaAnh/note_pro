@@ -293,7 +293,7 @@ export const EmojiPicker = ({ show, onSelect, close }: Props) => {
   return (
     <div
       ref={ref}
-      className="fixed bg-popover border border-border rounded-xl shadow-lg p-3 z-50 max-w-sm"
+      className="fixed bg-popover border border-border rounded-lg shadow-lg p-3 z-50 max-w-sm"
     >
       <div className="flex gap-1 mb-3 overflow-x-auto">
         {Object.entries(EMOJI_CATEGORIES).map(([key, category]) => {

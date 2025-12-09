@@ -31,7 +31,9 @@ const wsLink =
   typeof window !== "undefined"
     ? new GraphQLWsLink(
         createClient({
-          url: process.env.NEXT_PUBLIC_HASURA_WS_ENDPOINT || `${process.env.NEXT_PUBLIC_HASURA_SERVER_ENDPOINT?.replace("http", "ws")}/v1/graphql`,
+          url:
+            process.env.NEXT_PUBLIC_HASURA_WS_ENDPOINT ||
+            `${process.env.NEXT_PUBLIC_HASURA_SERVER_ENDPOINT?.replace("http", "ws")}/v1/graphql`,
           connectionParams: async () => {
             const session = await getSession();
             if (session?.token) {

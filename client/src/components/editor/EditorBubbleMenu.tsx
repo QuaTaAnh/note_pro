@@ -42,7 +42,7 @@ export const EditorBubbleMenu = ({ editor }: Props) => {
       if (!editor) return false;
       return editor.isActive(type);
     },
-    [editor, editorState],
+    [editor, editorState]
   );
 
   const getCurrentHighlightColor = useCallback(() => {
@@ -58,7 +58,7 @@ export const EditorBubbleMenu = ({ editor }: Props) => {
     >
       <div
         ref={bubbleMenuRef}
-        className="bg-white dark:bg-black border border-gray-200 dark:border-gray-700 shadow-md rounded-xl flex items-center gap-1 p-1"
+        className="bg-card dark:bg-black border border-gray-200 dark:border-gray-700 shadow-md rounded-lg flex items-center gap-1 p-1"
       >
         <BubbleButton
           onClick={() => editor.chain().focus().toggleBold().run()}

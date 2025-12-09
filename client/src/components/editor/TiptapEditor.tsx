@@ -25,7 +25,7 @@ interface TiptapEditorProps {
   onAddBlock?: (
     position: number,
     type: BlockType,
-    content?: Record<string, unknown>
+    content?: Record<string, unknown>,
   ) => void;
   onSaveImmediate?: () => void;
   onDeleteBlock?: () => void;
@@ -209,5 +209,5 @@ export const TiptapEditor = memo(
       prevProps.task?.status === nextProps.task?.status &&
       prevProps.task?.id === nextProps.task?.id
     );
-  }
+  },
 );

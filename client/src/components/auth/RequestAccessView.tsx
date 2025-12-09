@@ -151,7 +151,7 @@ export function RequestAccessView({ documentId }: RequestAccessViewProps) {
           <Button
             variant="default"
             size="sm"
-            className="gap-2 text-sm rounded-xl w-full"
+            className="gap-2 text-xs rounded-lg w-full"
             onClick={() => handleRequestAccess(PermissionType.READ)}
             disabled={isRequesting}
           >
@@ -186,7 +186,7 @@ export function RequestAccessView({ documentId }: RequestAccessViewProps) {
           <Button
             variant="outline"
             size="sm"
-            className="gap-2 text-sm rounded-xl"
+            className="gap-2 text-xs rounded-lg"
             onClick={logout}
             disabled={isLoggingOut}
           >

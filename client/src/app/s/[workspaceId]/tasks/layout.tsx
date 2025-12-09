@@ -54,7 +54,7 @@ export default function TasksLayout({ children }: TasksLayoutProps) {
     <TaskSettingsProvider>
       <div className="p-0 w-full h-full">
         <div className="flex flex-col items-start justify-start mx-auto w-full h-full min-h-0 max-w-screen-2xl gap-6">
-          <div className="w-full pt-4 flex items-center justify-between">
+          <div className="w-full pt-4 px-6 flex items-center justify-between">
             <div className="flex items-center gap-2 h-full">
               <NewTaskModal>
                 <Button
@@ -71,7 +71,7 @@ export default function TasksLayout({ children }: TasksLayoutProps) {
             <Setting />
           </div>
 
-          <div className="w-full">
+          <div className="w-full px-6">
             <div className="flex items-center gap-2">
               {NAV_ITEMS.map(({ id, label, icon: Icon, href, active }) => (
                 <Button
@@ -88,7 +88,7 @@ export default function TasksLayout({ children }: TasksLayoutProps) {
             </div>
           </div>
 
-          <div className="flex-1 w-full overflow-hidden">{children}</div>
+          <div className="flex-1 w-full px-6 overflow-hidden">{children}</div>
         </div>
       </div>
     </TaskSettingsProvider>
