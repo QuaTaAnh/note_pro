@@ -64,7 +64,7 @@ border border-transparent
           </div>
         </div>
       </div>
-      {onDeleteBlock && editable && (
+      {editable && (
         <div className="ml-1 flex-shrink-0 opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100">
           <BlockActionMenu
             blockId={blockId}

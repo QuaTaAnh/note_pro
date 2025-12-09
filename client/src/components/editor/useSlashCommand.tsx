@@ -125,6 +125,13 @@ export const useSlashCommand = (
   const onCommandSelect = useCallback(
     (cmd: string) => {
       if (!editor) return;
+
+      // Delete the "/" character before executing command
+      editor.commands.deleteRange({
+        from: editor.state.selection.from - 1,
+        to: editor.state.selection.from,
+      });
+
       switch (cmd) {
         case "emojis": {
           const { state } = editor.view;
@@ -164,6 +171,18 @@ export const useSlashCommand = (
 
   const handleKeyDown = useCallback(
     (view: EditorView, event: KeyboardEvent) => {
+      if (
+        showSlash &&
+        event.key !== "/" &&
+        event.key !== "Escape" &&
+        event.key !== "ArrowUp" &&
+        event.key !== "ArrowDown" &&
+        event.key !== "Enter"
+      ) {
+        setShowSlash(false);
+        return false;
+      }
+
       // Check for "[] " pattern (with space) to convert to task
       if (event.key === " " && onConvertToTask && blockId) {
         const { state } = view;
@@ -191,13 +210,15 @@ export const useSlashCommand = (
         const { $from } = selection;
         const textBefore = $from.nodeBefore?.textContent || "";
         if (textBefore === "" || textBefore.endsWith(" ")) {
-          const coords = view.coordsAtPos($from.pos);
-          setSlashPos({
-            top: coords.bottom + window.scrollY,
-            left: coords.left + window.scrollX,
-          });
-          setShowSlash(true);
-          return true;
+          setTimeout(() => {
+            const coords = view.coordsAtPos(state.selection.from);
+            setSlashPos({
+              top: coords.bottom + window.scrollY,
+              left: coords.left + window.scrollX,
+            });
+            setShowSlash(true);
+          }, 0);
+          return false; // Allow "/" to be typed normally
         }
       }
       if ((showSlash || showEmoji) && event.key === "Escape") {

@@ -78,7 +78,7 @@ export function useDocumentBlocksEditing({
 
       debounced(async () => {
         await updateBlockContent(blockId, { text: content });
-      });
+      }, `block-${blockId}`);
     },
     [debounced, updateBlockContent],
   );
@@ -91,7 +91,7 @@ export function useDocumentBlocksEditing({
         );
         debounced(async () => {
           await updateBlockContent(rootBlock.id, { title });
-        });
+        }, `title-${rootBlock.id}`);
       }
     },
     [rootBlock, debounced, updateBlockContent],

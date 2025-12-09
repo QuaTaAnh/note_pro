@@ -70,7 +70,6 @@ export default function TiptapBlockEditor({ pageId, className = "" }: Props) {
                   editable={canEdit}
                   onToggleUploading={setIsUploadingFile}
                   onConvertToTask={handleConvertToTask}
-                  totalBlocks={blocks.length}
                 />
               </TiptapWrapper>
               <div className="h-[50vh]" />

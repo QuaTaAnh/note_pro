@@ -8,6 +8,7 @@ interface EnterHandlerOptions {
     content?: Record<string, unknown>,
   ) => void;
   position: number;
+  onFlush?: () => void;
 }
 
 export const EnterHandler = Extension.create<EnterHandlerOptions>({
@@ -17,6 +18,7 @@ export const EnterHandler = Extension.create<EnterHandlerOptions>({
     return {
       onAddBlock: undefined,
       position: 0,
+      onFlush: undefined,
     };
   },
 
@@ -45,6 +47,10 @@ export const EnterHandler = Extension.create<EnterHandlerOptions>({
             const lifted = this.editor.commands.liftListItem("listItem");
             if (lifted) {
               if (this.options.onAddBlock) {
+                // Flush pending changes before creating new block
+                if (this.options.onFlush) {
+                  this.options.onFlush();
+                }
                 this.options.onAddBlock(
                   this.options.position + 1,
                   BlockType.PARAGRAPH,
@@ -61,7 +67,12 @@ export const EnterHandler = Extension.create<EnterHandlerOptions>({
             const listContent = isBulletList
               ? { text: "<ul><li><p></p></li></ul>" }
               : { text: "<ol><li><p></p></li></ol>" };
-
+            
+            // Flush pending changes before creating new block
+            if (this.options.onFlush) {
+              this.options.onFlush();
+            }
+            
             this.options.onAddBlock(
               this.options.position + 1,
               BlockType.PARAGRAPH,
@@ -78,6 +89,11 @@ export const EnterHandler = Extension.create<EnterHandlerOptions>({
         }
 
         if (this.options.onAddBlock) {
+          // Flush pending changes before creating new block
+          if (this.options.onFlush) {
+            this.options.onFlush();
+          }
+          
           this.options.onAddBlock(
             this.options.position + 1,
             BlockType.PARAGRAPH,
