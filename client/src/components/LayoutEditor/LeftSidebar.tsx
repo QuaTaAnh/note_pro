@@ -8,10 +8,10 @@ import { showToast } from "@/lib/toast";
 import { formatDate } from "@/lib/utils";
 import { BlockType } from "@/types/types";
 import { CheckCircle, Menu, Paperclip } from "lucide-react";
-import Image from "next/image";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { getPlainText } from "../page/CardDocument";
 import { Loading } from "../ui/loading";
+import { CardDocumentPreview } from "../page/CardDocumentPreview";
 import {
   SectionItem,
   SidebarAttachment,
@@ -31,27 +31,27 @@ export const LeftSidebar = ({ pageId }: Props) => {
     loading,
   } = useDocumentBlocksData(pageId);
   const [pendingTaskIds, setPendingTaskIds] = useState<Set<string>>(
-    () => new Set(),
+    () => new Set()
   );
   const [updateTask] = useUpdateTaskMutation();
   const cleanupHighlightRef = useRef<(() => void) | null>(null);
 
   const textBlocks = useMemo(
     () => (blocks || []).filter((block) => block.type === BlockType.PARAGRAPH),
-    [blocks],
+    [blocks]
   );
 
   const taskBlocks = useMemo(
     () =>
       (blocks || []).filter(
-        (block) => block.type === BlockType.TASK && block.tasks?.length,
+        (block) => block.type === BlockType.TASK && block.tasks?.length
       ),
-    [blocks],
+    [blocks]
   );
 
   const attachmentBlocks = useMemo(
     () => (blocks || []).filter((block) => block.type === BlockType.FILE),
-    [blocks],
+    [blocks]
   );
 
   const sectionItems = useMemo<SectionItem[]>(() => {
@@ -144,20 +144,31 @@ export const LeftSidebar = ({ pageId }: Props) => {
         });
       }
     },
-    [updateTask, pageId],
+    [updateTask, pageId]
   );
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
       <div className="py-4 px-2 h-full flex flex-col overflow-hidden">
         <div className="flex flex-row items-center gap-2 mb-3 shrink-0">
-          <Image
-            src="/images/document-icon.png"
-            alt="Document"
-            width={36}
-            height={36}
-            className="h-9 w-9 shrink-0"
-          />
+          <div
+            className="border rounded-sm overflow-hidden shrink-0 relative p-2"
+            style={{ width: "24px", height: "32px" }}
+          >
+            <div
+              className="absolute inset-0.5 overflow-hidden"
+              style={{
+                transform: "scale(0.07)",
+                transformOrigin: "top left",
+                width: "266px",
+                height: "266px",
+              }}
+            >
+              <div className="text-[10px]">
+                <CardDocumentPreview blocks={blocks?.slice(0, 5) || []} />
+              </div>
+            </div>
+          </div>
 
           <div className="flex flex-col flex-1 min-w-0">
             {loading ? (
