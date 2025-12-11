@@ -10,6 +10,7 @@ import { useSidebar } from "@/context/SidebarContext";
 import { ROUTES } from "@/lib/routes";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { MdOutlineViewSidebar } from "react-icons/md";
 import { NotificationButton } from "./components/NotificationButton";
 import { RequestEditButton } from "./components/RequestEditButton";
@@ -24,7 +25,15 @@ interface Props {
 export default function Header({ workspaceSlug, isEditorPage }: Props) {
   const { toggle, toggleRight } = useSidebar();
   const { documentId } = useDocumentAccess();
-  const { isLoading } = useLoading();
+  const { isLoading, startLoading } = useLoading();
+  const pathname = usePathname();
+
+  const handleLogoClick = () => {
+    const allDocsPath = ROUTES.WORKSPACE_ALL_DOCS(workspaceSlug);
+    if (pathname !== allDocsPath) {
+      startLoading();
+    }
+  };
 
   return (
     workspaceSlug && (
@@ -35,7 +44,10 @@ export default function Header({ workspaceSlug, isEditorPage }: Props) {
           style={{ height: HEADER_HEIGHT }}
         >
           <div className="flex items-center gap-2">
-            <Link href={ROUTES.WORKSPACE_ALL_DOCS(workspaceSlug)}>
+            <Link
+              href={ROUTES.WORKSPACE_ALL_DOCS(workspaceSlug)}
+              onClick={handleLogoClick}
+            >
               <Image
                 src="/images/logo.png"
                 alt="Bin Craft Logo"

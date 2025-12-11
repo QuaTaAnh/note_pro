@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useLoading } from "@/context/LoadingContext";
+import { usePathname } from "next/navigation";
 
 export type SidebarButtonVariant = "default" | "primary" | "secondary";
 
@@ -36,6 +37,7 @@ export function SidebarButton({
   action,
 }: SidebarButtonProps) {
   const { startLoading } = useLoading();
+  const pathname = usePathname();
 
   const variantClasses = {
     default: "",
@@ -53,7 +55,7 @@ export function SidebarButton({
   );
 
   const handleLinkClick = () => {
-    if (href) {
+    if (href && pathname !== href && !pathname.startsWith(href + "/")) {
       startLoading();
     }
   };
