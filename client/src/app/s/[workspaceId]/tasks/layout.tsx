@@ -49,7 +49,7 @@ export default function TasksLayout({ children }: TasksLayoutProps) {
   ];
 
   const navigateTo = (href: string) => {
-    if (workspaceSlug) {
+    if (workspaceSlug && pathname !== href) {
       startLoading();
       router.push(href);
     }
