@@ -2,8 +2,8 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ROUTES } from "@/lib/routes";
-import { useWorkspace } from "@/hooks/use-workspace";
+import { ROUTES } from "@/lib/utils/routes";
+import { useWorkspace } from "@/hooks/useWorkspace";
 import { PageLoading } from "@/components/ui/loading";
 
 export default function TasksPage() {

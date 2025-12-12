@@ -3,9 +3,9 @@
 import { Calendar } from "@/components/calendar";
 import { getPlainText } from "@/components/page/CardDocument";
 import { PageLoading } from "@/components/ui/loading";
-import { TASK_STATUS } from "@/consts";
+import { TASK_STATUS } from "@/constants";
 import { useGetAllScheduledTasksQuery } from "@/graphql/queries/__generated__/task.generated";
-import { useWorkspace } from "@/hooks/use-workspace";
+import { useWorkspace } from "@/hooks/useWorkspace";
 import { SchedulerAppointment } from "@/types/app";
 import { useMemo } from "react";
 

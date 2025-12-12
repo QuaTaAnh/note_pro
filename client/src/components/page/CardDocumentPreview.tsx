@@ -5,8 +5,8 @@ import { Block } from "@/hooks";
 import { getPlainText } from "./CardDocument";
 import { Check, Calendar, Paperclip } from "lucide-react";
 import { cn, formatDate } from "@/lib/utils";
-import { TASK_STATUS } from "@/consts";
-import { formatFileSize } from "@/lib/file-utils";
+import { TASK_STATUS } from "@/constants";
+import { formatFileSize } from "@/lib/cloudinary/fileUtils";
 import Image from "next/image";
 
 interface Props {

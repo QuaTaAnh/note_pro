@@ -1,6 +1,6 @@
 "use client";
 
-import { IMAGE_EXTENSIONS } from "@/consts";
+import { IMAGE_EXTENSIONS } from "@/constants";
 import { Block } from "@/hooks";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -11,7 +11,7 @@ import {
   getFileBadge,
   getFileExtension,
   canPreviewInBrowser,
-} from "@/lib/file-utils";
+} from "@/lib/cloudinary/fileUtils";
 import { ImageModal } from "./ImageModal";
 
 interface FileBlockCardProps {
@@ -38,7 +38,7 @@ export const FileBlockCard = ({
   const fileSize = content.fileSize ? formatFileSize(content.fileSize) : null;
   const fileExtension = useMemo(
     () => getFileExtension(fileName, content.fileType),
-    [fileName, content.fileType]
+    [fileName, content.fileType],
   );
   const fileBadge = useMemo(() => getFileBadge(fileExtension), [fileExtension]);
   const badgeLabel = fileBadge.label;
@@ -58,7 +58,7 @@ export const FileBlockCard = ({
 
   const canPreview = useMemo(
     () => canPreviewInBrowser(fileType, fileExtension),
-    [fileType, fileExtension]
+    [fileType, fileExtension],
   );
 
   const handleDoubleClick = useCallback(() => {
@@ -96,7 +96,7 @@ export const FileBlockCard = ({
           onDoubleClick={handleDoubleClick}
           className={cn(
             "flex-1 min-w-0 rounded p-1.5 text-left transition-all duration-200 hover:shadow-md bg-muted/30 border border-transparent focus-visible:outline-none",
-            !fileUrl && "cursor-not-allowed opacity-70"
+            !fileUrl && "cursor-not-allowed opacity-70",
           )}
           disabled={!fileUrl}
           data-editor-container
@@ -115,7 +115,7 @@ export const FileBlockCard = ({
                   <span
                     className={cn(
                       "text-[11px] font-semibold uppercase tracking-[0.08em]",
-                      fileBadge.textClass
+                      fileBadge.textClass,
                     )}
                   >
                     {badgeLabel}

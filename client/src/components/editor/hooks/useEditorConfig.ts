@@ -1,7 +1,7 @@
-import { CustomCode } from "@/lib/customCodeTiptap";
-import { EnterHandler } from "@/lib/enterHandler";
-import { PasteHandler } from "@/lib/pasteHandler";
-import { PerformanceOptimizer } from "@/lib/performanceOptimizer";
+import { CustomCode } from "@/lib/editor/customCodeTiptap";
+import { EnterHandler } from "@/lib/editor/enterHandler";
+import { PasteHandler } from "@/lib/editor/pasteHandler";
+import { PerformanceOptimizer } from "@/lib/utils/performanceOptimizer";
 import { BlockType } from "@/types/types";
 import CharacterCount from "@tiptap/extension-character-count";
 import Highlight from "@tiptap/extension-highlight";

@@ -1,7 +1,7 @@
 import { memo, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { Task } from "@/types/app";
-import { TASK_STATUS } from "@/consts";
+import { TASK_STATUS } from "@/constants";
 import { CheckTask } from "./CheckTask";
 import { BlockActionMenu } from "@/components/page/BlockActionMenu";
 

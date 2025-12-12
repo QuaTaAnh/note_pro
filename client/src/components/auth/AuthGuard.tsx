@@ -3,8 +3,8 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ROUTES } from "@/lib/routes";
-import { AUTHENTICATED, UNAUTHENTICATED } from "@/consts";
+import { ROUTES } from "@/lib/utils/routes";
+import { AUTHENTICATED, UNAUTHENTICATED } from "@/constants";
 import { PageLoading } from "@/components/ui/loading";
 
 interface AuthGuardProps {

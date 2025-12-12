@@ -7,11 +7,11 @@ import {
   useGetAllTasksQuery,
 } from "@/graphql/queries/__generated__/task.generated";
 import { useUpdateTaskMutation } from "@/graphql/mutations/__generated__/task.generated";
-import { useWorkspace } from "@/hooks/use-workspace";
+import { useWorkspace } from "@/hooks/useWorkspace";
 import { Task } from "@/types/app";
 import { TaskItem } from "@/components/page/TaskItem";
-import { showToast } from "@/lib/toast";
-import { TASK_STATUS } from "@/consts";
+import { showToast } from "@/lib/utils/toast";
+import { TASK_STATUS } from "@/constants";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { VariableSizeList as List } from "react-window";
 import { useTaskSettings } from "@/context/TaskSettingsProvider";

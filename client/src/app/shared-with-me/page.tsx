@@ -3,7 +3,7 @@
 import { DocumentGrid } from "@/components/page/DocumentGrid";
 import { PageLoading } from "@/components/ui/loading";
 import { useGetSharedWithMeDocsQuery } from "@/graphql/queries/__generated__/document.generated";
-import { useUserId } from "@/hooks/use-auth";
+import { useUserId } from "@/hooks/useAuth";
 import { Document } from "@/types/app";
 import { useMemo } from "react";
 import { FiUsers } from "react-icons/fi";

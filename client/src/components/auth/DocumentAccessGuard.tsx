@@ -2,8 +2,8 @@
 
 import { useGetDocumentBlocksQuery } from "@/graphql/queries/__generated__/document.generated";
 import { useGetAccessRequestByDocumentQuery } from "@/graphql/queries/__generated__/access-request.generated";
-import { useWorkspace } from "@/hooks/use-workspace";
-import { useAuth, useUserId } from "@/hooks/use-auth";
+import { useWorkspace } from "@/hooks/useWorkspace";
+import { useAuth, useUserId } from "@/hooks/useAuth";
 import { useMemo, useEffect } from "react";
 import { Loading } from "../ui/loading";
 import { RequestAccessView } from "./RequestAccessView";

@@ -1,7 +1,7 @@
 "use client";
 
-import { SearchResult } from "@/hooks/use-search";
-import { useWorkspace } from "@/hooks/use-workspace";
+import { SearchResult } from "@/hooks/useSearch";
+import { useWorkspace } from "@/hooks/useWorkspace";
 import { useMemo, useState } from "react";
 import { SearchEmptyState } from "./SearchEmptyState";
 import { SearchSection } from "./SearchSection";

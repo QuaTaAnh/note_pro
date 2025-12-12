@@ -1,16 +1,16 @@
 "use client";
 
-import { NewTaskModal } from "@/components/Layout/components/NewTaskModal";
+import { NewTaskModal } from "@/features/layout/MainLayout/components/NewTaskModal";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { useWorkspace } from "@/hooks/use-workspace";
-import { ROUTES } from "@/lib/routes";
+import { useWorkspace } from "@/hooks/useWorkspace";
+import { ROUTES } from "@/lib/utils/routes";
 import { PlusIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { FiInbox } from "react-icons/fi";
 import { HiOutlineClipboardList } from "react-icons/hi";
 import { PiSunHorizonBold } from "react-icons/pi";
-import { Setting } from "./Setting";
+import { Setting } from "./_components/Setting";
 import { TaskSettingsProvider } from "@/context/TaskSettingsProvider";
 import { useLoading } from "@/context/LoadingContext";
 

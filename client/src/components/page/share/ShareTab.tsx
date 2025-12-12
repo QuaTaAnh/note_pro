@@ -13,9 +13,9 @@ import {
   useUpdateDocumentPermissionMutation,
   useGetDocumentSharedUsersQuery,
 } from "@/graphql/mutations/__generated__/document-share.generated";
-import { useUserId } from "@/hooks/use-auth";
-import { useDocumentPermission } from "@/hooks/use-document-permission";
-import { showToast } from "@/lib/toast";
+import { useUserId } from "@/hooks/useAuth";
+import { useDocumentPermission } from "@/hooks/useDocumentPermission";
+import { showToast } from "@/lib/utils/toast";
 import { PermissionType as PermissionTypeEnum } from "@/types/types";
 
 interface ShareTabProps {

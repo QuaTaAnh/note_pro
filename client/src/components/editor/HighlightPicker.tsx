@@ -3,7 +3,7 @@
 import { useRef, useEffect, CSSProperties } from "react";
 import { ChevronDown } from "lucide-react";
 import { FaHighlighter } from "react-icons/fa";
-import { HIGHLIGHT_COLORS } from "@/consts";
+import { HIGHLIGHT_COLORS } from "@/constants";
 
 interface Props {
   show: boolean;

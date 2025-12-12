@@ -3,14 +3,14 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ButtonLoading, PageLoading } from "@/components/ui/loading";
-import { AUTHENTICATED } from "@/consts";
-import { ROUTES } from "@/lib/routes";
+import { AUTHENTICATED } from "@/constants";
+import { ROUTES } from "@/lib/utils/routes";
 import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
-import { useWorkspace } from "@/hooks/use-workspace";
+import { useWorkspace } from "@/hooks/useWorkspace";
 
 export default function LoginPage() {
   const { status } = useSession();

@@ -1,11 +1,11 @@
 "use client";
 
-import { ROUTES } from "@/lib/routes";
+import { ROUTES } from "@/lib/utils/routes";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { AUTHENTICATED } from "@/consts";
-import { useWorkspace } from "@/hooks/use-workspace";
+import { AUTHENTICATED } from "@/constants";
+import { useWorkspace } from "@/hooks/useWorkspace";
 import { PageLoading } from "@/components/ui/loading";
 
 export default function Home() {

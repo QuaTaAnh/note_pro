@@ -1,6 +1,6 @@
-import { TASK_STATUS } from "@/consts";
+import { TASK_STATUS } from "@/constants";
 import { useUpdateTaskMutation } from "@/graphql/mutations/__generated__/task.generated";
-import showToast from "@/lib/toast";
+import showToast from "@/lib/utils/toast";
 import { cn } from "@/lib/utils";
 import { Task } from "@/types/app";
 import { Check } from "lucide-react";

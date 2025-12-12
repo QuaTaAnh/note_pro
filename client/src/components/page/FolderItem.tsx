@@ -1,9 +1,9 @@
-import { FolderNode } from "@/lib/folder";
-import { iconMap } from "@/lib/icons";
-import { ROUTES } from "@/lib/routes";
+import { FolderNode } from "@/lib/utils/folder";
+import { iconMap } from "@/lib/utils/icons";
+import { ROUTES } from "@/lib/utils/routes";
 import { useState } from "react";
 import { FiChevronDown, FiChevronRight } from "react-icons/fi";
-import { SidebarButton } from "../Layout/components/SidebarButton";
+import { SidebarButton } from "@/features/layout/MainLayout/components/SidebarButton";
 import { Button } from "../ui/button";
 import { usePathname } from "next/navigation";
 

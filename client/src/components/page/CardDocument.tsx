@@ -9,10 +9,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { useWorkspace } from "@/hooks/use-workspace";
-import { useUserId } from "@/hooks/use-auth";
+import { useWorkspace } from "@/hooks/useWorkspace";
+import { useUserId } from "@/hooks/useAuth";
 import { useLoading } from "@/context/LoadingContext";
-import { ROUTES } from "@/lib/routes";
+import { ROUTES } from "@/lib/utils/routes";
 import { formatDate } from "@/lib/utils";
 import { Document } from "@/types/app";
 import { Folder } from "lucide-react";

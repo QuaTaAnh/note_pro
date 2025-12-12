@@ -1,4 +1,4 @@
-import { ROUTES } from "@/lib/routes";
+import { ROUTES } from "@/lib/utils/routes";
 import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 

@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { highlightBlock } from "@/lib/block-highlight";
+import { highlightBlock } from "@/lib/editor/blockHighlight";
 import { MoreVertical } from "lucide-react";
 import { useCallback, useRef } from "react";
 import { FiDownload } from "react-icons/fi";
