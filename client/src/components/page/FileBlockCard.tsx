@@ -11,7 +11,7 @@ import {
   getFileBadge,
   getFileExtension,
   canPreviewInBrowser,
-} from "@/lib/file-utils";
+} from "@/lib/fileUtils";
 import { ImageModal } from "./ImageModal";
 
 interface FileBlockCardProps {

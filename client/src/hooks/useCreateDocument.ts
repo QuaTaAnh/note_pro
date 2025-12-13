@@ -1,8 +1,8 @@
 "use client";
 
 import { useCreateUntitledPageMutation } from "@/graphql/mutations/__generated__/document.generated";
-import { useUserId } from "@/hooks/use-auth";
-import { useWorkspace } from "@/hooks/use-workspace";
+import { useUserId } from "@/hooks/useAuth";
+import { useWorkspace } from "@/hooks/useWorkspace";
 import { useLoading } from "@/context/LoadingContext";
 import { ROUTES } from "@/lib/routes";
 import { BlockType } from "@/types/types";

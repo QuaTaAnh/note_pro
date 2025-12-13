@@ -12,9 +12,9 @@ import { InputField } from "@/components/ui/input-field";
 import { DEFAULT_WORKSPACE_IMAGE } from "@/consts";
 import { useUpdateWorkspaceMutation } from "@/graphql/mutations/__generated__/workspace.generated";
 import { useGetWorkspaceByIdQuery } from "@/graphql/queries/__generated__/workspace.generated";
-import { useImageUpload } from "@/hooks/use-image-upload";
-import { toast } from "@/hooks/use-toast";
-import { useWorkspace } from "@/hooks/use-workspace";
+import { useImageUpload } from "@/hooks/useImageUpload";
+import { toast } from "@/hooks/useToast";
+import { useWorkspace } from "@/hooks/useWorkspace";
 import { cn } from "@/lib/utils";
 import { Camera, X } from "lucide-react";
 import Image from "next/image";
@@ -56,7 +56,7 @@ export const WorkspaceButton = () => {
   }, [isOpen, data]);
 
   const handleFileSelect = async (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -143,7 +143,7 @@ export const WorkspaceButton = () => {
                     className={cn(
                       "relative overflow-hidden transition-all cursor-pointer",
                       "w-24 h-24 rounded-[20px]",
-                      tempImageUrl ? "bg-muted" : "bg-muted/50",
+                      tempImageUrl ? "bg-muted" : "bg-muted/50"
                     )}
                     onClick={() =>
                       !isUploading && fileInputRef.current?.click()

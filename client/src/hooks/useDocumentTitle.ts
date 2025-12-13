@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 import { useMemo, useRef } from "react";
-import { useDocumentBlocksData } from "./use-document-blocks-data";
+import { useDocumentBlocksData } from "./useDocumentBlocksData";
 import { getPlainText } from "@/components/page/CardDocument";
 
 interface UseDocumentTitleOptions {

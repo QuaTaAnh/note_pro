@@ -3,7 +3,7 @@
 import { useGetDocumentBlocksQuery } from "@/graphql/queries/__generated__/document.generated";
 import { BlockType } from "@/types/types";
 import { useMemo } from "react";
-import { Block } from "./use-blocks";
+import { Block } from "./useBlocks";
 
 export function useDocumentBlocksData(pageId: string) {
   const { data, loading } = useGetDocumentBlocksQuery({

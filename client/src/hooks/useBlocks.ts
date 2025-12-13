@@ -10,8 +10,8 @@ import {
   GetDocumentBlocksDocument,
   GetDocumentBlocksQuery,
 } from "@/graphql/queries/__generated__/document.generated";
-import { useUserId } from "@/hooks/use-auth";
-import { useWorkspace } from "@/hooks/use-workspace";
+import { useUserId } from "@/hooks/useAuth";
+import { useWorkspace } from "@/hooks/useWorkspace";
 import { useState } from "react";
 
 export type Block = GetDocumentBlocksQuery["blocks"][number];

@@ -13,7 +13,7 @@ import {
   useMarkNotificationAsReadMutation,
 } from "@/graphql/mutations/__generated__/notification.generated";
 import { useNotificationSubscriptionSubscription } from "@/graphql/queries/__generated__/notification.generated";
-import { useUserId } from "@/hooks/use-auth";
+import { useUserId } from "@/hooks/useAuth";
 import { showToast } from "@/lib/toast";
 import { Notification } from "@/types/app";
 import { AccessRequestStatus } from "@/types/types";

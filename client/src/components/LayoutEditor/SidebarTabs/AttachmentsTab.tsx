@@ -1,4 +1,4 @@
-import { getFileBadge, getFileExtension } from "@/lib/file-utils";
+import { getFileBadge, getFileExtension } from "@/lib/fileUtils";
 import { Paperclip } from "lucide-react";
 import Image from "next/image";
 import { EmptyState } from "./EmptyState";

@@ -4,8 +4,8 @@ import {
 } from "@/graphql/queries/__generated__/search.generated";
 import { useCallback, useEffect, useState } from "react";
 import { useDebounce as useDebounceValue } from "use-debounce";
-import { useWorkspace } from "./use-workspace";
-import { useAuth } from "./use-auth";
+import { useWorkspace } from "./useWorkspace";
+import { useAuth } from "./useAuth";
 
 export interface SearchResult {
   folders: SearchAllQuery["folders"];

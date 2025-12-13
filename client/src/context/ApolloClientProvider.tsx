@@ -1,6 +1,6 @@
 "use client";
 
-import client from "@/lib/apollo-client";
+import client from "@/lib/apolloClient";
 import { ApolloProvider } from "@apollo/client";
 
 export function ApolloClientProvider({

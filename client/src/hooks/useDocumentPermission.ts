@@ -1,8 +1,8 @@
 "use client";
 
-import { useUserId } from "./use-auth";
+import { useUserId } from "./useAuth";
 import { useGetAccessRequestByDocumentQuery } from "@/graphql/queries/__generated__/access-request.generated";
-import { useWorkspace } from "./use-workspace";
+import { useWorkspace } from "./useWorkspace";
 import { useGetDocumentBlocksQuery } from "@/graphql/queries/__generated__/document.generated";
 import { useMemo } from "react";
 import { AccessRequestStatus, BlockType, PermissionType } from "@/types/types";

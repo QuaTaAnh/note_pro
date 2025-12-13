@@ -4,7 +4,7 @@ import React from "react";
 import { Search } from "lucide-react";
 import { InputField } from "@/components/ui/input-field";
 import { SearchResults } from "./SearchResults";
-import { useSearch } from "@/hooks/use-search";
+import { useSearch } from "@/hooks/useSearch";
 import { cn } from "@/lib/utils";
 
 interface SearchInputFieldProps {

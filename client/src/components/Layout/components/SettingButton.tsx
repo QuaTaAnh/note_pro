@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LogOut } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { useLogout } from "@/hooks/use-logout";
+import { useLogout } from "@/hooks/useLogout";
 import Image from "next/image";
 
 export const SettingButton = () => {

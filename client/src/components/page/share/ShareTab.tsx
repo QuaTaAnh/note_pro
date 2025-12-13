@@ -13,8 +13,8 @@ import {
   useUpdateDocumentPermissionMutation,
   useGetDocumentSharedUsersQuery,
 } from "@/graphql/mutations/__generated__/document-share.generated";
-import { useUserId } from "@/hooks/use-auth";
-import { useDocumentPermission } from "@/hooks/use-document-permission";
+import { useUserId } from "@/hooks/useAuth";
+import { useDocumentPermission } from "@/hooks/useDocumentPermission";
 import { showToast } from "@/lib/toast";
 import { PermissionType as PermissionTypeEnum } from "@/types/types";
 
