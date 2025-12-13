@@ -1,12 +1,12 @@
 "use client";
 
 import { useLogout } from "@/hooks";
-import { useBinCraftTitle } from "@/hooks/use-bin-craft-title";
+import { useBinCraftTitle } from "@/hooks/useBinCraftTitle";
 import { LogOut } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { FiLock, FiClock, FiXCircle } from "react-icons/fi";
 import { Button } from "../ui/button";
-import { useUserId } from "@/hooks/use-auth";
+import { useUserId } from "@/hooks/useAuth";
 import { useGetAccessRequestByDocumentQuery } from "@/graphql/queries/__generated__/access-request.generated";
 import { useCreateAccessRequestMutation } from "@/graphql/mutations/__generated__/access-request.generated";
 import { useCreateNotificationMutation } from "@/graphql/mutations/__generated__/notification.generated";

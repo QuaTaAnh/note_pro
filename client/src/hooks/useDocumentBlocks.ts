@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { Block } from "@/hooks";
-import { useDocumentBlocksData } from "@/hooks/use-document-blocks-data";
-import { useDocumentBlocksEditing } from "@/hooks/use-document-blocks-editing";
+import { useDocumentBlocksData } from "@/hooks/useDocumentBlocksData";
+import { useDocumentBlocksEditing } from "@/hooks/useDocumentBlocksEditing";
 
 export function useDocumentBlocks(pageId: string) {
   const { loading, processedBlocks, processedRootBlock } =

@@ -3,7 +3,7 @@
 import { NewTaskModal } from "@/components/Layout/components/NewTaskModal";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { useWorkspace } from "@/hooks/use-workspace";
+import { useWorkspace } from "@/hooks/useWorkspace";
 import { ROUTES } from "@/lib/routes";
 import { PlusIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";

@@ -1,6 +1,6 @@
 import { useGetFoldersQuery } from "@/graphql/queries/__generated__/folder.generated";
 import { NewFolderButton } from "./NewFolderButton";
-import { useWorkspace } from "@/hooks/use-workspace";
+import { useWorkspace } from "@/hooks/useWorkspace";
 import { buildTree, FolderNode } from "@/lib/folder";
 import { FolderItem } from "@/components/page/FolderItem";
 

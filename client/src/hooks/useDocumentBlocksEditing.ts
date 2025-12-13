@@ -5,7 +5,7 @@ import { BlockType } from "@/types/types";
 import { useCallback, useEffect, useState } from "react";
 import { useCreateTaskMutation } from "@/graphql/mutations/__generated__/task.generated";
 import { TASK_STATUS } from "@/consts";
-import { useUserId } from "@/hooks/use-auth";
+import { useUserId } from "@/hooks/useAuth";
 import showToast from "@/lib/toast";
 import { gql } from "@apollo/client";
 

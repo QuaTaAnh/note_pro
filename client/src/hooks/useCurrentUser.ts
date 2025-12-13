@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { useSession } from "next-auth/react";
-import { useAuth } from "./use-auth";
+import { useAuth } from "./useAuth";
 
 export interface CurrentUser {
   id: string | null;

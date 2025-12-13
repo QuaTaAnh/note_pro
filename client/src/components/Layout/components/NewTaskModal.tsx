@@ -19,8 +19,8 @@ import {
 import { useCreateUntitledPageMutation } from "@/graphql/mutations/__generated__/document.generated";
 import { useCreateTaskMutation } from "@/graphql/mutations/__generated__/task.generated";
 import { useGetAllDocsLazyQuery } from "@/graphql/queries/__generated__/document.generated";
-import { useUserId } from "@/hooks/use-auth";
-import { useWorkspace } from "@/hooks/use-workspace";
+import { useUserId } from "@/hooks/useAuth";
+import { useWorkspace } from "@/hooks/useWorkspace";
 import { showToast } from "@/lib/toast";
 import React, { useRef, useState } from "react";
 import { FaInbox } from "react-icons/fa";

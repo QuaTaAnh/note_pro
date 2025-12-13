@@ -9,7 +9,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { useCurrentUser } from "./use-current-user";
+import { useCurrentUser } from "./useCurrentUser";
 
 type Serializer<T> = (value: T) => string;
 type Deserializer<T> = (value: string) => T;

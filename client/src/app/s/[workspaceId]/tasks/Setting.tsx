@@ -9,14 +9,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { GiSettingsKnobs } from "react-icons/gi";
 import { CheckCircle } from "lucide-react";
-import { taskToDisplayFormat } from "@/hooks/use-filtered-tasks";
+import { taskToDisplayFormat } from "@/hooks/useFilteredTasks";
 import { CompletedTasksModal } from "@/components/Layout/components/CompletedTasksModal";
 import {
   useGetCompletedTasksLazyQuery,
   GetCompletedTasksDocument,
 } from "@/graphql/queries/__generated__/task.generated";
 import { useUpdateTaskMutation } from "@/graphql/mutations/__generated__/task.generated";
-import { useWorkspace } from "@/hooks/use-workspace";
+import { useWorkspace } from "@/hooks/useWorkspace";
 import { showToast } from "@/lib/toast";
 import { TASK_STATUS } from "@/consts";
 import { useCallback } from "react";

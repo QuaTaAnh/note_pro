@@ -5,7 +5,7 @@ import { useCreateAccessRequestMutation } from "@/graphql/mutations/__generated_
 import { useCreateNotificationMutation } from "@/graphql/mutations/__generated__/notification.generated";
 import { useGetAccessRequestByDocumentQuery } from "@/graphql/queries/__generated__/access-request.generated";
 import { useGetDocumentBlocksQuery } from "@/graphql/queries/__generated__/document.generated";
-import { useUserId } from "@/hooks/use-auth";
+import { useUserId } from "@/hooks/useAuth";
 import { showToast } from "@/lib/toast";
 import { AccessRequestStatus, BlockType, PermissionType } from "@/types/types";
 import { useSession } from "next-auth/react";

@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useSoftDeleteDocumentMutation } from "@/graphql/mutations/__generated__/document.generated";
 import { useRemoveDocumentAccessMutation } from "@/graphql/mutations/__generated__/document-share.generated";
-import { useUserId } from "@/hooks/use-auth";
+import { useUserId } from "@/hooks/useAuth";
 import showToast from "@/lib/toast";
 import type { Reference } from "@apollo/client";
 import React from "react";
