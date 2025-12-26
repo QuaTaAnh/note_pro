@@ -32,7 +32,7 @@ export function SearchResults({ results, onResultClick }: Props) {
       folders: folders.length,
       shared: sharedDocuments.length,
     }),
-    [folders.length, documents.length, tasks.length, sharedDocuments.length]
+    [folders.length, documents.length, tasks.length, sharedDocuments.length],
   );
 
   if (isLoading) {
@@ -64,7 +64,7 @@ export function SearchResults({ results, onResultClick }: Props) {
                 "pb-3 text-sm font-medium transition-colors relative",
                 activeTab === tab.value
                   ? "text-primary"
-                  : "text-muted-foreground hover:text-foreground"
+                  : "text-muted-foreground hover:text-foreground",
               )}
             >
               {tab.label}

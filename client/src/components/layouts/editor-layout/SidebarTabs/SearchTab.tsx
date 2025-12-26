@@ -57,74 +57,77 @@ export const SearchTab = ({ blocks, onScrollToBlock }: SearchTabProps) => {
   }, [blocks, searchFilter, searchQuery]);
 
   return (
-    <div className="text-sm space-y-3">
-      <div className="space-y-2">
-        <Input
-          value={searchQuery}
-          onChange={(event) => setSearchQuery(event.target.value)}
-          placeholder="Search in document"
-          className="h-8 text-xs"
-        />
-        <div className="flex flex-wrap gap-1">
-          {searchFilters.map((filter) => (
-            <Button
-              key={filter.value}
-              type="button"
-              size="sm"
-              variant="ghost"
-              onClick={() => setSearchFilter(filter.value)}
-              className={cn(
-                "h-6 rounded-full border px-2 text-[11px]",
-                searchFilter === filter.value
-                  ? "border-primary bg-primary/10 text-primary"
-                  : "border-transparent bg-muted/60 text-muted-foreground",
-              )}
-            >
-              {filter.label}
-            </Button>
-          ))}
-        </div>
-      </div>
-
-      {!searchQuery && (
-        <EmptyState
-          icon={<Sparkles className="h-4 w-4" />}
-          title="Search anything"
-          description="Look up text, tasks or attachments"
-        />
-      )}
-
-      {searchQuery && searchResults.length === 0 && (
-        <EmptyState
-          icon={<Search className="h-4 w-4" />}
-          title="No matches"
-          description="Try a different keyword"
-        />
-      )}
-
-      {searchResults.length > 0 && (
+    <div className="flex flex-col h-full">
+      <h3 className="text-xs text-muted-foreground mb-2">Search</h3>
+      <div className="text-sm space-y-3">
         <div className="space-y-2">
-          {searchResults.map((result) => (
-            <button
-              key={result.id}
-              onClick={() => onScrollToBlock(result.id)}
-              className="w-full rounded-lg border border-transparent px-2 py-1.5 text-left transition-colors hover:border-border hover:bg-muted/60"
-            >
-              <div className="flex items-center gap-2">
-                <Badge variant="outline" className="text-[10px] capitalize">
-                  {result.type}
-                </Badge>
-                <span className="text-xs font-medium truncate">
-                  {result.text.slice(0, 60)}
-                </span>
-              </div>
-              <p className="mt-0.5 line-clamp-2 text-[11px] text-muted-foreground">
-                <Highlighted text={result.snippet} query={searchQuery} />
-              </p>
-            </button>
-          ))}
+          <Input
+            value={searchQuery}
+            onChange={(event) => setSearchQuery(event.target.value)}
+            placeholder="Search in document"
+            className="h-8 text-xs"
+          />
+          <div className="flex flex-wrap gap-1">
+            {searchFilters.map((filter) => (
+              <Button
+                key={filter.value}
+                type="button"
+                size="sm"
+                variant="ghost"
+                onClick={() => setSearchFilter(filter.value)}
+                className={cn(
+                  "h-6 rounded-full border px-2 text-[11px]",
+                  searchFilter === filter.value
+                    ? "border-primary bg-primary/10 text-primary"
+                    : "border-transparent bg-muted/60 text-muted-foreground",
+                )}
+              >
+                {filter.label}
+              </Button>
+            ))}
+          </div>
         </div>
-      )}
+
+        {!searchQuery && (
+          <EmptyState
+            icon={<Sparkles className="h-4 w-4" />}
+            title="Search anything"
+            description="Look up text, tasks or attachments"
+          />
+        )}
+
+        {searchQuery && searchResults.length === 0 && (
+          <EmptyState
+            icon={<Search className="h-4 w-4" />}
+            title="No matches"
+            description="Try a different keyword"
+          />
+        )}
+
+        {searchResults.length > 0 && (
+          <div className="space-y-2">
+            {searchResults.map((result) => (
+              <button
+                key={result.id}
+                onClick={() => onScrollToBlock(result.id)}
+                className="w-full rounded-lg border border-transparent px-2 py-1.5 text-left transition-colors hover:border-border hover:bg-muted/60"
+              >
+                <div className="flex items-center gap-2">
+                  <Badge variant="outline" className="text-[10px] capitalize">
+                    {result.type}
+                  </Badge>
+                  <span className="text-xs font-medium truncate">
+                    {result.text.slice(0, 60)}
+                  </span>
+                </div>
+                <p className="mt-0.5 line-clamp-2 text-[11px] text-muted-foreground">
+                  <Highlighted text={result.snippet} query={searchQuery} />
+                </p>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

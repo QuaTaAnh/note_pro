@@ -16,6 +16,8 @@ interface TaskItemProps {
   deadlineDate?: string;
   onToggleComplete?: (id: string, completed: boolean) => void;
   onMoreClick?: (id: string) => void;
+  onItemClick?: (id: string) => void;
+  isActive?: boolean;
   className?: string;
   variant?: "default" | "compact";
 }
@@ -28,6 +30,8 @@ export const TaskItem = ({
   deadlineDate,
   onToggleComplete,
   onMoreClick,
+  onItemClick,
+  isActive = false,
   className,
   variant = "default",
 }: TaskItemProps) => {
@@ -38,7 +42,8 @@ export const TaskItem = ({
     setTempCompleted(completed);
   }, [completed]);
 
-  const handleToggleComplete = () => {
+  const handleToggleComplete = (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (isAnimating) return;
 
     const newCompletedState = !tempCompleted;
@@ -49,6 +54,10 @@ export const TaskItem = ({
       onToggleComplete?.(id, newCompletedState);
       setIsAnimating(false);
     }, 300);
+  };
+
+  const handleItemClick = () => {
+    onItemClick?.(id);
   };
 
   const formatDate = (dateString?: string) => {
@@ -66,9 +75,12 @@ export const TaskItem = ({
 
   return (
     <div
+      onClick={handleItemClick}
       className={cn(
         "flex items-center gap-3 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md group transition-colors",
         variant === "compact" ? "px-2 py-1" : "px-3 py-2",
+        onItemClick && "cursor-pointer",
+        isActive ? "border-border bg-muted/60" : "border-transparent",
         className,
       )}
     >
@@ -78,7 +90,7 @@ export const TaskItem = ({
         className={cn(
           "w-4 h-4 rounded border-2 flex items-center justify-center transition-all duration-200 flex-shrink-0",
           tempCompleted
-            ? "bg-green-500 border-green-500 text-white"
+            ? "bg-primary border-primary text-white"
             : "border-gray-300 hover:border-gray-400",
           isAnimating && "cursor-not-allowed",
         )}

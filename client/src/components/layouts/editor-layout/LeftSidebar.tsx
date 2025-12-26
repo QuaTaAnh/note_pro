@@ -7,7 +7,6 @@ import { formatFileSize } from "@/lib/fileUtils";
 import { showToast } from "@/lib/toast";
 import { formatDate } from "@/lib/utils";
 import { BlockType } from "@/types/types";
-import { CheckCircle, Menu, Paperclip } from "lucide-react";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { getPlainText } from "@/components/features/page/CardDocument";
 import { Loading } from "@/components/ui/loading";
@@ -18,7 +17,6 @@ import {
   SidebarTabs,
   SidebarTask,
 } from "./SidebarTabs";
-import { StatCard } from "./SidebarTabs/StatCard";
 
 interface Props {
   pageId: string;
@@ -31,40 +29,45 @@ export const LeftSidebar = ({ pageId }: Props) => {
     loading,
   } = useDocumentBlocksData(pageId);
   const [pendingTaskIds, setPendingTaskIds] = useState<Set<string>>(
-    () => new Set()
+    () => new Set(),
   );
   const [updateTask] = useUpdateTaskMutation();
   const cleanupHighlightRef = useRef<(() => void) | null>(null);
 
-  const textBlocks = useMemo(
-    () => (blocks || []).filter((block) => block.type === BlockType.PARAGRAPH),
-    [blocks]
-  );
+  const sectionItems = useMemo<SectionItem[]>(() => {
+    const headingBlocks = (blocks || []).filter((block) => {
+      const html = block.content?.text || "";
+      const plain = getPlainText(block.content?.text) || "";
+      const hasHeading =
+        html.includes("<h1") || html.includes("<h2") || html.includes("<h3");
+      const hasContent = plain.trim().length > 0;
+      return hasHeading && hasContent;
+    });
+
+    return headingBlocks.map((block) => {
+      const plain = getPlainText(block.content?.text) || "";
+      const html = block.content?.text || "";
+
+      let level = 1;
+      if (html.includes("<h1")) level = 1;
+      else if (html.includes("<h2")) level = 2;
+      else if (html.includes("<h3")) level = 3;
+
+      return {
+        id: block.id,
+        title: plain,
+        level,
+      };
+    });
+  }, [blocks]);
 
   const taskBlocks = useMemo(
     () =>
       (blocks || []).filter(
-        (block) => block.type === BlockType.TASK && block.tasks?.length
+        (block) => block.type === BlockType.TASK && block.tasks?.length,
       ),
-    [blocks]
+    [blocks],
   );
-
-  const attachmentBlocks = useMemo(
-    () => (blocks || []).filter((block) => block.type === BlockType.FILE),
-    [blocks]
-  );
-
-  const sectionItems = useMemo<SectionItem[]>(() => {
-    return textBlocks.map((block, index) => {
-      const plain = getPlainText(block.content?.text) || "";
-      return {
-        id: block.id,
-        index: index + 1,
-        title: plain || `Section ${index + 1}`,
-        preview: plain.slice(0, 120).trim() || "No text",
-      };
-    });
-  }, [textBlocks]);
 
   const tasks = useMemo<SidebarTask[]>(() => {
     return taskBlocks
@@ -79,6 +82,11 @@ export const LeftSidebar = ({ pageId }: Props) => {
       })
       .filter(Boolean) as SidebarTask[];
   }, [taskBlocks]);
+
+  const attachmentBlocks = useMemo(
+    () => (blocks || []).filter((block) => block.type === BlockType.FILE),
+    [blocks],
+  );
 
   const attachments = useMemo<SidebarAttachment[]>(() => {
     return attachmentBlocks.map((block) => {
@@ -144,12 +152,12 @@ export const LeftSidebar = ({ pageId }: Props) => {
         });
       }
     },
-    [updateTask, pageId]
+    [updateTask, pageId],
   );
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
-      <div className="py-4 px-2 h-full flex flex-col overflow-hidden">
+      <div className="py-4 pl-4 h-full flex flex-col overflow-hidden">
         <div className="flex flex-row items-center gap-2 mb-3 shrink-0">
           <div
             className="border rounded-sm overflow-hidden shrink-0 relative p-2"
@@ -172,13 +180,11 @@ export const LeftSidebar = ({ pageId }: Props) => {
 
           <div className="flex flex-col flex-1 min-w-0">
             {loading ? (
-              <>
-                <Loading />
-              </>
+              <Loading />
             ) : (
               <>
                 <span className="text-sm font-medium truncate">
-                  {getPlainText(rootBlock?.content?.title) || "Untitled"}
+                  {getPlainText(rootBlock?.content?.title) || ""}
                 </span>
                 <span className="text-xs text-muted-foreground truncate">
                   {formatDate(rootBlock?.updated_at || "", { relative: true })}
@@ -188,36 +194,14 @@ export const LeftSidebar = ({ pageId }: Props) => {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-2 mb-3 shrink-0">
-          <StatCard
-            label="Sections"
-            value={textBlocks.length}
-            icon={<Menu className="h-3.5 w-3.5" />}
-          />
-          <StatCard
-            label="Attachments"
-            value={attachments.length}
-            icon={<Paperclip className="h-3.5 w-3.5" />}
-          />
-          <StatCard
-            label="Tasks"
-            value={tasks.length}
-            description={`${
-              tasks.filter((t) => t.task?.status === TASK_STATUS.COMPLETED)
-                .length
-            } done`}
-            icon={<CheckCircle className="h-3.5 w-3.5" />}
-          />
-        </div>
-
         <SidebarTabs
           sections={sectionItems}
           tasks={tasks}
           attachments={attachments}
           blocks={blocks || []}
           pendingTaskIds={pendingTaskIds}
-          onToggleTask={handleToggleTask}
           onScrollToBlock={handleScrollToBlock}
+          onToggleTask={handleToggleTask}
         />
       </div>
     </div>

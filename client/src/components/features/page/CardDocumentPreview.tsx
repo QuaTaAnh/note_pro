@@ -56,19 +56,19 @@ const TaskPreview = ({ block }: { block: Block }) => {
     <div className="flex items-center gap-2 text-xs min-w-0">
       <div
         className={cn(
-          "w-3 h-3 rounded border flex items-center justify-center flex-shrink-0",
+          "w-4 h-4 rounded border-2 flex items-center justify-center flex-shrink-0",
           isCompleted
-            ? "bg-green-500 border-green-500 text-white"
-            : "border-gray-300"
+            ? "bg-primary border-primary text-white"
+            : "border-gray-300",
         )}
       >
-        {isCompleted && <Check className="w-2 h-2" />}
+        {isCompleted && <Check className="w-3 h-3" />}
       </div>
       <div className="flex items-center gap-1.5 min-w-0 flex-1">
         <span
           className={cn(
             "truncate text-muted-foreground flex-1",
-            isCompleted && "line-through opacity-60"
+            isCompleted && "line-through opacity-60",
           )}
         >
           {text}

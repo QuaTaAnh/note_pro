@@ -53,7 +53,7 @@ export function BlockActionMenu({
         }
       }
     },
-    [blockId]
+    [blockId],
   );
 
   const handleDownload = useCallback(async () => {
