@@ -4,6 +4,8 @@ import { Input } from "@/components/ui/input";
 import { useSearchUsersByEmailLazyQuery } from "@/graphql/queries/__generated__/user.generated";
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
+import debounce from "lodash/debounce";
+import differenceBy from "lodash/differenceBy";
 
 export type UserSearchResult = {
   id: string;
@@ -29,22 +31,27 @@ export function UserEmailAutocomplete({
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  const debouncedSearch = useMemo(
+    () =>
+      debounce((searchTerm: string) => {
+        searchUsers({
+          variables: {
+            searchTerm: `%${searchTerm}%`,
+          },
+        });
+        setIsOpen(true);
+      }, 300),
+    [searchUsers],
+  );
+
   useEffect(() => {
     if (!inputValue || inputValue.length < 2) {
       setIsOpen(false);
+      debouncedSearch.cancel();
       return;
     }
 
-    const timer = setTimeout(() => {
-      searchUsers({
-        variables: {
-          searchTerm: `%${inputValue}%`,
-        },
-      });
-      setIsOpen(true);
-    }, 300);
-
-    return () => clearTimeout(timer);
+    debouncedSearch(inputValue);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputValue]);
 
@@ -65,8 +72,11 @@ export function UserEmailAutocomplete({
   }, []);
 
   const filteredUsers = useMemo(() => {
-    return (
-      data?.users?.filter((user) => !excludeUserIds.includes(user.id)) || []
+    if (!data?.users) return [];
+    return differenceBy(
+      data.users,
+      excludeUserIds.map((id) => ({ id })),
+      "id",
     );
   }, [data, excludeUserIds]);
 

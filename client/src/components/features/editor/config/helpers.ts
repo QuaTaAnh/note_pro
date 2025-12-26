@@ -12,14 +12,17 @@ export const isModifierPressed = (event: KeyboardEvent): boolean => {
   return MODIFIER_KEYS.some((key) => event[key as keyof KeyboardEvent]);
 };
 
-export const selectCellContent = (view: EditorView, $from: ResolvedPos): void => {
+export const selectCellContent = (
+  view: EditorView,
+  $from: ResolvedPos,
+): void => {
   const cellNode = $from.node(-1);
   const cellPos = $from.start(-1);
 
   const selection = TextSelection.create(
     view.state.doc,
     cellPos,
-    cellPos + cellNode.content.size
+    cellPos + cellNode.content.size,
   );
 
   view.dispatch(view.state.tr.setSelection(selection));
@@ -28,7 +31,7 @@ export const selectCellContent = (view: EditorView, $from: ResolvedPos): void =>
 export const shouldPreventTableDeletion = (
   $from: ResolvedPos,
   event: KeyboardEvent,
-  selectionEmpty: boolean
+  selectionEmpty: boolean,
 ): boolean => {
   const cellNode = $from.node(-1);
   const cellText = (cellNode?.textContent || "").trim();

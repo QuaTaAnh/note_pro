@@ -36,7 +36,7 @@ export const SlashCommand = ({
     }
 
     setSelectedIndex((prev) =>
-      Math.max(0, Math.min(prev, commands.length - 1))
+      Math.max(0, Math.min(prev, commands.length - 1)),
     );
   }, [show, commands.length]);
 
@@ -64,7 +64,7 @@ export const SlashCommand = ({
         setSelectedIndex(
           (i) =>
             (i - 1 + Math.max(commands.length, 1)) %
-            Math.max(commands.length, 1)
+            Math.max(commands.length, 1),
         );
       } else if (e.key === "Enter") {
         e.preventDefault();
@@ -111,7 +111,7 @@ export const SlashCommand = ({
                 "w-full flex items-center gap-1 rounded px-2 py-1.5 text-xs text-left transition-colors duration-200 focus-visible:outline-none focus-visible:ring-0 ring-offset-background",
                 isActive
                   ? "bg-accent text-accent-foreground"
-                  : "hover:bg-accent/60 hover:text-accent-foreground"
+                  : "hover:bg-accent/60 hover:text-accent-foreground",
               )}
             >
               <div className="w-5 h-5 flex items-center justify-center shrink-0">

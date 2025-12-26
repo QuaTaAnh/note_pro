@@ -8,13 +8,16 @@ export interface SlashCommandOptions {
   onConvertToTask?: (blockId: string) => Promise<void> | void;
   onConvertToFile?: (
     blockId: string,
-    fileData: Record<string, unknown>
+    fileData: Record<string, unknown>,
   ) => Promise<void> | void;
-  onConvertToTable?: (blockId: string, tableHTML: string) => Promise<void> | void;
+  onConvertToTable?: (
+    blockId: string,
+    tableHTML: string,
+  ) => Promise<void> | void;
   onAddBlock?: (
     position: number,
     type: BlockType,
-    content?: Record<string, unknown>
+    content?: Record<string, unknown>,
   ) => Promise<void> | void;
   position?: number;
   allowFileUploads?: boolean;

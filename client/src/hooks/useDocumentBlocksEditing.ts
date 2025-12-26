@@ -6,7 +6,6 @@ import { useCallback, useEffect, useState } from "react";
 import { useCreateTaskMutation } from "@/graphql/mutations/__generated__/task.generated";
 import { TASK_STATUS } from "@/lib/constants";
 import { useUserId } from "@/hooks/useAuth";
-import showToast from "@/lib/toast";
 import { gql } from "@apollo/client";
 
 interface UseDocumentBlocksEditingParams {

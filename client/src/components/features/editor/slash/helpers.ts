@@ -11,11 +11,11 @@ interface FileUploadOptions {
   onAddBlock?: (
     position: number,
     type: BlockType,
-    content?: Record<string, unknown>
+    content?: Record<string, unknown>,
   ) => Promise<void> | void;
   onConvertToFile?: (
     blockId: string,
-    fileData: Record<string, unknown>
+    fileData: Record<string, unknown>,
   ) => Promise<void> | void;
   position: number;
   onToggleUploading?: (isUploading: boolean) => void;
@@ -94,9 +94,12 @@ interface TableInsertOptions {
   onAddBlock?: (
     position: number,
     type: BlockType,
-    content?: Record<string, unknown>
+    content?: Record<string, unknown>,
   ) => Promise<void> | void;
-  onConvertToTable?: (blockId: string, tableHTML: string) => Promise<void> | void;
+  onConvertToTable?: (
+    blockId: string,
+    tableHTML: string,
+  ) => Promise<void> | void;
   position: number;
 }
 
@@ -117,7 +120,7 @@ export const handleTableInsert = async ({
       (_, i) =>
         `<tr>${Array.from({ length: cols })
           .map(() => (i === 0 ? "<th><p></p></th>" : "<td><p></p></td>"))
-          .join("")}</tr>`
+          .join("")}</tr>`,
     )
     .join("")}</tbody></table>`;
 
@@ -128,7 +131,11 @@ export const handleTableInsert = async ({
   } else if (onConvertToTable && blockId) {
     await onConvertToTable(blockId, tableHTML);
   } else {
-    editor.chain().focus().insertTable({ rows, cols, withHeaderRow: true }).run();
+    editor
+      .chain()
+      .focus()
+      .insertTable({ rows, cols, withHeaderRow: true })
+      .run();
   }
 };
 

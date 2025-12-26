@@ -1,3 +1,6 @@
+import keyBy from "lodash/keyBy";
+import partition from "lodash/partition";
+
 export interface FolderNode {
   id: string;
   name: string;
@@ -9,22 +12,25 @@ export interface FolderNode {
 }
 
 export const buildTree = (folders: FolderNode[]): FolderNode[] => {
-  const map = new Map<string, FolderNode>();
+  // Create a map of folders with children array using lodash
+  const map = keyBy(
+    folders.map((folder) => ({ ...folder, children: [] as FolderNode[] })),
+    "id",
+  );
 
-  folders.forEach((folder) => map.set(folder.id, { ...folder, children: [] }));
+  // Partition folders into root and child folders
+  const [childFolders, rootFolders] = partition(
+    Object.values(map),
+    (folder) => folder.parent_id,
+  );
 
-  const tree: FolderNode[] = [];
-
-  map.forEach((folder) => {
-    if (folder.parent_id) {
-      const parent = map.get(folder.parent_id);
-      if (parent) {
-        parent.children!.push(folder);
-      }
-    } else {
-      tree.push(folder);
+  // Attach children to their parents
+  childFolders.forEach((folder) => {
+    const parent = map[folder.parent_id!];
+    if (parent && parent.children) {
+      parent.children.push(folder);
     }
   });
 
-  return tree;
+  return rootFolders;
 };

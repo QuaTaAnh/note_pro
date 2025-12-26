@@ -3,6 +3,7 @@
 import { useTaskSettings } from "@/contexts/TaskSettingsProvider";
 import { Task } from "@/types/app";
 import { useMemo } from "react";
+import partition from "lodash/partition";
 
 export interface FilteredTasksResult {
   filteredTasks: Task[];
@@ -14,11 +15,9 @@ export function useFilteredTasks(tasks: Task[] = []): FilteredTasksResult {
   const { settings } = useTaskSettings();
 
   const result = useMemo(() => {
-    const scheduledTasks = tasks.filter(
+    const [scheduledTasks, unscheduledTasks] = partition(
+      tasks,
       (task) => task.schedule_date && task.schedule_date.trim() !== "",
-    );
-    const unscheduledTasks = tasks.filter(
-      (task) => !task.schedule_date || task.schedule_date.trim() === "",
     );
 
     let filteredTasks = tasks;

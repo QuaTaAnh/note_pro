@@ -1,39 +1,33 @@
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useMemo } from "react";
+import debounce from "lodash/debounce";
 
 export const useDebounce = (delay: number) => {
-  const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
-  const callbackRef = useRef<(() => void) | undefined>(undefined);
   const pendingChangesRef = useRef<Map<string, () => void>>(new Map());
   const isFlushingRef = useRef(false);
+
+  const debouncedFn = useMemo(
+    () =>
+      debounce((callback: () => void) => {
+        if (!isFlushingRef.current) {
+          isFlushingRef.current = true;
+          try {
+            callback();
+          } finally {
+            isFlushingRef.current = false;
+          }
+        }
+      }, delay),
+    [delay],
+  );
 
   const debounced = useCallback(
     (callback: () => void, key?: string) => {
       if (key) {
         pendingChangesRef.current.set(key, callback);
       }
-
-      callbackRef.current = callback;
-
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-
-      timeoutRef.current = setTimeout(() => {
-        if (!isFlushingRef.current && callbackRef.current) {
-          isFlushingRef.current = true;
-          try {
-            callbackRef.current();
-            if (key) {
-              pendingChangesRef.current.delete(key);
-            }
-          } finally {
-            isFlushingRef.current = false;
-            callbackRef.current = undefined;
-          }
-        }
-      }, delay);
+      debouncedFn(callback);
     },
-    [delay],
+    [debouncedFn],
   );
 
   const flush = useCallback(() => {
@@ -42,21 +36,12 @@ export const useDebounce = (delay: number) => {
     isFlushingRef.current = true;
 
     try {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-        timeoutRef.current = undefined;
-      }
+      debouncedFn.flush();
 
       // Execute all pending changes in order
       const pendingCallbacks = Array.from(pendingChangesRef.current.values());
       pendingChangesRef.current.clear();
 
-      if (callbackRef.current) {
-        callbackRef.current();
-        callbackRef.current = undefined;
-      }
-
-      // Execute any remaining queued callbacks
       pendingCallbacks.forEach((cb) => {
         try {
           cb();
@@ -67,16 +52,12 @@ export const useDebounce = (delay: number) => {
     } finally {
       isFlushingRef.current = false;
     }
-  }, []);
+  }, [debouncedFn]);
 
   const cancel = useCallback(() => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = undefined;
-    }
-    callbackRef.current = undefined;
+    debouncedFn.cancel();
     pendingChangesRef.current.clear();
-  }, []);
+  }, [debouncedFn]);
 
   return { debounced, flush, cancel };
 };

@@ -35,7 +35,7 @@ export const useSlashCommand = (
     onAddBlock,
     position = 0,
     allowFileUploads = true,
-  }: SlashCommandOptions = {}
+  }: SlashCommandOptions = {},
 ) => {
   const [state, setState] = useState<SlashCommandState>({
     showSlash: false,
@@ -57,7 +57,7 @@ export const useSlashCommand = (
       top: coords.bottom + window.scrollY,
       left: coords.left + window.scrollX,
     }),
-    []
+    [],
   );
 
   const handleFileChange = useCallback(
@@ -87,12 +87,12 @@ export const useSlashCommand = (
       onToggleUploading,
       startLoading,
       stopLoading,
-    ]
+    ],
   );
 
   const availableCommands = useMemo(
     () => createSlashCommands(allowFileUploads),
-    [allowFileUploads]
+    [allowFileUploads],
   );
 
   const commandHandlers = useMemo<CommandHandlers>(
@@ -123,7 +123,7 @@ export const useSlashCommand = (
         });
       },
     }),
-    [editor, allowFileUploads, getPopoverPosition, updateState]
+    [editor, allowFileUploads, getPopoverPosition, updateState],
   );
 
   const onCommandSelect = useCallback(
@@ -139,7 +139,7 @@ export const useSlashCommand = (
       commandHandlers[cmd as keyof CommandHandlers]?.();
       updateState({ showSlash: false });
     },
-    [editor, commandHandlers, updateState]
+    [editor, commandHandlers, updateState],
   );
 
   const onEmojiSelect = useCallback(
@@ -147,7 +147,7 @@ export const useSlashCommand = (
       if (editor) editor.commands.insertContent(emoji);
       updateState({ showEmoji: false });
     },
-    [editor, updateState]
+    [editor, updateState],
   );
 
   const onTableSelect = useCallback(
@@ -168,7 +168,7 @@ export const useSlashCommand = (
 
       updateState({ showTable: false });
     },
-    [editor, onAddBlock, onConvertToTable, blockId, position, updateState]
+    [editor, onAddBlock, onConvertToTable, blockId, position, updateState],
   );
 
   const handleKeyDown = useCallback(
@@ -230,7 +230,7 @@ export const useSlashCommand = (
       blockId,
       getPopoverPosition,
       updateState,
-    ]
+    ],
   );
 
   const menus = useMemo(
@@ -284,7 +284,7 @@ export const useSlashCommand = (
       availableCommands,
       allowFileUploads,
       updateState,
-    ]
+    ],
   );
 
   return { handleKeyDown, menus };
