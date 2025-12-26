@@ -21,7 +21,7 @@ interface ExtensionsConfig {
   onAddBlock?: (
     position: number,
     type: BlockType,
-    content?: Record<string, unknown>
+    content?: Record<string, unknown>,
   ) => void;
   onFlush?: () => void;
 }

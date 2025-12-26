@@ -1,3 +1,17 @@
+const IMAGE_EXTENSIONS = [
+  "jpg",
+  "jpeg",
+  "png",
+  "gif",
+  "webp",
+  "avif",
+  "svg",
+  "bmp",
+];
+const TEXT_EXTENSIONS = ["txt", "md", "json", "xml", "csv"];
+const VIDEO_EXTENSIONS = ["mp4", "webm", "ogg"];
+const AUDIO_EXTENSIONS = ["mp3", "wav", "ogg"];
+
 export function formatFileSize(bytes?: number | null) {
   if (!bytes || bytes <= 0) return null;
   const units = ["B", "KB", "MB", "GB"];

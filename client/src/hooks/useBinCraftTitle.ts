@@ -2,7 +2,9 @@
 
 import { PAGE_TITLES } from "@/lib/constants";
 import { usePathname } from "next/navigation";
-import { useEffect, useMemo, useRef, useCallback } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import find from "lodash/find";
+import debounce from "lodash/debounce";
 
 interface TitleConfig {
   pathname: string;
@@ -30,14 +32,14 @@ function getTitleFromPath(
     return PAGE_TITLES[pathname];
   }
 
-  const customTitle = customTitles.find((config) =>
+  const customTitle = find(customTitles, (config) =>
     pathname.includes(config.pathname),
   );
   if (customTitle) {
     return customTitle.title;
   }
 
-  const defaultTitle = DEFAULT_TITLE_CONFIGS.find((config) =>
+  const defaultTitle = find(DEFAULT_TITLE_CONFIGS, (config) =>
     pathname.includes(config.pathname),
   );
   if (defaultTitle) {
@@ -57,7 +59,6 @@ export function useBinCraftTitle(options: UseBinCraftTitleOptions = {}) {
 
   const pathname = usePathname();
   const currentTitleRef = useRef<string>("");
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const title = useMemo(() => {
     if (dynamicTitle) {
@@ -72,30 +73,27 @@ export function useBinCraftTitle(options: UseBinCraftTitleOptions = {}) {
     return titleTemplate.replace("%s", title);
   }, [title, titleTemplate]);
 
-  const updateDocumentTitle = useCallback((newTitle: string) => {
-    if (currentTitleRef.current === newTitle) {
-      return;
-    }
-
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-
-    timeoutRef.current = setTimeout(() => {
-      if (typeof document !== "undefined" && document.title !== newTitle) {
-        document.title = newTitle;
-        currentTitleRef.current = newTitle;
-      }
-    }, 150);
-  }, []);
+  // Use lodash debounce for better performance
+  const updateDocumentTitle = useMemo(
+    () =>
+      debounce((newTitle: string) => {
+        if (
+          typeof document !== "undefined" &&
+          document.title !== newTitle &&
+          currentTitleRef.current !== newTitle
+        ) {
+          document.title = newTitle;
+          currentTitleRef.current = newTitle;
+        }
+      }, 150),
+    [],
+  );
 
   useEffect(() => {
     updateDocumentTitle(fullTitle);
 
     return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
+      updateDocumentTitle.cancel();
     };
   }, [fullTitle, updateDocumentTitle]);
 

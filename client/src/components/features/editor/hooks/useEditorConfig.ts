@@ -23,7 +23,7 @@ export function useEditorConfig({
         onAddBlock: onAddBlockRef.current,
         onFlush: () => onSaveImmediateRef.current?.(),
       }),
-    [position, onAddBlockRef, onSaveImmediateRef]
+    [position, onAddBlockRef, onSaveImmediateRef],
   );
 
   const eventHandlers = useMemo(
@@ -36,7 +36,7 @@ export function useEditorConfig({
         onChangeRef,
         prevValueRef,
       }),
-    [onFocusRef, onBlurRef, onSaveImmediateRef, onChangeRef, prevValueRef]
+    [onFocusRef, onBlurRef, onSaveImmediateRef, onChangeRef, prevValueRef],
   );
 
   return useMemo(
@@ -53,6 +53,6 @@ export function useEditorConfig({
       onBlur: eventHandlers.onBlur,
       onUpdate: eventHandlers.onUpdate,
     }),
-    [extensions, editable, eventHandlers]
+    [extensions, editable, eventHandlers],
   );
 }

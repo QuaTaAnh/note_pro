@@ -3,7 +3,7 @@ import {
   useSearchAllLazyQuery,
 } from "@/graphql/queries/__generated__/search.generated";
 import { useCallback, useEffect, useState } from "react";
-import { useDebounce as useDebounceValue } from "use-debounce";
+import { useDebounce } from "./useDebounce";
 import { useWorkspace } from "./useWorkspace";
 import { useAuth } from "./useAuth";
 
@@ -18,10 +18,10 @@ export interface SearchResult {
 export function useSearch() {
   const { userId } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
-  const [debouncedSearchTerm] = useDebounceValue(searchTerm, 700);
   const { workspace } = useWorkspace();
   const [searchAll, { data: allData, loading: allLoading }] =
     useSearchAllLazyQuery();
+  const { debounced } = useDebounce(700);
 
   const executeSearch = useCallback(
     (term: string) => {
@@ -44,10 +44,10 @@ export function useSearch() {
   );
 
   useEffect(() => {
-    if (debouncedSearchTerm) {
-      executeSearch(debouncedSearchTerm);
+    if (searchTerm) {
+      debounced(() => executeSearch(searchTerm));
     }
-  }, [debouncedSearchTerm, executeSearch, setSearchTerm]);
+  }, [searchTerm, executeSearch, debounced]);
 
   const results: SearchResult = {
     folders: allData?.folders || [],

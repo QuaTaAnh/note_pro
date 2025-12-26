@@ -92,7 +92,7 @@ export const TableSizePicker = ({
                 "w-5 h-5 border-2 rounded-sm transition-all duration-150",
                 isHighlighted
                   ? "bg-primary/90 border-primary scale-105 shadow-sm"
-                  : "bg-background border-border/50 hover:border-primary/30 hover:bg-accent/50"
+                  : "bg-background border-border/50 hover:border-primary/30 hover:bg-accent/50",
               )}
               title={`${row + 1} × ${col + 1}`}
             />

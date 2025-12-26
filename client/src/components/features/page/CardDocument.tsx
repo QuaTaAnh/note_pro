@@ -49,7 +49,7 @@ const CardDocumentComponent = ({ document }: { document: Document }) => {
       ? ROUTES.WORKSPACE_DOCUMENT_FOLDER(
           workspaceId,
           document.folder.id,
-          document.id
+          document.id,
         )
       : ROUTES.WORKSPACE_DOCUMENT(workspaceId, document.id);
     router.prefetch(href);
@@ -66,8 +66,8 @@ const CardDocumentComponent = ({ document }: { document: Document }) => {
         ROUTES.WORKSPACE_DOCUMENT_FOLDER(
           workspaceId,
           document.folder.id,
-          document.id
-        )
+          document.id,
+        ),
       );
     } else {
       router.push(ROUTES.WORKSPACE_DOCUMENT(workspaceId, document.id));

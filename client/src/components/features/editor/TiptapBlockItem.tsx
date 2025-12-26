@@ -15,7 +15,7 @@ interface Props {
   onAddBlock: (
     position: number,
     type: BlockType,
-    content?: Record<string, unknown>
+    content?: Record<string, unknown>,
   ) => Promise<void> | void;
   onSaveImmediate: () => void;
   onDeleteBlock?: () => void;
@@ -32,7 +32,7 @@ interface Props {
   onConvertToTask?: (blockId: string) => void;
   onConvertToFile?: (
     blockId: string,
-    fileData: Record<string, unknown>
+    fileData: Record<string, unknown>,
   ) => void;
   onConvertToTable?: (blockId: string, tableHTML: string) => void;
 }
@@ -95,5 +95,5 @@ export const TiptapBlockItem = memo(
       prevProps.task?.id === nextProps.task?.id &&
       prevProps.task?.status === nextProps.task?.status
     );
-  }
+  },
 );
