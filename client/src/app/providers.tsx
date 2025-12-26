@@ -1,14 +1,14 @@
 "use client";
 
-import { ThemeProvider } from "@/context/ThemeProvider";
-import { MainLayout } from "@/components/Layout";
-import AuthWrapper from "@/components/auth/AuthWrapper";
-import { NextAuthProvider } from "@/context/AuthContext";
-import { ToastProvider } from "@/context/ToastProvider";
-import { ApolloClientProvider } from "@/context/ApolloClientProvider";
-import { DocumentAccessProvider } from "@/context/DocumentAccessContext";
-import { LoadingProvider } from "@/context/LoadingContext";
-import ErrorBoundary from "@/components/ErrorBoundary";
+import { ThemeProvider } from "@/contexts/ThemeProvider";
+import MainLayout from "@/components/layouts/main-layout/MainLayout";
+import AuthWrapper from "@/components/features/auth/AuthWrapper";
+import { NextAuthProvider } from "@/contexts/AuthContext";
+import { ToastProvider } from "@/contexts/ToastProvider";
+import { ApolloClientProvider } from "@/contexts/ApolloClientProvider";
+import { DocumentAccessProvider } from "@/contexts/DocumentAccessContext";
+import { LoadingProvider } from "@/contexts/LoadingContext";
+import ErrorBoundary from "@/components/shared/ErrorBoundary";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (

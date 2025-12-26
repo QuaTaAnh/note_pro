@@ -10,7 +10,7 @@ dotenv.config({
 const codegenConfig: Types.Config = {
   overwrite: true,
   generates: {
-    "./src/generated/graphql.ts": {
+    "./src/types/generated/graphql.ts": {
       plugins: ["typescript"],
       config: createCodegenPluginConfig(false),
     },
@@ -18,13 +18,13 @@ const codegenConfig: Types.Config = {
       preset: "near-operation-file",
       presetConfig: {
         extension: ".generated.tsx",
-        baseTypesPath: "~generated/graphql",
+        baseTypesPath: "@/types/generated/graphql",
         folder: "__generated__",
       },
       plugins: ["typescript-operations", "typescript-react-apollo"],
       config: createCodegenPluginConfig(true),
     },
-    "./src/generated/apollo-helpers.ts": {
+    "./src/types/generated/apollo-helpers.ts": {
       plugins: ["typescript-apollo-client-helpers"],
     },
   },

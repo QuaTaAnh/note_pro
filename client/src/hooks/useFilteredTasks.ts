@@ -1,6 +1,6 @@
 "use client";
 
-import { useTaskSettings } from "@/context/TaskSettingsProvider";
+import { useTaskSettings } from "@/contexts/TaskSettingsProvider";
 import { Task } from "@/types/app";
 import { useMemo } from "react";
 

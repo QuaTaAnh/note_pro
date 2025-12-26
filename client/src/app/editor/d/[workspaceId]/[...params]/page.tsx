@@ -1,8 +1,8 @@
 "use client";
 
-import { LayoutEditor, LeftSidebar } from "@/components/LayoutEditor";
-import TiptapBlockEditor from "@/components/editor/TiptapBlockEditor";
-import { DocumentAccessGuard } from "@/components/auth/DocumentAccessGuard";
+import { LayoutEditor, LeftSidebar } from "@/components/layouts/editor-layout";
+import TiptapBlockEditor from "@/components/features/editor/TiptapBlockEditor";
+import { DocumentAccessGuard } from "@/components/features/auth/DocumentAccessGuard";
 import { useParams } from "next/navigation";
 
 export default function EditorPage() {

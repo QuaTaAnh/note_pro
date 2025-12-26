@@ -2,8 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { Moon, Sun } from "lucide-react";
-import { SimpleTooltip } from "../page/SimpleTooltip";
-import { useTheme } from "@/context/ThemeProvider";
+import { SimpleTooltip } from "@/components/features/page/SimpleTooltip";
+import { useTheme } from "@/contexts/ThemeProvider";
 
 type ThemePreference = "light" | "dark";
 

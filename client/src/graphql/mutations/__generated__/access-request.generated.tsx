@@ -1,4 +1,4 @@
-import * as Types from "generated/graphql";
+import * as Types from "@/types/generated/graphql";
 
 import { gql } from "@apollo/client";
 import * as Apollo from "@apollo/client";
