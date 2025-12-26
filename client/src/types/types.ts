@@ -29,6 +29,7 @@ export enum BlockType {
   PAGE = "page",
   TASK = "task",
   FILE = "file",
+  TABLE = "table",
 }
 
 export enum AccessRequestStatus {

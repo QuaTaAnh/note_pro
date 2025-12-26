@@ -3,25 +3,26 @@
 import { EditorView } from "@tiptap/pm/view";
 import type { Editor } from "@tiptap/react";
 import { ChangeEvent, useCallback, useMemo, useRef, useState } from "react";
-import { uploadFileToCloudinary } from "@/lib/cloudinary/index";
 import { toast } from "sonner";
+import { useLoading } from "@/contexts/LoadingContext";
 import { EmojiPicker } from "./EmojiPicker";
 import { SlashCommand } from "./SlashCommand";
-import { Paperclip, Smile } from "lucide-react";
-import { useLoading } from "@/contexts/LoadingContext";
-
-interface SlashCommandOptions {
-  blockId?: string;
-  onToggleUploading?: (isUploading: boolean) => void;
-  onConvertToTask?: (blockId: string) => Promise<void> | void;
-  onConvertToFile?: (
-    blockId: string,
-    fileData: Record<string, unknown>,
-  ) => Promise<void> | void;
-  allowFileUploads?: boolean;
-}
-
-const MAX_FILE_SIZE_BYTES = 25 * 1024 * 1024;
+import { TableSizePicker } from "./TableSizePicker";
+import {
+  createSlashCommands,
+  SLASH_MENU_KEYS,
+  SLASH_TRIGGER_SUFFIXES,
+} from "./slash/constants";
+import {
+  handleFileUpload,
+  handleTableInsert,
+  shouldShowSlash,
+} from "./slash/helpers";
+import type {
+  SlashCommandOptions,
+  CommandHandlers,
+  SlashCommandState,
+} from "./slash/types";
 
 export const useSlashCommand = (
   editor: Editor | null,
@@ -30,60 +31,33 @@ export const useSlashCommand = (
     onToggleUploading,
     onConvertToTask,
     onConvertToFile,
+    onConvertToTable,
+    onAddBlock,
+    position = 0,
     allowFileUploads = true,
-  }: SlashCommandOptions = {},
+  }: SlashCommandOptions = {}
 ) => {
-  const [showSlash, setShowSlash] = useState(false);
-  const [showEmoji, setShowEmoji] = useState(false);
-  const [slashPos, setSlashPos] = useState({ top: 0, left: 0 });
-  const [emojiPos, setEmojiPos] = useState({ top: 0, left: 0 });
+  const [state, setState] = useState<SlashCommandState>({
+    showSlash: false,
+    showEmoji: false,
+    showTable: false,
+    slashPos: { top: 0, left: 0 },
+    emojiPos: { top: 0, left: 0 },
+    tablePos: { top: 0, left: 0 },
+  });
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const { startLoading, stopLoading } = useLoading();
 
-  const handleFileUpload = useCallback(
-    async (file: File) => {
-      if (!blockId || !onConvertToFile) {
-        toast.error("Cannot upload file to this block.");
-        return;
-      }
+  const updateState = useCallback((updates: Partial<SlashCommandState>) => {
+    setState((prev) => ({ ...prev, ...updates }));
+  }, []);
 
-      if (file.size > MAX_FILE_SIZE_BYTES) {
-        toast.error("File is too large. Maximum size is 25MB.");
-        return;
-      }
-
-      try {
-        startLoading();
-        onToggleUploading?.(true);
-        const uploadResult = await uploadFileToCloudinary(file, {
-          folder: "note_pro/files",
-          tags: ["note_pro", "file"],
-          resourceType: "auto",
-        });
-
-        // Convert current block to FILE type
-        await onConvertToFile(blockId, {
-          fileUrl: uploadResult.secure_url,
-          fileName: file.name,
-          fileType: file.type,
-          fileSize: file.size,
-          publicId: uploadResult.public_id,
-        });
-
-        toast.success("File uploaded successfully");
-      } catch (error) {
-        console.error("Failed to upload file", error);
-        const message =
-          error instanceof Error
-            ? error.message
-            : "Failed to upload file. Please try again.";
-        toast.error(message);
-      } finally {
-        stopLoading();
-        onToggleUploading?.(false);
-      }
-    },
-    [blockId, onConvertToFile, onToggleUploading, startLoading, stopLoading],
+  const getPopoverPosition = useCallback(
+    (coords: { top: number; bottom: number; left: number; right: number }) => ({
+      top: coords.bottom + window.scrollY,
+      left: coords.left + window.scrollX,
+    }),
+    []
   );
 
   const handleFileChange = useCallback(
@@ -91,37 +65,66 @@ export const useSlashCommand = (
       const file = event.target.files?.[0];
       event.target.value = "";
       if (!file) return;
-      await handleFileUpload(file);
+
+      await handleFileUpload({
+        file,
+        blockId,
+        editor,
+        onAddBlock,
+        onConvertToFile,
+        position,
+        onToggleUploading,
+        startLoading,
+        stopLoading,
+      });
     },
-    [handleFileUpload],
+    [
+      blockId,
+      editor,
+      onAddBlock,
+      onConvertToFile,
+      position,
+      onToggleUploading,
+      startLoading,
+      stopLoading,
+    ]
   );
 
-  const triggerFilePicker = useCallback(() => {
-    if (!allowFileUploads) return;
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  }, [allowFileUploads]);
+  const availableCommands = useMemo(
+    () => createSlashCommands(allowFileUploads),
+    [allowFileUploads]
+  );
 
-  const availableCommands = useMemo(() => {
-    const commands = [
-      {
-        id: "emojis",
-        name: "Emojis",
-        icon: Smile,
+  const commandHandlers = useMemo<CommandHandlers>(
+    () => ({
+      emojis: () => {
+        if (!editor) return;
+        const { state } = editor.view;
+        const coords = editor.view.coordsAtPos(state.selection.from);
+        updateState({
+          emojiPos: getPopoverPosition(coords),
+          showEmoji: true,
+        });
       },
-    ];
-
-    if (allowFileUploads) {
-      commands.unshift({
-        id: "upload-file",
-        name: "Upload file",
-        icon: Paperclip,
-      });
-    }
-
-    return commands;
-  }, [allowFileUploads]);
+      "upload-file": () => {
+        if (!allowFileUploads) {
+          toast.error("File uploads are disabled here.");
+          return;
+        }
+        fileInputRef.current?.click();
+      },
+      "insert-table": () => {
+        if (!editor) return;
+        const { state } = editor.view;
+        const coords = editor.view.coordsAtPos(state.selection.from);
+        updateState({
+          tablePos: getPopoverPosition(coords),
+          showTable: true,
+        });
+      },
+    }),
+    [editor, allowFileUploads, getPopoverPosition, updateState]
+  );
 
   const onCommandSelect = useCallback(
     (cmd: string) => {
@@ -133,66 +136,57 @@ export const useSlashCommand = (
         to: editor.state.selection.from,
       });
 
-      switch (cmd) {
-        case "emojis": {
-          const { state } = editor.view;
-          const coords = editor.view.coordsAtPos(state.selection.from);
-          setEmojiPos({
-            top: coords.bottom + window.scrollY,
-            left: coords.left + window.scrollX,
-          });
-          setShowEmoji(true);
-          break;
-        }
-        case "upload-file": {
-          if (!allowFileUploads) {
-            toast.error("File uploads are disabled here.");
-            break;
-          }
-          triggerFilePicker();
-          break;
-        }
-      }
-      setShowSlash(false);
+      commandHandlers[cmd as keyof CommandHandlers]?.();
+      updateState({ showSlash: false });
     },
-    [editor, triggerFilePicker, allowFileUploads],
+    [editor, commandHandlers, updateState]
   );
 
   const onEmojiSelect = useCallback(
     (emoji: string) => {
       if (editor) editor.commands.insertContent(emoji);
-      setShowEmoji(false);
+      updateState({ showEmoji: false });
     },
-    [editor],
+    [editor, updateState]
+  );
+
+  const onTableSelect = useCallback(
+    async (rows: number, cols: number) => {
+      if (!editor) {
+        return;
+      }
+
+      await handleTableInsert({
+        rows,
+        cols,
+        editor,
+        blockId,
+        onAddBlock,
+        onConvertToTable,
+        position,
+      });
+
+      updateState({ showTable: false });
+    },
+    [editor, onAddBlock, onConvertToTable, blockId, position, updateState]
   );
 
   const handleKeyDown = useCallback(
     (view: EditorView, event: KeyboardEvent) => {
-      if (
-        showSlash &&
-        event.key !== "/" &&
-        event.key !== "Escape" &&
-        event.key !== "ArrowUp" &&
-        event.key !== "ArrowDown" &&
-        event.key !== "Enter"
-      ) {
-        setShowSlash(false);
+      if (state.showSlash && !SLASH_MENU_KEYS.includes(event.key)) {
+        updateState({ showSlash: false });
         return false;
       }
 
       // Check for "[] " pattern (with space) to convert to task
       if (event.key === " " && onConvertToTask && blockId) {
-        const { state } = view;
-        const { selection } = state;
-        const { $from } = selection;
+        const { state: editorState } = view;
+        const { $from } = editorState.selection;
         const textBefore = $from.nodeBefore?.textContent || "";
 
         if (textBefore.endsWith("[]")) {
           event.preventDefault();
-
-          const tr = state.tr.delete($from.pos - 2, $from.pos);
-          view.dispatch(tr);
-
+          view.dispatch(editorState.tr.delete($from.pos - 2, $from.pos));
           onConvertToTask(blockId);
           return true;
         }
@@ -202,30 +196,41 @@ export const useSlashCommand = (
         if (availableCommands.length === 0) {
           return false;
         }
-        const { state } = view;
-        const { selection } = state;
-        const { $from } = selection;
+        const { state: editorState } = view;
+        const { $from } = editorState.selection;
         const textBefore = $from.nodeBefore?.textContent || "";
-        if (textBefore === "" || textBefore.endsWith(" ")) {
+
+        if (shouldShowSlash(textBefore, SLASH_TRIGGER_SUFFIXES)) {
           setTimeout(() => {
-            const coords = view.coordsAtPos(state.selection.from);
-            setSlashPos({
-              top: coords.bottom + window.scrollY,
-              left: coords.left + window.scrollX,
+            const coords = view.coordsAtPos(editorState.selection.from);
+            updateState({
+              slashPos: getPopoverPosition(coords),
+              showSlash: true,
             });
-            setShowSlash(true);
           }, 0);
           return false; // Allow "/" to be typed normally
         }
       }
-      if ((showSlash || showEmoji) && event.key === "Escape") {
-        setShowSlash(false);
-        setShowEmoji(false);
+
+      if (
+        (state.showSlash || state.showEmoji || state.showTable) &&
+        event.key === "Escape"
+      ) {
+        updateState({ showSlash: false, showEmoji: false, showTable: false });
         return true;
       }
       return false;
     },
-    [showSlash, showEmoji, availableCommands.length, onConvertToTask, blockId],
+    [
+      state.showSlash,
+      state.showEmoji,
+      state.showTable,
+      availableCommands,
+      onConvertToTask,
+      blockId,
+      getPopoverPosition,
+      updateState,
+    ]
   );
 
   const menus = useMemo(
@@ -239,40 +244,47 @@ export const useSlashCommand = (
             onChange={handleFileChange}
           />
         )}
-        {showSlash && availableCommands.length > 0 && (
+        {state.showSlash && availableCommands.length > 0 && (
           <SlashCommand
-            show={showSlash}
+            show={state.showSlash}
             onSelect={onCommandSelect}
-            close={() => setShowSlash(false)}
-            position={slashPos}
+            close={() => updateState({ showSlash: false })}
+            position={state.slashPos}
             commands={availableCommands}
           />
         )}
-        {showEmoji && (
+        {state.showEmoji && (
           <div
             className="fixed z-50"
-            style={{ top: emojiPos.top, left: emojiPos.left }}
+            style={{ top: state.emojiPos.top, left: state.emojiPos.left }}
           >
             <EmojiPicker
-              show={showEmoji}
+              show={state.showEmoji}
               onSelect={onEmojiSelect}
-              close={() => setShowEmoji(false)}
+              close={() => updateState({ showEmoji: false })}
             />
           </div>
+        )}
+        {state.showTable && (
+          <TableSizePicker
+            show={state.showTable}
+            onSelect={onTableSelect}
+            close={() => updateState({ showTable: false })}
+            position={state.tablePos}
+          />
         )}
       </>
     ),
     [
-      showSlash,
-      showEmoji,
-      slashPos,
-      emojiPos,
+      state,
       onCommandSelect,
       onEmojiSelect,
+      onTableSelect,
       handleFileChange,
       availableCommands,
       allowFileUploads,
-    ],
+      updateState,
+    ]
   );
 
   return { handleKeyDown, menus };
