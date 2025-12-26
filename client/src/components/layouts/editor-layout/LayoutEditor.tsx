@@ -23,7 +23,7 @@ export const LayoutEditor: React.FC<LayoutEditorProps> = ({
       >
         {isOpen ? left : null}
       </div>
-      <div className="flex-1 py-4 px-2">{children}</div>
+      <div className="flex-1 py-4 px-4">{children}</div>
       <div
         className="transition-all duration-300 flex-shrink-0 overflow-hidden"
         style={{ width: isRightOpen ? SIDEBAR_WIDTH : 0 }}

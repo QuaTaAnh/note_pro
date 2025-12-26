@@ -56,7 +56,7 @@ export const WorkspaceButton = () => {
   }, [isOpen, data]);
 
   const handleFileSelect = async (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -143,7 +143,7 @@ export const WorkspaceButton = () => {
                     className={cn(
                       "relative overflow-hidden transition-all cursor-pointer",
                       "w-24 h-24 rounded-[20px]",
-                      tempImageUrl ? "bg-muted" : "bg-muted/50"
+                      tempImageUrl ? "bg-muted" : "bg-muted/50",
                     )}
                     onClick={() =>
                       !isUploading && fileInputRef.current?.click()

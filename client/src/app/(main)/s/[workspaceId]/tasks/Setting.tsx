@@ -98,7 +98,7 @@ export const Setting = () => {
               className="flex items-center gap-2 py-2 text-xs font-bold cursor-pointer"
               onSelect={(e) => e.preventDefault()}
             >
-              <CheckCircle className="w-4 h-4 text-green-500" />
+              <CheckCircle className="w-4 h-4 text-primary" />
               View Completed Tasks
             </DropdownMenuItem>
           </CompletedTasksModal>

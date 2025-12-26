@@ -51,7 +51,7 @@ export function SidebarButton({
     isActive && "bg-accent text-accent-foreground",
     disabled && "opacity-50 cursor-not-allowed",
     variantClasses[variant],
-    className
+    className,
   );
 
   const handleLinkClick = () => {

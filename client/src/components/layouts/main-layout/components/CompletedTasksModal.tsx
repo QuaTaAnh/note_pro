@@ -60,7 +60,7 @@ export const CompletedTasksModal = ({
       <DialogContent className="w-full max-w-3xl h-[80vh] overflow-hidden flex flex-col">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <CheckCircle className="w-5 h-5 text-green-500" />
+            <CheckCircle className="w-5 h-5 text-primary" />
             Completed Tasks
             <span className="text-sm font-normal text-muted-foreground">
               ({completedTasks.length})

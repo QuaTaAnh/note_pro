@@ -15,22 +15,25 @@ export const AttachmentsTab = ({
   onScrollToBlock,
   activeBlockId,
 }: AttachmentsTabProps) => {
-  return attachments.length === 0 ? (
-    <EmptyState
-      icon={<Paperclip className="h-4 w-4" />}
-      title="No attachments"
-      description="Upload files right from the editor"
-    />
-  ) : (
-    <div className="space-y-2">
-      {attachments.map((file) => (
-        <AttachmentRow
-          key={file.id}
-          file={file}
-          isActive={file.blockId === activeBlockId}
-          onScrollToBlock={onScrollToBlock}
-        />
-      ))}
+  return (
+    <div className="flex flex-col h-full">
+      <h3 className="text-xs text-muted-foreground mb-2">Attachments</h3>
+      <div className="text-sm space-y-1.5">
+        {attachments.length === 0 ? (
+          <h3 className="text-xs text-muted-foreground mt-2">
+            Upload files right from the editor.
+          </h3>
+        ) : (
+          attachments.map((file) => (
+            <AttachmentRow
+              key={file.id}
+              file={file}
+              isActive={file.blockId === activeBlockId}
+              onScrollToBlock={onScrollToBlock}
+            />
+          ))
+        )}
+      </div>
     </div>
   );
 };

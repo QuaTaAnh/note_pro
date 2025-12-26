@@ -2,9 +2,8 @@ import { Block } from "@/hooks";
 
 export type SectionItem = {
   id: string;
-  index: number;
   title: string;
-  preview: string;
+  level?: number; // 1 for h1, 2 for h2, 3 for h3
 };
 
 export type SidebarTask = {

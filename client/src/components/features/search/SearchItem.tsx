@@ -34,7 +34,7 @@ export function SearchItem({
       case "document":
         return <FileText className="h-5 w-5 text-primary" />;
       case "task":
-        return <CheckCircle className="w-5 h-5 text-green-500" />;
+        return <CheckCircle className="w-5 h-5 text-primary" />;
       default:
         return <FileText className="h-5 w-5 text-muted-foreground" />;
     }

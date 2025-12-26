@@ -37,19 +37,19 @@ export function SidebarTabs({
   return (
     <Tabs
       defaultValue="contents"
-      className="flex h-full flex-1 flex-col overflow-hidden min-h-0"
+      className="flex h-full flex-1 flex-col overflow-hidden"
     >
-      <TabsList className="grid grid-cols-4 gap-1 rounded-lg shrink-0">
-        <TabsTrigger value="contents">
+      <TabsList className="grid grid-cols-4 rounded-xl shrink-0">
+        <TabsTrigger value="contents" className="rounded-xl">
           <Menu className="h-4 w-4" />
         </TabsTrigger>
-        <TabsTrigger value="tasks">
+        <TabsTrigger value="tasks" className="rounded-xl">
           <CheckCircle className="h-4 w-4" />
         </TabsTrigger>
-        <TabsTrigger value="attachments">
+        <TabsTrigger value="attachments" className="rounded-xl">
           <Paperclip className="h-4 w-4" />
         </TabsTrigger>
-        <TabsTrigger value="find">
+        <TabsTrigger value="find" className="rounded-xl">
           <Search className="h-4 w-4" />
         </TabsTrigger>
       </TabsList>
@@ -66,6 +66,8 @@ export function SidebarTabs({
             tasks={tasks}
             pendingTaskIds={pendingTaskIds}
             onToggleTask={onToggleTask}
+            onScrollToBlock={handleScrollToBlock}
+            activeBlockId={activeBlockId}
           />
         </TabsContent>
         <TabsContent value="attachments">

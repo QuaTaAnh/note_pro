@@ -1,8 +1,4 @@
-import { useMemo, useState } from "react";
-import { Menu } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import { SectionItem } from "./types";
-import { EmptyState } from "./EmptyState";
 
 interface ContentsTabProps {
   sections: SectionItem[];
@@ -15,55 +11,34 @@ export const ContentsTab = ({
   onScrollToBlock,
   activeBlockId,
 }: ContentsTabProps) => {
-  const [filter, setFilter] = useState("");
-
-  const filteredSections = useMemo(() => {
-    if (!filter.trim()) return sections;
-    const query = filter.toLowerCase();
-    return sections.filter((section) =>
-      section.title.toLowerCase().includes(query),
-    );
-  }, [filter, sections]);
-
   return (
-    <div className="text-sm space-y-3">
-      <Input
-        value={filter}
-        onChange={(event) => setFilter(event.target.value)}
-        placeholder="Filter sections"
-        className="h-8 text-xs"
-      />
-      <div className="space-y-1.5">
-        {filteredSections.length === 0 ? (
-          <EmptyState
-            icon={<Menu className="h-4 w-4" />}
-            title="No sections"
-            description="Add text blocks to build an outline"
-          />
+    <div className="flex flex-col h-full">
+      <h3 className="text-xs text-muted-foreground mb-2">Table of Contents</h3>
+      <div className="text-sm space-y-1.5">
+        {sections.length === 0 ? (
+          <h3 className="text-xs text-muted-foreground mt-2">
+            Use titles, pages or cards to create a table of contents.
+          </h3>
         ) : (
-          filteredSections.map((section) => {
+          sections.map((section) => {
             const isActive = section.id === activeBlockId;
+            const level = section.level || 1;
+
             return (
               <button
                 key={section.id}
                 onClick={() => onScrollToBlock(section.id)}
-                className={`w-full rounded-lg border px-2 py-1 text-left transition-colors ${
+                className={`w-full rounded-lg border px-2 py-1.5 text-left transition-colors ${
                   isActive
                     ? "border-border bg-muted/60"
                     : "border-transparent hover:border-border hover:bg-muted/60"
                 }`}
               >
-                <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-medium text-muted-foreground">
-                    {String(section.index).padStart(2, "0")}
-                  </span>
-                  <span className="text-xs font-semibold truncate">
-                    {section.title}
-                  </span>
-                </div>
-                <p className="mt-0.5 line-clamp-2 text-[11px] text-muted-foreground">
-                  {section.preview}
-                </p>
+                <span
+                  className={`text-xs truncate block ${level === 1 ? "font-bold" : level === 2 ? "font-semibold" : "font-medium"}`}
+                >
+                  {section.title}
+                </span>
               </button>
             );
           })
