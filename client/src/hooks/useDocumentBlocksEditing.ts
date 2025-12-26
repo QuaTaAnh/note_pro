@@ -247,6 +247,39 @@ export function useDocumentBlocksEditing({
     [updateBlockType, updateBlockContent, flush],
   );
 
+  const handleConvertToTable = useCallback(
+    async (blockId: string, tableHTML: string) => {
+      flush();
+
+      try {
+        // Update block type to TABLE
+        const updatedBlock = await updateBlockType(blockId, BlockType.TABLE);
+        if (!updatedBlock) {
+          return;
+        }
+
+        // Update block content with table HTML
+        await updateBlockContent(blockId, { text: tableHTML });
+
+        // Update local state
+        setBlocks((prev) =>
+          prev.map((b) =>
+            b.id === blockId
+              ? {
+                  ...b,
+                  type: BlockType.TABLE,
+                  content: { text: tableHTML },
+                }
+              : b,
+          ),
+        );
+      } catch (error) {
+        console.error("Failed to convert block to table:", error);
+      }
+    },
+    [updateBlockType, updateBlockContent, flush],
+  );
+
   return {
     blocks,
     rootBlock,
@@ -261,5 +294,6 @@ export function useDocumentBlocksEditing({
     handleReorderBlocks,
     handleConvertToTask,
     handleConvertToFile,
+    handleConvertToTable,
   };
 }

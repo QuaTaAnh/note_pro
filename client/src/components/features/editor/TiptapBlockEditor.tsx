@@ -28,6 +28,7 @@ export default function TiptapBlockEditor({ pageId, className = "" }: Props) {
     handleReorderBlocks,
     handleConvertToTask,
     handleConvertToFile,
+    handleConvertToTable,
   } = useDocumentBlocks(pageId);
 
   const { canEdit } = useDocumentPermission(pageId);
@@ -64,6 +65,7 @@ export default function TiptapBlockEditor({ pageId, className = "" }: Props) {
                   editable={canEdit}
                   onConvertToTask={handleConvertToTask}
                   onConvertToFile={handleConvertToFile}
+                  onConvertToTable={handleConvertToTable}
                 />
               </TiptapWrapper>
               <div className="h-[50vh]" />

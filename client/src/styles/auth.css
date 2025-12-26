@@ -1,0 +1,13 @@
+.auth-loading {
+  opacity: 0;
+  transition: opacity 0.1s ease-in-out;
+}
+
+.auth-ready {
+  opacity: 1;
+  transition: opacity 0.1s ease-in-out;
+}
+
+html:not([data-auth-ready]) body {
+  visibility: hidden;
+}
