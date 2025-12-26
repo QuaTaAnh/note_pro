@@ -1,10 +1,10 @@
 import {
   CloudinaryUploadResponse,
   uploadImageToCloudinary,
-} from "@/lib/cloudinary";
+} from "@/lib/cloudinary/index";
 import { useState } from "react";
 import { toast } from "sonner";
-import { useLoading } from "@/context/LoadingContext";
+import { useLoading } from "@/contexts/LoadingContext";
 
 interface UseImageUploadOptions {
   tags?: string[];

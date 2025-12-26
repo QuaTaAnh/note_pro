@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { FOLDER_COLORS } from "@/consts";
+import { FOLDER_COLORS } from "@/lib/constants";
 import { HexColor } from "@/types/types";
 
 interface ColorPickerProps {

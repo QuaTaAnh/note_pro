@@ -1,6 +1,6 @@
 "use client";
 
-import { PAGE_TITLES } from "@/consts";
+import { PAGE_TITLES } from "@/lib/constants";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useRef, useCallback } from "react";
 

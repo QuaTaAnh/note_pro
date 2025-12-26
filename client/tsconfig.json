@@ -21,7 +21,14 @@
     ],
     "paths": {
       "@/*": ["*"],
-      "~generated/*": ["generated/*"]
+      "@/components/*": ["components/*"],
+      "@/lib/*": ["lib/*"],
+      "@/hooks/*": ["hooks/*"],
+      "@/contexts/*": ["contexts/*"],
+      "@/types/*": ["types/*"],
+      "@/styles/*": ["styles/*"],
+      "@/graphql/*": ["graphql/*"],
+      "~generated/*": ["types/generated/*"]
     },
     "types": ["next-auth"]
   },
