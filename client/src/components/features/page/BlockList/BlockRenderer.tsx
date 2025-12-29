@@ -2,9 +2,11 @@
 
 import { TiptapBlockItem } from "@/components/features/editor/TiptapBlockItem";
 import { FileBlockCard } from "@/components/features/page/FileBlockCard";
+import { SeparatorBlock } from "@/components/features/page/SeparatorBlock";
 import { Block } from "@/hooks";
 import { BlockType } from "@/types/types";
 import { SortableBlockItemProps } from "./types";
+import type { SeparatorStyle } from "@/components/features/page/SeparatorBlock";
 
 interface BlockRendererProps extends Omit<SortableBlockItemProps, "block"> {
   block: Block;
@@ -38,15 +40,32 @@ export function BlockRenderer({
   onConvertToFile,
   onConvertToTable,
 }: BlockRendererProps) {
-  return block.type === BlockType.FILE ? (
-    <FileBlockCard
-      block={block}
-      dragHandle={dragHandle}
-      editable={editable}
-      onDeleteBlock={commonDeleteHandler}
-      {...commonInsertHandlers}
-    />
-  ) : (
+  if (block.type === BlockType.FILE) {
+    return (
+      <FileBlockCard
+        block={block}
+        dragHandle={dragHandle}
+        editable={editable}
+        onDeleteBlock={commonDeleteHandler}
+        {...commonInsertHandlers}
+      />
+    );
+  }
+
+  if (block.type === BlockType.SEPARATOR) {
+    const style = (block.content?.style as SeparatorStyle) || "regular";
+    return (
+      <SeparatorBlock
+        style={style}
+        dragHandle={dragHandle}
+        editable={editable}
+        onDeleteBlock={commonDeleteHandler}
+        {...commonInsertHandlers}
+      />
+    );
+  }
+
+  return (
     <TiptapBlockItem
       blockId={block.id}
       value={block.content?.text || ""}

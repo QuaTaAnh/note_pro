@@ -8,6 +8,7 @@ import { useLoading } from "@/contexts/LoadingContext";
 import { EmojiPicker } from "./EmojiPicker";
 import { SlashCommand } from "./SlashCommand";
 import { TableSizePicker } from "./TableSizePicker";
+import { SeparatorStylePicker } from "./SeparatorStylePicker";
 import {
   createSlashCommands,
   SLASH_MENU_KEYS,
@@ -42,9 +43,11 @@ export const useSlashCommand = (
     showSlash: false,
     showEmoji: false,
     showTable: false,
+    showSeparator: false,
     slashPos: { top: 0, left: 0 },
     emojiPos: { top: 0, left: 0 },
     tablePos: { top: 0, left: 0 },
+    separatorPos: { top: 0, left: 0 },
   });
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const { startLoading, stopLoading } = useLoading();
@@ -123,6 +126,15 @@ export const useSlashCommand = (
           showTable: true,
         });
       },
+      "insert-separator": () => {
+        if (!editor) return;
+        const { state } = editor.view;
+        const coords = editor.view.coordsAtPos(state.selection.from);
+        updateState({
+          separatorPos: getPopoverPosition(coords),
+          showSeparator: true,
+        });
+      },
     }),
     [editor, allowFileUploads, getPopoverPosition, updateState],
   );
@@ -170,6 +182,16 @@ export const useSlashCommand = (
       updateState({ showTable: false });
     },
     [editor, onAddBlock, onConvertToTable, blockId, position, updateState],
+  );
+
+  const onSeparatorSelect = useCallback(
+    async (style: string) => {
+      if (!onAddBlock) return;
+
+      onAddBlock(position, "separator" as any, { style });
+      updateState({ showSeparator: false });
+    },
+    [onAddBlock, position, updateState],
   );
 
   const handleKeyDown = useCallback(
@@ -226,10 +248,18 @@ export const useSlashCommand = (
       }
 
       if (
-        (state.showSlash || state.showEmoji || state.showTable) &&
+        (state.showSlash ||
+          state.showEmoji ||
+          state.showTable ||
+          state.showSeparator) &&
         event.key === "Escape"
       ) {
-        updateState({ showSlash: false, showEmoji: false, showTable: false });
+        updateState({
+          showSlash: false,
+          showEmoji: false,
+          showTable: false,
+          showSeparator: false,
+        });
         return true;
       }
       return false;
@@ -238,6 +268,7 @@ export const useSlashCommand = (
       state.showSlash,
       state.showEmoji,
       state.showTable,
+      state.showSeparator,
       availableCommands,
       onConvertToTask,
       onDeleteBlock,
@@ -287,6 +318,14 @@ export const useSlashCommand = (
             position={state.tablePos}
           />
         )}
+        {state.showSeparator && (
+          <SeparatorStylePicker
+            show={state.showSeparator}
+            onSelect={onSeparatorSelect}
+            close={() => updateState({ showSeparator: false })}
+            position={state.separatorPos}
+          />
+        )}
       </>
     ),
     [
@@ -294,6 +333,7 @@ export const useSlashCommand = (
       onCommandSelect,
       onEmojiSelect,
       onTableSelect,
+      onSeparatorSelect,
       handleFileChange,
       availableCommands,
       allowFileUploads,

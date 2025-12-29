@@ -1,4 +1,5 @@
 import { Paperclip, Smile, Table } from "lucide-react";
+import { LuMinus } from "react-icons/lu";
 import type { Command } from "../SlashCommand";
 
 export const MAX_FILE_SIZE_BYTES = 25 * 1024 * 1024;
@@ -21,6 +22,11 @@ export const createSlashCommands = (allowFileUploads: boolean): Command[] => [
     id: "insert-table",
     name: "Insert Table",
     icon: Table,
+  },
+  {
+    id: "insert-separator",
+    name: "Insert Separator",
+    icon: LuMinus,
   },
   {
     id: "emojis",

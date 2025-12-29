@@ -7,6 +7,7 @@ import {
   TaskPreview,
   FilePreview,
   TablePreview,
+  SeparatorPreview,
 } from "./preview";
 
 interface Props {
@@ -33,6 +34,8 @@ const BlockPreviewItem = ({ block }: { block: Block }) => {
       return <FilePreview block={block} />;
     case BlockType.TABLE:
       return <TablePreview block={block} />;
+    case BlockType.SEPARATOR:
+      return <SeparatorPreview block={block} />;
     default:
       return null;
   }

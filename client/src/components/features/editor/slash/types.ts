@@ -28,15 +28,18 @@ export interface CommandHandlers {
   emojis: () => void;
   "upload-file": () => void;
   "insert-table": () => void;
+  "insert-separator": () => void;
 }
 
 export interface SlashCommandState {
   showSlash: boolean;
   showEmoji: boolean;
   showTable: boolean;
+  showSeparator: boolean;
   slashPos: { top: number; left: number };
   emojiPos: { top: number; left: number };
   tablePos: { top: number; left: number };
+  separatorPos: { top: number; left: number };
 }
 
 export interface SlashCommandHookReturn {

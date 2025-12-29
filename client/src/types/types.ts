@@ -30,6 +30,7 @@ export enum BlockType {
   TASK = "task",
   FILE = "file",
   TABLE = "table",
+  SEPARATOR = "separator",
 }
 
 export enum AccessRequestStatus {
