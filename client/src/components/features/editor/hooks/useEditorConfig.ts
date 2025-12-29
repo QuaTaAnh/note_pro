@@ -43,6 +43,7 @@ export function useEditorConfig({
     () => ({
       extensions,
       immediatelyRender: false,
+      shouldRerenderOnTransaction: false,
       editable,
       editorProps: {
         attributes: EDITOR_ATTRIBUTES,

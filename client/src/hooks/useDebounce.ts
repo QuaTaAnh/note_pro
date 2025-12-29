@@ -30,7 +30,7 @@ export const useDebounce = (delay: number) => {
     [debouncedFn],
   );
 
-  const flush = useCallback(() => {
+  const flush = useCallback(async () => {
     if (isFlushingRef.current) return;
 
     isFlushingRef.current = true;
@@ -38,17 +38,20 @@ export const useDebounce = (delay: number) => {
     try {
       debouncedFn.flush();
 
-      // Execute all pending changes in order
+      // Execute all pending changes and wait for them to complete
       const pendingCallbacks = Array.from(pendingChangesRef.current.values());
       pendingChangesRef.current.clear();
 
-      pendingCallbacks.forEach((cb) => {
-        try {
-          cb();
-        } catch (error) {
-          console.error("Error executing pending callback:", error);
-        }
-      });
+      // Wait for all async callbacks to complete
+      await Promise.all(
+        pendingCallbacks.map(async (cb) => {
+          try {
+            await cb();
+          } catch (error) {
+            console.error("Error executing pending callback:", error);
+          }
+        }),
+      );
     } finally {
       isFlushingRef.current = false;
     }

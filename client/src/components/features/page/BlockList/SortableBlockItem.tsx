@@ -45,12 +45,15 @@ export const SortableBlockItem = memo(
           scaleY: 1,
         },
       ),
-      transition,
+      transition:
+        transition ||
+        "transform 150ms cubic-bezier(0.4, 0, 0.2, 1), opacity 150ms ease",
       opacity: isDragging ? 0.8 : 1,
       position: "relative" as const,
       zIndex: isDragging ? 999 : "auto",
       backgroundColor: isDragging ? "white" : "transparent",
       boxShadow: isDragging ? "0 4px 12px rgba(0, 0, 0, 0.1)" : "none",
+      willChange: isDragging ? "transform, opacity" : "auto",
     };
 
     const dragHandle = (

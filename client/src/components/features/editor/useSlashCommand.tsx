@@ -33,6 +33,7 @@ export const useSlashCommand = (
     onConvertToFile,
     onConvertToTable,
     onAddBlock,
+    onDeleteBlock,
     position = 0,
     allowFileUploads = true,
   }: SlashCommandOptions = {},
@@ -192,6 +193,18 @@ export const useSlashCommand = (
         }
       }
 
+      if (event.key === "Backspace" && onDeleteBlock) {
+        const { state: editorState } = view;
+        const { $from } = editorState.selection;
+        const textContent = editorState.doc.textContent;
+
+        if (textContent.trim() === "" && $from.pos === 1) {
+          event.preventDefault();
+          onDeleteBlock();
+          return true;
+        }
+      }
+
       if (event.key === "/" && !event.shiftKey) {
         if (availableCommands.length === 0) {
           return false;
@@ -227,6 +240,7 @@ export const useSlashCommand = (
       state.showTable,
       availableCommands,
       onConvertToTask,
+      onDeleteBlock,
       blockId,
       getPopoverPosition,
       updateState,

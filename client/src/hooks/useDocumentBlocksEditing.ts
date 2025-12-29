@@ -26,7 +26,7 @@ export function useDocumentBlocksEditing({
     updateBlockType,
     removeBlock,
   } = useBlocks();
-  const { debounced, flush } = useDebounce(500);
+  const { debounced, flush } = useDebounce(300);
   const [createTask] = useCreateTaskMutation();
   const userId = useUserId();
 
@@ -70,7 +70,8 @@ export function useDocumentBlocksEditing({
           return prev;
         }
 
-        if (block.content?.text === content) {
+        const currentText = block.content?.text || "";
+        if (currentText === content) {
           return prev;
         }
 
@@ -110,20 +111,31 @@ export function useDocumentBlocksEditing({
     setFocusedBlock(null);
   }, []);
 
-  const handleSaveImmediate = useCallback(() => {
-    flush();
+  const handleSaveImmediate = useCallback(async () => {
+    await flush();
   }, [flush]);
 
   const handleDeleteBlock = useCallback(
     async (blockId: string) => {
+      const currentIndex = blocks.findIndex((b) => b.id === blockId);
+      const previousBlock = currentIndex > 0 ? blocks[currentIndex - 1] : null;
+
       const success = await removeBlock(blockId);
       if (success) {
-        setBlocks((prev) => prev.filter((b) => b.id !== blockId));
+        requestAnimationFrame(() => {
+          setBlocks((prev) => prev.filter((b) => b.id !== blockId));
+
+          if (previousBlock) {
+            // Slight delay for smoother focus transition
+            requestAnimationFrame(() => {
+              setFocusedBlock(previousBlock.id);
+            });
+          }
+        });
       }
     },
-    [removeBlock],
+    [removeBlock, blocks],
   );
-
   const handleReorderBlocks = useCallback(
     async (newBlocks: Block[]) => {
       setBlocks((prevBlocks) => {

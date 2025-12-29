@@ -19,6 +19,7 @@ export interface SlashCommandOptions {
     type: BlockType,
     content?: Record<string, unknown>,
   ) => Promise<void> | void;
+  onDeleteBlock?: () => void;
   position?: number;
   allowFileUploads?: boolean;
 }

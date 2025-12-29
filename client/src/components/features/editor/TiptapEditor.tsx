@@ -102,14 +102,21 @@ export const TiptapEditor = memo(
       onConvertToFile,
       onConvertToTable,
       onAddBlock,
+      onDeleteBlock,
       position,
       onToggleUploading: setIsUploading,
       allowFileUploads: enableFileUploads,
     });
     useEffect(() => {
-      if (editor && value !== prevValueRef.current) {
-        const editorHTML = editor.getHTML();
-        if (value !== editorHTML) {
+      if (!editor || !value) {
+        return;
+      }
+
+      const editorHTML = editor.getHTML();
+
+      if (value !== prevValueRef.current && value !== editorHTML) {
+        const isEditorFocused = editor.isFocused;
+        if (!isEditorFocused) {
           editor.commands.setContent(value, { emitUpdate: false });
           prevValueRef.current = value;
         }
@@ -118,7 +125,10 @@ export const TiptapEditor = memo(
 
     useEffect(() => {
       if (editor && isFocused) {
-        editor.commands.focus();
+        // Use RAF for smoother focus transition
+        requestAnimationFrame(() => {
+          editor.commands.focus("end");
+        });
       }
     }, [editor, isFocused]);
 
@@ -157,7 +167,9 @@ export const TiptapEditor = memo(
         editorProps: {
           attributes: {
             class: editorClassName || "",
-            style: isTitle ? "line-height: 1.2;" : "padding: 0px;",
+            style: isTitle
+              ? "line-height: 1.2; will-change: contents;"
+              : "padding: 0px; will-change: contents;",
           },
         },
       });

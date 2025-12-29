@@ -31,6 +31,10 @@ export const createEventHandlers = ({
       isComposingRef.current = true;
       return false;
     },
+    compositionupdate: () => {
+      isComposingRef.current = true;
+      return false;
+    },
     compositionend: () => {
       isComposingRef.current = false;
       return false;
@@ -64,6 +68,11 @@ export const createEventHandlers = ({
     onSaveImmediateRef.current?.();
   },
   onUpdate: ({ editor }: { editor: Editor }) => {
+    // Skip updates during IME composition (Vietnamese, Chinese, Japanese, etc.)
+    if (isComposingRef.current) {
+      return;
+    }
+
     const content = editor.getHTML();
     if (content !== prevValueRef.current) {
       prevValueRef.current = content;
