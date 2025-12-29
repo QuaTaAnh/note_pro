@@ -207,14 +207,22 @@ export const TiptapEditor = memo(
     );
   },
   (prevProps, nextProps) => {
+    // Deep comparison for task object
+    const prevTask = prevProps.task;
+    const nextTask = nextProps.task;
+    const tasksEqual =
+      prevTask?.id === nextTask?.id &&
+      prevTask?.status === nextTask?.status &&
+      prevTask?.block_id === nextTask?.block_id;
+
     return (
       prevProps.value === nextProps.value &&
       prevProps.isFocused === nextProps.isFocused &&
       prevProps.position === nextProps.position &&
       prevProps.editable === nextProps.editable &&
       prevProps.isTask === nextProps.isTask &&
-      prevProps.task?.status === nextProps.task?.status &&
-      prevProps.task?.id === nextProps.task?.id
+      prevProps.blockId === nextProps.blockId &&
+      tasksEqual
     );
   },
 );

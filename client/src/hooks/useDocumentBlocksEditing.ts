@@ -66,7 +66,13 @@ export function useDocumentBlocksEditing({
     (blockId: string, content: string) => {
       setBlocks((prev) => {
         const block = prev.find((b) => b.id === blockId);
-        if (!block || block.type === BlockType.PAGE) return prev;
+        if (!block || block.type === BlockType.PAGE) {
+          return prev;
+        }
+
+        if (block.content?.text === content) {
+          return prev;
+        }
 
         return prev.map((b) =>
           b.id === blockId
