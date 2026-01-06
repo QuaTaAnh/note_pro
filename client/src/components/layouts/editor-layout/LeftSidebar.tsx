@@ -166,7 +166,7 @@ export const LeftSidebar = ({ pageId }: Props) => {
 
     return (
         <div className="h-screen flex flex-col overflow-hidden">
-            <div className="py-4 pl-4 h-full flex flex-col overflow-hidden">
+            <div className="py-4 px-4 h-full flex flex-col overflow-hidden">
                 <div className="flex flex-row items-center gap-2 mb-3 shrink-0">
                     <div
                         className="border rounded-sm overflow-hidden shrink-0 relative p-2"

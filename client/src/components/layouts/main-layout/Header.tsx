@@ -23,7 +23,7 @@ interface Props {
 }
 
 export default function Header({ workspaceSlug, isEditorPage }: Props) {
-    const { toggle, toggleRight } = useSidebar();
+    const { toggle } = useSidebar();
     const { documentId } = useDocumentAccess();
     const { isLoading, startLoading } = useLoading();
     const pathname = usePathname();
@@ -72,13 +72,6 @@ export default function Header({ workspaceSlug, isEditorPage }: Props) {
                         <ThemeToggle />
                         <NotificationButton />
                         <SettingButton />
-                        {isEditorPage && (
-                            <MdOutlineViewSidebar
-                                size={20}
-                                className="cursor-pointer"
-                                onClick={toggleRight}
-                            />
-                        )}
                     </div>
                 </header>
             </>

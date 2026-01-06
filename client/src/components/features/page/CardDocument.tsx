@@ -33,7 +33,7 @@ const CardDocumentComponent = ({ document }: { document: Document }) => {
     const router = useRouter();
     const { workspace } = useWorkspace();
     const currentUserId = useUserId();
-    const { startLoading, stopLoading } = useLoading();
+    const { startLoading } = useLoading();
 
     const plainTitle = getPlainText(document.content?.title) || 'Untitled';
 

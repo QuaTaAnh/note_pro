@@ -11,9 +11,7 @@ export default function EditorPage() {
 
     return !documentId ? null : (
         <DocumentAccessGuard documentId={documentId}>
-            <LayoutEditor
-                left={<LeftSidebar pageId={documentId} />}
-                right={<div>rightSidebar</div>}>
+            <LayoutEditor left={<LeftSidebar pageId={documentId} />}>
                 <TiptapBlockEditor pageId={documentId} className="w-full " />
             </LayoutEditor>
         </DocumentAccessGuard>
