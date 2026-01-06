@@ -1,34 +1,34 @@
 mutation CreateAccessRequest($input: access_requests_insert_input!) {
-  insert_access_requests_one(
-    object: $input
-    on_conflict: {
-      constraint: access_requests_document_id_requester_id_key
-      update_columns: [permission_type, status, message, updated_at]
+    insert_access_requests_one(
+        object: $input
+        on_conflict: {
+            constraint: access_requests_document_id_requester_id_key
+            update_columns: [permission_type, status, message, updated_at]
+        }
+    ) {
+        id
+        document_id
+        requester_id
+        owner_id
+        status
+        message
+        permission_type
+        created_at
+        updated_at
     }
-  ) {
-    id
-    document_id
-    requester_id
-    owner_id
-    status
-    message
-    permission_type
-    created_at
-    updated_at
-  }
 }
 
 mutation UpdateAccessRequestStatus(
-  $id: uuid!
-  $status: String!
-  $updated_at: timestamptz!
+    $id: uuid!
+    $status: String!
+    $updated_at: timestamptz!
 ) {
-  update_access_requests_by_pk(
-    pk_columns: { id: $id }
-    _set: { status: $status, updated_at: $updated_at }
-  ) {
-    id
-    status
-    updated_at
-  }
+    update_access_requests_by_pk(
+        pk_columns: { id: $id }
+        _set: { status: $status, updated_at: $updated_at }
+    ) {
+        id
+        status
+        updated_at
+    }
 }

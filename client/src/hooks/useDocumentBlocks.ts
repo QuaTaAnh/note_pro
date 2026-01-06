@@ -1,30 +1,32 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { Block } from "@/hooks";
-import { useDocumentBlocksData } from "@/hooks/useDocumentBlocksData";
-import { useDocumentBlocksEditing } from "@/hooks/useDocumentBlocksEditing";
+import { useEffect, useState } from 'react';
+import { Block } from '@/hooks';
+import { useDocumentBlocksData } from '@/hooks/useDocumentBlocksData';
+import { useDocumentBlocksEditing } from '@/hooks/useDocumentBlocksEditing';
 
 export function useDocumentBlocks(pageId: string) {
-  const { loading, processedBlocks, processedRootBlock } =
-    useDocumentBlocksData(pageId);
+    const { loading, processedBlocks, processedRootBlock } =
+        useDocumentBlocksData(pageId);
 
-  const [initialBlocks, setInitialBlocks] = useState<Block[]>([]);
-  const [initialRootBlock, setInitialRootBlock] = useState<Block | null>(null);
+    const [initialBlocks, setInitialBlocks] = useState<Block[]>([]);
+    const [initialRootBlock, setInitialRootBlock] = useState<Block | null>(
+        null
+    );
 
-  useEffect(() => {
-    setInitialRootBlock((processedRootBlock as Block) ?? null);
-    setInitialBlocks((processedBlocks as Block[]) ?? []);
-  }, [processedBlocks, processedRootBlock]);
+    useEffect(() => {
+        setInitialRootBlock((processedRootBlock as Block) ?? null);
+        setInitialBlocks((processedBlocks as Block[]) ?? []);
+    }, [processedBlocks, processedRootBlock]);
 
-  const editing = useDocumentBlocksEditing({
-    initialBlocks,
-    initialRootBlock,
-    pageId,
-  });
+    const editing = useDocumentBlocksEditing({
+        initialBlocks,
+        initialRootBlock,
+        pageId,
+    });
 
-  return {
-    loading,
-    ...editing,
-  };
+    return {
+        loading,
+        ...editing,
+    };
 }

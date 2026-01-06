@@ -1,29 +1,29 @@
-"use client";
+'use client';
 
-import { useAuth as useAuthContext } from "@/contexts/AuthContext";
+import { useAuth as useAuthContext } from '@/contexts/AuthContext';
 
 export const useAuth = () => {
-  const auth = useAuthContext();
+    const auth = useAuthContext();
 
-  return {
-    ...auth,
-    isLoggedIn: auth.isAuthenticated,
-    getUserId: () => auth.userId,
-    getToken: () => auth.token,
-  };
+    return {
+        ...auth,
+        isLoggedIn: auth.isAuthenticated,
+        getUserId: () => auth.userId,
+        getToken: () => auth.token,
+    };
 };
 
 export const useUserId = () => {
-  const { userId } = useAuthContext();
-  return userId;
+    const { userId } = useAuthContext();
+    return userId;
 };
 
 export const useIsAuthenticated = () => {
-  const { isAuthenticated } = useAuthContext();
-  return isAuthenticated;
+    const { isAuthenticated } = useAuthContext();
+    return isAuthenticated;
 };
 
 export const useToken = () => {
-  const { token } = useAuthContext();
-  return token;
+    const { token } = useAuthContext();
+    return token;
 };

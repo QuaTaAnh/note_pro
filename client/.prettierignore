@@ -1,0 +1,12 @@
+/.next/
+/build/
+/dist/
+/coverage/
+/storybook-static
+/node_modules/
+/package-lock.json
+/pnpm-lock.yaml
+/yarn.lock
+/src/types/generated/
+*.generated.*
+/config/

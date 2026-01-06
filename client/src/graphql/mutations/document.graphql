@@ -1,77 +1,80 @@
 mutation SoftDeleteDocument($id: uuid!) {
-  update_blocks_by_pk(pk_columns: { id: $id }, _set: { deleted_at: "now()" }) {
-    id
-  }
+    update_blocks_by_pk(
+        pk_columns: { id: $id }
+        _set: { deleted_at: "now()" }
+    ) {
+        id
+    }
 }
 
 mutation CreateUntitledPage($input: blocks_insert_input!) {
-  insert_blocks_one(object: $input) {
-    id
-  }
+    insert_blocks_one(object: $input) {
+        id
+    }
 }
 
 mutation UpdateBlock($id: uuid!, $input: blocks_set_input!) {
-  update_blocks_by_pk(pk_columns: { id: $id }, _set: $input) {
-    id
-    content
-    position
-    parent_id
-    page_id
-    type
-    created_at
-    updated_at
-  }
+    update_blocks_by_pk(pk_columns: { id: $id }, _set: $input) {
+        id
+        content
+        position
+        parent_id
+        page_id
+        type
+        created_at
+        updated_at
+    }
 }
 
 mutation DeleteBlock($id: uuid!) {
-  delete_blocks_by_pk(id: $id) {
-    id
-  }
+    delete_blocks_by_pk(id: $id) {
+        id
+    }
 }
 
 mutation InsertBlockAndUpdatePosition(
-  $pageId: uuid!
-  $position: Int!
-  $type: String!
-  $workspaceId: uuid!
-  $userId: uuid!
-  $content: jsonb!
+    $pageId: uuid!
+    $position: Int!
+    $type: String!
+    $workspaceId: uuid!
+    $userId: uuid!
+    $content: jsonb!
 ) {
-  update_blocks(
-    where: { page_id: { _eq: $pageId }, position: { _gte: $position } }
-    _inc: { position: 1 }
-    _set: { updated_at: "now()" }
-  ) {
-    affected_rows
-  }
-
-  insert_blocks_one(
-    object: {
-      page_id: $pageId
-      position: $position
-      type: $type
-      workspace_id: $workspaceId
-      user_id: $userId
-      content: $content
+    update_blocks(
+        where: { page_id: { _eq: $pageId }, position: { _gte: $position } }
+        _inc: { position: 1 }
+        _set: { updated_at: "now()" }
+    ) {
+        affected_rows
     }
-  ) {
-    id
-    content
-    position
-    parent_id
-    page_id
-    type
-    created_at
-    updated_at
-  }
+
+    insert_blocks_one(
+        object: {
+            page_id: $pageId
+            position: $position
+            type: $type
+            workspace_id: $workspaceId
+            user_id: $userId
+            content: $content
+        }
+    ) {
+        id
+        content
+        position
+        parent_id
+        page_id
+        type
+        created_at
+        updated_at
+    }
 }
 
 mutation UpdateBlocksPositions($updates: [blocks_updates!]!) {
-  update_blocks_many(updates: $updates) {
-    returning {
-      id
-      position
-      updated_at
+    update_blocks_many(updates: $updates) {
+        returning {
+            id
+            position
+            updated_at
+        }
     }
-  }
 }

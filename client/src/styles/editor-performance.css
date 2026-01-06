@@ -1,120 +1,120 @@
 .tiptap-editor-optimized {
-  transform: translateZ(0);
-  will-change: contents;
-  scroll-behavior: smooth;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
+    transform: translateZ(0);
+    will-change: contents;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
 }
 
 .block-item-optimized {
-  transform: translateZ(0);
-  will-change: transform, opacity;
-  transition:
-    transform 150ms cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 150ms ease,
-    background-color 150ms ease;
-  contain: layout style paint;
+    transform: translateZ(0);
+    will-change: transform, opacity;
+    transition:
+        transform 150ms cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 150ms ease,
+        background-color 150ms ease;
+    contain: layout style paint;
 }
 
 .block-item-dragging {
-  will-change: transform;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .block-item-hover {
-  transition: transform 100ms ease;
+    transition: transform 100ms ease;
 }
 
 .block-list-container {
-  contain: layout;
-  overflow-anchor: none;
-  scroll-behavior: smooth;
+    contain: layout;
+    overflow-anchor: none;
+    scroll-behavior: smooth;
 }
 
 .prevent-layout-shift {
-  min-height: 1.5em;
-  content-visibility: auto;
+    min-height: 1.5em;
+    content-visibility: auto;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .smooth-animation {
-    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  }
+    .smooth-animation {
+        animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }
 
 .use-gpu-transform {
-  transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
 }
 
 .use-cpu-transform {
-  transform: translate(0, 0);
+    transform: translate(0, 0);
 }
 
 .fps-60-optimized {
-  transform: translateZ(0);
-  will-change: transform;
+    transform: translateZ(0);
+    will-change: transform;
 }
 
 .virtual-scroll-item {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  contain: strict;
-  content-visibility: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    contain: strict;
+    content-visibility: auto;
 }
 
 .typing-indicator {
-  position: relative;
+    position: relative;
 }
 
 .typing-indicator::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--primary) 50%,
-    transparent 100%
-  );
-  animation: typing-progress 2s ease-in-out infinite;
-  opacity: 0;
-  transition: opacity 100ms ease;
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--primary) 50%,
+        transparent 100%
+    );
+    animation: typing-progress 2s ease-in-out infinite;
+    opacity: 0;
+    transition: opacity 100ms ease;
 }
 
 .typing-indicator.active::after {
-  opacity: 0.3;
+    opacity: 0.3;
 }
 
 @keyframes typing-progress {
-  0%,
-  100% {
-    transform: translateX(-100%);
-  }
-  50% {
-    transform: translateX(100%);
-  }
+    0%,
+    100% {
+        transform: translateX(-100%);
+    }
+    50% {
+        transform: translateX(100%);
+    }
 }
 
 .critical-content {
-  content-visibility: visible;
+    content-visibility: visible;
 }
 
 .non-critical-content {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 500px;
+    content-visibility: auto;
+    contain-intrinsic-size: auto 500px;
 }

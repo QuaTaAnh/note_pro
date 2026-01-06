@@ -1,15 +1,15 @@
 query GetWorkspaceByUserId($userId: uuid!) {
-  workspaces(where: { created_by: { _eq: $userId } }) {
-    id
-    name
-    image_url
-  }
+    workspaces(where: { created_by: { _eq: $userId } }) {
+        id
+        name
+        image_url
+    }
 }
 
 query GetWorkspaceById($id: uuid!) {
-  workspaces_by_pk(id: $id) {
-    id
-    name
-    image_url
-  }
+    workspaces_by_pk(id: $id) {
+        id
+        name
+        image_url
+    }
 }

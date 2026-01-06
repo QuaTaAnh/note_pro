@@ -1,41 +1,41 @@
 query GetAccessRequests($userId: uuid!) {
-  access_requests(
-    where: { owner_id: { _eq: $userId }, status: { _eq: "pending" } }
-    order_by: { created_at: desc }
-  ) {
-    id
-    document_id
-    requester_id
-    owner_id
-    status
-    message
-    permission_type
-    created_at
-    updated_at
-    requester {
-      id
-      email
-      name
-      avatar_url
+    access_requests(
+        where: { owner_id: { _eq: $userId }, status: { _eq: "pending" } }
+        order_by: { created_at: desc }
+    ) {
+        id
+        document_id
+        requester_id
+        owner_id
+        status
+        message
+        permission_type
+        created_at
+        updated_at
+        requester {
+            id
+            email
+            name
+            avatar_url
+        }
+        document {
+            id
+            type
+        }
     }
-    document {
-      id
-      type
-    }
-  }
 }
 
 query GetAccessRequestByDocument($documentId: uuid!, $requesterId: uuid!) {
-  access_requests(
-    where: {
-      document_id: { _eq: $documentId }
-      requester_id: { _eq: $requesterId }
+    access_requests(
+        where: {
+            document_id: { _eq: $documentId }
+            requester_id: { _eq: $requesterId }
+        }
+        order_by: { created_at: desc }
+    ) {
+        id
+        status
+        permission_type
+        created_at
     }
-    order_by: { created_at: desc }
-  ) {
-    id
-    status
-    permission_type
-    created_at
-  }
 }

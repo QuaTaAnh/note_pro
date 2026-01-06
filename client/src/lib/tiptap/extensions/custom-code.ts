@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import Code from "@tiptap/extension-code";
+import Code from '@tiptap/extension-code';
 
 export const CustomCode = Code.extend({
-  excludes: "",
+    excludes: '',
 });

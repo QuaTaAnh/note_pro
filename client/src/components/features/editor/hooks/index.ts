@@ -1,2 +1,2 @@
-export { useEditorRefs } from "./useEditorRefs";
-export { useEditorConfig } from "./useEditorConfig";
+export { useEditorRefs } from './useEditorRefs';
+export { useEditorConfig } from './useEditorConfig';

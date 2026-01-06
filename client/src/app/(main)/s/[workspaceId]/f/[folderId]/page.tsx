@@ -1,5 +1,5 @@
-import React from "react";
+import React from 'react';
 
 export default function FolderPage() {
-  return <div>FolderPage</div>;
+    return <div>FolderPage</div>;
 }

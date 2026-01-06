@@ -1,118 +1,118 @@
 .ProseMirror table {
-  border-collapse: collapse;
-  table-layout: fixed;
-  width: 100%;
-  margin: 0;
-  overflow: visible;
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+    margin: 0;
+    overflow: visible;
 }
 
 .ProseMirror table td,
 .ProseMirror table th {
-  min-width: 8em;
-  height: 3.5rem;
-  padding: 1.25rem 1rem;
-  vertical-align: middle;
-  box-sizing: border-box;
-  position: relative;
-  border: 1px solid hsl(var(--border));
-  background-color: hsl(var(--background));
-  font-weight: 400;
-  font-size: 1rem;
-  text-align: left;
-  color: hsl(var(--foreground));
+    min-width: 8em;
+    height: 3.5rem;
+    padding: 1.25rem 1rem;
+    vertical-align: middle;
+    box-sizing: border-box;
+    position: relative;
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--background));
+    font-weight: 400;
+    font-size: 1rem;
+    text-align: left;
+    color: hsl(var(--foreground));
 }
 
 .ProseMirror table th {
-  /* No additional styles - same as td */
+    /* No additional styles - same as td */
 }
 
 .ProseMirror table .selectedCell {
-  background-color: hsl(var(--accent));
+    background-color: hsl(var(--accent));
 }
 
 .ProseMirror table .column-resize-handle {
-  display: none;
+    display: none;
 }
 
 .ProseMirror table p {
-  margin: 0;
-  min-height: 1.5em;
+    margin: 0;
+    min-height: 1.5em;
 }
 
 /* Responsive table */
 @media (max-width: 640px) {
-  .ProseMirror table td,
-  .ProseMirror table th {
-    min-width: 4em;
-    padding: 0.5rem 0.625rem;
-    font-size: 0.875rem;
-  }
+    .ProseMirror table td,
+    .ProseMirror table th {
+        min-width: 4em;
+        padding: 0.5rem 0.625rem;
+        font-size: 0.875rem;
+    }
 }
 
 /* Table Preview in Card - Compact Style */
 .table-preview table {
-  border-collapse: collapse;
-  table-layout: auto;
-  width: 100%;
-  margin: 0;
-  font-size: 0.625rem;
+    border-collapse: collapse;
+    table-layout: auto;
+    width: 100%;
+    margin: 0;
+    font-size: 0.625rem;
 }
 
 .table-preview table td,
 .table-preview table th {
-  min-width: 2em;
-  max-width: 8em;
-  padding: 0.5rem 0.5rem;
-  vertical-align: middle;
-  box-sizing: border-box;
-  border: 1px solid hsl(var(--border));
-  background-color: hsl(var(--background));
-  color: hsl(var(--muted-foreground));
-  font-size: 0.625rem;
-  line-height: 1.2;
+    min-width: 2em;
+    max-width: 8em;
+    padding: 0.5rem 0.5rem;
+    vertical-align: middle;
+    box-sizing: border-box;
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--background));
+    color: hsl(var(--muted-foreground));
+    font-size: 0.625rem;
+    line-height: 1.2;
 }
 
 .table-preview table th {
-  font-weight: 400;
-  text-align: left;
+    font-weight: 400;
+    text-align: left;
 }
 
 .table-preview table p {
-  margin: 0;
-  font-size: 0.625rem;
-  line-height: 1.2;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 100%;
+    margin: 0;
+    font-size: 0.625rem;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
 }
 
 /* Table in Prose (TableBlockCard) */
 .prose table {
-  border-collapse: collapse;
-  table-layout: fixed;
-  width: 100%;
-  margin: 1.5em 0;
-  overflow: hidden;
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+    margin: 1.5em 0;
+    overflow: hidden;
 }
 
 .prose table td,
 .prose table th {
-  min-width: 4em;
-  min-height: 3rem;
-  padding: 1rem 1rem;
-  vertical-align: top;
-  box-sizing: border-box;
-  position: relative;
-  border: 1px solid hsl(var(--border));
-  background-color: hsl(var(--background));
+    min-width: 4em;
+    min-height: 3rem;
+    padding: 1rem 1rem;
+    vertical-align: top;
+    box-sizing: border-box;
+    position: relative;
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--background));
 }
 
 .prose table th {
-  font-weight: 400;
-  text-align: left;
+    font-weight: 400;
+    text-align: left;
 }
 
 .prose table p {
-  margin: 0;
+    margin: 0;
 }

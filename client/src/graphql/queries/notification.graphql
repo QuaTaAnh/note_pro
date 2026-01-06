@@ -1,26 +1,26 @@
 query GetUnreadNotificationsCount($userId: uuid!) {
-  notifications_aggregate(
-    where: { user_id: { _eq: $userId }, is_read: { _eq: false } }
-  ) {
-    aggregate {
-      count
+    notifications_aggregate(
+        where: { user_id: { _eq: $userId }, is_read: { _eq: false } }
+    ) {
+        aggregate {
+            count
+        }
     }
-  }
 }
 
 subscription NotificationSubscription($userId: uuid!) {
-  notifications(
-    where: { user_id: { _eq: $userId } }
-    order_by: { created_at: desc }
-    limit: 20
-  ) {
-    id
-    user_id
-    type
-    title
-    message
-    data
-    is_read
-    created_at
-  }
+    notifications(
+        where: { user_id: { _eq: $userId } }
+        order_by: { created_at: desc }
+        limit: 20
+    ) {
+        id
+        user_id
+        type
+        title
+        message
+        data
+        is_read
+        created_at
+    }
 }

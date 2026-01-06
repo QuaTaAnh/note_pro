@@ -1,99 +1,100 @@
-"use client";
+'use client';
 
-import { useUserId } from "./useAuth";
-import { useGetAccessRequestByDocumentQuery } from "@/graphql/queries/__generated__/access-request.generated";
-import { useWorkspace } from "./useWorkspace";
-import { useGetDocumentBlocksQuery } from "@/graphql/queries/__generated__/document.generated";
-import { useMemo } from "react";
-import { AccessRequestStatus, BlockType, PermissionType } from "@/types/types";
+import { useUserId } from './useAuth';
+import { useGetAccessRequestByDocumentQuery } from '@/graphql/queries/__generated__/access-request.generated';
+import { useWorkspace } from './useWorkspace';
+import { useGetDocumentBlocksQuery } from '@/graphql/queries/__generated__/document.generated';
+import { useMemo } from 'react';
+import { AccessRequestStatus, BlockType, PermissionType } from '@/types/types';
 
 export function useDocumentPermission(documentId: string) {
-  const userId = useUserId();
-  const { workspace } = useWorkspace();
+    const userId = useUserId();
+    const { workspace } = useWorkspace();
 
-  const { data: documentData, loading: documentLoading } =
-    useGetDocumentBlocksQuery({
-      variables: { pageId: documentId },
-      skip: !documentId,
-      errorPolicy: "all",
+    const { data: documentData, loading: documentLoading } =
+        useGetDocumentBlocksQuery({
+            variables: { pageId: documentId },
+            skip: !documentId,
+            errorPolicy: 'all',
+        });
+
+    const rootBlock = useMemo(() => {
+        return documentData?.blocks?.find(
+            (block) => block.id === documentId && block.type === BlockType.PAGE
+        );
+    }, [documentData?.blocks, documentId]);
+
+    const isOwnDocument = rootBlock?.workspace_id === workspace?.id;
+
+    const shouldFetchAccessRequests =
+        !documentLoading && documentData?.blocks && rootBlock && !isOwnDocument;
+
+    const { data: accessRequestData } = useGetAccessRequestByDocumentQuery({
+        variables: {
+            documentId: documentId || '',
+            requesterId: userId || '',
+        },
+        skip: !documentId || !userId || !shouldFetchAccessRequests,
+        fetchPolicy: 'cache-first',
     });
 
-  const rootBlock = useMemo(() => {
-    return documentData?.blocks?.find(
-      (block) => block.id === documentId && block.type === BlockType.PAGE,
-    );
-  }, [documentData?.blocks, documentId]);
+    const permission = useMemo(() => {
+        if (!documentData?.blocks || !userId) {
+            return { canView: false, canEdit: false, permissionType: null };
+        }
 
-  const isOwnDocument = rootBlock?.workspace_id === workspace?.id;
+        if (!rootBlock) {
+            return { canView: false, canEdit: false, permissionType: null };
+        }
 
-  const shouldFetchAccessRequests =
-    !documentLoading && documentData?.blocks && rootBlock && !isOwnDocument;
+        if (isOwnDocument) {
+            return {
+                canView: true,
+                canEdit: true,
+                permissionType: PermissionType.OWNER,
+            };
+        }
 
-  const { data: accessRequestData } = useGetAccessRequestByDocumentQuery({
-    variables: {
-      documentId: documentId || "",
-      requesterId: userId || "",
-    },
-    skip: !documentId || !userId || !shouldFetchAccessRequests,
-    fetchPolicy: "cache-first",
-  });
+        const accessRequests = accessRequestData?.access_requests || [];
 
-  const permission = useMemo(() => {
-    if (!documentData?.blocks || !userId) {
-      return { canView: false, canEdit: false, permissionType: null };
-    }
+        const approvedRequest = accessRequests.find(
+            (req) => req.status === AccessRequestStatus.APPROVED
+        );
 
-    if (!rootBlock) {
-      return { canView: false, canEdit: false, permissionType: null };
-    }
+        const hasPendingWriteRequest = accessRequests.some(
+            (req) =>
+                req.status === AccessRequestStatus.PENDING &&
+                req.permission_type === PermissionType.WRITE
+        );
 
-    if (isOwnDocument) {
-      return {
-        canView: true,
-        canEdit: true,
-        permissionType: PermissionType.OWNER,
-      };
-    }
+        if (approvedRequest) {
+            const canEdit =
+                approvedRequest.permission_type === PermissionType.WRITE;
+            return {
+                canView: true,
+                canEdit,
+                permissionType: approvedRequest.permission_type,
+            };
+        }
 
-    const accessRequests = accessRequestData?.access_requests || [];
+        if (hasPendingWriteRequest) {
+            return {
+                canView: true,
+                canEdit: false,
+                permissionType: PermissionType.READ,
+            };
+        }
 
-    const approvedRequest = accessRequests.find(
-      (req) => req.status === AccessRequestStatus.APPROVED,
-    );
+        return { canView: false, canEdit: false, permissionType: null };
+    }, [
+        documentData,
+        userId,
+        workspace,
+        accessRequestData,
+        documentId,
+        rootBlock,
+        isOwnDocument,
+    ]);
 
-    const hasPendingWriteRequest = accessRequests.some(
-      (req) =>
-        req.status === AccessRequestStatus.PENDING &&
-        req.permission_type === PermissionType.WRITE,
-    );
-
-    if (approvedRequest) {
-      const canEdit = approvedRequest.permission_type === PermissionType.WRITE;
-      return {
-        canView: true,
-        canEdit,
-        permissionType: approvedRequest.permission_type,
-      };
-    }
-
-    if (hasPendingWriteRequest) {
-      return {
-        canView: true,
-        canEdit: false,
-        permissionType: PermissionType.READ,
-      };
-    }
-
-    return { canView: false, canEdit: false, permissionType: null };
-  }, [
-    documentData,
-    userId,
-    workspace,
-    accessRequestData,
-    documentId,
-    rootBlock,
-    isOwnDocument,
-  ]);
-
-  return permission;
+    return permission;
 }

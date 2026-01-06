@@ -1,13 +1,13 @@
-import { ROUTES } from "@/lib/routes";
-import { HexColor } from "@/types/types";
-import { createElement } from "react";
-import { AiOutlineCheckCircle } from "react-icons/ai";
-import { FiFileText, FiPlus } from "react-icons/fi";
-import { LuCalendarRange } from "react-icons/lu";
+import { ROUTES } from '@/lib/routes';
+import { HexColor } from '@/types/types';
+import { createElement } from 'react';
+import { AiOutlineCheckCircle } from 'react-icons/ai';
+import { FiFileText, FiPlus } from 'react-icons/fi';
+import { LuCalendarRange } from 'react-icons/lu';
 
 // Authentication constants
-export const AUTHENTICATED = "authenticated";
-export const UNAUTHENTICATED = "unauthenticated";
+export const AUTHENTICATED = 'authenticated';
+export const UNAUTHENTICATED = 'unauthenticated';
 
 // Layout constants
 export const HEADER_HEIGHT = 48;
@@ -27,51 +27,51 @@ export const TOAST_DURATION = 5000;
 
 // Page titles
 export const PAGE_TITLES: Record<string, string> = {
-  [ROUTES.HOME]: "Home",
-  [ROUTES.LOGIN]: "Login",
+    [ROUTES.HOME]: 'Home',
+    [ROUTES.LOGIN]: 'Login',
 };
 
 // Modal types for sidebar actions
 export enum ModalType {
-  TASK = "task",
-  DOCUMENT = "document",
-  FOLDER = "folder",
+    TASK = 'task',
+    DOCUMENT = 'document',
+    FOLDER = 'folder',
 }
 
 // Navigation menu items
 export const MENU_ITEMS = (
-  workspaceSlug: string,
-  counts: { allDocs: number | undefined },
+    workspaceSlug: string,
+    counts: { allDocs: number | undefined }
 ) => [
-  {
-    icon: FiFileText,
-    label: "All Docs",
-    href: ROUTES.WORKSPACE_ALL_DOCS(workspaceSlug),
-    count: counts.allDocs,
-  },
-  {
-    icon: AiOutlineCheckCircle,
-    label: "Tasks",
-    href: ROUTES.WORKSPACE_TASKS(workspaceSlug),
-    action: createElement(FiPlus, { className: "w-3 h-3 cursor-pointer" }),
-    modalType: ModalType.TASK,
-  },
-  {
-    icon: LuCalendarRange,
-    label: "Calendar",
-    href: ROUTES.WORKSPACE_CALENDAR(workspaceSlug),
-  },
+    {
+        icon: FiFileText,
+        label: 'All Docs',
+        href: ROUTES.WORKSPACE_ALL_DOCS(workspaceSlug),
+        count: counts.allDocs,
+    },
+    {
+        icon: AiOutlineCheckCircle,
+        label: 'Tasks',
+        href: ROUTES.WORKSPACE_TASKS(workspaceSlug),
+        action: createElement(FiPlus, { className: 'w-3 h-3 cursor-pointer' }),
+        modalType: ModalType.TASK,
+    },
+    {
+        icon: LuCalendarRange,
+        label: 'Calendar',
+        href: ROUTES.WORKSPACE_CALENDAR(workspaceSlug),
+    },
 ];
 
 // File upload constants
 export const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 export const ALLOWED_FILE_TYPES = [
-  "image/jpeg",
-  "image/png",
-  "image/gif",
-  "image/webp",
-  "application/pdf",
-  "text/plain",
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'image/webp',
+    'application/pdf',
+    'text/plain',
 ];
 
 // Validation constants
@@ -80,42 +80,42 @@ export const MAX_TITLE_LENGTH = 100;
 export const MAX_DESCRIPTION_LENGTH = 500;
 
 const VIBRANT_COLORS = [
-  { name: "Charcoal", color: "#1c1c1e", value: "#1c1c1e" },
-  { name: "Graphite", color: "#636366", value: "#636366" },
-  { name: "Silver", color: "#d1d1d6", value: "#d1d1d6" },
-  { name: "Azure", color: "#007aff", value: "#007aff" },
-  { name: "Teal", color: "#00c7be", value: "#00c7be" },
-  { name: "Sky", color: "#5ac8fa", value: "#5ac8fa" },
-  { name: "Emerald", color: "#30d158", value: "#30d158" },
-  { name: "Lime", color: "#87e05f", value: "#87e05f" },
-  { name: "Grape", color: "#af52de", value: "#af52de" },
-  { name: "Fuchsia", color: "#ff2d55", value: "#ff2d55" },
-  { name: "Tangerine", color: "#ff9500", value: "#ff9500" },
-  { name: "Gold", color: "#ffcc00", value: "#ffcc00" },
+    { name: 'Charcoal', color: '#1c1c1e', value: '#1c1c1e' },
+    { name: 'Graphite', color: '#636366', value: '#636366' },
+    { name: 'Silver', color: '#d1d1d6', value: '#d1d1d6' },
+    { name: 'Azure', color: '#007aff', value: '#007aff' },
+    { name: 'Teal', color: '#00c7be', value: '#00c7be' },
+    { name: 'Sky', color: '#5ac8fa', value: '#5ac8fa' },
+    { name: 'Emerald', color: '#30d158', value: '#30d158' },
+    { name: 'Lime', color: '#87e05f', value: '#87e05f' },
+    { name: 'Grape', color: '#af52de', value: '#af52de' },
+    { name: 'Fuchsia', color: '#ff2d55', value: '#ff2d55' },
+    { name: 'Tangerine', color: '#ff9500', value: '#ff9500' },
+    { name: 'Gold', color: '#ffcc00', value: '#ffcc00' },
 ];
 
 export const FOLDER_COLORS = [...VIBRANT_COLORS];
 
 export const HIGHLIGHT_COLORS = [
-  { name: "None", color: HexColor.TRANSPARENT, value: null },
-  ...VIBRANT_COLORS,
+    { name: 'None', color: HexColor.TRANSPARENT, value: null },
+    ...VIBRANT_COLORS,
 ];
 
 export const TASK_STATUS = {
-  TODO: "todo",
-  COMPLETED: "completed",
+    TODO: 'todo',
+    COMPLETED: 'completed',
 };
 
-export const DEFAULT_WORKSPACE_IMAGE = "/images/workspace-default.jpeg";
+export const DEFAULT_WORKSPACE_IMAGE = '/images/workspace-default.jpeg';
 export const IMAGE_EXTENSIONS = new Set([
-  "jpg",
-  "jpeg",
-  "png",
-  "gif",
-  "webp",
-  "avif",
-  "heif",
-  "heic",
-  "bmp",
-  "svg",
+    'jpg',
+    'jpeg',
+    'png',
+    'gif',
+    'webp',
+    'avif',
+    'heif',
+    'heic',
+    'bmp',
+    'svg',
 ]);

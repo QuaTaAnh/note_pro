@@ -1,24 +1,27 @@
-import { format, formatDistanceToNow } from "date-fns";
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { format, formatDistanceToNow } from 'date-fns';
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+    return twMerge(clsx(inputs));
 }
 
 /**
  * Decode JWT token and extract user ID from Hasura claims
  */
 export function getUserIdFromToken(token: string): string | null {
-  try {
-    const payload = JSON.parse(atob(token.split(".")[1]));
-    return (
-      payload["https://hasura.io/jwt/claims"]?.["x-hasura-user-id"] || null
-    );
-  } catch (error) {
-    console.error("Error decoding token:", error);
-    return null;
-  }
+    try {
+        const parts = token.split('.');
+        if (parts.length < 2 || !parts[1]) return null;
+        const payload = JSON.parse(atob(parts[1]));
+        return (
+            payload['https://hasura.io/jwt/claims']?.['x-hasura-user-id'] ||
+            null
+        );
+    } catch (error) {
+        console.error('Error decoding token:', error);
+        return null;
+    }
 }
 
 /**
@@ -27,17 +30,17 @@ export function getUserIdFromToken(token: string): string | null {
  * @returns string
  */
 export function formatDate(
-  date: string | Date = "Unknown",
-  options: { relative?: boolean } = {},
+    date: string | Date = 'Unknown',
+    options: { relative?: boolean } = {}
 ) {
-  if (!date || date === "Unknown") return "Unknown";
+    if (!date || date === 'Unknown') return 'Unknown';
 
-  // Parse the date - browser will automatically convert to user's local timezone
-  const parsed = typeof date === "string" ? new Date(date) : date;
+    // Parse the date - browser will automatically convert to user's local timezone
+    const parsed = typeof date === 'string' ? new Date(date) : date;
 
-  if (options.relative) {
-    return formatDistanceToNow(parsed, { addSuffix: true });
-  }
+    if (options.relative) {
+        return formatDistanceToNow(parsed, { addSuffix: true });
+    }
 
-  return format(parsed, "MMM d, yyyy");
+    return format(parsed, 'MMM d, yyyy');
 }
