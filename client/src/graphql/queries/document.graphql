@@ -9,6 +9,7 @@ query GetAllDocs($workspaceId: uuid!) {
     ) {
         id
         content
+        cover_image
         created_at
         updated_at
         workspace_id
@@ -41,6 +42,7 @@ query GetDocumentBlocks($pageId: uuid!) {
     ) {
         id
         content
+        cover_image
         position
         parent_id
         page_id
@@ -88,6 +90,7 @@ query GetSharedWithMeDocs($userId: uuid!) {
     ) {
         id
         content
+        cover_image
         created_at
         updated_at
         user_id

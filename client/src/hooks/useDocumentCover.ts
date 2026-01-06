@@ -2,44 +2,38 @@
 
 import { useCallback } from 'react';
 import { useImageUpload } from './useImageUpload';
-import { Block } from './useBlocks';
+import { Block, useBlocks } from './useBlocks';
 
 interface UseDocumentCoverProps {
     rootBlock: Block | null;
-    onUpdateContent: (content: Record<string, unknown>) => void;
 }
 
-export function useDocumentCover({
-    rootBlock,
-    onUpdateContent,
-}: UseDocumentCoverProps) {
+export function useDocumentCover({ rootBlock }: UseDocumentCoverProps) {
     const { uploadImage, isUploading } = useImageUpload({
         tags: ['document-cover'],
         maxSizeMB: 10,
     });
+    const { updateBlockCoverImage } = useBlocks();
 
-    const coverImage = rootBlock?.content?.coverImage as string | undefined;
+    const coverImage = rootBlock?.cover_image as string | undefined;
 
     const handleAddCover = useCallback(
         async (file: File) => {
+            if (!rootBlock) return;
+
             const imageUrl = await uploadImage(file);
-            if (imageUrl && rootBlock?.content) {
-                onUpdateContent({
-                    ...rootBlock.content,
-                    coverImage: imageUrl,
-                });
+            if (imageUrl) {
+                await updateBlockCoverImage(rootBlock.id, imageUrl);
             }
         },
-        [uploadImage, rootBlock?.content, onUpdateContent]
+        [uploadImage, rootBlock, updateBlockCoverImage]
     );
 
-    const handleRemoveCover = useCallback(() => {
-        if (rootBlock?.content) {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { coverImage, ...restContent } = rootBlock.content;
-            onUpdateContent(restContent);
-        }
-    }, [rootBlock?.content, onUpdateContent]);
+    const handleRemoveCover = useCallback(async () => {
+        if (!rootBlock) return;
+
+        await updateBlockCoverImage(rootBlock.id, null);
+    }, [rootBlock, updateBlockCoverImage]);
 
     return {
         coverImage,

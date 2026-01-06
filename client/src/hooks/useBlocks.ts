@@ -256,11 +256,48 @@ export function useBlocks() {
         }
     };
 
+    const updateBlockCoverImage = async (
+        id: string,
+        coverImage: string | null
+    ): Promise<boolean> => {
+        try {
+            setIsLoading(true);
+            await updateBlock({
+                variables: {
+                    id,
+                    input: {
+                        cover_image: coverImage,
+                        updated_at: new Date().toISOString(),
+                    },
+                },
+                update: (cache, { data }) => {
+                    const updatedBlock = data?.update_blocks_by_pk;
+                    if (!updatedBlock) return;
+
+                    cache.modify({
+                        id: cache.identify({ __typename: 'blocks', id }),
+                        fields: {
+                            cover_image: () => updatedBlock.cover_image,
+                            updated_at: () => updatedBlock.updated_at,
+                        },
+                    });
+                },
+            });
+            return true;
+        } catch (error) {
+            console.error('Failed to update cover image:', error);
+            return false;
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     return {
         createBlockWithPositionUpdate,
         updateBlockContent,
         updateBlocksPositionsBatch,
         updateBlockType,
+        updateBlockCoverImage,
         removeBlock,
         isLoading,
     };

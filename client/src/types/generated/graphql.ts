@@ -752,6 +752,7 @@ export type Blocks = {
   /** An aggregate relationship */
   children_aggregate: BlocksAggregate;
   content?: Maybe<Scalars['jsonb']['output']>;
+  cover_image?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   deleted_at?: Maybe<Scalars['timetz']['output']>;
   /** An object relationship */
@@ -1025,6 +1026,7 @@ export type BlocksBoolExp = {
   children?: InputMaybe<BlocksBoolExp>;
   children_aggregate?: InputMaybe<BlocksAggregateBoolExp>;
   content?: InputMaybe<JsonbComparisonExp>;
+  cover_image?: InputMaybe<StringComparisonExp>;
   created_at?: InputMaybe<TimestamptzComparisonExp>;
   deleted_at?: InputMaybe<TimetzComparisonExp>;
   folder?: InputMaybe<FoldersBoolExp>;
@@ -1082,6 +1084,7 @@ export type BlocksInsertInput = {
   block_tags?: InputMaybe<BlockTagsArrRelInsertInput>;
   children?: InputMaybe<BlocksArrRelInsertInput>;
   content?: InputMaybe<Scalars['jsonb']['input']>;
+  cover_image?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   deleted_at?: InputMaybe<Scalars['timetz']['input']>;
   folder?: InputMaybe<FoldersObjRelInsertInput>;
@@ -1105,6 +1108,7 @@ export type BlocksInsertInput = {
 /** aggregate max on columns */
 export type BlocksMaxFields = {
   __typename?: 'blocks_max_fields';
+  cover_image?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   deleted_at?: Maybe<Scalars['timetz']['output']>;
   folder_id?: Maybe<Scalars['uuid']['output']>;
@@ -1121,6 +1125,7 @@ export type BlocksMaxFields = {
 
 /** order by max() on columns of table "blocks" */
 export type BlocksMaxOrderBy = {
+  cover_image?: InputMaybe<OrderBy>;
   created_at?: InputMaybe<OrderBy>;
   deleted_at?: InputMaybe<OrderBy>;
   folder_id?: InputMaybe<OrderBy>;
@@ -1138,6 +1143,7 @@ export type BlocksMaxOrderBy = {
 /** aggregate min on columns */
 export type BlocksMinFields = {
   __typename?: 'blocks_min_fields';
+  cover_image?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   deleted_at?: Maybe<Scalars['timetz']['output']>;
   folder_id?: Maybe<Scalars['uuid']['output']>;
@@ -1154,6 +1160,7 @@ export type BlocksMinFields = {
 
 /** order by min() on columns of table "blocks" */
 export type BlocksMinOrderBy = {
+  cover_image?: InputMaybe<OrderBy>;
   created_at?: InputMaybe<OrderBy>;
   deleted_at?: InputMaybe<OrderBy>;
   folder_id?: InputMaybe<OrderBy>;
@@ -1199,6 +1206,7 @@ export type BlocksOrderBy = {
   block_tags_aggregate?: InputMaybe<BlockTagsAggregateOrderBy>;
   children_aggregate?: InputMaybe<BlocksAggregateOrderBy>;
   content?: InputMaybe<OrderBy>;
+  cover_image?: InputMaybe<OrderBy>;
   created_at?: InputMaybe<OrderBy>;
   deleted_at?: InputMaybe<OrderBy>;
   folder?: InputMaybe<FoldersOrderBy>;
@@ -1235,6 +1243,8 @@ export enum BlocksSelectColumn {
   /** column name */
   Content = 'content',
   /** column name */
+  CoverImage = 'cover_image',
+  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   DeletedAt = 'deleted_at',
@@ -1263,6 +1273,7 @@ export enum BlocksSelectColumn {
 /** input type for updating data in table "blocks" */
 export type BlocksSetInput = {
   content?: InputMaybe<Scalars['jsonb']['input']>;
+  cover_image?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   deleted_at?: InputMaybe<Scalars['timetz']['input']>;
   folder_id?: InputMaybe<Scalars['uuid']['input']>;
@@ -1320,6 +1331,7 @@ export type BlocksStreamCursorInput = {
 /** Initial value of the column from where the streaming should start */
 export type BlocksStreamCursorValueInput = {
   content?: InputMaybe<Scalars['jsonb']['input']>;
+  cover_image?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   deleted_at?: InputMaybe<Scalars['timetz']['input']>;
   folder_id?: InputMaybe<Scalars['uuid']['input']>;
@@ -1349,6 +1361,8 @@ export type BlocksSumOrderBy = {
 export enum BlocksUpdateColumn {
   /** column name */
   Content = 'content',
+  /** column name */
+  CoverImage = 'cover_image',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */

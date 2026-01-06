@@ -78,6 +78,7 @@ insert_permissions:
             _eq: X-Hasura-User-Id
       columns:
         - content
+        - cover_image
         - created_at
         - folder_id
         - id
@@ -94,6 +95,7 @@ select_permissions:
     permission:
       columns:
         - content
+        - cover_image
         - created_at
         - deleted_at
         - folder_id
@@ -133,6 +135,7 @@ update_permissions:
     permission:
       columns:
         - content
+        - cover_image
         - created_at
         - deleted_at
         - folder_id
@@ -151,12 +154,12 @@ update_permissions:
                 _eq: X-Hasura-User-Id
           - page:
               access_requests:
+                permission_type:
+                  _eq: write
                 requester_id:
                   _eq: X-Hasura-User-Id
                 status:
                   _eq: approved
-                permission_type:
-                  _eq: write
       check:
         _or:
           - workspace:
@@ -164,12 +167,12 @@ update_permissions:
                 _eq: X-Hasura-User-Id
           - page:
               access_requests:
+                permission_type:
+                  _eq: write
                 requester_id:
                   _eq: X-Hasura-User-Id
                 status:
                   _eq: approved
-                permission_type:
-                  _eq: write
     comment: ""
 delete_permissions:
   - role: user

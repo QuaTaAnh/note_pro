@@ -34,6 +34,7 @@ CREATE TABLE blocks (
   workspace_id UUID REFERENCES workspaces(id),
   type TEXT NOT NULL,
   content JSONB,
+  cover_image TEXT,
   position INTEGER,
   user_id UUID REFERENCES users(id) ON DELETE CASCADE,
   created_at TIMESTAMPTZ DEFAULT now(),

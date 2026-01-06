@@ -23,7 +23,7 @@ export type UpdateBlockMutationVariables = Types.Exact<{
 }>;
 
 
-export type UpdateBlockMutation = { __typename?: 'mutation_root', update_blocks_by_pk?: { __typename?: 'blocks', id: string, content?: any | null, position?: number | null, parent_id?: string | null, page_id?: string | null, type: string, created_at?: string | null, updated_at?: string | null } | null };
+export type UpdateBlockMutation = { __typename?: 'mutation_root', update_blocks_by_pk?: { __typename?: 'blocks', id: string, content?: any | null, cover_image?: string | null, position?: number | null, parent_id?: string | null, page_id?: string | null, type: string, created_at?: string | null, updated_at?: string | null } | null };
 
 export type DeleteBlockMutationVariables = Types.Exact<{
   id: Types.Scalars['uuid']['input'];
@@ -42,7 +42,7 @@ export type InsertBlockAndUpdatePositionMutationVariables = Types.Exact<{
 }>;
 
 
-export type InsertBlockAndUpdatePositionMutation = { __typename?: 'mutation_root', update_blocks?: { __typename?: 'blocks_mutation_response', affected_rows: number } | null, insert_blocks_one?: { __typename?: 'blocks', id: string, content?: any | null, position?: number | null, parent_id?: string | null, page_id?: string | null, type: string, created_at?: string | null, updated_at?: string | null } | null };
+export type InsertBlockAndUpdatePositionMutation = { __typename?: 'mutation_root', update_blocks?: { __typename?: 'blocks_mutation_response', affected_rows: number } | null, insert_blocks_one?: { __typename?: 'blocks', id: string, content?: any | null, cover_image?: string | null, position?: number | null, parent_id?: string | null, page_id?: string | null, type: string, created_at?: string | null, updated_at?: string | null } | null };
 
 export type UpdateBlocksPositionsMutationVariables = Types.Exact<{
   updates: Array<Types.BlocksUpdates> | Types.BlocksUpdates;
@@ -123,6 +123,7 @@ export const UpdateBlockDocument = gql`
   update_blocks_by_pk(pk_columns: {id: $id}, _set: $input) {
     id
     content
+    cover_image
     position
     parent_id
     page_id
@@ -206,6 +207,7 @@ export const InsertBlockAndUpdatePositionDocument = gql`
   ) {
     id
     content
+    cover_image
     position
     parent_id
     page_id

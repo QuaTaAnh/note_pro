@@ -40,7 +40,6 @@ export default function TiptapBlockEditor({ pageId, className = '' }: Props) {
     const { coverImage, handleAddCover, handleRemoveCover, isUploading } =
         useDocumentCover({
             rootBlock,
-            onUpdateContent: handleUpdateRootBlockContent,
         });
 
     return loading || !rootBlock ? (

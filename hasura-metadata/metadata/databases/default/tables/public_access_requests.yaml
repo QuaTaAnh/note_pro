@@ -11,6 +11,23 @@ object_relationships:
   - name: requester
     using:
       foreign_key_constraint_on: requester_id
+insert_permissions:
+  - role: user
+    permission:
+      check:
+        _or:
+          - requester_id:
+              _eq: X-Hasura-User-Id
+          - owner_id:
+              _eq: X-Hasura-User-Id
+      columns:
+        - document_id
+        - requester_id
+        - owner_id
+        - message
+        - permission_type
+        - status
+        - updated_at
 select_permissions:
   - role: user
     permission:
@@ -30,23 +47,6 @@ select_permissions:
               _eq: X-Hasura-User-Id
           - owner_id:
               _eq: X-Hasura-User-Id
-insert_permissions:
-  - role: user
-    permission:
-      check:
-        _or:
-          - requester_id:
-              _eq: X-Hasura-User-Id
-          - owner_id:
-              _eq: X-Hasura-User-Id
-      columns:
-        - document_id
-        - requester_id
-        - owner_id
-        - message
-        - permission_type
-        - status
-        - updated_at
 update_permissions:
   - role: user
     permission:

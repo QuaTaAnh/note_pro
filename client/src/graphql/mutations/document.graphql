@@ -17,6 +17,7 @@ mutation UpdateBlock($id: uuid!, $input: blocks_set_input!) {
     update_blocks_by_pk(pk_columns: { id: $id }, _set: $input) {
         id
         content
+        cover_image
         position
         parent_id
         page_id
@@ -60,6 +61,7 @@ mutation InsertBlockAndUpdatePosition(
     ) {
         id
         content
+        cover_image
         position
         parent_id
         page_id
