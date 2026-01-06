@@ -18,3 +18,5 @@ export { useDocumentBlocksData } from './useDocumentBlocksData';
 export { useDocumentBlocksEditing } from './useDocumentBlocksEditing';
 export { useDocumentPermission } from './useDocumentPermission';
 export { useCreateDocument } from './useCreateDocument';
+export { useDocumentCover } from './useDocumentCover';
+export { useImageUpload } from './useImageUpload';

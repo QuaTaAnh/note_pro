@@ -105,6 +105,18 @@ export function useDocumentBlocksEditing({
         [rootBlock, debounced, updateBlockContent]
     );
 
+    const handleUpdateRootBlockContent = useCallback(
+        (content: Record<string, unknown>) => {
+            if (rootBlock) {
+                setRootBlock((prev) => (prev ? { ...prev, content } : null));
+                debounced(async () => {
+                    await updateBlockContent(rootBlock.id, content);
+                }, `rootblock-${rootBlock.id}`);
+            }
+        },
+        [rootBlock, debounced, updateBlockContent]
+    );
+
     const handleBlockFocus = useCallback((blockId: string) => {
         setFocusedBlock(blockId);
     }, []);
@@ -129,7 +141,6 @@ export function useDocumentBlocksEditing({
                     setBlocks((prev) => prev.filter((b) => b.id !== blockId));
 
                     if (previousBlock) {
-                        // Slight delay for smoother focus transition
                         requestAnimationFrame(() => {
                             setFocusedBlock(previousBlock.id);
                         });
@@ -322,6 +333,7 @@ export function useDocumentBlocksEditing({
         handleAddBlock,
         handleUpdateBlockContent,
         handleUpdateTitle,
+        handleUpdateRootBlockContent,
         handleBlockFocus,
         handleBlockBlur,
         handleSaveImmediate,

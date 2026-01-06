@@ -6,6 +6,9 @@ import { PageLoading } from '@/components/ui/loading';
 import { DocumentTitleInput } from '@/components/features/page/DocumentTitleInput';
 import { BlockList } from '@/components/features/page/BlockList';
 import { Separator } from '@/components/ui/separator';
+import { DocumentCover } from '@/components/features/page/DocumentCover';
+import { AddCoverButton } from '@/components/features/page/AddCoverButton';
+import { useDocumentCover } from '@/hooks/useDocumentCover';
 
 interface Props {
     pageId: string;
@@ -21,6 +24,7 @@ export default function TiptapBlockEditor({ pageId, className = '' }: Props) {
         handleAddBlock,
         handleUpdateBlockContent,
         handleUpdateTitle,
+        handleUpdateRootBlockContent,
         handleBlockFocus,
         handleBlockBlur,
         handleSaveImmediate,
@@ -33,6 +37,12 @@ export default function TiptapBlockEditor({ pageId, className = '' }: Props) {
 
     const { canEdit } = useDocumentPermission(pageId);
 
+    const { coverImage, handleAddCover, handleRemoveCover, isUploading } =
+        useDocumentCover({
+            rootBlock,
+            onUpdateContent: handleUpdateRootBlockContent,
+        });
+
     return loading || !rootBlock ? (
         <PageLoading />
     ) : (
@@ -40,14 +50,34 @@ export default function TiptapBlockEditor({ pageId, className = '' }: Props) {
             <div className={`max-w-full mx-auto h-full ${className}`}>
                 <div className="mx-auto max-w-full bg-card overflow-hidden border-l border-t border-border h-full rounded-t-md">
                     <div className="h-full overflow-y-auto">
+                        {coverImage && (
+                            <DocumentCover
+                                imageUrl={coverImage}
+                                onRemove={handleRemoveCover}
+                                onChangeCover={handleAddCover}
+                                isUploading={isUploading}
+                            />
+                        )}
                         <div className="mx-auto max-w-2xl py-16">
-                            <div className="flex items-center justify-between">
-                                <div className="flex-1 px-6">
-                                    <DocumentTitleInput
-                                        value={rootBlock.content?.title || ''}
-                                        onChange={handleUpdateTitle}
-                                        editable={canEdit}
-                                    />
+                            <div className="group">
+                                {!coverImage && canEdit && (
+                                    <div className="px-6 mb-2">
+                                        <AddCoverButton
+                                            onAddCover={handleAddCover}
+                                            isUploading={isUploading}
+                                        />
+                                    </div>
+                                )}
+                                <div className="flex items-center justify-between">
+                                    <div className="flex-1 px-6">
+                                        <DocumentTitleInput
+                                            value={
+                                                rootBlock.content?.title || ''
+                                            }
+                                            onChange={handleUpdateTitle}
+                                            editable={canEdit}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                             <Separator className="my-4" />
