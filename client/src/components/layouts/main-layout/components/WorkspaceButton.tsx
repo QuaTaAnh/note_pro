@@ -26,6 +26,10 @@ export const WorkspaceButton = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [tempName, setTempName] = useState('');
     const [tempImageUrl, setTempImageUrl] = useState<string | null>(null);
+    const [originalImageUrl, setOriginalImageUrl] = useState<string | null>(
+        null
+    );
+    const [hasImageChanged, setHasImageChanged] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [isHovering, setIsHovering] = useState(false);
 
@@ -46,13 +50,22 @@ export const WorkspaceButton = () => {
         tags: ['workspace', workspace?.id || ''],
         onSuccess: (imageUrl) => {
             setTempImageUrl(imageUrl);
+            setHasImageChanged(true);
         },
     });
 
     useEffect(() => {
         if (isOpen && data?.workspaces_by_pk) {
+            const dbImageUrl = data.workspaces_by_pk.image_url || null;
             setTempName(data.workspaces_by_pk.name || '');
-            setTempImageUrl(data.workspaces_by_pk.image_url || null);
+            setTempImageUrl(dbImageUrl);
+            setOriginalImageUrl(dbImageUrl);
+            setHasImageChanged(false);
+        } else if (!isOpen) {
+            setTempName('');
+            setTempImageUrl(null);
+            setOriginalImageUrl(null);
+            setHasImageChanged(false);
         }
     }, [isOpen, data]);
 
@@ -66,17 +79,18 @@ export const WorkspaceButton = () => {
     };
 
     const handleRemoveImage = () => {
-        setTempImageUrl(null);
+        setTempImageUrl(originalImageUrl);
+        setHasImageChanged(
+            originalImageUrl !== data?.workspaces_by_pk?.image_url
+        );
     };
 
     const handleSave = async () => {
         try {
             const nameChanged =
                 tempName.trim() && tempName !== data?.workspaces_by_pk?.name;
-            const imageChanged =
-                tempImageUrl !== data?.workspaces_by_pk?.image_url;
 
-            if (!nameChanged && !imageChanged) {
+            if (!nameChanged && !hasImageChanged) {
                 setIsOpen(false);
                 return;
             }
@@ -87,7 +101,7 @@ export const WorkspaceButton = () => {
                     name: nameChanged
                         ? tempName.trim()
                         : data?.workspaces_by_pk?.name,
-                    imageUrl: imageChanged
+                    imageUrl: hasImageChanged
                         ? tempImageUrl
                         : data?.workspaces_by_pk?.image_url,
                 },
@@ -184,18 +198,20 @@ export const WorkspaceButton = () => {
                                         <Camera className="w-3.5 h-3.5 text-foreground" />
                                     </button>
 
-                                    {tempImageUrl && !isUploading && (
-                                        <button
-                                            type="button"
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                handleRemoveImage();
-                                            }}
-                                            className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-destructive text-destructive-foreground hover:bg-destructive/90 flex items-center justify-center shadow-md transition-all opacity-0 group-hover:opacity-100"
-                                            title="Remove image">
-                                            <X className="w-3 h-3" />
-                                        </button>
-                                    )}
+                                    {hasImageChanged &&
+                                        tempImageUrl !== originalImageUrl &&
+                                        !isUploading && (
+                                            <button
+                                                type="button"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleRemoveImage();
+                                                }}
+                                                className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-destructive text-destructive-foreground hover:bg-destructive/90 flex items-center justify-center shadow-md transition-all opacity-0 group-hover:opacity-100"
+                                                title="Cancel and restore original image">
+                                                <X className="w-3 h-3" />
+                                            </button>
+                                        )}
                                 </div>
                             </div>
                             <input
@@ -228,8 +244,7 @@ export const WorkspaceButton = () => {
                                 isUploading ||
                                 !tempName.trim() ||
                                 (tempName === data?.workspaces_by_pk?.name &&
-                                    tempImageUrl ===
-                                        data?.workspaces_by_pk?.image_url)
+                                    !hasImageChanged)
                             }>
                             {isUploading ? 'Uploading...' : 'Save Changes'}
                         </Button>
