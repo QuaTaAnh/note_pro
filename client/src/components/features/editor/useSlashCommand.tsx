@@ -5,7 +5,6 @@ import type { Editor } from '@tiptap/react';
 import { ChangeEvent, useCallback, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { useLoading } from '@/contexts/LoadingContext';
-import { EmojiPicker } from './EmojiPicker';
 import { SlashCommand } from './SlashCommand';
 import { TableSizePicker } from './TableSizePicker';
 import { SeparatorStylePicker } from './SeparatorStylePicker';
@@ -24,6 +23,7 @@ import type {
     CommandHandlers,
     SlashCommandState,
 } from './slash/types';
+import { EmojiPickerPopover } from '@/components/shared/EmojiPickerPopover';
 
 export const useSlashCommand = (
     editor: Editor | null,
@@ -314,10 +314,11 @@ export const useSlashCommand = (
                             top: state.emojiPos.top,
                             left: state.emojiPos.left,
                         }}>
-                        <EmojiPicker
+                        <EmojiPickerPopover
                             show={state.showEmoji}
                             onSelect={onEmojiSelect}
-                            close={() => updateState({ showEmoji: false })}
+                            onClose={() => updateState({ showEmoji: false })}
+                            height={350}
                         />
                     </div>
                 )}

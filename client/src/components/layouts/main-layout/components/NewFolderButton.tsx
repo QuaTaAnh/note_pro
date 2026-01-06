@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button';
-import { ColorPicker } from '@/components/ui/color-picker';
 import {
     Dialog,
     DialogContent,
@@ -24,7 +23,6 @@ import { FiPlus } from 'react-icons/fi';
 interface FolderData {
     name: string;
     description: string;
-    color: string;
     icon: string;
 }
 
@@ -36,8 +34,7 @@ export const NewFolderButton = () => {
     const [folderData, setFolderData] = useState<FolderData>({
         name: '',
         description: '',
-        color: HexColor.BLACK,
-        icon: 'folder',
+        icon: '📁',
     });
     const dialogContentRef = useRef<HTMLDivElement | null>(null);
 
@@ -58,7 +55,7 @@ export const NewFolderButton = () => {
                     input: {
                         name: folderData.name,
                         description: folderData.description,
-                        color: folderData.color,
+                        color: null,
                         icon: folderData.icon,
                         user_id: userId,
                         workspace_id: workspace?.id,
@@ -82,8 +79,7 @@ export const NewFolderButton = () => {
             setFolderData({
                 name: '',
                 description: '',
-                color: HexColor.BLACK,
-                icon: 'folder',
+                icon: '📁',
             });
         } catch {
             showToast.error('Failed to create folder');
@@ -143,20 +139,6 @@ export const NewFolderButton = () => {
                             selectedIcon={folderData.icon}
                             onIconChange={(icon) =>
                                 handleInputChange('icon', icon)
-                            }
-                            portalContainer={
-                                dialogContentRef.current ?? undefined
-                            }
-                            previewColor={folderData.color}
-                        />
-                    </div>
-
-                    <div className="space-y-2">
-                        <Label className="text-sm font-medium">Color</Label>
-                        <ColorPicker
-                            selectedColor={folderData.color}
-                            onColorChange={(color) =>
-                                handleInputChange('color', color)
                             }
                         />
                     </div>

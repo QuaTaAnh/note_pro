@@ -229,3 +229,33 @@ a {
         color-scheme: dark;
     }
 }
+
+/* Emoji Picker React - Custom styles to match theme */
+aside.EmojiPickerReact {
+    --epr-bg-color: hsl(var(--popover)) !important;
+    --epr-category-label-bg-color: hsl(var(--popover)) !important;
+    --epr-picker-border-color: hsl(var(--primary)) !important;
+    --epr-search-border-color: hsl(var(--primary)) !important;
+    --epr-text-color: hsl(var(--popover-foreground)) !important;
+    --epr-search-input-bg-color: hsl(var(--input)) !important;
+    --epr-hover-bg-color: hsl(var(--accent)) !important;
+    --epr-category-icon-active-color: hsl(var(--primary)) !important;
+    --epr-skin-tone-picker-menu-color: hsl(var(--popover)) !important;
+    border: none !important;
+    pointer-events: auto !important;
+}
+
+aside.EmojiPickerReact.epr-dark-theme {
+    --epr-bg-color: hsl(var(--popover)) !important;
+    --epr-category-label-bg-color: hsl(var(--popover)) !important;
+    --epr-search-input-bg-color: hsl(var(--input)) !important;
+    --epr-text-color: hsl(var(--popover-foreground)) !important;
+}
+
+/* Enable scrolling in emoji picker */
+aside.EmojiPickerReact .epr-emoji-list,
+aside.EmojiPickerReact .epr-body {
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+}
