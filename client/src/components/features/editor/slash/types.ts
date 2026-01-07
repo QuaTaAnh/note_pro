@@ -21,7 +21,7 @@ export interface SlashCommandOptions {
     ) => Promise<void> | void;
     onDeleteBlock?: () => void;
     position?: number;
-    allowFileUploads?: boolean;
+    isTitle?: boolean;
 }
 
 export interface CommandHandlers {

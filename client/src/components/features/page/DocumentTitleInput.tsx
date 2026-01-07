@@ -35,7 +35,6 @@ export const DocumentTitleInput = memo(
                 isTitle={true}
                 showBubbleMenu={true}
                 editable={editable}
-                enableFileUploads={false}
             />
         );
     },

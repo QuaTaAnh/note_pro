@@ -41,7 +41,6 @@ interface TiptapEditorProps {
         fileData: Record<string, unknown>
     ) => void;
     onConvertToTable?: (blockId: string, tableHTML: string) => void;
-    enableFileUploads?: boolean;
 }
 
 export const TiptapEditor = memo(
@@ -69,7 +68,6 @@ export const TiptapEditor = memo(
         onConvertToTask,
         onConvertToFile,
         onConvertToTable,
-        enableFileUploads = true,
         dragHandle,
     }: TiptapEditorProps & { dragHandle?: React.ReactNode }) {
         const [isUpdating, setIsUpdating] = useState(false);
@@ -105,7 +103,7 @@ export const TiptapEditor = memo(
             onDeleteBlock,
             position,
             onToggleUploading: setIsUploading,
-            allowFileUploads: enableFileUploads,
+            isTitle,
         });
         useEffect(() => {
             if (!editor || !value) {

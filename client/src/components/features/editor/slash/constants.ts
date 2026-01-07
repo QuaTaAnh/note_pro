@@ -8,29 +8,35 @@ export const SLASH_MENU_KEYS = ['/', 'Escape', 'ArrowUp', 'ArrowDown', 'Enter'];
 
 export const SLASH_TRIGGER_SUFFIXES = ['', ' ', '/'];
 
-export const createSlashCommands = (allowFileUploads: boolean): Command[] => [
-    ...(allowFileUploads
+export const createSlashCommands = (isTitle: boolean): Command[] => [
+    ...(isTitle
         ? [
+              {
+                  id: 'emojis',
+                  name: 'Emojis',
+                  icon: Smile,
+              },
+          ]
+        : [
               {
                   id: 'upload-file',
                   name: 'Upload file',
                   icon: Paperclip,
               },
-          ]
-        : []),
-    {
-        id: 'insert-table',
-        name: 'Insert Table',
-        icon: Table,
-    },
-    {
-        id: 'insert-separator',
-        name: 'Insert Separator',
-        icon: LuMinus,
-    },
-    {
-        id: 'emojis',
-        name: 'Emojis',
-        icon: Smile,
-    },
+              {
+                  id: 'insert-table',
+                  name: 'Insert Table',
+                  icon: Table,
+              },
+              {
+                  id: 'insert-separator',
+                  name: 'Insert Separator',
+                  icon: LuMinus,
+              },
+              {
+                  id: 'emojis',
+                  name: 'Emojis',
+                  icon: Smile,
+              },
+          ]),
 ];

@@ -36,7 +36,7 @@ export const useSlashCommand = (
         onAddBlock,
         onDeleteBlock,
         position = 0,
-        allowFileUploads = true,
+        isTitle = false,
     }: SlashCommandOptions = {}
 ) => {
     const [state, setState] = useState<SlashCommandState>({
@@ -100,14 +100,16 @@ export const useSlashCommand = (
     );
 
     const availableCommands = useMemo(
-        () => createSlashCommands(allowFileUploads),
-        [allowFileUploads]
+        () => createSlashCommands(isTitle),
+        [isTitle]
     );
 
     const commandHandlers = useMemo<CommandHandlers>(
         () => ({
             emojis: () => {
-                if (!editor) return;
+                if (!editor) {
+                    return;
+                }
                 const { state } = editor.view;
                 const coords = editor.view.coordsAtPos(state.selection.from);
                 updateState({
@@ -116,14 +118,15 @@ export const useSlashCommand = (
                 });
             },
             'upload-file': () => {
-                if (!allowFileUploads) {
-                    toast.error('File uploads are disabled here.');
+                if (isTitle) {
                     return;
                 }
                 fileInputRef.current?.click();
             },
             'insert-table': () => {
-                if (!editor) return;
+                if (!editor) {
+                    return;
+                }
                 const { state } = editor.view;
                 const coords = editor.view.coordsAtPos(state.selection.from);
                 updateState({
@@ -132,7 +135,9 @@ export const useSlashCommand = (
                 });
             },
             'insert-separator': () => {
-                if (!editor) return;
+                if (!editor) {
+                    return;
+                }
                 const { state } = editor.view;
                 const coords = editor.view.coordsAtPos(state.selection.from);
                 updateState({
@@ -141,7 +146,7 @@ export const useSlashCommand = (
                 });
             },
         }),
-        [editor, allowFileUploads, getPopoverPosition, updateState]
+        [editor, isTitle, getPopoverPosition, updateState]
     );
 
     const onCommandSelect = useCallback(
@@ -290,7 +295,7 @@ export const useSlashCommand = (
     const menus = useMemo(
         () => (
             <>
-                {allowFileUploads && (
+                {!isTitle && (
                     <input
                         ref={fileInputRef}
                         type="file"
@@ -348,7 +353,7 @@ export const useSlashCommand = (
             onSeparatorSelect,
             handleFileChange,
             availableCommands,
-            allowFileUploads,
+            isTitle,
             updateState,
         ]
     );
