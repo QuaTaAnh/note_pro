@@ -166,8 +166,8 @@ export const LeftSidebar = ({ pageId }: Props) => {
 
     return (
         <div className="h-screen flex flex-col overflow-hidden">
-            <div className="py-4 px-4 h-full flex flex-col overflow-hidden">
-                <div className="flex flex-row items-center gap-2 mb-3 shrink-0">
+            <div className="h-full flex flex-col overflow-hidden">
+                <div className="flex flex-row items-center gap-2 mb-3 shrink-0 py-4 px-4 bg-background sticky top-0 z-10">
                     <div
                         className="border rounded-sm overflow-hidden shrink-0 relative p-2"
                         style={{ width: 24, height: 32 }}>
@@ -204,15 +204,17 @@ export const LeftSidebar = ({ pageId }: Props) => {
                     </div>
                 </div>
 
-                <SidebarTabs
-                    sections={sectionItems}
-                    tasks={tasks}
-                    attachments={attachments}
-                    blocks={blocks || []}
-                    pendingTaskIds={pendingTaskIds}
-                    onScrollToBlock={handleScrollToBlock}
-                    onToggleTask={handleToggleTask}
-                />
+                <div className="flex-1 overflow-hidden px-4">
+                    <SidebarTabs
+                        sections={sectionItems}
+                        tasks={tasks}
+                        attachments={attachments}
+                        blocks={blocks || []}
+                        pendingTaskIds={pendingTaskIds}
+                        onScrollToBlock={handleScrollToBlock}
+                        onToggleTask={handleToggleTask}
+                    />
+                </div>
             </div>
         </div>
     );

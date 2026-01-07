@@ -15,14 +15,27 @@ export const highlightBlock = (blockId: string): (() => void) | null => {
         return null;
     }
 
-    const rect = el.getBoundingClientRect();
-    const isInViewport =
-        rect.top >= 0 &&
-        rect.bottom <=
-            (window.innerHeight || document.documentElement.clientHeight);
+    const scrollContainer = el.closest('.overflow-y-auto');
 
-    if (!isInViewport) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    if (scrollContainer) {
+        const containerRect = scrollContainer.getBoundingClientRect();
+        const blockRect = el.getBoundingClientRect();
+        const headerOffset = 100;
+
+        const isInViewport =
+            blockRect.top >= containerRect.top + headerOffset &&
+            blockRect.bottom <= containerRect.bottom - 50;
+
+        if (!isInViewport) {
+            const scrollTop = scrollContainer.scrollTop;
+            const blockOffsetTop =
+                blockRect.top - containerRect.top + scrollTop;
+
+            scrollContainer.scrollTo({
+                top: blockOffsetTop - headerOffset,
+                behavior: 'smooth',
+            });
+        }
     }
 
     const originalBorder = container.style.border;
