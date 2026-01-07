@@ -125,7 +125,7 @@ export const TiptapEditor = memo(
             if (editor && isFocused) {
                 // Use RAF for smoother focus transition
                 requestAnimationFrame(() => {
-                    editor.commands.focus('end');
+                    editor.commands.focus('end', { scrollIntoView: false });
                 });
             }
         }, [editor, isFocused]);

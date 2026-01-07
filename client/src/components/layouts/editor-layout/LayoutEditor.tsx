@@ -20,7 +20,10 @@ export const LayoutEditor: React.FC<LayoutEditorProps> = ({
                 style={{ width: isOpen ? SIDEBAR_WIDTH : 0 }}>
                 {isOpen ? left : null}
             </div>
-            <div className="flex-1">{children}</div>
+            <div
+                className={`flex-1 ${isOpen ? ' border-l rounded-t-md overflow-hidden' : ''} border-t`}>
+                {children}
+            </div>
         </div>
     );
 };

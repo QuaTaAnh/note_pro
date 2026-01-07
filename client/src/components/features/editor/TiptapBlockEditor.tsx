@@ -12,10 +12,9 @@ import { useDocumentCover } from '@/hooks/useDocumentCover';
 
 interface Props {
     pageId: string;
-    className?: string;
 }
 
-export default function TiptapBlockEditor({ pageId, className = '' }: Props) {
+export default function TiptapBlockEditor({ pageId }: Props) {
     const {
         loading,
         blocks,
@@ -24,7 +23,6 @@ export default function TiptapBlockEditor({ pageId, className = '' }: Props) {
         handleAddBlock,
         handleUpdateBlockContent,
         handleUpdateTitle,
-        handleUpdateRootBlockContent,
         handleBlockFocus,
         handleBlockBlur,
         handleSaveImmediate,
@@ -36,7 +34,6 @@ export default function TiptapBlockEditor({ pageId, className = '' }: Props) {
     } = useDocumentBlocks(pageId);
 
     const { canEdit } = useDocumentPermission(pageId);
-
     const { coverImage, handleAddCover, handleRemoveCover, isUploading } =
         useDocumentCover({
             rootBlock,
@@ -46,8 +43,8 @@ export default function TiptapBlockEditor({ pageId, className = '' }: Props) {
         <PageLoading />
     ) : (
         <div className="relative h-full">
-            <div className={`max-w-full mx-auto h-full ${className}`}>
-                <div className="mx-auto max-w-full bg-card overflow-hidden border-l border-t border-border h-full rounded-t-md">
+            <div className="max-w-full mx-auto w-full h-full">
+                <div className="mx-auto max-w-full bg-card overflow-hidden h-full">
                     <div className="h-full overflow-y-auto">
                         {coverImage && (
                             <DocumentCover
@@ -57,7 +54,7 @@ export default function TiptapBlockEditor({ pageId, className = '' }: Props) {
                                 isUploading={isUploading}
                             />
                         )}
-                        <div className="mx-auto max-w-2xl py-16">
+                        <div className="mx-auto max-w-4xl py-16">
                             <div className="group">
                                 {!coverImage && canEdit && (
                                     <div className="px-6 mb-2">
@@ -97,7 +94,7 @@ export default function TiptapBlockEditor({ pageId, className = '' }: Props) {
                                     onConvertToTable={handleConvertToTable}
                                 />
                             </TiptapWrapper>
-                            <div className="h-[50vh]" />
+                            <div className="h-[40vh]" />
                         </div>
                     </div>
                 </div>
