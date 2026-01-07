@@ -9,6 +9,7 @@ import { formatDate } from '@/lib/utils';
 import { BlockType } from '@/types/types';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { getPlainText } from '@/components/features/page/CardDocument';
+import { TruncatedTooltip } from '@/components/features/page/TruncatedTooltip';
 import { Loading } from '@/components/ui/loading';
 import { CardDocumentPreview } from '@/components/features/page/CardDocumentPreview';
 import {
@@ -190,10 +191,18 @@ export const LeftSidebar = ({ pageId }: Props) => {
                             <Loading />
                         ) : (
                             <>
-                                <span className="text-sm font-medium truncate">
-                                    {getPlainText(rootBlock?.content?.title) ||
-                                        ''}
-                                </span>
+                                <TruncatedTooltip
+                                    text={
+                                        getPlainText(
+                                            rootBlock?.content?.title
+                                        ) || ''
+                                    }>
+                                    <span className="text-sm font-medium truncate">
+                                        {getPlainText(
+                                            rootBlock?.content?.title
+                                        ) || ''}
+                                    </span>
+                                </TruncatedTooltip>
                                 <span className="text-xs text-muted-foreground truncate">
                                     {formatDate(rootBlock?.updated_at || '', {
                                         relative: true,

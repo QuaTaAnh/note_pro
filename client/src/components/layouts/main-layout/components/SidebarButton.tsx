@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { useLoading } from '@/contexts/LoadingContext';
 import { usePathname } from 'next/navigation';
+import { TruncatedTooltip } from '@/components/features/page/TruncatedTooltip';
 
 export type SidebarButtonVariant = 'default' | 'primary' | 'secondary';
 
@@ -66,9 +67,12 @@ export function SidebarButton({
             <div className="w-5 h-5 flex items-center justify-center shrink-0">
                 {icon}
             </div>
-            <span className="truncate">
-                {isLoading && loadingText ? loadingText : label}
-            </span>
+            <TruncatedTooltip
+                text={isLoading && loadingText ? loadingText : label}>
+                <span className="truncate">
+                    {isLoading && loadingText ? loadingText : label}
+                </span>
+            </TruncatedTooltip>
         </div>
     );
 

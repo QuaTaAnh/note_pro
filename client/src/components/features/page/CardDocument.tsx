@@ -1,6 +1,7 @@
 'use client';
 
 import { DocumentMoreMenu } from '@/components/features/page/DocumentMoreMenu';
+import { TruncatedTooltip } from '@/components/features/page/TruncatedTooltip';
 import {
     Card,
     CardContent,
@@ -82,9 +83,11 @@ const CardDocumentComponent = ({ document }: { document: Document }) => {
             <CardHeader className="flex flex-col p-4 flex-shrink-0">
                 <div className="flex justify-between items-start gap-2">
                     <div className="flex-1 min-w-0">
-                        <CardTitle className="text-sm truncate">
-                            {plainTitle}
-                        </CardTitle>
+                        <TruncatedTooltip text={plainTitle}>
+                            <CardTitle className="text-sm truncate">
+                                {plainTitle}
+                            </CardTitle>
+                        </TruncatedTooltip>
                         <CardDescription className="text-xs flex items-center gap-1 whitespace-nowrap overflow-hidden text-ellipsis">
                             {document.folder?.name && (
                                 <span className="flex items-center gap-1 shrink-0">

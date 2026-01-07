@@ -1,18 +1,22 @@
 'use client';
 
-import { MENU_ITEMS, SIDEBAR_WIDTH, ModalType } from '@/lib/constants';
-import { useSidebar } from '@/contexts/SidebarContext';
-import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
+import { useSidebar } from '@/contexts/SidebarContext';
+import { useGetDocsCountQuery } from '@/graphql/queries/__generated__/document.generated';
+import { MENU_ITEMS, ModalType, SIDEBAR_WIDTH } from '@/lib/constants';
+import { ROUTES } from '@/lib/routes';
+import { cn } from '@/lib/utils';
+import { usePathname } from 'next/navigation';
+import { IoShareOutline } from 'react-icons/io5';
+import { FolderMenu } from './components/FolderMenu';
 import NewDocumentButton from './components/NewDocumentButton';
+import { NewFolderButton } from './components/NewFolderButton';
+import { NewTaskModal } from './components/NewTaskModal';
 import { SidebarButton } from './components/SidebarButton';
 import { WorkspaceButton } from './components/WorkspaceButton';
-import { FolderMenu } from './components/FolderMenu';
-import { usePathname } from 'next/navigation';
-import { useGetDocsCountQuery } from '@/graphql/queries/__generated__/document.generated';
-import { NewTaskModal } from './components/NewTaskModal';
-import { ROUTES } from '@/lib/routes';
-import { IoShareOutline } from 'react-icons/io5';
+import { useState } from 'react';
+import { FiChevronDown, FiChevronRight } from 'react-icons/fi';
+import { Button } from '@/components/ui/button';
 interface Props {
     workspaceSlug: string;
     workspaceId: string;
@@ -21,6 +25,7 @@ interface Props {
 export default function Sidebar({ workspaceSlug, workspaceId }: Props) {
     const { isOpen } = useSidebar();
     const pathname = usePathname();
+    const [isFoldersCollapsed, setIsFoldersCollapsed] = useState(false);
 
     const { data: docsCount, loading: docsCountLoading } = useGetDocsCountQuery(
         {
@@ -57,8 +62,7 @@ export default function Sidebar({ workspaceSlug, workspaceId }: Props) {
                 />
                 <Separator />
                 <WorkspaceButton />
-                {/* Scrollable area starting from MENU_ITEMS */}
-                <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain flex flex-col gap-2 group">
+                <div className="flex flex-col gap-2">
                     {MENU_ITEMS(workspaceSlug, {
                         allDocs: docsCountLoading
                             ? undefined
@@ -85,6 +89,37 @@ export default function Sidebar({ workspaceSlug, workspaceId }: Props) {
                         );
                     })}
                     <Separator />
+                </div>
+                <div className="flex justify-between items-center">
+                    <span className="text-xs font-medium">Folders</span>
+                    <div className="flex items-center gap-1">
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="w-5 h-5"
+                            onClick={() =>
+                                setIsFoldersCollapsed(!isFoldersCollapsed)
+                            }>
+                            {isFoldersCollapsed ? (
+                                <FiChevronRight className="w-4 h-4" />
+                            ) : (
+                                <FiChevronDown className="w-4 h-4" />
+                            )}
+                        </Button>
+                        <NewFolderButton />
+                    </div>
+                </div>
+                <div
+                    className={cn(
+                        'transition-all duration-300 ease-in-out',
+                        isFoldersCollapsed
+                            ? 'h-0 overflow-hidden'
+                            : 'flex-1 min-h-0'
+                    )}
+                    style={{
+                        overflowY: isFoldersCollapsed ? 'hidden' : 'auto',
+                        overscrollBehavior: 'contain',
+                    }}>
                     <FolderMenu />
                 </div>
             </div>
