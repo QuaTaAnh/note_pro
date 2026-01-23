@@ -52,6 +52,16 @@ export const useSlashCommand = (
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const { startLoading, stopLoading } = useLoading();
 
+    // Use refs to always have latest values in callbacks
+    const positionRef = useRef(position);
+    const onAddBlockRef = useRef(onAddBlock);
+    const onConvertToFileRef = useRef(onConvertToFile);
+    const onConvertToTableRef = useRef(onConvertToTable);
+    positionRef.current = position;
+    onAddBlockRef.current = onAddBlock;
+    onConvertToFileRef.current = onConvertToFile;
+    onConvertToTableRef.current = onConvertToTable;
+
     const updateState = useCallback((updates: Partial<SlashCommandState>) => {
         setState((prev) => ({ ...prev, ...updates }));
     }, []);
@@ -79,24 +89,15 @@ export const useSlashCommand = (
                 file,
                 blockId,
                 editor,
-                onAddBlock,
-                onConvertToFile,
-                position,
+                onAddBlock: onAddBlockRef.current,
+                onConvertToFile: onConvertToFileRef.current,
+                position: positionRef.current,
                 onToggleUploading,
                 startLoading,
                 stopLoading,
             });
         },
-        [
-            blockId,
-            editor,
-            onAddBlock,
-            onConvertToFile,
-            position,
-            onToggleUploading,
-            startLoading,
-            stopLoading,
-        ]
+        [blockId, editor, onToggleUploading, startLoading, stopLoading]
     );
 
     const availableCommands = useMemo(
@@ -184,24 +185,27 @@ export const useSlashCommand = (
                 cols,
                 editor,
                 blockId,
-                onAddBlock,
-                onConvertToTable,
-                position,
+                onAddBlock: onAddBlockRef.current,
+                onConvertToTable: onConvertToTableRef.current,
+                position: positionRef.current,
             });
 
             updateState({ showTable: false });
         },
-        [editor, onAddBlock, onConvertToTable, blockId, position, updateState]
+        [editor, blockId, updateState]
     );
 
     const onSeparatorSelect = useCallback(
         async (style: string) => {
-            if (!onAddBlock) return;
+            const currentOnAddBlock = onAddBlockRef.current;
+            if (!currentOnAddBlock) return;
 
-            onAddBlock(position, 'separator' as any, { style });
+            currentOnAddBlock(positionRef.current, 'separator' as any, {
+                style,
+            });
             updateState({ showSeparator: false });
         },
-        [onAddBlock, position, updateState]
+        [updateState]
     );
 
     const handleKeyDown = useCallback(

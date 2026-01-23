@@ -141,6 +141,8 @@ export function useBlocks() {
     ): Promise<Block | null> => {
         if (!workspace?.id || !userId) return null;
 
+        const now = new Date().toISOString();
+
         try {
             setIsLoading(true);
             const res = await insertBlockAndUpdatePosition({
@@ -152,10 +154,77 @@ export function useBlocks() {
                     userId: userId,
                     content,
                 },
-                refetchQueries: [
-                    { query: GetDocumentBlocksDocument, variables: { pageId } },
-                ],
-                awaitRefetchQueries: true,
+                update: (cache, { data }) => {
+                    const newBlock = data?.insert_blocks_one;
+                    if (!newBlock) return;
+
+                    const existingData =
+                        cache.readQuery<GetDocumentBlocksQuery>({
+                            query: GetDocumentBlocksDocument,
+                            variables: { pageId },
+                        });
+
+                    if (existingData?.blocks) {
+                        const blockExists = existingData.blocks.some(
+                            (b) => b.id === newBlock.id
+                        );
+
+                        const fullNewBlock = {
+                            ...newBlock,
+                            workspace_id: workspace.id,
+                            user_id: userId,
+                            tasks: [],
+                        };
+
+                        if (blockExists) {
+                            const updatedBlocks = existingData.blocks.map(
+                                (block) => {
+                                    if (block.id === newBlock.id) {
+                                        return fullNewBlock;
+                                    }
+                                    if ((block.position ?? 0) >= position) {
+                                        return {
+                                            ...block,
+                                            position: (block.position ?? 0) + 1,
+                                        };
+                                    }
+                                    return block;
+                                }
+                            );
+
+                            cache.writeQuery({
+                                query: GetDocumentBlocksDocument,
+                                variables: { pageId },
+                                data: { blocks: updatedBlocks },
+                            });
+                        } else {
+                            const updatedBlocks = existingData.blocks.map(
+                                (block) => {
+                                    if ((block.position ?? 0) >= position) {
+                                        return {
+                                            ...block,
+                                            position: (block.position ?? 0) + 1,
+                                        };
+                                    }
+                                    return block;
+                                }
+                            );
+
+                            const allBlocks = [
+                                ...updatedBlocks,
+                                fullNewBlock,
+                            ].sort(
+                                (a, b) => (a.position || 0) - (b.position || 0)
+                            );
+
+                            cache.writeQuery({
+                                query: GetDocumentBlocksDocument,
+                                variables: { pageId },
+                                data: { blocks: allBlocks },
+                            });
+                        }
+                    }
+                },
             });
 
             const result = res.data?.insert_blocks_one;
@@ -168,8 +237,8 @@ export function useBlocks() {
                 parent_id: result.parent_id || undefined,
                 page_id: result.page_id || undefined,
                 type: result.type,
-                created_at: result.created_at || new Date().toISOString(),
-                updated_at: result.updated_at || new Date().toISOString(),
+                created_at: result.created_at || now,
+                updated_at: result.updated_at || now,
                 tasks: [],
             };
         } catch (error) {

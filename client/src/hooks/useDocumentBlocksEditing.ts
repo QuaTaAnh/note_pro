@@ -48,14 +48,47 @@ export function useDocumentBlocksEditing({
             type: BlockType = BlockType.PARAGRAPH,
             content: Record<string, unknown> = { text: '' }
         ) => {
+            // Generate optimistic ID for immediate UI feedback
+            const optimisticId = `temp-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+            const now = new Date().toISOString();
+
+            const optimisticBlock: Block = {
+                id: optimisticId,
+                content,
+                position,
+                page_id: pageId,
+                type,
+                created_at: now,
+                updated_at: now,
+                tasks: [],
+            };
+
+            setBlocks((prev) => {
+                const updated = prev.map((b) =>
+                    (b.position || 0) >= position
+                        ? { ...b, position: (b.position || 0) + 1 }
+                        : b
+                );
+                return [...updated, optimisticBlock].sort(
+                    (a, b) => (a.position || 0) - (b.position || 0)
+                );
+            });
+
+            setFocusedBlock(optimisticId);
+
             flush();
+
             const newBlock = await createBlockWithPositionUpdate(
                 pageId,
                 position,
                 type,
                 content
             );
-            if (newBlock) {
+
+            if (newBlock && newBlock.id !== optimisticId) {
+                setBlocks((prev) =>
+                    prev.map((b) => (b.id === optimisticId ? newBlock : b))
+                );
                 setFocusedBlock(newBlock.id);
             }
         },
@@ -125,31 +158,35 @@ export function useDocumentBlocksEditing({
         setFocusedBlock(null);
     }, []);
 
-    const handleSaveImmediate = useCallback(async () => {
-        await flush();
+    const handleSaveImmediate = useCallback(() => {
+        // Don't await - let it run in background
+        flush();
     }, [flush]);
 
     const handleDeleteBlock = useCallback(
-        async (blockId: string) => {
+        (blockId: string) => {
+            // Find the previous block BEFORE removing
             const currentIndex = blocks.findIndex((b) => b.id === blockId);
             const previousBlock =
                 currentIndex > 0 ? blocks[currentIndex - 1] : null;
 
-            const success = await removeBlock(blockId);
-            if (success) {
-                requestAnimationFrame(() => {
-                    setBlocks((prev) => prev.filter((b) => b.id !== blockId));
+            // Optimistically remove from local state IMMEDIATELY
+            setBlocks((prev) => prev.filter((b) => b.id !== blockId));
 
-                    if (previousBlock) {
-                        requestAnimationFrame(() => {
-                            setFocusedBlock(previousBlock.id);
-                        });
-                    }
-                });
+            // Focus previous block immediately
+            if (previousBlock) {
+                setFocusedBlock(previousBlock.id);
             }
+
+            // Delete on server in background (don't await)
+            removeBlock(blockId).catch((error) => {
+                console.error('Failed to delete block:', error);
+                // Optionally: restore block to state on failure
+            });
         },
         [removeBlock, blocks]
     );
+
     const handleReorderBlocks = useCallback(
         async (newBlocks: Block[]) => {
             setBlocks((prevBlocks) => {

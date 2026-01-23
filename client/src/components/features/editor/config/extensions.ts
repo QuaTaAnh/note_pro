@@ -17,7 +17,7 @@ import { Markdown } from 'tiptap-markdown';
 import { MARKDOWN_CONFIG, TABLE_CONFIG } from './constants';
 
 interface ExtensionsConfig {
-    position: number;
+    getPosition: () => number;
     onAddBlock?: (
         position: number,
         type: BlockType,
@@ -27,7 +27,7 @@ interface ExtensionsConfig {
 }
 
 export const createExtensions = ({
-    position,
+    getPosition,
     onAddBlock,
     onFlush,
 }: ExtensionsConfig) => [
@@ -80,7 +80,7 @@ export const createExtensions = ({
     }),
     EnterHandler.configure({
         onAddBlock,
-        position,
+        getPosition,
         onFlush,
     }),
     PasteHandler,

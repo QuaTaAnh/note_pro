@@ -11,11 +11,13 @@ export function useDocumentPermission(documentId: string) {
     const userId = useUserId();
     const { workspace } = useWorkspace();
 
+    // Use cache-first to reuse data from DocumentAccessGuard query
     const { data: documentData, loading: documentLoading } =
         useGetDocumentBlocksQuery({
             variables: { pageId: documentId },
             skip: !documentId,
             errorPolicy: 'all',
+            fetchPolicy: 'cache-first',
         });
 
     const rootBlock = useMemo(() => {

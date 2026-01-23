@@ -7,7 +7,7 @@ interface EnterHandlerOptions {
         type: BlockType,
         content?: Record<string, unknown>
     ) => Promise<void> | void;
-    position: number;
+    getPosition: () => number;
     onFlush?: () => Promise<void> | void;
 }
 
@@ -17,7 +17,7 @@ export const EnterHandler = Extension.create<EnterHandlerOptions>({
     addOptions() {
         return {
             onAddBlock: undefined,
-            position: 0,
+            getPosition: () => 0,
             onFlush: undefined,
         };
     },
@@ -36,6 +36,8 @@ export const EnterHandler = Extension.create<EnterHandlerOptions>({
                 const { state } = this.editor;
                 const { selection } = state;
                 const { $from } = selection;
+                // Get current position at execution time, not configuration time
+                const currentPosition = this.options.getPosition();
 
                 if (
                     this.editor.isActive('bulletList') ||
@@ -48,14 +50,10 @@ export const EnterHandler = Extension.create<EnterHandlerOptions>({
                             this.editor.commands.liftListItem('listItem');
                         if (lifted) {
                             if (this.options.onAddBlock) {
-                                // Flush and create block asynchronously
-                                Promise.resolve(this.options.onFlush?.()).then(
-                                    () => {
-                                        this.options.onAddBlock?.(
-                                            this.options.position + 1,
-                                            BlockType.PARAGRAPH
-                                        );
-                                    }
+                                this.options.onFlush?.();
+                                this.options.onAddBlock(
+                                    currentPosition + 1,
+                                    BlockType.PARAGRAPH
                                 );
                                 return true;
                             }
@@ -70,14 +68,12 @@ export const EnterHandler = Extension.create<EnterHandlerOptions>({
                             ? { text: '<ul><li><p></p></li></ul>' }
                             : { text: '<ol><li><p></p></li></ol>' };
 
-                        // Flush and create block asynchronously
-                        Promise.resolve(this.options.onFlush?.()).then(() => {
-                            this.options.onAddBlock?.(
-                                this.options.position + 1,
-                                BlockType.PARAGRAPH,
-                                listContent
-                            );
-                        });
+                        this.options.onFlush?.();
+                        this.options.onAddBlock(
+                            currentPosition + 1,
+                            BlockType.PARAGRAPH,
+                            listContent
+                        );
                         return true;
                     }
 
@@ -89,13 +85,11 @@ export const EnterHandler = Extension.create<EnterHandlerOptions>({
                 }
 
                 if (this.options.onAddBlock) {
-                    // Flush and create block asynchronously to ensure data is saved
-                    Promise.resolve(this.options.onFlush?.()).then(() => {
-                        this.options.onAddBlock?.(
-                            this.options.position + 1,
-                            BlockType.PARAGRAPH
-                        );
-                    });
+                    this.options.onFlush?.();
+                    this.options.onAddBlock(
+                        currentPosition + 1,
+                        BlockType.PARAGRAPH
+                    );
                     return true;
                 }
 

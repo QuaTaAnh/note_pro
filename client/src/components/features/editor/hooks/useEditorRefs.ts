@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { BlockType } from '@/types/types';
 
 interface UseEditorRefsProps {
@@ -11,6 +11,7 @@ interface UseEditorRefsProps {
         type: BlockType,
         content?: Record<string, unknown>
     ) => void;
+    position: number;
 }
 
 export function useEditorRefs({
@@ -19,32 +20,21 @@ export function useEditorRefs({
     onBlur,
     onSaveImmediate,
     onAddBlock,
+    position,
 }: UseEditorRefsProps) {
     const onChangeRef = useRef(onChange);
     const onFocusRef = useRef(onFocus);
     const onBlurRef = useRef(onBlur);
     const onSaveImmediateRef = useRef(onSaveImmediate);
     const onAddBlockRef = useRef(onAddBlock);
+    const positionRef = useRef(position);
 
-    useEffect(() => {
-        onChangeRef.current = onChange;
-    }, [onChange]);
-
-    useEffect(() => {
-        onFocusRef.current = onFocus;
-    }, [onFocus]);
-
-    useEffect(() => {
-        onBlurRef.current = onBlur;
-    }, [onBlur]);
-
-    useEffect(() => {
-        onSaveImmediateRef.current = onSaveImmediate;
-    }, [onSaveImmediate]);
-
-    useEffect(() => {
-        onAddBlockRef.current = onAddBlock;
-    }, [onAddBlock]);
+    onChangeRef.current = onChange;
+    onFocusRef.current = onFocus;
+    onBlurRef.current = onBlur;
+    onSaveImmediateRef.current = onSaveImmediate;
+    onAddBlockRef.current = onAddBlock;
+    positionRef.current = position;
 
     return {
         onChangeRef,
@@ -52,5 +42,6 @@ export function useEditorRefs({
         onBlurRef,
         onSaveImmediateRef,
         onAddBlockRef,
+        positionRef,
     };
 }

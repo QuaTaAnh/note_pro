@@ -6,7 +6,7 @@ import type { UseEditorConfigProps } from '../config/types';
 
 export function useEditorConfig({
     editable,
-    position,
+    positionRef,
     onChangeRef,
     onFocusRef,
     onBlurRef,
@@ -16,14 +16,16 @@ export function useEditorConfig({
 }: UseEditorConfigProps) {
     const isComposingRef = useRef(false);
 
+    const getPosition = useMemo(() => () => positionRef.current, [positionRef]);
+
     const extensions = useMemo(
         () =>
             createExtensions({
-                position,
-                onAddBlock: onAddBlockRef.current,
+                getPosition,
+                onAddBlock: (...args) => onAddBlockRef.current?.(...args),
                 onFlush: () => onSaveImmediateRef.current?.(),
             }),
-        [position, onAddBlockRef, onSaveImmediateRef]
+        [getPosition, onAddBlockRef, onSaveImmediateRef]
     );
 
     const eventHandlers = useMemo(

@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import {
     closestCenter,
     DndContext,
@@ -58,6 +58,31 @@ export function BlockList({
 }: Props) {
     const blocksCount = blocks.length;
 
+    // Store callbacks in refs to avoid re-creating SortableBlockItem props
+    const callbacksRef = useRef({
+        onFocus,
+        onBlur,
+        onChange,
+        onAddBlock,
+        onSaveImmediate,
+        onDeleteBlock,
+        onConvertToTask,
+        onConvertToFile,
+        onConvertToTable,
+    });
+    // Update refs on each render (cheap operation)
+    callbacksRef.current = {
+        onFocus,
+        onBlur,
+        onChange,
+        onAddBlock,
+        onSaveImmediate,
+        onDeleteBlock,
+        onConvertToTask,
+        onConvertToFile,
+        onConvertToTable,
+    };
+
     const sensors = useSensors(
         useSensor(PointerSensor, {
             activationConstraint: {
@@ -83,39 +108,54 @@ export function BlockList({
 
     const blockIds = useMemo(() => blocks.map((b) => b.id), [blocks]);
 
-    const renderBlock = useCallback(
-        (block: Block) => (
-            <SortableBlockItem
-                key={block.id}
-                block={block}
-                focusedBlockId={focusedBlockId}
-                onFocus={onFocus}
-                onBlur={onBlur}
-                onChange={onChange}
-                onAddBlock={onAddBlock}
-                onSaveImmediate={onSaveImmediate}
-                onDeleteBlock={onDeleteBlock}
-                editable={editable}
-                onConvertToTask={onConvertToTask}
-                onConvertToFile={onConvertToFile}
-                onConvertToTable={onConvertToTable}
-                totalBlocks={blocksCount}
-            />
-        ),
-        [
-            focusedBlockId,
-            onFocus,
-            onBlur,
-            onChange,
-            onAddBlock,
-            onSaveImmediate,
-            onDeleteBlock,
-            editable,
-            onConvertToTask,
-            onConvertToFile,
-            onConvertToTable,
-            blocksCount,
-        ]
+    // Stable callback references that delegate to refs
+    const stableOnFocus = useCallback((blockId: string) => {
+        callbacksRef.current.onFocus(blockId);
+    }, []);
+
+    const stableOnBlur = useCallback(() => {
+        callbacksRef.current.onBlur();
+    }, []);
+
+    const stableOnChange = useCallback((blockId: string, value: string) => {
+        callbacksRef.current.onChange(blockId, value);
+    }, []);
+
+    const stableOnAddBlock = useCallback(
+        (
+            position: number,
+            type: BlockType,
+            content?: Record<string, unknown>
+        ) => {
+            return callbacksRef.current.onAddBlock(position, type, content);
+        },
+        []
+    );
+
+    const stableOnSaveImmediate = useCallback(() => {
+        callbacksRef.current.onSaveImmediate();
+    }, []);
+
+    const stableOnDeleteBlock = useCallback((blockId: string) => {
+        callbacksRef.current.onDeleteBlock?.(blockId);
+    }, []);
+
+    const stableOnConvertToTask = useCallback((blockId: string) => {
+        callbacksRef.current.onConvertToTask?.(blockId);
+    }, []);
+
+    const stableOnConvertToFile = useCallback(
+        (blockId: string, fileData: Record<string, unknown>) => {
+            callbacksRef.current.onConvertToFile?.(blockId, fileData);
+        },
+        []
+    );
+
+    const stableOnConvertToTable = useCallback(
+        (blockId: string, tableHTML: string) => {
+            callbacksRef.current.onConvertToTable?.(blockId, tableHTML);
+        },
+        []
     );
 
     return (
@@ -127,7 +167,24 @@ export function BlockList({
                 items={blockIds}
                 strategy={verticalListSortingStrategy}>
                 <div className="space-y-1">
-                    {blocks.map((block) => renderBlock(block))}
+                    {blocks.map((block) => (
+                        <SortableBlockItem
+                            key={block.id}
+                            block={block}
+                            focusedBlockId={focusedBlockId}
+                            onFocus={stableOnFocus}
+                            onBlur={stableOnBlur}
+                            onChange={stableOnChange}
+                            onAddBlock={stableOnAddBlock}
+                            onSaveImmediate={stableOnSaveImmediate}
+                            onDeleteBlock={stableOnDeleteBlock}
+                            editable={editable}
+                            onConvertToTask={stableOnConvertToTask}
+                            onConvertToFile={stableOnConvertToFile}
+                            onConvertToTable={stableOnConvertToTable}
+                            totalBlocks={blocksCount}
+                        />
+                    ))}
                 </div>
             </SortableContext>
         </DndContext>

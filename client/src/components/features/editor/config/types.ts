@@ -3,7 +3,7 @@ import { MutableRefObject } from 'react';
 
 export interface UseEditorConfigProps {
     editable: boolean;
-    position: number;
+    positionRef: MutableRefObject<number>;
     onChangeRef: MutableRefObject<(value: string) => void>;
     onFocusRef: MutableRefObject<(() => void) | undefined>;
     onBlurRef: MutableRefObject<(() => void) | undefined>;

@@ -80,12 +80,17 @@ export const TiptapEditor = memo(
             onBlur,
             onSaveImmediate,
             onAddBlock,
+            position,
         });
 
         const editorConfig = useEditorConfig({
             editable,
-            position,
-            ...refs,
+            positionRef: refs.positionRef,
+            onChangeRef: refs.onChangeRef,
+            onFocusRef: refs.onFocusRef,
+            onBlurRef: refs.onBlurRef,
+            onSaveImmediateRef: refs.onSaveImmediateRef,
+            onAddBlockRef: refs.onAddBlockRef,
             prevValueRef,
         });
 
@@ -110,14 +115,11 @@ export const TiptapEditor = memo(
                 return;
             }
 
-            const editorHTML = editor.getHTML();
-
-            if (value !== prevValueRef.current && value !== editorHTML) {
-                const isEditorFocused = editor.isFocused;
-                if (!isEditorFocused) {
+            if (value !== prevValueRef.current) {
+                if (!editor.isFocused) {
                     editor.commands.setContent(value, { emitUpdate: false });
-                    prevValueRef.current = value;
                 }
+                prevValueRef.current = value;
             }
         }, [value, editor]);
 

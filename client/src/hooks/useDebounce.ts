@@ -30,7 +30,8 @@ export const useDebounce = (delay: number) => {
         [debouncedFn]
     );
 
-    const flush = useCallback(async () => {
+    // Non-blocking flush - executes callbacks but doesn't wait
+    const flush = useCallback(() => {
         if (isFlushingRef.current) return;
 
         isFlushingRef.current = true;
@@ -38,13 +39,39 @@ export const useDebounce = (delay: number) => {
         try {
             debouncedFn.flush();
 
-            // Execute all pending changes and wait for them to complete
+            // Execute all pending changes without waiting
             const pendingCallbacks = Array.from(
                 pendingChangesRef.current.values()
             );
             pendingChangesRef.current.clear();
 
-            // Wait for all async callbacks to complete
+            // Fire and forget - don't block on completion
+            pendingCallbacks.forEach((cb) => {
+                try {
+                    cb();
+                } catch (error) {
+                    console.error('Error executing pending callback:', error);
+                }
+            });
+        } finally {
+            isFlushingRef.current = false;
+        }
+    }, [debouncedFn]);
+
+    // Async flush for when you need to wait for completion
+    const flushAsync = useCallback(async () => {
+        if (isFlushingRef.current) return;
+
+        isFlushingRef.current = true;
+
+        try {
+            debouncedFn.flush();
+
+            const pendingCallbacks = Array.from(
+                pendingChangesRef.current.values()
+            );
+            pendingChangesRef.current.clear();
+
             await Promise.all(
                 pendingCallbacks.map(async (cb) => {
                     try {
@@ -67,5 +94,5 @@ export const useDebounce = (delay: number) => {
         pendingChangesRef.current.clear();
     }, [debouncedFn]);
 
-    return { debounced, flush, cancel };
+    return { debounced, flush, flushAsync, cancel };
 };
