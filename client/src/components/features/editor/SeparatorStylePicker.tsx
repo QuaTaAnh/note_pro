@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
-import type { SeparatorStyle } from '../page/SeparatorBlock';
+import type { SeparatorStyle } from '@/components/features/blocks';
 
 interface SeparatorStylePickerProps {
     show: boolean;

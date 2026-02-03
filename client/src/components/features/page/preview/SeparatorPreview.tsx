@@ -1,6 +1,6 @@
 import { Block } from '@/hooks';
 import { cn } from '@/lib/utils';
-import type { SeparatorStyle } from '../SeparatorBlock';
+import type { SeparatorStyle } from '@/components/features/blocks';
 
 const separatorClasses: Record<SeparatorStyle, string> = {
     strong: 'border-t-[3px] border-solid border-gray-900 dark:border-gray-100',

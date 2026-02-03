@@ -1,13 +1,17 @@
 'use client';
 
 import { memo } from 'react';
-import { TiptapBlockItem } from '@/components/features/editor/TiptapBlockItem';
-import { FileBlockCard } from '@/components/features/page/FileBlockCard';
-import { SeparatorBlock } from '@/components/features/page/SeparatorBlock';
+import {
+    ParagraphBlock,
+    TaskBlock,
+    FileBlock,
+    SeparatorBlock,
+    TableBlock,
+    type SeparatorStyle,
+} from '@/components/features/blocks';
 import { Block } from '@/hooks';
 import { BlockType } from '@/types/types';
 import { SortableBlockItemProps } from './types';
-import type { SeparatorStyle } from '@/components/features/page/SeparatorBlock';
 
 interface BlockRendererProps extends Omit<SortableBlockItemProps, 'block'> {
     block: Block;
@@ -42,56 +46,66 @@ export const BlockRenderer = memo(
         onConvertToFile,
         onConvertToTable,
     }: BlockRendererProps) {
-        if (block.type === BlockType.FILE) {
-            return (
-                <FileBlockCard
-                    block={block}
-                    dragHandle={dragHandle}
-                    editable={editable}
-                    onDeleteBlock={commonDeleteHandler}
-                    {...commonInsertHandlers}
-                />
-            );
-        }
+        const commonProps = {
+            block,
+            dragHandle,
+            editable,
+            onDeleteBlock: commonDeleteHandler,
+            ...commonInsertHandlers,
+        };
 
-        if (block.type === BlockType.SEPARATOR) {
-            const style = (block.content?.style as SeparatorStyle) || 'regular';
-            return (
-                <SeparatorBlock
-                    style={style}
-                    dragHandle={dragHandle}
-                    editable={editable}
-                    onDeleteBlock={commonDeleteHandler}
-                    {...commonInsertHandlers}
-                />
-            );
-        }
+        const textBlockProps = {
+            ...commonProps,
+            isFocused: focusedBlockId === block.id,
+            onFocus: () => onFocus(block.id),
+            onBlur,
+            onChange: (value: string) => onChange(block.id, value),
+            onAddBlock,
+            onSaveImmediate,
+            onConvertToTask,
+            onConvertToFile,
+            onConvertToTable,
+        };
 
-        return (
-            <TiptapBlockItem
-                blockId={block.id}
-                value={block.content?.text || ''}
-                position={block.position || 0}
-                isFocused={focusedBlockId === block.id}
-                onFocus={() => onFocus(block.id)}
-                onBlur={onBlur}
-                onChange={(value: string) => onChange(block.id, value)}
-                onAddBlock={onAddBlock}
-                onSaveImmediate={onSaveImmediate}
-                onDeleteBlock={commonDeleteHandler}
-                {...commonInsertHandlers}
-                blockType={block.type}
-                task={task}
-                editable={editable}
-                dragHandle={dragHandle}
-                onConvertToTask={onConvertToTask}
-                onConvertToFile={onConvertToFile}
-                onConvertToTable={onConvertToTable}
-            />
-        );
+        switch (block.type) {
+            case BlockType.FILE:
+                return <FileBlock {...commonProps} />;
+
+            case BlockType.SEPARATOR:
+                return (
+                    <SeparatorBlock
+                        style={
+                            (block.content?.style as SeparatorStyle) ||
+                            'regular'
+                        }
+                        dragHandle={dragHandle}
+                        editable={editable}
+                        onDeleteBlock={commonDeleteHandler}
+                        {...commonInsertHandlers}
+                    />
+                );
+
+            case BlockType.TABLE:
+                return (
+                    <TableBlock
+                        {...commonProps}
+                        isFocused={focusedBlockId === block.id}
+                        onFocus={() => onFocus(block.id)}
+                        onBlur={onBlur}
+                        onChange={(value: string) => onChange(block.id, value)}
+                        onSaveImmediate={onSaveImmediate}
+                    />
+                );
+
+            case BlockType.TASK:
+                return <TaskBlock {...textBlockProps} task={task} />;
+
+            case BlockType.PARAGRAPH:
+            default:
+                return <ParagraphBlock {...textBlockProps} />;
+        }
     },
     (prevProps, nextProps) => {
-        // Only re-render if these specific props change
         const prevTask = prevProps.task;
         const nextTask = nextProps.task;
         const tasksEqual =
@@ -101,6 +115,9 @@ export const BlockRenderer = memo(
         return (
             prevProps.block.id === nextProps.block.id &&
             prevProps.block.content?.text === nextProps.block.content?.text &&
+            prevProps.block.content?.style === nextProps.block.content?.style &&
+            prevProps.block.content?.fileUrl ===
+                nextProps.block.content?.fileUrl &&
             prevProps.block.position === nextProps.block.position &&
             prevProps.block.type === nextProps.block.type &&
             prevProps.focusedBlockId === nextProps.focusedBlockId &&

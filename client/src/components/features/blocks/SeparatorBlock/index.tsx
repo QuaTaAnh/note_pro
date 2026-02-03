@@ -1,0 +1,49 @@
+'use client';
+
+import { memo } from 'react';
+import { cn } from '@/lib/utils';
+import { BlockActionMenu } from '@/components/features/page/BlockActionMenu';
+import type { SeparatorBlockProps } from '../types';
+
+export type SeparatorStyle = 'extralight' | 'light' | 'regular' | 'strong';
+
+const SEPARATOR_STYLES: Record<SeparatorStyle, string> = {
+    strong: 'border-t-[3px] border-solid border-gray-900 dark:border-gray-100',
+    regular: 'border-t-[2px] border-solid border-gray-700 dark:border-gray-300',
+    light: 'border-t border-solid border-gray-400 dark:border-gray-500',
+    extralight: 'border-t border-dotted border-gray-400 dark:border-gray-500',
+};
+
+export const SeparatorBlock = memo(
+    function SeparatorBlock({
+        style,
+        dragHandle,
+        editable = true,
+        onDeleteBlock,
+        onInsertAbove,
+        onInsertBelow,
+    }: SeparatorBlockProps) {
+        return (
+            <div className="group relative my-2 flex items-center gap-2">
+                {editable && (
+                    <div className="text-muted-foreground">{dragHandle}</div>
+                )}
+                <div className={cn('flex-1', SEPARATOR_STYLES[style])} />
+                {editable && (
+                    <BlockActionMenu
+                        blockId=""
+                        onDelete={onDeleteBlock}
+                        onInsertAbove={onInsertAbove}
+                        onInsertBelow={onInsertBelow}
+                    />
+                )}
+            </div>
+        );
+    },
+    (prevProps, nextProps) => {
+        return (
+            prevProps.style === nextProps.style &&
+            prevProps.editable === nextProps.editable
+        );
+    }
+);

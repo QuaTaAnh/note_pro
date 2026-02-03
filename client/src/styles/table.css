@@ -1,3 +1,4 @@
+/* ===== ProseMirror Table (Editor Mode) ===== */
 .ProseMirror table {
     border-collapse: collapse;
     table-layout: fixed;
@@ -39,6 +40,72 @@
     min-height: 1.5em;
 }
 
+/* ===== Notion Table Editor (TableBlock specific) ===== */
+.notion-table-editor .ProseMirror {
+    outline: none;
+}
+
+/* Hide any content outside table in table editor */
+.notion-table-editor .ProseMirror > *:not(table) {
+    display: none !important;
+}
+
+.notion-table-editor .ProseMirror table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border: 1px solid hsl(var(--border));
+    border-radius: 4px;
+}
+
+.notion-table-editor .ProseMirror table td,
+.notion-table-editor .ProseMirror table th {
+    min-width: 6em;
+    padding: 0.5rem 0.75rem;
+    vertical-align: top;
+    box-sizing: border-box;
+    position: relative;
+    border-right: 1px solid hsl(var(--border));
+    border-bottom: 1px solid hsl(var(--border));
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-weight: 400;
+    text-align: left;
+    transition: background-color 0.1s ease;
+}
+
+/* Remove right border from last cell */
+.notion-table-editor .ProseMirror table td:last-child,
+.notion-table-editor .ProseMirror table th:last-child {
+    border-right: none;
+}
+
+/* Remove bottom border from last row */
+.notion-table-editor .ProseMirror table tr:last-child td,
+.notion-table-editor .ProseMirror table tr:last-child th {
+    border-bottom: none;
+}
+
+/* First column styling */
+.notion-table-editor .ProseMirror table td:first-child,
+.notion-table-editor .ProseMirror table th:first-child {
+    font-weight: 500;
+}
+
+/* Selected cell */
+.notion-table-editor .ProseMirror table .selectedCell {
+    background-color: hsl(var(--accent) / 0.5);
+}
+
+/* Paragraph in cells */
+.notion-table-editor .ProseMirror table p {
+    margin: 0;
+    min-height: 1.25em;
+}
+
 /* Responsive table */
 @media (max-width: 640px) {
     .ProseMirror table td,
@@ -46,6 +113,16 @@
         min-width: 4em;
         padding: 0.5rem 0.625rem;
         font-size: 0.875rem;
+    }
+
+    .notion-table-editor .ProseMirror table {
+        font-size: 0.8125rem;
+    }
+
+    .notion-table-editor .ProseMirror table td,
+    .notion-table-editor .ProseMirror table th {
+        min-width: 4em;
+        padding: 0.375rem 0.5rem;
     }
 }
 
@@ -87,7 +164,163 @@
     max-width: 100%;
 }
 
-/* Table in Prose (TableBlockCard) */
+/* ===== Notion-like Table Block Styles ===== */
+.notion-table-wrapper {
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.notion-table table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border: 1px solid hsl(var(--border));
+    border-radius: 4px;
+}
+
+.notion-table table td,
+.notion-table table th {
+    min-width: 6em;
+    padding: 0.5rem 0.75rem;
+    vertical-align: top;
+    box-sizing: border-box;
+    position: relative;
+    border-right: 1px solid hsl(var(--border));
+    border-bottom: 1px solid hsl(var(--border));
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-weight: 400;
+    text-align: left;
+    transition: background-color 0.1s ease;
+}
+
+/* Remove right border from last cell */
+.notion-table table td:last-child,
+.notion-table table th:last-child {
+    border-right: none;
+}
+
+/* Remove bottom border from last row */
+.notion-table table tr:last-child td,
+.notion-table table tr:last-child th {
+    border-bottom: none;
+}
+
+/* First row (header) styling - subtle background */
+.notion-table table tr:first-child td,
+.notion-table table tr:first-child th {
+    background-color: hsl(var(--muted) / 0.5);
+    font-weight: 500;
+    color: hsl(var(--foreground));
+}
+
+/* First column styling - subtle emphasis */
+.notion-table table td:first-child,
+.notion-table table th:first-child {
+    font-weight: 500;
+}
+
+/* Row hover effect */
+.notion-table table tr:hover td {
+    background-color: hsl(var(--accent) / 0.5);
+}
+
+/* Keep header row style on hover */
+.notion-table table tr:first-child:hover td,
+.notion-table table tr:first-child:hover th {
+    background-color: hsl(var(--muted) / 0.7);
+}
+
+/* Paragraph styling inside cells */
+.notion-table table p {
+    margin: 0;
+    min-height: 1.25em;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Multiple paragraphs in cell */
+.notion-table table p + p {
+    margin-top: 0.25em;
+}
+
+/* Links in table */
+.notion-table table a {
+    color: hsl(var(--primary));
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.notion-table table a:hover {
+    opacity: 0.8;
+}
+
+/* Code in table */
+.notion-table table code {
+    font-family:
+        ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 0.8em;
+    padding: 0.125em 0.375em;
+    background-color: hsl(var(--muted));
+    border-radius: 3px;
+}
+
+/* Bold and italic */
+.notion-table table strong {
+    font-weight: 600;
+}
+
+.notion-table table em {
+    font-style: italic;
+}
+
+/* Strikethrough */
+.notion-table table s,
+.notion-table table del {
+    text-decoration: line-through;
+    opacity: 0.7;
+}
+
+/* Empty cell placeholder */
+.notion-table table td:empty::before,
+.notion-table table th:empty::before {
+    content: '';
+    display: inline-block;
+    min-height: 1.25em;
+}
+
+/* Responsive table */
+@media (max-width: 640px) {
+    .notion-table table {
+        font-size: 0.8125rem;
+    }
+
+    .notion-table table td,
+    .notion-table table th {
+        min-width: 4em;
+        padding: 0.375rem 0.5rem;
+    }
+}
+
+/* Dark mode adjustments */
+:root.dark .notion-table table tr:first-child td,
+:root.dark .notion-table table tr:first-child th {
+    background-color: hsl(var(--muted) / 0.3);
+}
+
+:root.dark .notion-table table tr:hover td {
+    background-color: hsl(var(--accent) / 0.3);
+}
+
+:root.dark .notion-table table tr:first-child:hover td,
+:root.dark .notion-table table tr:first-child:hover th {
+    background-color: hsl(var(--muted) / 0.5);
+}
+
+/* ===== Legacy Prose Table (fallback) ===== */
 .prose table {
     border-collapse: collapse;
     table-layout: fixed;
