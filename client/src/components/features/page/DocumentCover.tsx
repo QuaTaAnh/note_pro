@@ -50,21 +50,19 @@ export function DocumentCover({
             {isHovered && (
                 <div className="absolute top-3 right-3 flex gap-2">
                     <Button
-                        variant="secondary"
                         size="sm"
+                        className="gap-1 text-xs rounded-lg bg-primary-button hover:bg-primary-buttonHover"
                         onClick={handleChangeCover}
-                        disabled={isUploading}
-                        className="shadow-md hover:shadow-lg transition-shadow">
-                        <FiImage className="mr-1.5 h-4 w-4" />
+                        disabled={isUploading}>
+                        <FiImage className="w-4 h-4" />
                         {isUploading ? 'Uploading...' : 'Change cover'}
                     </Button>
                     <Button
-                        variant="secondary"
                         size="sm"
+                        className="gap-1 text-xs rounded-lg bg-primary-button hover:bg-primary-buttonHover"
                         onClick={onRemove}
-                        disabled={isUploading}
-                        className="shadow-md hover:shadow-lg transition-shadow">
-                        <FiX className="mr-1.5 h-4 w-4" />
+                        disabled={isUploading}>
+                        <FiX className="w-4 h-4" />
                         Remove cover
                     </Button>
                 </div>

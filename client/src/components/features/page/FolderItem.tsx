@@ -71,7 +71,7 @@ export const FolderItem: React.FC<{
                 />
             </div>
             {expanded && hasChildren && (
-                <div className="ml-5">
+                <div className="ml-2 border-l border-border pl-2">
                     {folder.children!.map((child) => (
                         <FolderItem
                             key={child.id}

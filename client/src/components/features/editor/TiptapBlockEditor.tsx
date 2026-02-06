@@ -55,9 +55,9 @@ export default function TiptapBlockEditor({ pageId }: Props) {
                             />
                         )}
                         <div className="mx-auto max-w-4xl py-16">
-                            <div className="group">
+                            <div className="group flex flex-col gap-2">
                                 {!coverImage && canEdit && (
-                                    <div className="px-6 mb-2">
+                                    <div className="">
                                         <AddCoverButton
                                             onAddCover={handleAddCover}
                                             isUploading={isUploading}
@@ -65,7 +65,7 @@ export default function TiptapBlockEditor({ pageId }: Props) {
                                     </div>
                                 )}
                                 <div className="flex items-center justify-between">
-                                    <div className="flex-1 px-6">
+                                    <div className="flex-1">
                                         <DocumentTitleInput
                                             value={
                                                 rootBlock.content?.title || ''

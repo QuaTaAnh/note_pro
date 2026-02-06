@@ -32,12 +32,11 @@ export function AddCoverButton({
     return (
         <>
             <Button
-                variant="ghost"
                 size="sm"
+                className="gap-1 text-xs rounded-lg bg-primary-button hover:bg-primary-buttonHover"
                 onClick={handleClick}
-                disabled={isUploading}
-                className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-xs text-muted-foreground hover:text-foreground">
-                <FiImage className="mr-1.5 h-3.5 w-3.5" />
+                disabled={isUploading}>
+                <FiImage className="w-4 h-4" />
                 {isUploading ? 'Uploading...' : 'Add cover'}
             </Button>
             <input

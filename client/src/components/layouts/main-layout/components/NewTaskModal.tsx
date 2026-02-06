@@ -316,18 +316,14 @@ export const NewTaskModal = ({ children }: NewTaskModalProps) => {
                         </Popover>
                     </DialogTitle>
                 </DialogHeader>
-                <div className="space-y-2">
-                    <InputField
-                        id="text"
-                        placeholder="New Task"
-                        value={taskData.text}
-                        onChange={(e) =>
-                            handleInputChange('text', e.target.value)
-                        }
-                        className="placeholder:text-muted-foreground bg-card !border-0 !border-none focus-visible:!border-0 focus-visible:!ring-0 focus-visible:!ring-transparent focus:!border-0 focus:!ring-0 focus:!outline-none shadow-none"
-                        autoComplete="off"
-                    />
-                </div>
+                <InputField
+                    id="text"
+                    placeholder="New Task"
+                    value={taskData.text}
+                    onChange={(e) => handleInputChange('text', e.target.value)}
+                    className="placeholder:text-muted-foreground bg-card !border-0 !border-none focus-visible:!border-0 focus-visible:!ring-0 focus-visible:!ring-transparent focus:!border-0 focus:!ring-0 focus:!outline-none shadow-none"
+                    autoComplete="off"
+                />
                 <div className="flex items-center justify-between gap-3">
                     <div className="flex items-center gap-2">
                         <DatePicker
