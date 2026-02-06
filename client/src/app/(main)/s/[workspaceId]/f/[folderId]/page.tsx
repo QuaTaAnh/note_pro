@@ -1,21 +1,17 @@
 'use client';
 
 import { FolderDocumentGrid } from '@/components/features/page/FolderDocumentGrid';
-import { Button } from '@/components/ui/button';
 import { PageLoading } from '@/components/ui/loading';
 import { useGetFolderByIdQuery } from '@/graphql/queries/__generated__/folder.generated';
-import { useCreateDocument } from '@/hooks';
 import { Document } from '@/types/app';
 import { useMemo } from 'react';
-import { FiFilePlus } from 'react-icons/fi';
 import { useParams } from 'next/navigation';
+import { NewItemMenu } from '@/components/features/page/NewItemMenu';
+import { Separator } from '@/components/ui/separator';
 
 export default function FolderPage() {
     const params = useParams();
     const folderId = params.folderId as string;
-    const { createNewDocument, isCreating, canCreate } = useCreateDocument({
-        folderId,
-    });
 
     const { loading, data } = useGetFolderByIdQuery({
         variables: { folderId },
@@ -42,16 +38,10 @@ export default function FolderPage() {
     return (
         <div className="p-0 w-full h-full">
             <div className="flex flex-col items-start justify-start mx-auto w-full h-full min-h-0 max-w-screen-2xl gap-6">
-                <div className="w-full pt-4 px-6 flex items-center justify-between">
+                <div className="w-full pt-4 px-6 flex items-center gap-2">
+                    <NewItemMenu folderId={folderId} />
+                    <Separator orientation="vertical" />
                     <h1 className="text-xl font-medium">{folder.name}</h1>
-                    <Button
-                        size="sm"
-                        className="gap-2 text-xs text-white rounded-lg bg-primary"
-                        onClick={createNewDocument}
-                        disabled={!canCreate || isCreating}>
-                        <FiFilePlus className="w-4 h-4" />
-                        New Doc
-                    </Button>
                 </div>
 
                 {subFolders.length === 0 && documents.length === 0 ? (

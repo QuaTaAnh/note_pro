@@ -56,7 +56,11 @@ export function SidebarButton({
         className
     );
 
-    const handleLinkClick = () => {
+    const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        if (e.ctrlKey || e.metaKey) {
+            return;
+        }
+
         if (href && pathname !== href && !pathname.startsWith(href + '/')) {
             startLoading();
         }

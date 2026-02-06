@@ -35,8 +35,15 @@ const CardFolderComponent = ({ folder }: CardFolderProps) => {
         e.stopPropagation();
         if (!workspaceId) return;
 
+        const folderUrl = ROUTES.WORKSPACE_FOLDER(workspaceId, folder.id);
+
+        if (e.ctrlKey || e.metaKey) {
+            window.open(folderUrl, '_blank');
+            return;
+        }
+
         startLoading();
-        router.push(ROUTES.WORKSPACE_FOLDER(workspaceId, folder.id));
+        router.push(folderUrl);
     };
 
     return (

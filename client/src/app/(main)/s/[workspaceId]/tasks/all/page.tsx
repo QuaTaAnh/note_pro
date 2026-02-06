@@ -56,7 +56,6 @@ export default function AllTasksPage() {
     const { workspace } = useWorkspace();
     const { settings } = useTaskSettings();
 
-    // Use the query that excludes completed tasks
     const { loading, data } = useGetAllTasksQuery({
         variables: { workspaceId: workspace?.id || '' },
         skip: !workspace?.id,
