@@ -32,6 +32,8 @@ interface Props {
     onSubmit: (data: FolderData) => Promise<void>;
 }
 
+export const IconDefault = '📁';
+
 export const FolderDialog = ({
     open,
     onOpenChange,
@@ -42,7 +44,7 @@ export const FolderDialog = ({
     const [folderData, setFolderData] = useState<FolderData>({
         name: initialData?.name || '',
         description: initialData?.description || '',
-        icon: initialData?.icon || '📁',
+        icon: initialData?.icon || IconDefault,
     });
     const dialogContentRef = useRef<HTMLDivElement | null>(null);
 
@@ -51,7 +53,7 @@ export const FolderDialog = ({
             setFolderData({
                 name: initialData.name || '',
                 description: initialData.description || '',
-                icon: initialData.icon || '📁',
+                icon: initialData.icon || IconDefault,
             });
         }
     }, [open, initialData]);
@@ -72,7 +74,7 @@ export const FolderDialog = ({
             setFolderData({
                 name: '',
                 description: '',
-                icon: '📁',
+                icon: IconDefault,
             });
         }
     };

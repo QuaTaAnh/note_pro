@@ -7,6 +7,7 @@ import {
 import { cn } from '@/lib/utils';
 import { EmojiPickerPopover } from '@/components/shared/EmojiPickerPopover';
 import React, { useState } from 'react';
+import { IconDefault } from '../features/page/FolderDialog';
 
 interface IconPickerProps {
     selectedIcon: string;
@@ -36,7 +37,7 @@ export const IconPicker: React.FC<IconPickerProps> = ({
                             className={cn(
                                 'w-8 h-8 rounded-full border flex items-center justify-center text-xl'
                             )}>
-                            {selectedIcon || '📁'}
+                            {selectedIcon || IconDefault}
                         </span>
                         <span className="text-sm text-muted-foreground">
                             Choose Icon
