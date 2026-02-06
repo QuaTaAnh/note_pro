@@ -131,9 +131,13 @@ export const WorkspaceButton = () => {
                     onMouseEnter={() => setIsHovering(true)}
                     onMouseLeave={() => setIsHovering(false)}>
                     <div className="relative w-5 h-5 rounded overflow-hidden flex-shrink-0 flex items-center justify-center">
-                        {isHovering ? (
-                            <CiSettings className="w-5 h-5 text-foreground" />
-                        ) : (
+                        <div
+                            className={cn(
+                                'absolute inset-0 flex items-center justify-center transition-all duration-200',
+                                isHovering
+                                    ? 'opacity-0 scale-75'
+                                    : 'opacity-100 scale-100'
+                            )}>
                             <Image
                                 src={workspaceImage}
                                 alt="Workspace"
@@ -141,7 +145,16 @@ export const WorkspaceButton = () => {
                                 className="object-cover"
                                 sizes="20px"
                             />
-                        )}
+                        </div>
+                        <div
+                            className={cn(
+                                'absolute inset-0 flex items-center justify-center transition-all duration-200',
+                                isHovering
+                                    ? 'opacity-100 scale-100'
+                                    : 'opacity-0 scale-75'
+                            )}>
+                            <CiSettings className="w-5 h-5 text-foreground" />
+                        </div>
                     </div>
 
                     <div className="flex items-center gap-1 min-w-0 flex-1">

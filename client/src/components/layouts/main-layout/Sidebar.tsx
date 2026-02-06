@@ -93,6 +93,7 @@ export default function Sidebar({ workspaceSlug, workspaceId }: Props) {
                 <div className="flex justify-between items-center">
                     <span className="text-xs font-medium">Folders</span>
                     <div className="flex items-center gap-1">
+                        <NewFolderButton />
                         <Button
                             variant="ghost"
                             size="icon"
@@ -106,7 +107,6 @@ export default function Sidebar({ workspaceSlug, workspaceId }: Props) {
                                 <FiChevronDown className="w-4 h-4" />
                             )}
                         </Button>
-                        <NewFolderButton />
                     </div>
                 </div>
                 <div

@@ -16,11 +16,11 @@ export const FolderMenu = () => {
     return (
         <div className="space-y-1">
             {loading ? (
-                <div className="text-xs text-muted-foreground px-2 py-1 animate-pulse">
+                <div className="text-xs text-muted-foreground py-1 animate-pulse">
                     Loading folders...
                 </div>
             ) : tree.length === 0 ? (
-                <div className="text-xs text-muted-foreground px-2 py-1">
+                <div className="text-xs text-muted-foreground py-1">
                     No folders yet
                 </div>
             ) : (

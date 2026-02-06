@@ -16,7 +16,6 @@ import { useInsertFolderMutation } from '@/graphql/mutations/__generated__/folde
 import { useUserId } from '@/hooks/useAuth';
 import { useWorkspace } from '@/hooks/useWorkspace';
 import showToast from '@/lib/toast';
-import { HexColor } from '@/types/types';
 import React, { useRef, useState } from 'react';
 import { FiPlus } from 'react-icons/fi';
 

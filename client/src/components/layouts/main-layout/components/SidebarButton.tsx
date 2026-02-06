@@ -64,7 +64,7 @@ export function SidebarButton({
 
     const left = (
         <div className="flex items-center gap-1 min-w-0 flex-1">
-            <div className="w-5 h-5 flex items-center justify-center shrink-0">
+            <div className="w-5 h-5 flex items-center justify-center shrink-0 transition-all duration-200">
                 {icon}
             </div>
             <TruncatedTooltip
@@ -79,13 +79,13 @@ export function SidebarButton({
     const right = (
         <>
             {typeof count === 'number' && (
-                <span className="opacity-0 group-hover:opacity-100 text-muted-foreground text-xs pr-1">
+                <span className="opacity-0 group-hover:opacity-100 text-muted-foreground text-xs pr-1 transition-opacity duration-200">
                     {count}
                 </span>
             )}
             {action && (
                 <div
-                    className="opacity-0 group-hover:opacity-100 text-muted-foreground"
+                    className="opacity-0 group-hover:opacity-100 text-muted-foreground transition-opacity duration-200"
                     onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
@@ -115,13 +115,13 @@ export function SidebarButton({
                 {(count !== undefined || action) && (
                     <div className="flex items-center">
                         {typeof count === 'number' && (
-                            <span className="opacity-0 group-hover:opacity-100 text-muted-foreground text-xs pr-1">
+                            <span className="opacity-0 group-hover:opacity-100 text-muted-foreground text-xs pr-1 transition-opacity duration-200">
                                 {count}
                             </span>
                         )}
                         {action && (
                             <div
-                                className="opacity-0 group-hover:opacity-100 text-muted-foreground"
+                                className="opacity-0 group-hover:opacity-100 text-muted-foreground transition-opacity duration-200"
                                 onClick={(e) => {
                                     e.preventDefault();
                                     e.stopPropagation();
