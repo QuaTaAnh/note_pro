@@ -131,7 +131,7 @@ export const DocumentMoreMenu = ({ documentId, isOwner = true }: Props) => {
                     <CgMoreO size={18} />
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56 p-2" align="start">
+            <DropdownMenuContent className="w-44 p-2" align="start">
                 {isOwner ? (
                     <DropdownMenuItem
                         className="flex items-center gap-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-950 focus:bg-red-100 dark:focus:bg-red-900 focus:text-red-700 dark:focus:text-red-300"

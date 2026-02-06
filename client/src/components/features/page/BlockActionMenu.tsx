@@ -100,7 +100,7 @@ export function BlockActionMenu({
                     <MoreVertical size={18} />
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56 p-2" align="start">
+            <DropdownMenuContent className="w-44 p-2" align="start">
                 {onInsertAbove && (
                     <DropdownMenuItem
                         className="flex items-center gap-2"

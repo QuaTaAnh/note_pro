@@ -27,7 +27,7 @@ export const SettingButton = () => {
                         className="w-6 h-6 rounded-full cursor-pointer"
                     />
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56 p-2" align="end">
+                <DropdownMenuContent className="w-44 p-2" align="end">
                     <DropdownMenuLabel>
                         <div className="flex flex-col items-center gap-2">
                             <Image

@@ -84,3 +84,11 @@ update_permissions:
           created_by:
             _eq: X-Hasura-User-Id
     comment: ""
+delete_permissions:
+  - role: user
+    permission:
+      filter:
+        workspace:
+          created_by:
+            _eq: X-Hasura-User-Id
+    comment: ""

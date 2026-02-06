@@ -81,7 +81,7 @@ export const Setting = () => {
                         <GiSettingsKnobs className="w-4 h-4" />
                     </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56 p-2" align="end">
+                <DropdownMenuContent className="w-44 p-2" align="end">
                     <DropdownMenuCheckboxItem
                         checked={settings.showScheduledTasks}
                         onCheckedChange={(checked) =>

@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { FiChevronDown, FiChevronRight } from 'react-icons/fi';
+import { FolderMoreMenu } from './FolderMoreMenu';
 
 export const FolderItem: React.FC<{
     folder: FolderNode;
@@ -29,49 +30,51 @@ export const FolderItem: React.FC<{
 
     return (
         <div className="flex flex-col gap-1">
-            <div
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}>
-                <SidebarButton
-                    className="min-w-0"
-                    label={folder.name}
-                    icon={
-                        <div className="relative w-4 h-4 flex items-center justify-center">
-                            <div
-                                className={cn(
-                                    'absolute inset-0 flex items-center justify-center transition-all duration-200',
-                                    hasChildren && isHovered
-                                        ? 'opacity-0 scale-75'
-                                        : 'opacity-100 scale-100'
-                                )}>
-                                <span className="text-base leading-none">
-                                    {folder.icon}
-                                </span>
-                            </div>
-                            {hasChildren && (
-                                <button
-                                    onClick={handleToggle}
+            <FolderMoreMenu folder={folder}>
+                <div
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}>
+                    <SidebarButton
+                        className="min-w-0"
+                        label={folder.name}
+                        icon={
+                            <div className="relative w-4 h-4 flex items-center justify-center">
+                                <div
                                     className={cn(
                                         'absolute inset-0 flex items-center justify-center transition-all duration-200',
-                                        isHovered
-                                            ? 'opacity-100 scale-100'
-                                            : 'opacity-0 scale-75 pointer-events-none'
+                                        hasChildren && isHovered
+                                            ? 'opacity-0 scale-75'
+                                            : 'opacity-100 scale-100'
                                     )}>
-                                    {expanded ? (
-                                        <FiChevronDown className="w-4 h-4" />
-                                    ) : (
-                                        <FiChevronRight className="w-4 h-4" />
-                                    )}
-                                </button>
-                            )}
-                        </div>
-                    }
-                    href={href}
-                    isActive={href ? pathname === href : false}
-                />
-            </div>
+                                    <span className="text-base leading-none">
+                                        {folder.icon}
+                                    </span>
+                                </div>
+                                {hasChildren && (
+                                    <button
+                                        onClick={handleToggle}
+                                        className={cn(
+                                            'absolute inset-0 flex items-center justify-center transition-all duration-200',
+                                            isHovered
+                                                ? 'opacity-100 scale-100'
+                                                : 'opacity-0 scale-75 pointer-events-none'
+                                        )}>
+                                        {expanded ? (
+                                            <FiChevronDown className="w-4 h-4" />
+                                        ) : (
+                                            <FiChevronRight className="w-4 h-4" />
+                                        )}
+                                    </button>
+                                )}
+                            </div>
+                        }
+                        href={href}
+                        isActive={href ? pathname === href : false}
+                    />
+                </div>
+            </FolderMoreMenu>
             {expanded && hasChildren && (
-                <div className="ml-2 border-l border-border pl-2">
+                <div className="ml-3 border-l border-border pl-2">
                     {folder.children!.map((child) => (
                         <FolderItem
                             key={child.id}

@@ -3,8 +3,22 @@ mutation InsertFolder($input: folders_insert_input!) {
         id
         name
         description
-        color
         icon
         created_at
+    }
+}
+
+mutation UpdateFolder($id: uuid!, $input: folders_set_input!) {
+    update_folders_by_pk(pk_columns: { id: $id }, _set: $input) {
+        id
+        name
+        description
+        icon
+    }
+}
+
+mutation DeleteFolder($id: uuid!) {
+    delete_folders_by_pk(id: $id) {
+        id
     }
 }

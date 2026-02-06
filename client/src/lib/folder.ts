@@ -5,7 +5,6 @@ export interface FolderNode {
     id: string;
     name: string;
     description?: string;
-    color?: string;
     icon?: string;
     parent_id?: string | null;
     children?: FolderNode[];
