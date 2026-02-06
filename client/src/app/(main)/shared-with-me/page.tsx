@@ -33,7 +33,7 @@ export default function SharedWithMePage() {
                     </div>
                     <span className="text-sm text-muted-foreground">
                         {sharedDocs.length}{' '}
-                        {sharedDocs.length === 1 ? 'document' : 'documents'}
+                        {sharedDocs.length < 1 ? 'document' : 'documents'}
                     </span>
                 </div>
 

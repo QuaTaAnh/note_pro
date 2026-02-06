@@ -3,18 +3,47 @@ import { FolderNode } from '@/lib/folder';
 import { ROUTES } from '@/lib/routes';
 import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FiChevronDown, FiChevronRight } from 'react-icons/fi';
 import { FolderMoreMenu } from './FolderMoreMenu';
+
+const hasActiveDescendant = (
+    folder: FolderNode,
+    pathname: string,
+    workspaceSlug: string | null
+): boolean => {
+    if (!workspaceSlug) return false;
+
+    const currentHref = ROUTES.WORKSPACE_FOLDER(workspaceSlug, folder.id);
+    if (pathname === currentHref) return true;
+
+    if (folder.children && folder.children.length > 0) {
+        return folder.children.some((child) =>
+            hasActiveDescendant(child, pathname, workspaceSlug)
+        );
+    }
+
+    return false;
+};
 
 export const FolderItem: React.FC<{
     folder: FolderNode;
     workspaceSlug: string | null;
 }> = ({ folder, workspaceSlug }) => {
-    const [expanded, setExpanded] = useState(false);
-    const [isHovered, setIsHovered] = useState(false);
-    const hasChildren = folder.children && folder.children.length > 0;
     const pathname = usePathname();
+    const hasChildren = folder.children && folder.children.length > 0;
+
+    const shouldAutoExpand =
+        hasChildren && hasActiveDescendant(folder, pathname, workspaceSlug);
+
+    const [expanded, setExpanded] = useState(shouldAutoExpand);
+    const [isHovered, setIsHovered] = useState(false);
+
+    useEffect(() => {
+        if (shouldAutoExpand) {
+            setExpanded(true);
+        }
+    }, [shouldAutoExpand]);
 
     const handleToggle = (e: React.MouseEvent) => {
         e.preventDefault();

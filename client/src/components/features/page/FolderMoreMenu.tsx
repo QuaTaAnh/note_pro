@@ -92,6 +92,19 @@ export const FolderMoreMenu = ({ folder, children }: Props) => {
                     },
                     update(cache, { data }) {
                         if (!data?.insert_folders_one) return;
+
+                        cache.modify({
+                            id: cache.identify({ __typename: 'folders', id }),
+                            fields: {
+                                children(existingChildren = []) {
+                                    return [
+                                        ...existingChildren,
+                                        data.insert_folders_one,
+                                    ];
+                                },
+                            },
+                        });
+
                         cache.modify({
                             fields: {
                                 folders(existingFolders = []) {
