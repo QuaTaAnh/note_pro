@@ -1,26 +1,26 @@
-import { Button } from '@/components/ui/button';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
+import { ContextMenuItem } from '@/components/ui/context-menu';
 import { useSoftDeleteDocumentMutation } from '@/graphql/mutations/__generated__/document.generated';
 import { useRemoveDocumentAccessMutation } from '@/graphql/mutations/__generated__/document-share.generated';
 import { useUserId } from '@/hooks/useAuth';
 import showToast from '@/lib/toast';
 import type { Reference } from '@apollo/client';
 import React from 'react';
-import { CgMoreO } from 'react-icons/cg';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { MdOutlineExitToApp } from 'react-icons/md';
+import { ContextDropdownMenu } from './ContextDropdownMenu';
 
 interface Props {
     documentId: string;
     isOwner?: boolean;
+    children?: React.ReactNode;
 }
 
-export const DocumentMoreMenu = ({ documentId, isOwner = true }: Props) => {
+export const DocumentMoreMenu = ({
+    documentId,
+    isOwner = true,
+    children,
+}: Props) => {
     const userId = useUserId();
     const [softDeleteDocument] = useSoftDeleteDocumentMutation();
     const [removeDocumentAccess] = useRemoveDocumentAccessMutation();
@@ -120,34 +120,33 @@ export const DocumentMoreMenu = ({ documentId, isOwner = true }: Props) => {
         }
     };
 
+    const menuContent = isOwner ? (
+        <>
+            <RiDeleteBin6Line size={16} />
+            Delete
+        </>
+    ) : (
+        <>
+            <MdOutlineExitToApp size={16} />
+            Remove
+        </>
+    );
+
+    const menuAction = isOwner ? handleDeleteDocument : handleRemoveAccess;
+    const menuClassName = isOwner
+        ? 'flex items-center gap-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-950 focus:bg-red-100 dark:focus:bg-red-900 focus:text-red-700 dark:focus:text-red-300 cursor-pointer'
+        : 'flex items-center gap-2 text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950 focus:bg-orange-100 dark:focus:bg-orange-900 focus:text-orange-700 dark:focus:text-orange-300 cursor-pointer';
+
+    const MenuItem = children ? ContextMenuItem : DropdownMenuItem;
+
     return (
-        <DropdownMenu modal={false}>
-            <DropdownMenuTrigger asChild>
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    className="w-6 h-6 group-hover:opacity-100 opacity-0 transition-opacity"
-                    onClick={(e) => e.stopPropagation()}>
-                    <CgMoreO size={18} />
-                </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-44 p-2" align="start">
-                {isOwner ? (
-                    <DropdownMenuItem
-                        className="flex items-center gap-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-950 focus:bg-red-100 dark:focus:bg-red-900 focus:text-red-700 dark:focus:text-red-300"
-                        onClick={handleDeleteDocument}>
-                        <RiDeleteBin6Line size={16} />
-                        Delete
-                    </DropdownMenuItem>
-                ) : (
-                    <DropdownMenuItem
-                        className="flex items-center gap-2 text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950 focus:bg-orange-100 dark:focus:bg-orange-900 focus:text-orange-700 dark:focus:text-orange-300"
-                        onClick={handleRemoveAccess}>
-                        <MdOutlineExitToApp size={16} />
-                        Remove
-                    </DropdownMenuItem>
-                )}
-            </DropdownMenuContent>
-        </DropdownMenu>
+        <ContextDropdownMenu
+            menuContent={
+                <MenuItem className={menuClassName} onClick={menuAction}>
+                    {menuContent}
+                </MenuItem>
+            }>
+            {children}
+        </ContextDropdownMenu>
     );
 };

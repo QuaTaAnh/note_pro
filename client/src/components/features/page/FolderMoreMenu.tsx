@@ -1,10 +1,6 @@
 import { Reference } from '@apollo/client';
-import {
-    ContextMenu,
-    ContextMenuContent,
-    ContextMenuItem,
-    ContextMenuTrigger,
-} from '@/components/ui/context-menu';
+import { ContextMenuItem } from '@/components/ui/context-menu';
+import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import {
@@ -19,10 +15,11 @@ import { FolderNode } from '@/lib/folder';
 import showToast from '@/lib/toast';
 import { useCallback, useState } from 'react';
 import { FolderDialog, FolderMode } from './FolderDialog';
+import { ContextDropdownMenu } from './ContextDropdownMenu';
 
 interface Props {
     folder: FolderNode;
-    children: React.ReactNode;
+    children?: React.ReactNode;
 }
 
 type FolderFormData = {
@@ -161,49 +158,46 @@ export const FolderMoreMenu = ({ folder, children }: Props) => {
         }
     }, [id, deleteFolder]);
 
+    const MenuItem = children ? ContextMenuItem : DropdownMenuItem;
+
+    const menuContent = (
+        <>
+            <MenuItem
+                className="flex items-center cursor-pointer"
+                onClick={(e) =>
+                    handleMenuItemClick(e, () => setIsEditDialogOpen(true))
+                }>
+                Edit...
+            </MenuItem>
+            <Separator />
+            <MenuItem
+                className="flex items-center cursor-pointer"
+                onClick={(e) => handleMenuItemClick(e, createNewDocument)}>
+                New Doc
+            </MenuItem>
+            <MenuItem
+                className="flex items-center cursor-pointer"
+                onClick={(e) =>
+                    handleMenuItemClick(e, () => setIsNewFolderDialogOpen(true))
+                }>
+                New Folder
+            </MenuItem>
+            <Separator />
+            <MenuItem
+                className="flex items-center cursor-pointer text-red-600 hover:bg-red-50 dark:hover:bg-red-950 focus:bg-red-100 dark:focus:bg-red-900 focus:text-red-700 dark:focus:text-red-300"
+                onClick={(e) =>
+                    handleMenuItemClick(e, () => setIsDeleteDialogOpen(true))
+                }>
+                Delete
+            </MenuItem>
+        </>
+    );
+
     return (
         <>
-            <ContextMenu modal={false}>
-                <ContextMenuTrigger asChild>{children}</ContextMenuTrigger>
-                <ContextMenuContent className="w-44 p-2 flex flex-col gap-2">
-                    <ContextMenuItem
-                        className="flex items-center cursor-pointer"
-                        onClick={(e) =>
-                            handleMenuItemClick(e, () =>
-                                setIsEditDialogOpen(true)
-                            )
-                        }>
-                        Edit...
-                    </ContextMenuItem>
-                    <Separator />
-                    <ContextMenuItem
-                        className="flex items-center cursor-pointer"
-                        onClick={(e) =>
-                            handleMenuItemClick(e, createNewDocument)
-                        }>
-                        New Doc
-                    </ContextMenuItem>
-                    <ContextMenuItem
-                        className="flex items-center cursor-pointer"
-                        onClick={(e) =>
-                            handleMenuItemClick(e, () =>
-                                setIsNewFolderDialogOpen(true)
-                            )
-                        }>
-                        New Folder
-                    </ContextMenuItem>
-                    <Separator />
-                    <ContextMenuItem
-                        className="flex items-center cursor-pointer text-red-600 hover:bg-red-50 dark:hover:bg-red-950 focus:bg-red-100 dark:focus:bg-red-900 focus:text-red-700 dark:focus:text-red-300"
-                        onClick={(e) =>
-                            handleMenuItemClick(e, () =>
-                                setIsDeleteDialogOpen(true)
-                            )
-                        }>
-                        Delete
-                    </ContextMenuItem>
-                </ContextMenuContent>
-            </ContextMenu>
+            <ContextDropdownMenu menuContent={menuContent}>
+                {children}
+            </ContextDropdownMenu>
 
             <FolderDialog
                 open={isEditDialogOpen}

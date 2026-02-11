@@ -58,6 +58,15 @@ const CardFolderComponent = ({ folder }: CardFolderProps) => {
                 className="group relative cursor-pointer transition-all duration-200 h-[140px] w-full rounded-md border-[rgb(223,228,231)] hover:border-primary dark:border-border dark:hover:border-primary flex flex-col"
                 onClick={handleClick}>
                 <CardHeader className="flex flex-col p-4 flex-1">
+                    <div className="absolute top-4 right-4">
+                        <FolderMoreMenu
+                            folder={{
+                                ...folder,
+                                description: folder.description ?? undefined,
+                                icon: folder.icon ?? undefined,
+                            }}
+                        />
+                    </div>
                     <div className="flex flex-col justify-center items-center gap-3">
                         <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                             {folder.icon ? (

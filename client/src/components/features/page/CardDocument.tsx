@@ -76,46 +76,48 @@ const CardDocumentComponent = ({ document }: { document: Document }) => {
     };
 
     return (
-        <Card
-            key={document.id}
-            className="group relative cursor-pointer transition-all duration-200 h-[304px] w-full rounded-md border-[rgb(223,228,231)] hover:border-primary dark:border-border dark:hover:border-primary flex flex-col"
-            onClick={handleClick}>
-            <CardHeader className="flex flex-col p-4 flex-shrink-0">
-                <div className="flex justify-between items-start gap-2">
-                    <div className="flex-1 min-w-0">
-                        <TruncatedTooltip text={plainTitle}>
-                            <CardTitle className="text-sm truncate">
-                                {plainTitle}
-                            </CardTitle>
-                        </TruncatedTooltip>
-                        <CardDescription className="text-xs flex items-center gap-1 whitespace-nowrap overflow-hidden text-ellipsis">
-                            {document.folder?.name && (
-                                <span className="flex items-center gap-1 shrink-0">
-                                    <Folder className="w-3 h-3" />
-                                    <span className="truncate">
-                                        {document.folder?.name} •
+        <DocumentMoreMenu documentId={document.id} isOwner={isOwner}>
+            <Card
+                key={document.id}
+                className="group relative cursor-pointer transition-all duration-200 h-[304px] w-full rounded-md border-[rgb(223,228,231)] hover:border-primary dark:border-border dark:hover:border-primary flex flex-col"
+                onClick={handleClick}>
+                <CardHeader className="flex flex-col p-4 flex-shrink-0">
+                    <div className="flex justify-between items-start gap-2">
+                        <div className="flex-1 min-w-0">
+                            <TruncatedTooltip text={plainTitle}>
+                                <CardTitle className="text-sm truncate">
+                                    {plainTitle}
+                                </CardTitle>
+                            </TruncatedTooltip>
+                            <CardDescription className="text-xs flex items-center gap-1 whitespace-nowrap overflow-hidden text-ellipsis">
+                                {document.folder?.name && (
+                                    <span className="flex items-center gap-1 shrink-0">
+                                        <Folder className="w-3 h-3" />
+                                        <span className="truncate">
+                                            {document.folder?.name} •
+                                        </span>
                                     </span>
+                                )}
+                                <span className="truncate">
+                                    Updated{' '}
+                                    {formatDate(document?.updated_at || '', {
+                                        relative: true,
+                                    })}
                                 </span>
-                            )}
-                            <span className="truncate">
-                                Updated{' '}
-                                {formatDate(document?.updated_at || '', {
-                                    relative: true,
-                                })}
-                            </span>
-                        </CardDescription>
+                            </CardDescription>
+                        </div>
+                        <DocumentMoreMenu
+                            documentId={document.id}
+                            isOwner={isOwner}
+                        />
                     </div>
-                    <DocumentMoreMenu
-                        documentId={document.id}
-                        isOwner={isOwner}
-                    />
-                </div>
-                <Separator className="mt-2" />
-            </CardHeader>
-            <CardContent className="px-4 pb-4 flex-1 overflow-hidden">
-                <CardDocumentPreview blocks={document.sub_blocks} />
-            </CardContent>
-        </Card>
+                    <Separator className="mt-2" />
+                </CardHeader>
+                <CardContent className="px-4 pb-4 flex-1 overflow-hidden">
+                    <CardDocumentPreview blocks={document.sub_blocks} />
+                </CardContent>
+            </Card>
+        </DocumentMoreMenu>
     );
 };
 
